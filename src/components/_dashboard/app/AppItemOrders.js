@@ -34,17 +34,19 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 1723315;
+const TOTAL = 100;
 
 export default function AppItemOrders() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
+      {/* <IconWrapperStyle>
         <Icon icon={windowsFilled} width={24} height={24} />
-      </IconWrapperStyle>
+      </IconWrapperStyle> */}
+      <h2>En bonne évolution</h2>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Item Orders
+        <h2>Garçons: 50</h2>
+        <h2>Filles: 50</h2>
       </Typography>
     </RootStyle>
   );

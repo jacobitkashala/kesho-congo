@@ -1,5 +1,4 @@
-import { Icon } from '@iconify/react';
-import bugFilled from '@iconify/icons-ant-design/bug-filled';
+// import bugFilled from '@iconify/icons-ant-design/bug-filled';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Card, Typography } from '@material-ui/core';
@@ -34,17 +33,19 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 234;
+const TOTAL = 40;
 
 export default function AppBugReports() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
+      {/* <IconWrapperStyle>
         <Icon icon={bugFilled} width={24} height={24} />
-      </IconWrapperStyle>
+      </IconWrapperStyle> */}
+      <h2>Critique</h2>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Bug Reports
+        <h2>Garçons: 20</h2>
+        <h2>Filles: 20</h2>
       </Typography>
     </RootStyle>
   );
