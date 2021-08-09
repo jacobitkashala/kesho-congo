@@ -25,7 +25,11 @@ import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
+import {
+  PersonnelListHead,
+  PersonnelListToolbar,
+  PersonnelMoreMenu
+} from '../components/_dashboard/personnel';
 //
 import USERLIST from '../_mocks_/user';
 
@@ -132,11 +136,11 @@ export default function User() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Malade">
+    <Page title="Personnel">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Malade
+            Personnel
           </Typography>
           <Button
             variant="contained"
@@ -144,12 +148,12 @@ export default function User() {
             to="#"
             startIcon={<Icon icon={plusFill} />}
           >
-            malade
+            personnel
           </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <PersonnelListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -158,7 +162,7 @@ export default function User() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <PersonnelListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -210,7 +214,7 @@ export default function User() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <PersonnelMoreMenu />
                           </TableCell>
                         </TableRow>
                       );
