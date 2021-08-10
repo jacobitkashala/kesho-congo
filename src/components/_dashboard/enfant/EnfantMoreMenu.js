@@ -25,26 +25,26 @@ export default function EnfantMoreMenu() {
         anchorEl={ref.current}
         onClose={() => setIsOpen(false)}
         PaperProps={{
-          sx: { width: 200, maxWidth: '100%' }
+          sx: { width: 189, maxWidth: '100%', py: 3 }
         }}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={trash2Outline} width={24} height={24} />
+            <Icon icon={trash2Outline} width={25} height={25} />
           </ListItemIcon>
           <h4>Delete</h4>
         </MenuItem>
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={editFill} width={24} height={24} />
+            <Icon icon={editFill} width={25} height={25} />
           </ListItemIcon>
           <h4>Edit</h4>
         </MenuItem>
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={eyeFill} width={24} height={24} />
+            <Icon icon={eyeFill} width={24} height={25} />
           </ListItemIcon>
           <h4>Voir</h4>
         </MenuItem>
