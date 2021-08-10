@@ -9,10 +9,10 @@ const users = [...Array(24)].map((_, index) => ({
   id: faker.datatype.uuid(),
   avatarUrl: mockImgAvatar(index + 1),
   name: faker.name.findName(),
-  company: '20/12/2020',
-  isVerified: faker.datatype.boolean(),
-  status: sample(['autre', 'moderer', 'severe']),
-  role: sample(['Fille', 'Garçons'])
+  dataNaissance: '20/12/2020',
+  derniereDataCons: '20/12/200',
+  typeMalnutri: sample(['Aigu modére', 'Aigui sévère', 'légère']),
+  sex: sample(['F', 'G'])
 }));
 
 export default users;

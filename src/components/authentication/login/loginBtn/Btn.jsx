@@ -1,8 +1,11 @@
 import './Btn.css';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Btn = () => (
   <div>
-    <input type="submit" className="btn" value="Connexion" />
+    <RouterLink to="/dashboard" className="btn">
+      Connexion
+    </RouterLink>
   </div>
 );
 

@@ -52,8 +52,8 @@ export default function AccountPopover() {
         onClick={handleOpen}
         sx={{
           padding: 0,
-          width: 44,
-          height: 44,
+          width: 50,
+          height: 50,
           ...(open && {
             '&:before': {
               zIndex: 1,
@@ -67,7 +67,7 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar sizes="100" src={account.photoURL} alt="photoURL" />
       </IconButton>
 
       <MenuPopover
@@ -76,12 +76,9 @@ export default function AccountPopover() {
         anchorEl={anchorRef.current}
         sx={{ width: 220 }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
+        <Box sx={{ my: 2.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
             {account.displayName}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
           </Typography>
         </Box>
 
@@ -93,7 +90,7 @@ export default function AccountPopover() {
             to={option.linkTo}
             component={RouterLink}
             onClick={handleClose}
-            sx={{ typography: 'body2', py: 1, px: 2.5 }}
+            sx={{ typography: 'body2', py: 2.5, px: 2.5 }}
           >
             <Box
               component={Icon}

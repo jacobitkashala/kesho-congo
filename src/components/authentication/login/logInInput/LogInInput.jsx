@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import './LogInInput.css';
 
 // LogInInput.propTypes = {
-//   icon: PropTypes.icon,
-//   placeholder: PropTypes.icon
+//   icon: PropTypes.element,
+//   placeholder: PropTypes.element
 // };
 
 const LogInInput = ({ icon, placeholder }) => (

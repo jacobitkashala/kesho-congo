@@ -1,6 +1,5 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
@@ -32,11 +31,11 @@ import USERLIST from '../_mocks_/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom Enfant', alignRight: false },
+  { id: 'NE', label: 'Nom Patient', alignRight: false },
   { id: 'DN', label: 'Date Naissance', alignRight: false },
   { id: 'SE', label: 'Sexe', alignRight: false },
-  { id: 'DC', label: 'Date Consultation', alignRight: false },
-  { id: 'TN', label: 'Nutrition', alignRight: false },
+  { id: 'DC', label: 'Dernière consultation ', alignRight: false },
+  { id: 'TN', label: 'Type de Malnutrition', alignRight: false },
   { id: '' }
 ];
 
@@ -132,11 +131,11 @@ export default function User() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Malade">
+    <Page title="Patient">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Malade
+            Liste patient
           </Typography>
           <Button
             variant="contained"
@@ -144,7 +143,7 @@ export default function User() {
             to="#"
             startIcon={<Icon icon={plusFill} />}
           >
-            malade
+            patient
           </Button>
         </Stack>
 
@@ -171,14 +170,22 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const {
+                        id,
+                        name,
+                        avatarUrl,
+                        typeMalnutri,
+                        dataNaissance,
+                        sex,
+                        derniereDataCons
+                      } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
                         <TableRow
                           hover
                           key={id}
-                          // tabIndex={-1}
+                          tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
@@ -197,15 +204,15 @@ export default function User() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="left">
+                          <TableCell align="center">{dataNaissance}</TableCell>
+                          <TableCell align="center">{sex}</TableCell>
+                          <TableCell align="center">{derniereDataCons}</TableCell>
+                          <TableCell align="center">
                             <Label
                               variant="ghost"
-                              color={(status === 'severe' && 'error') || 'success'}
+                              color={(typeMalnutri === 'Aigu modére' && 'error') || 'success'}
                             >
-                              {sentenceCase(status)}
+                              {typeMalnutri}
                             </Label>
                           </TableCell>
 

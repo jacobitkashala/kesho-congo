@@ -5,7 +5,7 @@
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #c4fab6, #79B569, #6ECD55);
+  background-image: linear-gradient(to right, #c4fab6, #79B569);
   background-size: 200%;
   font-size: 1.2rem;
   color: #fff;
@@ -14,7 +14,10 @@
   margin: 1rem 0;
   cursor: pointer;
   transition: 0.5s;
+  text-align: center;
+  padding-top: 2%;
 }
 .btn:hover {
   background-position: right;
+  color: #fff;
 }
