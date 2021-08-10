@@ -11,7 +11,7 @@ const users = [...Array(24)].map((_, index) => ({
   name: faker.name.findName(),
   dataNaissance: '20/12/2020',
   derniereDataCons: '20/12/200',
-  typeMalnutri: sample(['Aigu modére', 'Aigui sévère', 'légère']),
+  typeMalnutri: sample(['Aigu modéré', 'Aigui sévère', 'légère']),
   sex: sample(['F', 'G'])
 }));
 

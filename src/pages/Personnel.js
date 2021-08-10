@@ -202,7 +202,7 @@ export default function Personnel() {
                           <TableCell align="centre">{company}</TableCell>
                           <TableCell align="centre">{role}</TableCell>
                           <TableCell align="centre">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="centre">label</TableCell>
+                          <TableCell align="centre">{status}</TableCell>
                           <TableCell align="centre">
                             <PersonnelMoreMenu />
                           </TableCell>
