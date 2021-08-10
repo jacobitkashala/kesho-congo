@@ -25,7 +25,7 @@ import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
+import { EnfantListHead, EnfantListToolbar, EnfantMoreMenu } from '../components/_dashboard/enfant';
 //
 import USERLIST from '../_mocks_/user';
 
@@ -149,7 +149,7 @@ export default function User() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <EnfantListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -158,7 +158,7 @@ export default function User() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <EnfantListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -210,7 +210,7 @@ export default function User() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <EnfantMoreMenu />
                           </TableCell>
                         </TableRow>
                       );
