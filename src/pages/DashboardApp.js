@@ -15,7 +15,7 @@ import {
 
 export default function DashboardApp() {
   return (
-    <Page title="">
+    <Page>
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Kesho Congo</Typography>

@@ -20,11 +20,11 @@ const TOTAL = 99;
 export default function AppWeeklySales() {
   return (
     <RootStyle>
-      <h2>Aujourd'hui </h2>
+      <Typography variant="h3">Aujourd'hui</Typography>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        <h2>Garçons: 50</h2>
-        <h2>Filles: 49</h2>
+        <Typography variant="subtitle2">Garçons:30</Typography>
+        <Typography variant="subtitle2">Fille:30</Typography>
       </Typography>
     </RootStyle>
   );

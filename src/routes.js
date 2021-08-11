@@ -7,7 +7,6 @@ import User from './pages/Enfant';
 import Login from './pages/login';
 import Personnel from './pages/Personnel';
 import NotFound from './pages/Page404';
-import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 
 // ----------------------------------------------------------------------

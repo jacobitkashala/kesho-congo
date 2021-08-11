@@ -22,11 +22,13 @@ const TOTAL = 40;
 export default function AppBugReports() {
   return (
     <RootStyle>
-      <h2>Critique</h2>
+      <Typography variant="h3">Critique</Typography>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        <h2>Garçons: 20</h2>
-        <h2>Filles: 20</h2>
+        Garçons:20
+      </Typography>
+      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+        Fille:20
       </Typography>
     </RootStyle>
   );

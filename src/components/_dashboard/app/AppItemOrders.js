@@ -20,11 +20,11 @@ const TOTAL = 100;
 export default function AppItemOrders() {
   return (
     <RootStyle>
-      <h2>En bonne évolution</h2>
+      <Typography variant="h3">Evolution</Typography>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        <h2>Garçons: 50</h2>
-        <h2>Filles: 50</h2>
+        <Typography variant="subtitle2">Garçons:30</Typography>
+        <Typography variant="subtitle2">Fille:30</Typography>
       </Typography>
     </RootStyle>
   );

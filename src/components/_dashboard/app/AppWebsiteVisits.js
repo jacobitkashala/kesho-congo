@@ -43,7 +43,6 @@ export default function AppWebsiteVisits() {
       '10/01/2003',
       '11/01/2003'
     ],
-    xaxis: { type: 'datetime' },
     tooltip: {
       shared: true,
       intersect: false,
