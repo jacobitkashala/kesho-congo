@@ -10,9 +10,9 @@ const personnel = [...Array(10)].map((_, index) => ({
   avatarUrl: mockImgAvatar(index + 1),
   name: faker.name.findName(),
   prenom: faker.name.findName(),
-  isVerified: faker.datatype.boolean(),
+  email: faker.name.findName(),
   status: sample(['Nutritionniste', 'medecin', 'infirmier']),
-  role: sample(['Fille', 'Garçons'])
+  sex: sample(['F', 'M'])
 }));
 
 export default personnel;

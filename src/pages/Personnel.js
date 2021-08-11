@@ -38,6 +38,7 @@ const TABLE_HEAD = [
   { id: 'DN', label: 'Prenom', alignRight: false },
   { id: 'SE', label: 'Email', alignRight: false },
   { id: 'DC', label: 'Status', alignRight: false },
+  { id: 'SxE', label: 'Sex', alignRight: false },
   { id: '' }
 ];
 
@@ -133,7 +134,7 @@ export default function Personnel() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Personnel">
+    <Page title="">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -172,7 +173,7 @@ export default function Personnel() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const { id, name, status, prenom, sex, email, avatarUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -198,11 +199,11 @@ export default function Personnel() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="centre">{company}</TableCell>
-                          <TableCell align="centre">{role}</TableCell>
-                          <TableCell align="centre">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="centre">{status}</TableCell>
-                          <TableCell align="centre">
+                          <TableCell>{prenom}</TableCell>
+                          <TableCell> {email}@gmail.com</TableCell>
+                          <TableCell>{status}</TableCell>
+                          <TableCell>{sex}</TableCell>
+                          <TableCell>
                             <PersonnelMoreMenu />
                           </TableCell>
                         </TableRow>
