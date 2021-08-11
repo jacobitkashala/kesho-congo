@@ -210,7 +210,7 @@ export default function User() {
                           <TableCell align="center">
                             <Label
                               variant="ghost"
-                              color={(typeMalnutri === 'Aigu modére' && 'error') || 'success'}
+                              color={(typeMalnutri === 'Aigu modéré' && 'error') || 'success'}
                             >
                               {typeMalnutri}
                             </Label>

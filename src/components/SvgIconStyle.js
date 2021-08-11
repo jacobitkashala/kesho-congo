@@ -10,6 +10,7 @@ SvgIconStyle.propTypes = {
 };
 
 export default function SvgIconStyle({ src, color = 'inherit', sx }) {
+  console.log(src);
   return (
     <Box
       component="span"
