@@ -29,16 +29,15 @@ import {
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
 //
-import USERLIST from '../_mocks_/user';
+import USERLIST from '../_mocks_/personnel';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom Enfant', alignRight: false },
-  { id: 'DN', label: 'Date Naissance', alignRight: false },
-  { id: 'SE', label: 'Sexe', alignRight: false },
-  { id: 'DC', label: 'Date Consultation', alignRight: false },
-  { id: 'TN', label: 'Nutrition', alignRight: false },
+  { id: 'NE', label: 'Nom', alignRight: false },
+  { id: 'DN', label: 'Prenom', alignRight: false },
+  { id: 'SE', label: 'Email', alignRight: false },
+  { id: 'DC', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
