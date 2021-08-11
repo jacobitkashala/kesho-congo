@@ -5,9 +5,9 @@ import { mockImgAvatar } from '../utils/mockImages';
 
 // ----------------------------------------------------------------------
 
-const users = [...Array(24)].map((_, index) => ({
+const users = [...Array(24)].map(() => ({
   id: faker.datatype.uuid(),
-  avatarUrl: mockImgAvatar(index + 1),
+  avatarUrl: mockImgAvatar(1),
   name: faker.name.findName(),
   dataNaissance: '20/12/2020',
   derniereDataCons: '20/12/200',
