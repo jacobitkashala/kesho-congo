@@ -1,0 +1,45 @@
+.product {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: auto;
+  width: 100%;
+  margin-left: 5%;
+}
+
+.productRight {
+  height: auto;
+  width: 60%;
+}
+.productLeft {
+  height: auto;
+  width: 35%;
+  padding-top: 20px;
+}
+.productRightCard {
+  position: relative;
+  left: 55%;
+  transform: translate(-50%, 0);
+}
+
+@media screen and (max-width: 900px) {
+  .product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: auto;
+    width: 100%;
+    margin-left: 5%;
+  }
+  .productRight {
+    height: auto;
+    width: 90%;
+    border: 1px solid lightgray;
+  }
+  .productLeft {
+    height: auto;
+    width: 90%;
+    border: 1px solid lightgray;
+    padding-top: 20px;
+  }
+}

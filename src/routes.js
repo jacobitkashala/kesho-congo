@@ -8,6 +8,7 @@ import Login from './pages/login';
 import Personnel from './pages/Personnel';
 import NotFound from './pages/Page404';
 import DashboardApp from './pages/DashboardApp';
+import NewUser from './pages/newUser/NewUser';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,8 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp /> },
         { path: 'user', element: <User /> },
-        { path: 'personnel', element: <Personnel /> }
+        { path: 'personnel', element: <Personnel /> },
+        { path: 'add_Patient', element: <NewUser /> }
       ]
     },
     {

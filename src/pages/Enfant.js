@@ -140,7 +140,7 @@ export default function User() {
           <Button
             variant="contained"
             component={RouterLink}
-            to="#"
+            to="add_Patient"
             startIcon={<Icon icon={plusFill} />}
           >
             patient
