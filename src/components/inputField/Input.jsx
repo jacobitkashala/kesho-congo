@@ -1,9 +1,10 @@
 import React from 'react';
 import './Input.css';
+import Label from '../Label';
 
 const Input = ({ label, placeholder, type }) => (
   <div className="newUserItem">
-    <label>{label}</label>
+    <Label>{label}</Label>
     <input type={type} placeholder={placeholder} />
   </div>
 );

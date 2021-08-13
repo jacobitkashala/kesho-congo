@@ -20,7 +20,20 @@ export default function DashboardApp() {
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Kesho Congo</Typography>
         </Box>
+
         <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWeeklySales />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppNewUsers />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppItemOrders />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppBugReports />
+          </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppWeeklySales />
           </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Details.css';
-import Chart from '../../components/chart/Chart';
-import { productData } from '../../dummyData';
+import Chart from '../../components/charts/chart/Chart';
+import { productData } from '../../_mocks_/dummyData';
 import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
 

@@ -6,8 +6,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
-import { Menu, MenuItem, IconButton, ListItemIcon } from '@material-ui/core';
-
+import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-ui/core';
+import Label from '../../Label';
 // ----------------------------------------------------------------------
 
 export default function EnfantMoreMenu() {
@@ -30,23 +30,27 @@ export default function EnfantMoreMenu() {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <MenuItem component={RouterLink} to="/detail_patient" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={trash2Outline} width={25} height={25} />
+            <Icon icon={trash2Outline} width={35} height={35} />
+            <Typography variant="h6">Supprimer</Typography>
           </ListItemIcon>
-          <h4>Delete</h4>
         </MenuItem>
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={editFill} width={25} height={25} />
+            <Icon icon={editFill} width={35} height={35} />
+            <Typography variant="h6">Edit</Typography>
           </ListItemIcon>
-          <h4>Edit</h4>
         </MenuItem>
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <MenuItem
+          component={RouterLink}
+          to="/dashboard/detail_patient"
+          sx={{ color: 'text.secondary' }}
+        >
           <ListItemIcon>
-            <Icon icon={eyeFill} width={24} height={25} />
+            <Icon icon={eyeFill} width={35} height={35} />
+            <Typography variant="h6">Voir</Typography>
           </ListItemIcon>
-          <h4>Voir</h4>
         </MenuItem>
       </Menu>
     </>

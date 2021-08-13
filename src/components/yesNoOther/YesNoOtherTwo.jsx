@@ -1,9 +1,10 @@
 import Input from '../inputField/Input';
 import './YesNoOther.css';
+import Label from '../Label';
 
 const YesNoOther = ({ title, one, two, three, placeholder, type }) => (
   <div className="newUserItem">
-    <label>{title}</label>
+    <Label>{title}</Label>
     <div className="newUserGender">
       <input type="radio" name="gender" id="one" value="male" />
       <label htmlFor="male">{one}</label>
