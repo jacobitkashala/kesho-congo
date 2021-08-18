@@ -15,5 +15,4 @@ Page.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.string
 };
-
 export default Page;

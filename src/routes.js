@@ -3,12 +3,12 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
-import User from './pages/Enfant';
 import Login from './pages/Login';
-import Personnel from './pages/Personnel';
+import Patient from './pages/Patient';
 import NotFound from './pages/Page404';
+import Personnel from './pages/Personnel';
+import NewPatient from './pages/NewPatient';
 import DashboardApp from './pages/DashboardApp';
-import NewUser from './pages/newUser/NewUser';
 import PageDetail from './pages/detailPatient/Details';
 
 // ----------------------------------------------------------------------
@@ -24,11 +24,11 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: 'user', element: <Patient /> },
         { path: 'app', element: <DashboardApp /> },
-        { path: 'user', element: <User /> },
         { path: 'personnel', element: <Personnel /> },
-        { path: 'user/add_Patient', element: <NewUser /> },
-        { path: 'detail_patient', element: <PageDetail /> }
+        { path: 'detail_patient', element: <PageDetail /> },
+        { path: 'user/add_Patient', element: <NewPatient /> }
       ]
     },
     {
