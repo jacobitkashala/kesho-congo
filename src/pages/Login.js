@@ -1,10 +1,12 @@
-// material
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Card, Stack, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
+import { fakeAuth } from '../fakeAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -35,6 +37,36 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
+  // const [emailValue, setEmailValue] = useState('');
+  // const [passwordValue, setPasswordValue] = useState('');
+
+  // const handleEmailChange = (e) => {
+  //   setEmailValue(e.target.value);
+  // };
+
+  // const handlePasswordChange = (e) => {
+  //   setPasswordValue(e.target.value);
+  // };
+
+  // const navigate = useNavigate();
+
+  // const location = useLocation();
+
+  // const { from } = location.state || { from: { pathname: '/dashboard' } };
+  // // console.log(from.pathname);
+
+  // const login = (e) => {
+  //   e.preventDefault();
+  //   if (emailValue === 'admin@gmail.com' || passwordValue === '1234') {
+  //     fakeAuth.login(() => {
+  //       navigate(from);
+  //     });
+  //   } else {
+  //     return null;
+  //   }
+  // };
+  // // console.log(emailValue);
+  // // console.log(passwordValue);
   return (
     <RootStyle>
       <MHidden width="mdDown">
@@ -53,7 +85,13 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
-          <LoginForm />
+          <LoginForm
+          // onChangeEmail={handleEmailChange}
+          // onChangePassword={handlePasswordChange}
+          // emailValue={emailValue}
+          // passwordValue={passwordValue}
+          // handleFormSubmit={login}
+          />
         </ContentStyle>
       </Container>
     </RootStyle>

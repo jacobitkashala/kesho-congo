@@ -2,7 +2,7 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
 // material
 import {
   Card,
@@ -31,6 +31,7 @@ import {
 } from '../components/_dashboard/patient';
 //
 import USERLIST from '../_mocks_/user';
+import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -134,7 +135,9 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  return (
+  const location = useLocation();
+
+  return fakeAuth.isAuthenticated ? (
     <Page>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -257,5 +260,7 @@ export default function User() {
         </Card>
       </Container>
     </Page>
+  ) : (
+    <Navigate to="/" state={{ from: location }} />
   );
 }

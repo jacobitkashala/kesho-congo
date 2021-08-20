@@ -2,7 +2,8 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
+
 // material
 import {
   Card,
@@ -30,6 +31,7 @@ import {
 } from '../components/_dashboard/personnel';
 //
 import USERLIST from '../_mocks_/personnel';
+import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -132,8 +134,9 @@ export default function Personnel() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+  const location = useLocation();
 
-  return (
+  return fakeAuth.isAuthenticated ? (
     <Page>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -240,5 +243,7 @@ export default function Personnel() {
         </Card>
       </Container>
     </Page>
+  ) : (
+    <Navigate to="/" state={{ from: location }} />
   );
 }

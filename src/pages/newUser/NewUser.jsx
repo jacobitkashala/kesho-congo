@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
 import Gender from '../../components/genderRadio/Gender';
 import Input from '../../components/inputField/Input';
 import SelectThree from '../../components/select/SelectThree';
@@ -11,9 +11,11 @@ import YesNoOther from '../../components/yesNoOther/YesNoOther';
 import YesNoOtherTwo from '../../components/yesNoOther/YesNoOtherTwo';
 import './newUser.css';
 import Upload from '../../components/uploadPhoto/Upload';
+import { fakeAuth } from '../../fakeAuth';
 
 export default function NewUser() {
-  return (
+  const location = useLocation();
+  return fakeAuth.isAuthenticated ? (
     <div className="newUser">
       <h1 className="newUserTitle">Nouveau patient</h1>
       <br />
@@ -297,5 +299,7 @@ export default function NewUser() {
         </Link>
       </div>
     </div>
+  ) : (
+    <Navigate to="/" state={{ from: location }} />
   );
 }

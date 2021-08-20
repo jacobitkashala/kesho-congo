@@ -1,3 +1,4 @@
+import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
 // material
 import { Box, Grid, Container, Typography } from '@material-ui/core';
 // components
@@ -10,11 +11,13 @@ import {
   AppCurrentVisits,
   AppWebsiteVisits
 } from '../components/_dashboard/app';
+import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
-  return (
+  const location = useLocation();
+  return fakeAuth.isAuthenticated ? (
     <Page>
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
@@ -57,5 +60,7 @@ export default function DashboardApp() {
         </Grid>
       </Container>
     </Page>
+  ) : (
+    <Navigate to="/" state={{ from: location }} />
   );
 }

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -8,11 +8,45 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
-// ----------------------------------------------------------------------
+import * as EmailValidator from 'email-validator';
+import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
+  // ----------------------------------------------------------------------
+
+  const [emailValue, setEmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+
+  const handleEmailChange = (e) => {
+    setEmailValue(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswordValue(e.target.value);
+  };
+
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const { from } = location.state || { from: { pathname: '/dashboard' } };
+  // console.log(from.pathname);
+
+  const login = (e) => {
+    e.preventDefault();
+    if (emailValue === 'admin@gmail.com' || passwordValue === '1234') {
+      fakeAuth.login(() => {
+        navigate(from);
+      });
+    } else {
+      return null;
+    }
+  };
+  // console.log(emailValue);
+  // console.log(passwordValue);
+
+  // ----------------------------------------------------------------------
+
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -50,6 +84,8 @@ export default function LoginForm() {
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
+            onChange={handleEmailChange}
+            value={emailValue}
           />
 
           <TextField
@@ -69,6 +105,8 @@ export default function LoginForm() {
             }}
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
+            onChange={handlePasswordChange}
+            value={passwordValue}
           />
         </Stack>
 
@@ -79,7 +117,7 @@ export default function LoginForm() {
           /> */}
 
           <Link component={RouterLink} variant="subtitle2" to="#">
-            mot de passe oublier
+            mot de passe oublié
           </Link>
         </Stack>
 
@@ -89,9 +127,13 @@ export default function LoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          onClick={login}
         >
           Login
         </LoadingButton>
+        {/* <Link loading={isSubmitting} onClick={handleFormSubmit}>
+          Login
+        </Link> */}
       </Form>
     </FormikProvider>
   );

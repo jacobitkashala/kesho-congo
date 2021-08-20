@@ -1,9 +1,12 @@
+import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Grid } from '@material-ui/core';
 import Page from '../components/Page';
 import { FamilleForm } from '../components/_dashboard/patient';
+import { fakeAuth } from '../fakeAuth';
 
 export default function NewPatient() {
-  return (
+  const location = useLocation();
+  return fakeAuth.isAuthenticated ? (
     <Page>
       <Box sx={{ pb: 5 }}>
         <Typography variant="h4">Nouveau Patient</Typography>
@@ -14,5 +17,7 @@ export default function NewPatient() {
         </Grid>
       </Grid>
     </Page>
+  ) : (
+    <Navigate to="/" state={{ from: location }} />
   );
 }
