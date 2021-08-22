@@ -32,15 +32,14 @@ export default function LoginForm() {
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   // console.log(from.pathname);
 
-  const login = (e) => {
-    e.preventDefault();
+  const login = (event) => {
+    event.preventDefault();
     if (emailValue === 'admin@gmail.com' || passwordValue === '1234') {
-      fakeAuth.login(() => {
+      return fakeAuth.login(() => {
         navigate(from);
       });
-    } else {
-      return null;
     }
+    return null;
   };
   // console.log(emailValue);
   // console.log(passwordValue);

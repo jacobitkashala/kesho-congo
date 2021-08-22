@@ -59,8 +59,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         sx={{
           px: 2.5,
           py: 3,
-          color: 'red',
-          fontSize: '1.5rem',
+          color: '#000',
+          fontSize: '1.8rem',
           fontWeight: '900'
         }}
       >

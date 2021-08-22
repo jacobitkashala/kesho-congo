@@ -1,4 +1,4 @@
-import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Grid, Stack } from '@material-ui/core';
 import Page from '../components/Page';
 import { FamilleForm, PatientForm } from '../components/_dashboard/patient';
