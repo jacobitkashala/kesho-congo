@@ -8,7 +8,7 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import * as EmailValidator from 'email-validator';
+// import * as EmailValidator from 'email-validator';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
@@ -29,7 +29,7 @@ export default function LoginForm() {
 
   const location = useLocation();
 
-  const { from } = location.state || { from: { pathname: '/dashboard' } };
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   // console.log(from.pathname);
 
   const login = (e) => {
@@ -65,8 +65,8 @@ export default function LoginForm() {
       navigate('/dashboard', { replace: true });
     }
   });
-
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  // , values
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
