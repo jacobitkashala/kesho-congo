@@ -1,5 +1,3 @@
-// import { useNavigate, useLocation } from 'react-router-dom';
-// import { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Card, Stack, Container, Typography } from '@material-ui/core';
 // components
@@ -15,19 +13,22 @@ const RootStyle = styled(Page)(({ theme }) => ({
   }
 }));
 
-const SectionStyle = styled(Card)(({ theme }) => ({
+const SectionStyle = styled('div')(({ theme }) => ({
   width: '100%',
   maxWidth: 564,
+  boxShadow: 0,
   display: 'flex',
+  border: 0,
+  textAlign: 'center',
   flexDirection: 'column',
   justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2)
+  verticalAlign: 'middle',
+  margin: theme.spacing(0, 0, 5, 7)
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
   color: '#343F59',
-  maxWidth: 480,
-  margin: 'auto',
+  maxWidth: 580,
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
@@ -38,36 +39,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  // const [emailValue, setEmailValue] = useState('');
-  // const [passwordValue, setPasswordValue] = useState('');
-
-  // const handleEmailChange = (e) => {
-  //   setEmailValue(e.target.value);
-  // };
-
-  // const handlePasswordChange = (e) => {
-  //   setPasswordValue(e.target.value);
-  // };
-
-  // const navigate = useNavigate();
-
-  // const location = useLocation();
-
-  // const { from } = location.state || { from: { pathname: '/dashboard' } };
-  // // console.log(from.pathname);
-
-  // const login = (e) => {
-  //   e.preventDefault();
-  //   if (emailValue === 'admin@gmail.com' || passwordValue === '1234') {
-  //     fakeAuth.login(() => {
-  //       navigate(from);
-  //     });
-  //   } else {
-  //     return null;
-  //   }
-  // };
-  // // console.log(emailValue);
-  // // console.log(passwordValue);
   return (
     <RootStyle>
       <MHidden width="mdDown">
@@ -82,17 +53,11 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Bienvenue!
+              Bienvenue
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Entrez vos details ci-bas.</Typography>
           </Stack>
-          <LoginForm
-          // onChangeEmail={handleEmailChange}
-          // onChangePassword={handlePasswordChange}
-          // emailValue={emailValue}
-          // passwordValue={passwordValue}
-          // handleFormSubmit={login}
-          />
+          <LoginForm />
         </ContentStyle>
       </Container>
     </RootStyle>

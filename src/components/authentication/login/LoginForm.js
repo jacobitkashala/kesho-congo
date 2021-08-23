@@ -129,6 +129,8 @@ export default function LoginForm() {
             mot de passe oublié
           </Link>
         </Stack>
+        <br />
+        <br />
 
         <LoadingButton
           fullWidth
@@ -140,9 +142,6 @@ export default function LoginForm() {
         >
           Se connecter
         </LoadingButton>
-        {/* <Link loading={isSubmitting} onClick={handleFormSubmit}>
-          Login
-        </Link> */}
       </Form>
     </FormikProvider>
   );
