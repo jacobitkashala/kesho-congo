@@ -1,7 +1,8 @@
 // import { useNavigate, useLocation } from 'react-router-dom';
 // import { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
-import { Card, Stack, Container, Typography } from '@material-ui/core';
+// Card,
+import { Stack, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
@@ -15,7 +16,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
   }
 }));
 
-const SectionStyle = styled(Card)(({ theme }) => ({
+const SectionStyle = styled('div')(({ theme }) => ({
   width: '100%',
   maxWidth: 564,
   display: 'flex',

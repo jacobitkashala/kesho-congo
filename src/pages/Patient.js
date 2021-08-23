@@ -41,6 +41,7 @@ const TABLE_HEAD = [
   { id: 'SE', label: 'Sexe', alignRight: false },
   { id: 'DC', label: 'Dernière consultation ', alignRight: false },
   { id: 'TN', label: 'Type de Malnutrition', alignRight: false },
+  { id: 'CP', label: 'Consulter par', alignRight: false },
   { id: '' }
 ];
 
@@ -184,7 +185,8 @@ export default function User() {
                         typeMalnutri,
                         dataNaissance,
                         sex,
-                        derniereDataCons
+                        derniereDataCons,
+                        consulete
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -222,6 +224,7 @@ export default function User() {
                               {typeMalnutri}
                             </Label>
                           </TableCell>
+                          <TableCell align="center">Dr {consulete}</TableCell>
 
                           <TableCell align="right">
                             <PatientMoreMenu />

@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Link, Drawer, Typography, Avatar } from '@material-ui/core';
+
+import { Box, Drawer } from '@material-ui/core';
 // components
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
-import account from '../../_mocks_/account';
-
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -23,13 +22,13 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.grey[200]
-}));
+// const AccountStyle = styled('div')(({ theme }) => ({
+//   display: 'flex',
+//   alignItems: 'center',
+//   padding: theme.spacing(2, 2.5),
+//   borderRadius: theme.shape.borderRadiusSm,
+//   backgroundColor: theme.palette.grey[200]
+// }));
 
 // ----------------------------------------------------------------------
 
@@ -64,13 +63,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           fontWeight: '900'
         }}
       >
-        {/* <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}> */}
         Kesho Congo
-        {/* </Box> */}
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="#">
+        {/* <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
             <Avatar src={account.photoURL} alt={account.Name} />
             <Box sx={{ ml: 2 }}>
@@ -82,7 +79,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               </Typography>
             </Box>
           </AccountStyle>
-        </Link>
+        </Link> */}
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
