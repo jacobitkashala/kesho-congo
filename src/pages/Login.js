@@ -1,12 +1,12 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
+// import { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Card, Stack, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -17,7 +17,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 564,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -25,6 +25,7 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
+  color: '#343F59',
   maxWidth: 480,
   margin: 'auto',
   display: 'flex',
@@ -71,8 +72,8 @@ export default function Login() {
     <RootStyle>
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Bienvenue
+          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5, color: '#343F59' }}>
+            KESHO CONGO
           </Typography>
           <img src="/static/logo/undraw_doctors_hwty.svg" alt="login" />
         </SectionStyle>
@@ -81,9 +82,9 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Login
+              Bienvenue!
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Entrez vos details ci-bas.</Typography>
           </Stack>
           <LoginForm
           // onChangeEmail={handleEmailChange}

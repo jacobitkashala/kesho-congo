@@ -55,16 +55,24 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' }
       }}
     >
-      <Box sx={{ px: 2.5, py: 3 }}>
-        <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-          Kesho COngo
-        </Box>
+      <Box
+        sx={{
+          px: 2.5,
+          py: 3,
+          color: '#000',
+          fontSize: '1.8rem',
+          fontWeight: '900'
+        }}
+      >
+        {/* <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}> */}
+        Kesho Congo
+        {/* </Box> */}
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={account.photoURL} alt={account.Name} />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {account.displayName}

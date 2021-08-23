@@ -11,7 +11,7 @@ const personnel = [...Array(9)].map((_, index) => ({
   name: faker.name.findName(),
   prenom: faker.name.findName(),
   email: faker.name.findName(),
-  status: sample(['Nutritionniste', 'medecin', 'infirmier']),
+  status: sample(['Nutritionniste', 'Médecin', 'Infirmier']),
   sex: sample(['F', 'M'])
 }));
 

@@ -31,7 +31,7 @@ const AddAnthro = () => (
             <option value="no">Forme légère de malnutrition</option>
           </select>
         </div>
-        <button className="userAddButton">Ajouter</button>
+        {/* <button className="userAddButton">Ajouter</button> */}
       </div>
     </form>
   </div>

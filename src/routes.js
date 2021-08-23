@@ -9,6 +9,7 @@ import NotFound from './pages/Page404';
 import Personnel from './pages/Personnel';
 import NewPatient from './pages/NewPatient';
 import DashboardApp from './pages/DashboardApp';
+import NewPersonnel from './pages/NewPersonnel';
 import PageDetail from './pages/detailPatient/Details';
 
 // ----------------------------------------------------------------------
@@ -28,7 +29,8 @@ export default function Router() {
         { path: 'app', element: <DashboardApp /> },
         { path: 'personnel', element: <Personnel /> },
         { path: 'detail_patient', element: <PageDetail /> },
-        { path: 'user/add_Patient', element: <NewPatient /> }
+        { path: 'user/add_Patient', element: <NewPatient /> },
+        { path: 'personnel/add_Personnel', element: <NewPersonnel /> }
       ]
     },
     {

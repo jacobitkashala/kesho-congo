@@ -9,7 +9,7 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import * as EmailValidator from 'email-validator';
+// import * as EmailValidator from 'email-validator';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
@@ -74,8 +74,8 @@ export default function LoginForm() {
       navigate('/dashboard', { replace: true });
     }
   });
-
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  // , values
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -89,7 +89,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="Adresse mail"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -101,7 +101,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Mot de passe"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -138,7 +138,7 @@ export default function LoginForm() {
           loading={isSubmitting}
           onClick={register}
         >
-          Login
+          Se connecter
         </LoadingButton>
         {/* <Link loading={isSubmitting} onClick={handleFormSubmit}>
           Login

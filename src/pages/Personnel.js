@@ -2,7 +2,7 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Route, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 
 // material
 import {
@@ -37,10 +37,10 @@ import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignRight: false },
-  { id: 'DN', label: 'Prenom', alignRight: false },
+  { id: 'DN', label: 'Prénom', alignRight: false },
   { id: 'SE', label: 'Email', alignRight: false },
   { id: 'DC', label: 'Status', alignRight: false },
-  { id: 'SxE', label: 'Sex', alignRight: false },
+  { id: 'SxE', label: 'Sexe', alignRight: false },
   { id: '' }
 ];
 
@@ -146,7 +146,7 @@ export default function Personnel() {
           <Button
             variant="contained"
             component={RouterLink}
-            to="#"
+            to="add_Personnel"
             startIcon={<Icon icon={plusFill} />}
           >
             personnel
