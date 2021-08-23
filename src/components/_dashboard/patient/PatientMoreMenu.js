@@ -30,18 +30,6 @@ export default function EnfantMoreMenu() {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem component={RouterLink} to="/detail_patient" sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={trash2Outline} width={35} height={35} />
-            <Typography variant="h6">Supprimer</Typography>
-          </ListItemIcon>
-        </MenuItem>
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={editFill} width={35} height={35} />
-            <Typography variant="h6">Edit</Typography>
-          </ListItemIcon>
-        </MenuItem>
         <MenuItem
           component={RouterLink}
           to="/dashboard/detail_patient"
@@ -50,6 +38,18 @@ export default function EnfantMoreMenu() {
           <ListItemIcon>
             <Icon icon={eyeFill} width={35} height={35} />
             <Typography variant="h6">Voir</Typography>
+          </ListItemIcon>
+        </MenuItem>
+        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+          <ListItemIcon>
+            <Icon icon={editFill} width={35} height={35} />
+            <Typography variant="h6">Edit</Typography>
+          </ListItemIcon>
+        </MenuItem>
+        <MenuItem component={RouterLink} to="/detail_patient" sx={{ color: 'text.secondary' }}>
+          <ListItemIcon>
+            <Icon icon={trash2Outline} width={35} height={35} />
+            <Typography variant="h6">Supprimer</Typography>
           </ListItemIcon>
         </MenuItem>
       </Menu>

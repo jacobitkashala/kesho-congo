@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
-import { Card, Stack, Container, Typography } from '@material-ui/core';
+// Card,
+import { Stack, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
