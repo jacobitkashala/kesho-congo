@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Axios from 'axios';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
@@ -16,6 +17,31 @@ export default function LoginForm() {
 
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [username, setUsername] = useState('');
+  const [loggedIn, setLoggedIn] = useState('');
+
+  Axios.defaults.withCredentials = true;
+  const register = () => {
+    Axios.post('http://localhost:8080/user_login', {
+      email: emailValue,
+      password: passwordValue
+    }).then((response) => {
+      const { message, token, name } = response.data;
+      setLoggedIn(token);
+
+      if (token) {
+        fakeAuth.login(() => {
+          navigate(from);
+        });
+      } else {
+        return null;
+      }
+    });
+  };
+
+  // useEffect(() => {
+  //   fakeAuth.isAuthenticated = loggedIn;
+  // }, []);
 
   const handleEmailChange = (e) => {
     setEmailValue(e.target.value);
@@ -29,24 +55,7 @@ export default function LoginForm() {
 
   const location = useLocation();
 
-  const { from } = location.state || { from: { pathname: '/dashboard' } };
-  // console.log(from.pathname);
-
-  const login = (e) => {
-    e.preventDefault();
-    if (emailValue === 'admin@gmail.com' || passwordValue === '1234') {
-      fakeAuth.login(() => {
-        navigate(from);
-      });
-    } else {
-      return null;
-    }
-  };
-  // console.log(emailValue);
-  // console.log(passwordValue);
-
-  // ----------------------------------------------------------------------
-
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -127,7 +136,7 @@ export default function LoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          onClick={login}
+          onClick={register}
         >
           Login
         </LoadingButton>
