@@ -79,7 +79,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="Adresse mail"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -91,7 +91,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Mot de passe"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -128,7 +128,7 @@ export default function LoginForm() {
           loading={isSubmitting}
           onClick={login}
         >
-          Login
+          Se connecter
         </LoadingButton>
         {/* <Link loading={isSubmitting} onClick={handleFormSubmit}>
           Login

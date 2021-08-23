@@ -63,7 +63,7 @@ export default function PersonnelListToolbar({ numSelected, filterName, onFilter
         <SearchStyle
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Recherchez..."
           startAdornment={
             <InputAdornment position="start">
               <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

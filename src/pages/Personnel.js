@@ -37,10 +37,10 @@ import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignRight: false },
-  { id: 'DN', label: 'Prenom', alignRight: false },
+  { id: 'DN', label: 'Prénom', alignRight: false },
   { id: 'SE', label: 'Email', alignRight: false },
   { id: 'DC', label: 'Status', alignRight: false },
-  { id: 'SxE', label: 'Sex', alignRight: false },
+  { id: 'SxE', label: 'Sexe', alignRight: false },
   { id: '' }
 ];
 
