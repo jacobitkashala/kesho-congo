@@ -17,25 +17,33 @@ export default function LoginForm() {
 
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [loggedIn, setLoggedIn] = useState('');
 
   Axios.defaults.withCredentials = true;
   const register = () => {
+    fakeAuth.login(() => {
+      navigate(from);
+    });
+
     Axios.post('http://localhost:8080/user_login', {
       email: emailValue,
       password: passwordValue
     }).then((response) => {
       const { message, token, name } = response.data;
       setLoggedIn(token);
+      console.log('bien');
 
-      if (token) {
-        fakeAuth.login(() => {
-          navigate(from);
-        });
-      } else {
-        return null;
-      }
+      fakeAuth.login(() => {
+        navigate(from);
+      });
+      // if (token) {
+      //   fakeAuth.login(() => {
+      //     navigate(from);
+      //   });
+      // } else {
+      //   return null;
+      // }
     });
   };
 

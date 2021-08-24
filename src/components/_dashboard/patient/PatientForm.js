@@ -82,8 +82,12 @@ export default function PatientForm() {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Sex</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormLabel component="label">Sexe:</FormLabel>
               <FormControlLabel value="F" control={<Radio />} label="F" />
               <FormControlLabel value="M" control={<Radio />} label="M" />
             </Stack>
