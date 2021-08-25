@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import propTypes from 'prop-types';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 // material
 import {
   Box,
@@ -14,7 +14,6 @@ import {
   Radio,
   RadioGroup,
   FormLabel,
-  Button,
   Grid,
   InputLabel,
   Select
@@ -23,130 +22,142 @@ import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
 PatientForm.propTypes = {
-  NextStep: propTypes.func
+  NextStep: propTypes.func,
+  SetDataPatient: propTypes.object
 };
 
-export default function PatientForm({ NextStep }) {
-  const navigate = useNavigate();
-  const [SelectedItem, SetSelectedItem] = useState('provenance');
-  const [Provenance, SetProvenance] = useState('provenance');
+export default function PatientForm({ NextStep, SetDataPatient }) {
+  const [SelectedItem, SetSelectedItem] = useState('');
+  const [Provenance, SetProvenance] = useState('');
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    Pb: Yup.number().required().positive(),
+    Pc: Yup.number().required().positive(),
+    Age: Yup.number().required().positive(),
+    Weight: Yup.number().required().positive(),
+    Taille: Yup.number().required().positive(),
+    Name: Yup.string().min(2).max(50),
+    FirstName: Yup.string().min(2).max(50),
+    LastName: Yup.string().min(2).max(50),
+    Telephone: Yup.string().min(10).max(13),
+    Adresse: Yup.string().min(2).max(50),
+    Sexe: Yup.string().min(1).max(1),
+    Provenace: Yup.string().min(1),
+    ModeArrive: Yup.string().min(1),
+    Avatar: Yup.string().min(1)
   });
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: ''
+      Pb: '',
+      Pc: '',
+      Age: '',
+      Name: '',
+      Sexe: '',
+      Weight: '',
+      Avatar: '',
+      Taille: '',
+      Adresse: '',
+      Telephone: '',
+      FirstName: '',
+      LastName: '',
+      Provenace: Provenance,
+      ModeArrive: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
-      console.log(NextStep);
+    onSubmit: (data) => {
+      SetDataPatient((current) => ({ ...current, data }));
       NextStep();
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-
+  console.log(errors);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Box sx={{ pb: 5 }}>
-          <Typography variant="h5">Identité</Typography>
-        </Box>
-        <Grid container spacing={2}>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            sx={{ justifyContent: 'center' }}
-            spacing={2}
-          >
-            <Stack spacing={2}>
-              <TextField
-                fullWidth
-                autoComplete="Nom"
-                type="text"
-                label="Nom"
-                // {...getFieldProps('tailleMenage')}
-                // error={Boolean(touched.email && errors.email)}
-                // helperText={touched.email && errors.email}
-              />
-              {/* <Typography variant="h9">Postnom</Typography> */}
-              <TextField
-                fullWidth
-                label="postnom"
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
-              />
-              <TextField
-                fullWidth
-                label="Adresse"
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
-              />
-            </Stack>
-            <Stack spacing={2}>
-              {/* <InputLabel>Prénom</InputLabel> */}
-              <TextField
-                fullWidth
-                autoComplete="prenom"
-                type="text"
-                label="prenom"
-                // {...getFieldProps('tailleMenage')}
-                // error={Boolean(touched.email && errors.email)}
-                // helperText={touched.email && errors.email}
-              />
-              <TextField
-                fullWidth
-                label="Post nom"
-                // {...getFieldProps('firstName')}
-                // error={Boolean(touched.firstName && errors.firstName)}
-                // helperText={touched.firstName && errors.firstName}
-              />
-              <TextField
-                fullWidth
-                label="Téléphone"
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
-              />
-            </Stack>
-          </Stack>
-        </Grid>
         <Stack spacing={4}>
+          <Box sx={{ pb: 5 }}>
+            <Typography variant="h5">Identité</Typography>
+          </Box>
+          <Grid container spacing={4}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ justifyContent: 'center' }}
+              spacing={2}
+            >
+              <Stack spacing={2}>
+                <TextField
+                  fullWidth
+                  autoComplete="Nom"
+                  type="text"
+                  label="Nom"
+                  {...getFieldProps('Name')}
+                  error={Boolean(touched.Name && errors.Name)}
+                  helperText={touched.Name && errors.Name}
+                />
+                <TextField
+                  fullWidth
+                  label="postnom"
+                  {...getFieldProps('LastName')}
+                  error={Boolean(touched.LastName && errors.LastName)}
+                  helperText={touched.LastName && errors.LastName}
+                />
+              </Stack>
+              <Stack spacing={2}>
+                <TextField
+                  fullWidth
+                  autoComplete="prenom"
+                  type="text"
+                  label="prenom"
+                  {...getFieldProps('FirstName')}
+                  error={Boolean(touched.FirstName && errors.FirstName)}
+                  helperText={touched.FirstName && errors.FirstName}
+                />
+                <TextField
+                  fullWidth
+                  label="Téléphone"
+                  {...getFieldProps('Telephone')}
+                  error={Boolean(touched.Telephone && errors.Telephone)}
+                  helperText={touched.Telephone && errors.Telephone}
+                />
+              </Stack>
+            </Stack>
+          </Grid>
+
           <RadioGroup
-            name="Parent_en_vie"
-            onChange={() => {
-              console.log('bien');
+            // name="Parent_en_vie"
+            // {...getFieldProps('Sexe')}
+            onChange={(event) => {
+              console.log(event.target.value);
             }}
           >
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               sx={{ display: 'flex', alignItems: 'center' }}
-              spacing={2}
+              spacing={4}
             >
               <FormLabel component="label">Sexe:</FormLabel>
               <FormControlLabel value="F" control={<Radio />} label="F" />
               <FormControlLabel value="M" control={<Radio />} label="M" />
             </Stack>
           </RadioGroup>
+          <TextField
+            fullWidth
+            label="Adresse"
+            {...getFieldProps('Adresse')}
+            error={Boolean(touched.Adresse && errors.Adresse)}
+            helperText={touched.Adresse && errors.Adresse}
+          />
           <InputLabel id="demo-simple-select-outlined-label">Provenance</InputLabel>
           <Select
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
             value={Provenance}
+            // {...getFieldProps('Provenace')}
+            // error={Boolean(touched.Provenace && errors.Provenace)}
             onChange={(event) => {
+              console.log(event.target.value);
               SetProvenance(event.target.value);
             }}
           >
@@ -159,16 +170,17 @@ export default function PatientForm({ NextStep }) {
           <TextField
             fullWidth
             label="Age (en mois)"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
+            {...getFieldProps('Age')}
+            error={Boolean(touched.Age && errors.Age)}
+            helperText={touched.Age && errors.Age}
           />
           <InputLabel id="demo-simple-select-outlined-label">Mode d'arriver</InputLabel>
           <Select
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
-            // label="Mode d'arriver"
             value={SelectedItem}
+            // {...getFieldProps('ModeArrive')}
+            // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
             onChange={(event) => {
               SetSelectedItem(event.target.value);
             }}
@@ -185,40 +197,37 @@ export default function PatientForm({ NextStep }) {
               spacing={2}
             >
               <Stack spacing={2}>
-                {/* <Typography variant="h9">Nom</Typography> */}
                 <TextField
                   fullWidth
                   autoComplete="Taille"
                   type="text"
                   label="Taille(cm)"
-                  // {...getFieldProps('tailleMenage')}
-                  // error={Boolean(touched.email && errors.email)}
-                  // helperText={touched.email && errors.email}
+                  {...getFieldProps('Taille')}
+                  error={Boolean(touched.Taille && errors.Taille)}
+                  helperText={touched.Taille && errors.Taille}
                 />
-                {/* <Typography variant="h9">Postnom</Typography> */}
                 <TextField
                   fullWidth
                   label="PB (cm)"
-                  // {...getFieldProps('lastName')}
-                  // error={Boolean(touched.lastName && errors.lastName)}
-                  // helperText={touched.lastName && errors.lastName}
+                  {...getFieldProps('Pb')}
+                  error={Boolean(touched.Pb && errors.Pb)}
+                  helperText={touched.Pb && errors.Pb}
                 />
-                {/* <Typography variant="h9">Adresse</Typography> */}
               </Stack>
               <Stack spacing={2}>
                 <TextField
                   fullWidth
                   label="Poid (gr)"
-                  // {...getFieldProps('lastName')}
-                  // error={Boolean(touched.lastName && errors.lastName)}
-                  // helperText={touched.lastName && errors.lastName}
+                  {...getFieldProps('Weight')}
+                  error={Boolean(touched.Weight && errors.Weight)}
+                  helperText={touched.Weight && errors.Weight}
                 />
                 <TextField
                   fullWidth
                   label="Pc (cm)"
-                  // {...getFieldProps('firstName')}
-                  // error={Boolean(touched.firstName && errors.firstName)}
-                  // helperText={touched.firstName && errors.firstName}
+                  {...getFieldProps('Pc')}
+                  error={Boolean(touched.Pc && errors.Pc)}
+                  helperText={touched.Pc && errors.Pc}
                 />
               </Stack>
             </Stack>
@@ -226,22 +235,18 @@ export default function PatientForm({ NextStep }) {
           <TextField
             fullWidth
             type="file"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
+            {...getFieldProps('Avatar')}
+            error={Boolean(touched.Avatar && errors.Avatar)}
           />
-          <Button
-            style={{
-              background: '#00AB55',
-              color: '#FFFFFF',
-              marginRight: '1em'
-            }}
+          <LoadingButton
             fullWidth
-            onClick={NextStep}
-            onSubmit={NextStep}
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
           >
             Suivant
-          </Button>
+          </LoadingButton>
         </Stack>
       </Form>
     </FormikProvider>

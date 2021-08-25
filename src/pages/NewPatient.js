@@ -7,6 +7,7 @@ import { fakeAuth } from '../fakeAuth';
 
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
+  const [DataPatient, SetDataPatient] = useState();
   const NextStep = () => {
     console.log(Step);
     SetStep((CurrentState) => CurrentState + 1);
@@ -18,9 +19,10 @@ export default function NewPatient() {
   };
 
   const FormPatientInfo = (key) => {
+    console.log(`key vaut :${key}`, DataPatient);
     switch (key) {
       case 1:
-        return <PatientForm NextStep={NextStep} />;
+        return <PatientForm NextStep={NextStep} SetDataPatient={SetDataPatient} />;
       case 2:
         return <CauseForm PrevStep={PrevStep} NextStep={NextStep} />;
       case 3:

@@ -26,25 +26,25 @@ export default function LoginForm() {
       navigate(from);
     });
 
-    Axios.post('http://localhost:8080/user_login', {
-      email: emailValue,
-      password: passwordValue
-    }).then((response) => {
-      const { message, token, name } = response.data;
-      setLoggedIn(token);
-      console.log('bien');
+    // Axios.post('http://localhost:8080/user_login', {
+    //   email: emailValue,
+    //   password: passwordValue
+    // }).then((response) => {
+    //   const { message, token, name } = response.data;
+    //   setLoggedIn(token);
+    //   console.log('bien');
 
-      fakeAuth.login(() => {
-        navigate(from);
-      });
-      // if (token) {
-      //   fakeAuth.login(() => {
-      //     navigate(from);
-      //   });
-      // } else {
-      //   return null;
-      // }
-    });
+    //   fakeAuth.login(() => {
+    //     navigate(from);
+    //   });
+    // if (token) {
+    //   fakeAuth.login(() => {
+    //     navigate(from);
+    //   });
+    // } else {
+    //   return null;
+    // }
+    // });
   };
 
   // useEffect(() => {
