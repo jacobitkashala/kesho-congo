@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import propTypes from 'prop-types';
 // import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +12,19 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
-  FormLabel
+  FormLabel,
+  Input,
+  Button
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
+FamilleForm.propTypes = {
+  NextStep: propTypes.func,
+  PrevStep: propTypes.func
+};
 
-export default function FamilleForm() {
+export default function FamilleForm({ NextStep, PrevStep }) {
   const navigate = useNavigate();
   // const [showPassword, setShowPassword] = useState(false);
 
@@ -41,6 +48,8 @@ export default function FamilleForm() {
     validationSchema: RegisterSchema,
     onSubmit: () => {
       navigate('/dashboard', { replace: true });
+      console.log(NextStep);
+      NextStep();
     }
   });
 
@@ -50,25 +59,24 @@ export default function FamilleForm() {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h5">Famille</Typography>
+          <Typography variant="h5">Fammille</Typography>
         </Box>
         <Stack spacing={4}>
-          <TextField fullWidth autoComplete="tailleMenage" type="text" label="Taille du ménage" />
           <TextField
             fullWidth
-            autoComplete="Nom complet du tuteur"
+            autoComplete="taille"
             type="text"
-            label="Nom complet du tuteur"
-            {...getFieldProps('tailleMenage')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            label="Taille ménage"
+            // {...getFieldProps('tailleMenage')}
+            // error={Boolean(touched.email && errors.email)}
+            // helperText={touched.email && errors.email}
           />
           <TextField
             fullWidth
-            label="Nombre de femme"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Nom mère"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
           />
           <RadioGroup
             name="Parent_en_vie"
@@ -76,220 +84,268 @@ export default function FamilleForm() {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Vit avec ses deux parent</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
+            <FormLabel component="label">Les deux parent en vie:</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+              <FormControlLabel value="Non" control={<Radio />} label="Non" />
             </Stack>
           </RadioGroup>
           <RadioGroup
-            name="mere_en_vie"
+            name="Parent_en_vie"
             onChange={() => {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Mére en vie</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
-            </Stack>
-          </RadioGroup>
-
-          <RadioGroup
-            name="Pére_en_vie"
-            onChange={() => {
-              console.log('bien');
-            }}
-          >
-            <FormLabel component="label">Pére en vie</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
-            </Stack>
-          </RadioGroup>
-          <RadioGroup
-            name="mere_enceinte"
-            onChange={() => {
-              console.log('bien');
-            }}
-          >
-            <FormLabel component="label">La mere est enceinte</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
+            <FormLabel component="label">Mère enceinte</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormControlLabel value="F" control={<Radio />} label="Oui" />
+              <FormControlLabel value="M" control={<Radio />} label="Non" />
             </Stack>
           </RadioGroup>
           <TextField
             fullWidth
             label="Profession mère"
-            {...getFieldProps('lastName')}
-            error={Boolean(touched.lastName && errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
             label="Profession chef du ménage"
-            {...getFieldProps('lastName')}
-            error={Boolean(touched.lastName && errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="Age mère"
-            {...getFieldProps('lastName')}
-            error={Boolean(touched.lastName && errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
+            label="Age mére"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="Scolarité mère"
-            {...getFieldProps('lastName')}
-            error={Boolean(touched.lastName && errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
-          />
-          <TextField
-            fullWidth
-            label="Age mère"
-            {...getFieldProps('lastName')}
-            error={Boolean(touched.lastName && errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
+            label="Scolarité mére"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <RadioGroup
-            name="mere_en_vie"
+            name="Parent_en_vie"
             onChange={() => {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Contraception mère</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
+            <FormLabel component="label">Contraception mére</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormControlLabel value="F" control={<Radio />} label="Oui" />
+              <FormControlLabel value="M" control={<Radio />} label="Non" />
             </Stack>
           </RadioGroup>
           <RadioGroup
-            name="mere_en_vie"
+            name="Parent_en_vie"
             onChange={() => {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Contraception naturelle</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
+            <FormLabel component="label">COntraception naturelle</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+              <FormControlLabel value="Non" control={<Radio />} label="Non" />
             </Stack>
           </RadioGroup>
           <TextField
             fullWidth
-            label="Niveau socioeconomique"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Niveau socio économique"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="Statut marital"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Status marital"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="Type de statut marital"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Type status marital"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="nombre de femme"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Nombre de femme"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
             label="Tribu"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
             label="Réligion"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <RadioGroup
-            name="mere_en_vie"
+            name="Parent_en_vie"
             onChange={() => {
               console.log('bien');
             }}
           >
-            <FormLabel component="label">Posseder une radio ou télé</FormLabel>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <FormControlLabel value="Nom" control={<Radio />} label="Oui" />
-              <FormControlLabel value="Oui" control={<Radio />} label="Non" />
+            <FormLabel component="label">Posseder une radio ou une télé</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              sx={{ display: 'flex', alignItems: 'center' }}
+              spacing={2}
+            >
+              <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+              <FormControlLabel value="Non" control={<Radio />} label="Nom" />
             </Stack>
           </RadioGroup>
           <TextField
             fullWidth
-            label="Nombre repas"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Nombre de repas par jour"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
-            label="Consommation boisson"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Consommation boisons"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
           />
           <TextField
             fullWidth
             label="atb"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
+          />
+          <TextField
+            fullWidth
+            label="Liste atb"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
+          />
+          <TextField
+            fullWidth
+            label="atb parent"
+            // {...getFieldProps('lastName')}
+            // error={Boolean(touched.lastName && errors.lastName)}
+            // helperText={touched.lastName && errors.lastName}
+          />
+          <TextField
+            fullWidth
+            label="tbc chez"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
+          />
+          <TextField
+            fullWidth
+            label="tbc gueris"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
+          />
+          <TextField
+            fullWidth
+            label="durée de traitement tbc"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
+          />
+          <TextField
+            fullWidth
+            label="Nom tuteur"
             {...getFieldProps('firstName')}
             error={Boolean(touched.firstName && errors.firstName)}
             helperText={touched.firstName && errors.firstName}
           />
           <TextField
             fullWidth
-            label="liste atb"
+            type="date"
             {...getFieldProps('firstName')}
             error={Boolean(touched.firstName && errors.firstName)}
             helperText={touched.firstName && errors.firstName}
           />
           <TextField
             fullWidth
-            label="tbc parents"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Contraception moderne"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
           />
           <TextField
             fullWidth
-            label="duree traitement tbc"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
+            label="Type de contraception"
+            // {...getFieldProps('firstName')}
+            // error={Boolean(touched.firstName && errors.firstName)}
+            // helperText={touched.firstName && errors.firstName}
           />
-          <TextField
-            fullWidth
-            label="tbc declarer finie"
-            {...getFieldProps('firstName')}
-            error={Boolean(touched.firstName && errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
-          />
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
+          <Stack
+            container
+            spacing={3}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'row'
+            }}
           >
-            Enregistrer
-          </LoadingButton>
+            <Button
+              style={{
+                background: '#00AB55',
+                color: '#FFFFFF',
+                marginRight: '1em',
+                marginTop: '0 important'
+              }}
+              fullWidth
+              onClick={PrevStep}
+            >
+              Précédent
+            </Button>
+            <Button
+              style={{
+                background: '#00AB55',
+                color: '#FFFFFF',
+                marginRight: '1em',
+                marginTop: 0
+              }}
+              fullWidth
+              onClick={NextStep}
+            >
+              Enregistrer
+            </Button>
+          </Stack>
         </Stack>
       </Form>
     </FormikProvider>
