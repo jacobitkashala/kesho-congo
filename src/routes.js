@@ -8,6 +8,7 @@ import Patient from './pages/Patient';
 import NotFound from './pages/Page404';
 import Personnel from './pages/Personnel';
 import NewPatient from './pages/NewPatient';
+import Settings from './components/_dashboard/personnel/Setting';
 import DashboardApp from './pages/DashboardApp';
 import NewPersonnel from './pages/NewPersonnel';
 import PageDetail from './pages/detailPatient/Details';
@@ -25,6 +26,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         // { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: 'setting', element: <Settings /> },
         { path: 'user', element: <Patient /> },
         { path: 'app', element: <DashboardApp /> },
         { path: 'personnel', element: <Personnel /> },

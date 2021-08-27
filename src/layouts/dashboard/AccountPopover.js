@@ -22,14 +22,9 @@ const MENU_OPTIONS = [
     linkTo: '/'
   },
   {
-    label: 'Profile',
-    icon: personFill,
-    linkTo: '#'
-  },
-  {
-    label: 'Settings',
+    label: 'Paramètres',
     icon: settings2Fill,
-    linkTo: '#'
+    linkTo: '/dashboard/setting'
   }
 ];
 
@@ -120,7 +115,7 @@ export default function AccountPopover() {
               );
             }}
           >
-            Logout
+            Déconnexion
           </Button>
         </Box>
       </MenuPopover>
