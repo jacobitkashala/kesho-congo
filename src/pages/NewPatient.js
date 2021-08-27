@@ -1,13 +1,23 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Grid, Stack } from '@material-ui/core';
+import { Box, Typography, Grid, Stack, styled } from '@material-ui/core';
 import { useState } from 'react';
 import Page from '../components/Page';
 import { FamilleForm, PatientForm, CauseForm } from '../components/_dashboard/patient';
 import { fakeAuth } from '../fakeAuth';
 
+const ContentStyle = styled('div')(({ theme }) => ({
+  color: '#343F59',
+  maxWidth: 580,
+  display: 'flex',
+  minHeight: '100vh',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0)
+}));
+
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
-  const [DataPatient, SetDataPatient] = useState();
+  const [DataPatient, SetDataPatient] = useState({});
   const NextStep = () => {
     console.log(Step);
     SetStep((CurrentState) => CurrentState + 1);
@@ -24,7 +34,9 @@ export default function NewPatient() {
       case 1:
         return <PatientForm NextStep={NextStep} SetDataPatient={SetDataPatient} />;
       case 2:
-        return <CauseForm PrevStep={PrevStep} NextStep={NextStep} />;
+        return (
+          <CauseForm PrevStep={PrevStep} NextStep={NextStep} SetDataPatient={SetDataPatient} />
+        );
       case 3:
         return <FamilleForm PrevStep={PrevStep} NextStep={NextStep} />;
       default:

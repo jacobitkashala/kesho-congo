@@ -1,307 +1,299 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+
 // material
 import {
-  Box,
+  // Box,
+  MenuItem,
   Stack,
   TextField,
   Typography,
-  // FormControlLabel,
-  // Radio,
-  // RadioGroup,
-  // FormLabel,
-  Button
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  // Grid,
+  InputLabel,
+  Select,
+  styled
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
 CauseForm.propTypes = {
   NextStep: propTypes.func,
-  PrevStep: propTypes.func
+  SetDataPatient: propTypes.func
 };
 
-export default function CauseForm({ NextStep, PrevStep }) {
-  const navigate = useNavigate();
-  // const [showPassword, setShowPassword] = useState(false);
+const Div = styled('div')(({ theme }) => ({
+  // border: '0.5px solid lightgrey',
+  height: '90%',
+  width: '200%',
+  position: 'relative',
+  borderRadius: '15px',
+  paddingTop: '30px',
+  paddingBottom: '80px',
+  left: '50%',
+  transform: 'translate(-50%,0)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around'
+}));
+
+const ContentStyle = styled('div')(({ theme }) => ({
+  color: '#343F59',
+  maxWidth: 580,
+  display: 'flex',
+  minHeight: '100vh',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0)
+}));
+
+const SubDiv = styled('div')(({ theme }) => ({
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between'
+  // border: '0.5px solid lightgrey'
+}));
+const SubDivContenaire = styled('div')(({ theme }) => ({
+  height: '100%',
+  width: '50%',
+  position: 'relative',
+  left: '30%',
+  transform: 'translate(-50%,0)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between'
+}));
+
+export default function CauseForm({ NextStep, SetDataPatient }) {
+  const [SelectedItem, SetSelectedItem] = useState('');
+  const [Provenance, SetProvenance] = useState('');
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    Pb: Yup.number().required().positive(),
+    Pc: Yup.number().required().positive(),
+    Age: Yup.number().required().positive(),
+    Weight: Yup.number().required().positive(),
+    Taille: Yup.number().required().positive(),
+    Name: Yup.string().min(2).max(50),
+    FirstName: Yup.string().min(2).max(50),
+    LastName: Yup.string().min(2).max(50),
+    Telephone: Yup.string().min(10).max(13),
+    Adresse: Yup.string().min(2).max(50),
+    Sexe: Yup.string().min(1).max(1),
+    Provenace: Yup.string().min(1),
+    ModeArrive: Yup.string().min(1),
+    Avatar: Yup.string().min(1)
   });
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: ''
+      Pb: '',
+      Pc: '',
+      Age: '',
+      Name: '',
+      Sexe: '',
+      Weight: '',
+      Avatar: '',
+      Taille: '',
+      Adresse: '',
+      Telephone: '',
+      FirstName: '',
+      LastName: '',
+      Provenace: Provenance,
+      ModeArrive: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
-      console.log(NextStep);
+    onSubmit: (indentity) => {
+      SetDataPatient((current) => ({ ...current, indentity }));
       NextStep();
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Box sx={{ pb: 5 }}>
-          <Typography variant="h5">Cause probable</Typography>
-        </Box>
-        <Stack spacing={4} sx={{ width: 400 }}>
-          <TextField
-            fullWidth
-            autoComplete="Nom"
-            type="text"
-            label="atcd mas"
-            // {...getFieldProps('tailleMenage')}
-            // error={Boolean(touched.email && errors.email)}
-            // helperText={touched.email && errors.email}
-          />
-          <TextField
-            fullWidth
-            label="mas fraite"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Terme grossesse"
-            // {...getFieldProps('lastName')}
-            // error={Boolean(touched.lastName && errors.lastName)}
-            // helperText={touched.lastName && errors.lastName}
-          />
-          <TextField
-            fullWidth
-            label="sejour neonat"
-            // {...getFieldProps('lastName')}
-            // error={Boolean(touched.lastName && errors.lastName)}
-            // helperText={touched.lastName && errors.lastName}
-          />
-          <TextField
-            fullWidth
-            label="eig"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Lieu accouchement"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="asphixie perinatal"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="dpm"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="calendrier vaccinal"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Rang fratie"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Taille fratie"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="atcd rougeole fratie"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="vaccination rougeole"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="tbc"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Atcd du tbc dans fratie"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Hospitalisation recente"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="diagnostique hospitalisation"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="cocktail atb"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="duree prise atb"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Fin allaitement"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Mois fin allaitement"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Diversification aliment"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Constitution aliment"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Cause dpm"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Vaccin non recu"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Produit plante"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Durée produit plante"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="Allaitement 6 mois"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            fullWidth
-            label="age fin allaitement"
-            // {...getFieldProps('firstName')}
-            // error={Boolean(touched.firstName && errors.firstName)}
-            // helperText={touched.firstName && errors.firstName}
-          />
-          <Stack
-            container
-            spacing={3}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}
+        <Div>
+          <Typography variant="h5">Cause malnutrition</Typography>
+          <SubDiv>
+            <SubDivContenaire>
+              <Stack spacing={3}>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  autoComplete="nbr"
+                  type="text"
+                  label="nombre de chute"
+                  {...getFieldProps('FistName')}
+                  error={Boolean(touched.FirstName && errors.FirstName)}
+                  helperText={touched.FirstName && errors.FirstName}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  type="text"
+                  label="Poids de naissance(gr)"
+                  {...getFieldProps('Name')}
+                  error={Boolean(touched.Name && errors.Name)}
+                  helperText={touched.Name && errors.Name}
+                />
+                <RadioGroup
+                  // name="Parent_en_vie"
+                  // {...getFieldProps('Sexe')}
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                  }}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">MATCD de MAS:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <RadioGroup
+                  // name="Parent_en_vie"
+                  // {...getFieldProps('Sexe')}
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                  }}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">MAS dans la fratrie:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Terme de la grossesse
+                </InputLabel>
+                <Select
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="Mode d'arriver"
+                  // {...getFieldProps('ModeArrive')}
+                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
+                  onChange={(event) => {
+                    SetSelectedItem(event.target.value);
+                  }}
+                  native
+                  // inputProps={{
+                  //   name: 'age',
+                  //   id: 'outlined-age-native-simple'
+                  // }}
+                >
+                  Mode d'arriver
+                  <option defaultValue value="Prématuré ">
+                    Prématuré
+                  </option>
+                  <option value="A terme">A terme</option>
+                  {/* <MenuItem value="De la maison">De la maison</MenuItem>
+                  <MenuItem value="UNT">UNT</MenuItem>
+                  <MenuItem value="Autres">Autres</MenuItem> */}
+                </Select>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="Si autre veuillez préciser"
+                  error={Boolean(touched.Avatar && errors.Avatar)}
+                />
+              </Stack>
+            </SubDivContenaire>
+            <SubDivContenaire>
+              <Stack spacing={3}>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Age (en mois)"
+                  {...getFieldProps('Age')}
+                  error={Boolean(touched.Age && errors.Age)}
+                  helperText={touched.Age && errors.Age}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Poid (gr)"
+                  {...getFieldProps('Weight')}
+                  error={Boolean(touched.Weight && errors.Weight)}
+                  helperText={touched.Weight && errors.Weight}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Pc (cm)"
+                  {...getFieldProps('Pc')}
+                  error={Boolean(touched.Pc && errors.Pc)}
+                  helperText={touched.Pc && errors.Pc}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  autoComplete="Taille"
+                  type="text"
+                  label="Taille(cm)"
+                  {...getFieldProps('Taille')}
+                  error={Boolean(touched.Taille && errors.Taille)}
+                  helperText={touched.Taille && errors.Taille}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="PB (cm)"
+                  {...getFieldProps('Pb')}
+                  error={Boolean(touched.Pb && errors.Pb)}
+                  helperText={touched.Pb && errors.Pb}
+                />
+                <InputLabel id="demo-simple-select-outlined-label">Provenance</InputLabel>
+                <Select
+                  sx={{ width: '80%', padding: '2px' }}
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={Provenance}
+                  // {...getFieldProps('Provenace')}
+                  // error={Boolean(touched.Provenace && errors.Provenace)}
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    SetProvenance(event.target.value);
+                  }}
+                >
+                  <MenuItem value="kadutu">Kadutu</MenuItem>
+                  <MenuItem value="Bagira">Bagira</MenuItem>
+                  <MenuItem value="Ibabda">Ibanda</MenuItem>
+                  <MenuItem value="Hors ville">Hors ville</MenuItem>
+                  <MenuItem value="Autres">Autres</MenuItem>
+                </Select>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="Si autre veuillez préciser"
+                  error={Boolean(touched.Avatar && errors.Avatar)}
+                />
+              </Stack>
+            </SubDivContenaire>
+          </SubDiv>
+          <SubDiv />
+          <LoadingButton
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            sx={{ width: 200, margin: 'auto', marginTop: '20px' }}
           >
-            <Button
-              style={{
-                background: '#00AB55',
-                color: '#FFFFFF',
-                marginRight: '1em',
-                marginTop: '0 important'
-              }}
-              fullWidth
-              onClick={PrevStep}
-            >
-              Précédent
-            </Button>
-            <Button
-              style={{
-                background: '#00AB55',
-                color: '#FFFFFF',
-                marginRight: '1em',
-                marginTop: 0
-              }}
-              fullWidth
-              onClick={NextStep}
-              onSubmit={NextStep}
-            >
-              suivant
-            </Button>
-          </Stack>
-        </Stack>
+            Suivant
+          </LoadingButton>
+        </Div>
       </Form>
     </FormikProvider>
   );
