@@ -76,6 +76,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     FirstName: Yup.string().min(2).max(50).required(),
     Adresse: Yup.string().min(2).max(50).required(),
     ExplicationAutre: Yup.string(),
+    ModeArrive: Yup.string().required(),
     ExplicationProvenance: Yup.string()
   });
 
@@ -106,8 +107,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  // console.log(values);
   console.log(IdentiteData);
+  console.log('ddd', values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -159,12 +160,16 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   {...getFieldProps('Adresse')}
                   error={Boolean(touched.Adresse && errors.Adresse)}
                 />
-                <RadioGroup {...getFieldProps('Sexe')} value={values.Sexe}>
+
+                <RadioGroup
+                  {...getFieldProps('Sexe')}
+                  error={Boolean(touched.Sexe && errors.Sexe)}
+                  value={values.Sexe}
+                >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
-                    error={Boolean(touched.Sexe && errors.Sexe)}
                   >
                     <FormLabel component="label">Sexe:</FormLabel>
                     <FormControlLabel value="F" control={<Radio />} label="F" />
@@ -238,9 +243,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 />
                 <InputLabel>Provenance</InputLabel>
                 <Select
+                  native
                   sx={{ width: '80%', padding: '2px' }}
                   value={values.Provenace}
-                  native
                   {...getFieldProps('Provenance')}
                   error={Boolean(touched.Provenance && errors.Provenace)}
                 >

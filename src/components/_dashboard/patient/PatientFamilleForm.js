@@ -28,7 +28,7 @@ CauseForm.propTypes = {
   PrevStep: propTypes.func,
   SetDataPatient: propTypes.func
 };
-const Div = styled('div')(({ theme }) => ({
+const Div = styled('div')(() => ({
   height: '90%',
   width: '150%',
   position: 'relative',
@@ -42,23 +42,12 @@ const Div = styled('div')(({ theme }) => ({
   justifyContent: 'space-around'
 }));
 
-// const ContentStyle = styled('div')(({ theme }) => ({
-//   color: '#343F59',
-//   maxWidth: 580,
-//   display: 'flex',
-//   minHeight: '100vh',
-//   flexDirection: 'column',
-//   justifyContent: 'center',
-//   padding: theme.spacing(12, 0)
-// }));
-
 const SubDiv = styled('div')(() => ({
   height: '100%',
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between'
-  // border: '0.5px solid lightgrey'
 }));
 const SubDivContenaire = styled('div')(() => ({
   width: '50%',
@@ -70,7 +59,7 @@ const SubDivContenaire = styled('div')(() => ({
   justifyContent: 'space-between'
 }));
 export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
-  const [SelectedItem, SetSelectedItem] = useState('');
+  const [SetSelectedItem] = useState('');
 
   const RegisterSchema = Yup.object().shape({
     PoidsNaissance: Yup.number().required().positive()
@@ -93,7 +82,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
             Famille
           </Typography>
           <SubDiv direction={{ xs: 'column', sm: 'row' }}>
@@ -102,7 +91,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Nom de tuteur"
-                  // {...getFieldProps('Sexe')}
+                  {...getFieldProps('Sexe')}
                 />
                 <RadioGroup
                   // name="Parent_en_vie"
@@ -117,7 +106,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Vit avec ces deux parents:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
@@ -140,7 +129,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Mère enceinte :</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
