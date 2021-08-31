@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ import {
 import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
-CauseForm.propTypes = {
+FamilleForm.propTypes = {
   NextStep: propTypes.func,
   PrevStep: propTypes.func,
   SetDataPatient: propTypes.func
@@ -58,25 +58,57 @@ const SubDivContenaire = styled('div')(() => ({
   flexDirection: 'column',
   justifyContent: 'space-between'
 }));
-export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
-  const [SetSelectedItem] = useState('');
-
+export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
-    PoidsNaissance: Yup.number().required().positive()
+    NomTuteure: Yup.string().required(),
+    DateNaissanceMere: Yup.date().required(),
+    DateNaissanceTutuer: Yup.date().required(),
+    MereEnceinte: Yup.string().required(),
+    PossederTeleRadio: Yup.string().required(),
+    ProffessionChefMenage: Yup.string().required(),
+    ScolariteMere: Yup.string().required(),
+    PereMariage: Yup.string().required(),
+    NbreEnfant: Yup.number().required(),
+    NiveauSocioEconomique: Yup.string(),
+    StatutMarital: Yup.string().required(),
+    VivreAvecParent: Yup.string().required(),
+    Tribut: Yup.string().required(),
+    Religion: Yup.string().required(),
+    NbrRepasJour: Yup.number().positive(),
+    // PerentEnVie: Yup.string().required(),
+    PereEnvie: Yup.string().required(),
+    TailleMenage: Yup.number().required()
   });
 
   const formik = useFormik({
     initialValues: {
-      PoidsNaissance: ''
+      NomTuteure: '',
+      DateNaissanceMere: '',
+      DateNaissanceTutuer: '',
+      MereEnceinte: '',
+      PossederTeleRadio: '',
+      ProffessionChefMenage: '',
+      ScolariteMere: '',
+      PereMariage: '',
+      NbreEnfant: '',
+      NiveauSocioEconomique: '',
+      StatutMarital: '',
+      Tribut: '',
+      Religion: '',
+      NbrRepasJour: '',
+      // PerentEnVie: '',
+      VivreAvecParent: '',
+      PereEnvie: '',
+      TailleMenage: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (CauseMalnutrition) => {
-      SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
+    onSubmit: (FamalyData) => {
+      SetDataPatient((current) => ({ ...current, FamalyData }));
       NextStep();
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   console.log(errors);
   return (
     <FormikProvider value={formik}>
@@ -91,14 +123,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Nom de tuteur"
-                  {...getFieldProps('Sexe')}
+                  value={values.NomTuteure}
+                  {...getFieldProps('NomTuteure')}
                 />
                 <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
+                  {...getFieldProps('VivreAvecParent')}
+                  error={Boolean(touched.VivreAvecParent && errors.VivreAvecParent)}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -114,14 +144,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="date"
-                  // {...getFieldProps('Sexe')}
+                  {...getFieldProps('DateNaissanceTutuer')}
+                  error={Boolean(touched.DateNaissanceTutuer && errors.DateNaissanceTutuer)}
                 />
                 <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
+                  {...getFieldProps('MereEnceinte')}
+                  error={Boolean(touched.MereEnceinte && errors.MereEnceinte)}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -134,11 +162,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </RadioGroup>
                 <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
+                  {...getFieldProps('PereEnvie')}
+                  error={Boolean(touched.PereEnvie && errors.PereEnvie)}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -146,16 +171,59 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Père en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
+                <InputLabel>Date de naissance mère</InputLabel>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  type="date"
+                  {...getFieldProps('DateNaissanceMere')}
+                  error={Boolean(touched.DateNaissanceMere && errors.DateNaissanceMere)}
+                />
                 <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
+                  {...getFieldProps('PossederTeleRadio')}
+                  error={Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">
+                      Possession radio et/ou poste téléviseur:
+                    </FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <InputLabel>Profession chef ménage</InputLabel>
+                <Select
+                  native
+                  sx={{ width: '80%', padding: '2px' }}
+                  {...getFieldProps('ProffessionChefMenage')}
+                  error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
+                >
+                  <option value="Salariée formelle,infirmier,Ong,enseignante">
+                    Salariée formelle (infirmière, enseignante, ONG.)
+                  </option>
+                  <option value="Travail à temps partiel (maçon, menuisier)">
+                    Travail à temps partiel (maçon, menuisier)
+                  </option>
+                  <option value="Business (exploitant minier, petit commerce, etc.) ">
+                    Business (exploitant minier, petit commerce, etc.)
+                  </option>
+                  <option value="Militaire/Policier">Militaire/Policier</option>
+                  <option value="Sans profession (sans emploi)">
+                    Sans profession (sans emploi)
+                  </option>
+                  <option value="Cultivatrice">Cultivatrice</option>
+                </Select>
+
+                <RadioGroup
+                  {...getFieldProps('MereEnvie')}
+                  error={Boolean(touched.MereEnvie && errors.MereEnvie)}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -163,86 +231,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Mère en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
-                  </Stack>
-                  <InputLabel>Date de naissance mère</InputLabel>
-                  <TextField
-                    sx={{ width: '80%', padding: '2px' }}
-                    type="date"
-                    // {...getFieldProps('Sexe')}
-                  />
-                  <RadioGroup
-                    // name="Parent_en_vie"
-                    // {...getFieldProps('Sexe')}
-                    onChange={(event) => {
-                      console.log(event.target.value);
-                    }}
-                  >
-                    <Stack
-                      direction={{ xs: 'column', sm: 'row' }}
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      spacing={1}
-                    >
-                      <FormLabel component="label">
-                        Possession radio et/ou poste téléviseur:
-                      </FormLabel>
-                      <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
-                      <FormControlLabel value="Non" control={<Radio />} label="Non" />
-                    </Stack>
-                  </RadioGroup>
-                  <InputLabel>Profession chef ménage</InputLabel>
-                  <Select
-                    sx={{ width: '80%', padding: '2px' }}
-                    // {...getSelection('ModeArrive')}
-                    // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                    onChange={(event) => {
-                      SetSelectedItem(event.target.value);
-                    }}
-                    native
-                  >
-                    <option value="Salariée formelle (infirmière, enseignante, ONG.)">
-                      Salariée formelle (infirmière, enseignante, ONG.)
-                    </option>
-                    <option value="Travail à temps partiel (maçon, menuisier)">
-                      Travail à temps partiel (maçon, menuisier)
-                    </option>
-                    <option value="Business (exploitant minier, petit commerce, etc.) ">
-                      Business (exploitant minier, petit commerce, etc.)
-                    </option>
-                    <option value="Militaire/Policier">Militaire/Policier</option>
-                    <option value="Sans profession (sans emploi)">
-                      Sans profession (sans emploi)
-                    </option>
-                    <option value="Cultivatrice">Cultivatrice</option>
-                  </Select>
-                </RadioGroup>
-                <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
-                >
-                  <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                    spacing={1}
-                  >
-                    <FormLabel component="label">Mère en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio checked />} label="Oui" />
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <InputLabel>Scolarité mère</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  {...getSelection('ModeArrive')}
-                  error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
                   native
+                  selected={values.ScolariteMere}
+                  {...getFieldProps('ScolariteMere')}
+                  error={Boolean(touched.ScolariteMere && errors.ScolariteMere)}
                 >
                   <option value="Analphabète">Analphabète</option>
                   <option value="Primaire">Primaire</option>
@@ -256,32 +255,30 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Taille ménage"
-                  // {...getFieldProps('Sexe')}
+                  value={values.TailleMenage}
+                  {...getFieldProps('TailleMenage')}
+                  error={Boolean(touched.TailleMenage && errors.TailleMenage)}
                 />
                 <InputLabel>Statut marital</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  // {...getSelection('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
                   native
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
+                  selected={values.StatutMarital}
+                  {...getFieldProps('StatutMarital')}
+                  error={Boolean(touched.StatutMarital && errors.StatutMarital)}
                 >
                   <option value="Prématuré ">Jamais mariée</option>
-                  <option value="A terme">Mariée</option>
-                  <option value="A terme">Separée ou divorcée</option>
-                  <option value="A terme">Veuve</option>
+                  <option value="Mariée">Mariée</option>
+                  <option value="Separée ou divorcée">Separée ou divorcée</option>
+                  <option value="Veuve">Veuve</option>
                 </Select>
                 <InputLabel> Si mariée</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  // {...getSelection('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
                   native
+                  Value={values.PereMariage}
+                  {...getFieldProps('PereMariage')}
+                  error={Boolean(touched.PereMariage && errors.PereMariage)}
                 >
                   <option value="Norrmal">Polygame</option>
                   <option value="Anormal">Monogame</option>
@@ -290,18 +287,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   label="Nombre enfant"
-                  // {...getFieldProps('Weight')}
-                  // error={Boolean(touched.Weight && errors.Weight)}
+                  selected={values.NbreEnfant}
+                  {...getFieldProps('NbreEnfant')}
+                  error={Boolean(touched.NbreEnfant && errors.NbreEnfant)}
                 />
                 <InputLabel>Tribu</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  // {...getSelection('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
                   native
+                  selected={values.Tribut}
+                  {...getFieldProps('Tribut')}
+                  error={Boolean(touched.Tribut && errors.Tribut)}
                 >
                   <option value="Norrmal">Shi</option>
                   <option value="Anormal">Rega</option>
@@ -312,11 +308,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
-                  // {...getSelection('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
+                  selected={values.Religion}
+                  {...getFieldProps('Religion')}
+                  error={Boolean(touched.Religion && errors.Religion)}
                 >
                   <option value="Norrmal">Catholique</option>
                   <option value="Anormal">Protestant</option>
@@ -326,26 +320,24 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <InputLabel>Niveau socio-économique</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  // {...getSelection('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
                   native
+                  // selected={values.NiveauSocioEconomique}
+                  {...getFieldProps('NiveauSocioEconomique')}
+                  error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
                 >
                   <option value="Analphabète">Bas</option>
                   <option value="Primaire">Moyen</option>
                   <option value="Universitaire">Bon</option>
-                  <option value="Secondaire">Inferieur a 1 dollar</option>
-                  <option value="Secondaire">Superieur a 5dollarsr</option>
-                  <option value="Secondaire">5dollars</option>
+                  <option value="Inferieur à 1$">Inferieur a 1$ </option>
+                  <option value="Superieur">Supérieur a 5$ </option>
+                  <option value="Secondaire">5 dollars</option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
                   label="Nombre de repas par jour"
-                  // {...getFieldProps('Weight')}
-                  // error={Boolean(touched.Weight && errors.Weight)}
+                  value={values.NbrRepasJour}
+                  {...getFieldProps('NbreRepasJour')}
+                  error={Boolean(touched.NbrRepasJour && errors.NbrRepasJour)}
                 />
               </Stack>
             </SubDivContenaire>
@@ -368,10 +360,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
             Précédant
           </LoadingButton>
           <LoadingButton
-            size="large"
             type="submit"
             variant="contained"
             loading={isSubmitting}
+            size="large"
             sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >
             Suivant
