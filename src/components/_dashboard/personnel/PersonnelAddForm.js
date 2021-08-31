@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
   Radio,
   Stack,
@@ -30,34 +32,31 @@ export default function PersonnelAddFrom() {
   const navigate = useNavigate();
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    firstName: Yup.string().min(1, 'Trop court!').max(50, 'Trop long!').required('Prénom requis'),
+    lastName: Yup.string().min(1, 'Trop court!').max(50, 'Trop long!').required('Nom requis'),
+    middleName: Yup.string()
+      .min(1, 'Trop court!')
+      .max(50, 'Trop long!')
+      .required('Post-nom requis'),
+    status: Yup.string().required('Post-nom requis'),
+    email: Yup.string()
+      .email('Adresse mail doit être au format valide')
+      .required('Adresse mail requis'),
+    password: Yup.string().required('Mot de passe requis'),
+    confirmPassword: Yup.string().required('Confirmer le mot de passe')
   });
 
   const formik = useFormik({
     initialValues: {
-      Name: '',
       firstName: '',
       lastName: '',
+      middleName: '',
       email: '',
       password: '',
-      confirmpassword: ''
+      confirmPassword: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      let NewPersonne;
-      NewPersonne.name = 'kkk';
-      NewPersonne.prenom = 'newperson';
-      NewPersonne.email = 'gmail.com';
-      NewPersonne.status = 'medecin';
-      NewPersonne.sex = 'F';
-
-      data.push(NewPersonne);
       navigate('/dashboard/personnel', { replace: true });
     }
   });
@@ -71,10 +70,10 @@ export default function PersonnelAddFrom() {
           <Stack spacing={3}>
             <TextField
               fullWidth
-              label="Prenom"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              label="Prénom"
+              {...getFieldProps('firstName')}
+              error={Boolean(touched.firstName && errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
             />
 
             <TextField
@@ -87,37 +86,47 @@ export default function PersonnelAddFrom() {
 
             <TextField
               fullWidth
-              label="Post nom"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              label="Post-nom"
+              {...getFieldProps('middleName')}
+              error={Boolean(touched.middleName && errors.middleName)}
+              helperText={touched.middleName && errors.middleName}
             />
             <RadioGroup
-              name="gender1"
+              name="Sexe"
               onChange={() => {
                 console.log('bien');
               }}
             >
               <Stack direction={{ xs: 'column', sm: 'row', alignItems: 'center' }} spacing={2}>
-                <FormLabel component="label">Sex:</FormLabel>
+                <FormLabel component="label">Sexe:</FormLabel>
                 <FormControlLabel value="F" control={<Radio />} label="F" />
                 <FormControlLabel value="M" control={<Radio />} label="M" />
               </Stack>
             </RadioGroup>
 
-            <TextField
+            {/* <TextField
               fullWidth
-              autoComplete="username"
+              autoComplete="Statut"
               type="text"
               label="Statut "
               {...getFieldProps('email')}
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
-            />
+              error={Boolean(touched.status && errors.status)}
+              helperText={touched.status && errors.status}
+            /> */}
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // value={age}
+              // onChange={handleChange}
+            >
+              <MenuItem value={10}>Médecin</MenuItem>
+              <MenuItem value={20}>Infirmier</MenuItem>
+              <MenuItem value={30}>Nutritionniste</MenuItem>
+            </Select>
 
             <TextField
               fullWidth
-              autoComplete="username"
+              autoComplete="Email"
               type="email"
               label="Email "
               {...getFieldProps('email')}
@@ -128,8 +137,8 @@ export default function PersonnelAddFrom() {
               fullWidth
               label="Mot de passe"
               {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              error={Boolean(touched.password && errors.password)}
+              helperText={touched.password && errors.password}
             />
 
             <LoadingButton

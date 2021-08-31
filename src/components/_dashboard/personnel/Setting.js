@@ -79,42 +79,43 @@ export default function PersonnelAddFrom() {
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+      .min(2, 'Trop court')
+      .max(50, 'Trop long')
+      .required('Le prénom est requis'),
+    lastName: Yup.string()
+      .min(2, 'Trop court')
+      .max(50, 'Trop long')
+      .required('Le prénom est requis'),
+    middleName: Yup.string()
+      .min(2, 'Trop court')
+      .max(50, 'Trop long')
+      .required('Le post-nom est requis'),
+    password: Yup.string()
+      .required('Mot de passe requis')
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        'Doit containir 8 caractères, une majuscule, une minuscule, un nombre et un caractère special'
+      )
   });
 
   const formik = useFormik({
     initialValues: {
-      Name: '',
       firstName: '',
       lastName: '',
-      email: '',
-      password: '',
-      confirmpassword: ''
+      middleName: '',
+      password: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      let NewPersonne;
-      NewPersonne.name = 'kkk';
-      NewPersonne.prenom = 'newperson';
-      NewPersonne.email = 'gmail.com';
-      NewPersonne.status = 'medecin';
-      NewPersonne.sex = 'F';
-
-      data.push(NewPersonne);
-      navigate('/dashboard/personnel', { replace: true });
+      navigate('/dashboard/user', { replace: true });
     }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // };
   const location = useLocation();
 
   return fakeAuth.isAuthenticated ? (
@@ -130,9 +131,9 @@ export default function PersonnelAddFrom() {
                 fullWidth
                 label="Prénom"
                 disabled={fName}
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
+                {...getFieldProps('firstName')}
+                error={Boolean(touched.firstName && errors.firstName)}
+                helperText={touched.firstName && errors.firstName}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="right" onClick={handleFName}>
@@ -146,9 +147,9 @@ export default function PersonnelAddFrom() {
                 fullWidth
                 label="Nom"
                 disabled={lName}
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
+                {...getFieldProps('lastName')}
+                error={Boolean(touched.lastName && errors.lastName)}
+                helperText={touched.lastName && errors.lastName}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="right" onClick={handleLName}>
@@ -162,9 +163,9 @@ export default function PersonnelAddFrom() {
                 fullWidth
                 label="Post nom"
                 disabled={middleInitial}
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
+                {...getFieldProps('middleName')}
+                error={Boolean(touched.middleName && errors.middleName)}
+                helperText={touched.middleName && errors.middleName}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" onClick={handleMiddleInitial}>
@@ -177,9 +178,9 @@ export default function PersonnelAddFrom() {
                 fullWidth
                 label="Mot de passe"
                 disabled={pword}
-                // {...getFieldProps('lastName')}
-                // error={Boolean(touched.lastName && errors.lastName)}
-                // helperText={touched.lastName && errors.lastName}
+                {...getFieldProps('password')}
+                error={Boolean(touched.password && errors.password)}
+                helperText={touched.password && errors.password}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" onClick={handlePword}>

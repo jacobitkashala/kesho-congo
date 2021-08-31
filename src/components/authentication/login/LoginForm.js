@@ -11,57 +11,61 @@ import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui
 import { LoadingButton } from '@material-ui/lab';
 // import * as EmailValidator from 'email-validator';
 // import * as yup from 'yup';
+import { register } from 'numeral';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
   // ----------------------------------------------------------------------
 
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
+  const [registered, setRegistered] = useState(false);
+  const [error, setError] = useState(false);
   const [username, setUsername] = useState('');
   const [loggedIn, setLoggedIn] = useState('');
 
   Axios.defaults.withCredentials = true;
-  const register = () => {
-    Axios.post('http://localhost:8080/user_login', {
-      email: emailValue,
-      password: passwordValue
-    }).then((response) => {
-      const { message, token, name } = response.data;
-      setLoggedIn(token);
+  // const register = () => {
+  //   Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
+  //     email: emailValue,
+  //     password: passwordValue
+  //   }).then((response) => {
+  //     const { message, token, name } = response.data;
+  //     setLoggedIn(token);
 
-      if (token) {
-        fakeAuth.login(() => {
-          navigate(from);
-        });
-      } else {
-        return null;
-      }
-    });
-  };
+  //     if (token) {
+  //       fakeAuth.login(() => {
+  //         navigate(from);
+  //       });
+  //     } else {
+  //       return null;
+  //     }
+  //   });
+  // };
 
   // useEffect(() => {
   //   fakeAuth.isAuthenticated = loggedIn;
   // }, []);
 
-  const handleEmailChange = (e) => {
-    setEmailValue(e.target.value);
-  };
+  // const handleEmailChange = (e) => {
+  //   setEmailValue(e.target.value);
+  // };
 
-  const handlePasswordChange = (e) => {
-    setPasswordValue(e.target.value);
-  };
+  // const handlePasswordChange = (e) => {
+  //   setPasswordValue(e.target.value);
+  // };
 
   const navigate = useNavigate();
 
   const location = useLocation();
+  let status;
 
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Votre mail doit être valide').required('Email requis'),
-    password: Yup.string().required('Mot de passe requis')
+    password: Yup.string()
+      .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+      .required('Mot de passe requis')
   });
   // const validationSchema = yup.object({
   //   email: yup
@@ -93,20 +97,42 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: ({ email, password }) => {
+      Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
+        email,
+        password
+      })
+        .then((response) => {
+          const { message, token, name } = response.data;
+          // alert(message);
+          fakeAuth.login(() => {
+            navigate(from);
+            navigate('/dashboard/app', { replace: true });
+          });
+        })
+        .catch((err) => {
+          setRegistered(false);
+          setError(!error);
+          formik.isSubmitting = false;
+          // alert(err);
+          // throw err;
+          //
+          //
+        });
+      // navigate('/dashboard/app', { replace: false });
     }
   });
   // , values
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
-
+  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { isSubmitting } = formik;
+  // console.log(formik.values.password);
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
 
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <Form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
         <Stack spacing={3}>
           <TextField
             fullWidth
@@ -116,8 +142,8 @@ export default function LoginForm() {
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
-            onChange={handleEmailChange}
-            value={emailValue}
+            onChange={formik.handleChange}
+            value={formik.values.email}
           />
 
           <TextField
@@ -137,8 +163,8 @@ export default function LoginForm() {
             }}
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
-            onChange={handlePasswordChange}
-            value={passwordValue}
+            onChange={formik.handleChange}
+            value={formik.values.password}
           />
         </Stack>
 
@@ -152,6 +178,8 @@ export default function LoginForm() {
             mot de passe oublié
           </Link>
         </Stack>
+
+        {registered ? <span>Adresse mail ou mot de passe incorrecte</span> : ''}
         <br />
         <br />
 
@@ -161,7 +189,6 @@ export default function LoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          onClick={register}
         >
           Se connecter
         </LoadingButton>
