@@ -6,8 +6,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
 import {
-  // Box,
-  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -19,6 +17,7 @@ import {
   InputLabel,
   Select,
   styled
+  // getCheckboxUtilityClass
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
@@ -28,7 +27,7 @@ PatientForm.propTypes = {
   SetDataPatient: propTypes.func
 };
 
-const Div = styled('div')(({ theme }) => ({
+const Div = styled('div')(() => ({
   // border: '0.5px solid lightgrey',
   height: '90%',
   width: '200%',
@@ -43,25 +42,14 @@ const Div = styled('div')(({ theme }) => ({
   justifyContent: 'space-around'
 }));
 
-const ContentStyle = styled('div')(({ theme }) => ({
-  color: '#343F59',
-  maxWidth: 580,
-  display: 'flex',
-  minHeight: '100vh',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: theme.spacing(12, 0)
-}));
-
-const SubDiv = styled('div')(({ theme }) => ({
+const SubDiv = styled('div')(() => ({
   height: '100%',
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between'
-  // border: '0.5px solid lightgrey'
 }));
-const SubDivContenaire = styled('div')(({ theme }) => ({
+const SubDivContenaire = styled('div')(() => ({
   height: '100%',
   width: '50%',
   position: 'relative',
@@ -73,24 +61,22 @@ const SubDivContenaire = styled('div')(({ theme }) => ({
 }));
 
 export default function PatientForm({ NextStep, SetDataPatient }) {
-  const [SelectedItem, SetSelectedItem] = useState('');
-  const [Provenance, SetProvenance] = useState('');
-
+  const [IdentiteData, SetIdentiteData] = useState({});
   const RegisterSchema = Yup.object().shape({
     Pb: Yup.number().required().positive(),
     Pc: Yup.number().required().positive(),
     Age: Yup.number().required().positive(),
+    Telephone: Yup.string().min(10).max(13),
+    Provenance: Yup.string().min(1).required(),
     Weight: Yup.number().required().positive(),
     Taille: Yup.number().required().positive(),
-    Name: Yup.string().min(2).max(50),
-    FirstName: Yup.string().min(2).max(50),
-    LastName: Yup.string().min(2).max(50),
-    Telephone: Yup.string().min(10).max(13),
-    Adresse: Yup.string().min(2).max(50),
-    Sexe: Yup.string().min(1).max(1),
-    Provenace: Yup.string().min(1),
-    ModeArrive: Yup.string().min(1),
-    Avatar: Yup.string().min(1)
+    Sexe: Yup.string().min(1).max(1).required(),
+    Name: Yup.string().min(2).max(50).required(),
+    LastName: Yup.string().min(2).max(50).required(),
+    FirstName: Yup.string().min(2).max(50).required(),
+    Adresse: Yup.string().min(2).max(50).required(),
+    ExplicationAutre: Yup.string(),
+    ExplicationProvenance: Yup.string()
   });
 
   const formik = useFormik({
@@ -101,28 +87,34 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       Name: '',
       Sexe: '',
       Weight: '',
-      Avatar: '',
       Taille: '',
       Adresse: '',
       Telephone: '',
       FirstName: '',
       LastName: '',
-      Provenace: Provenance,
-      ModeArrive: ''
+      Provenance: '',
+      ModeArrive: '',
+      ExplicationAutre: '',
+      ExplicationProvenance: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
       SetDataPatient((current) => ({ ...current, indentity }));
+      SetIdentiteData(indentity);
       NextStep();
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  // console.log(values);
+  console.log(IdentiteData);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          <Typography variant="h5">Identité</Typography>
+          <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
+            Identité
+          </Typography>
           <SubDiv>
             <SubDivContenaire>
               <Stack spacing={3}>
@@ -132,9 +124,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="prenom"
                   type="text"
                   label="Prénom"
-                  {...getFieldProps('FistName')}
+                  value={values.FirstName}
+                  {...getFieldProps('FirstName')}
                   error={Boolean(touched.FirstName && errors.FirstName)}
-                  helperText={touched.FirstName && errors.FirstName}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -142,9 +134,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="name"
                   type="text"
                   label="Nom"
+                  value={values.Name}
+                  // value={`${IdentiteData}?IdentiteData.Name`}
                   {...getFieldProps('Name')}
                   error={Boolean(touched.Name && errors.Name)}
-                  helperText={touched.Name && errors.Name}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -152,64 +145,51 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="lastname"
                   type="text"
                   label="Postnom"
+                  value={values.LastName}
+                  // value={`${IdentiteData}?IdentiteData.LastName`}
                   {...getFieldProps('LastName')}
                   error={Boolean(touched.LastName && errors.LastName)}
-                  helperText={touched.LastName && errors.LastName}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   label="Adresse"
+                  value={values.Adresse}
+                  // value={`${IdentiteData}?IdentiteData.Adresse`}
                   {...getFieldProps('Adresse')}
                   error={Boolean(touched.Adresse && errors.Adresse)}
-                  helperText={touched.Adresse && errors.Adresse}
                 />
-                <RadioGroup
-                  // name="Parent_en_vie"
-                  // {...getFieldProps('Sexe')}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                  }}
-                >
+                <RadioGroup {...getFieldProps('Sexe')} value={values.Sexe}>
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
+                    error={Boolean(touched.Sexe && errors.Sexe)}
                   >
                     <FormLabel component="label">Sexe:</FormLabel>
                     <FormControlLabel value="F" control={<Radio />} label="F" />
                     <FormControlLabel value="M" control={<Radio />} label="M" />
                   </Stack>
                 </RadioGroup>
-                <InputLabel id="demo-simple-select-outlined-label">Mode d'arriver</InputLabel>
+                <InputLabel>Mode d'arriver</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  // labelId="demo-simple-select-outlined-label"
-                  // id="demo-simple-select-outlined"
-                  label="Mode d'arriver"
-                  // {...getFieldProps('ModeArrive')}
-                  // error={Boolean(touched.ModeArrive && errors.ModeArrive)}
-                  onChange={(event) => {
-                    SetSelectedItem(event.target.value);
-                  }}
                   native
-                  inputProps={{
-                    name: 'age',
-                    id: 'outlined-age-native-simple'
-                  }}
+                  value={values.ModeArrive}
+                  {...getFieldProps('ModeArrive')}
+                  error={Boolean(touched.ModeArrive && errors.ModeArrive)}
                 >
-                  Mode d'arriver
+                  <option value="selected"> -------------</option>
                   <option value="De la maison"> De la maison</option>
                   <option value="UNT">UNT</option>
                   <option value="Autres">Autres</option>
-                  {/* <MenuItem value="De la maison">De la maison</MenuItem>
-                  <MenuItem value="UNT">UNT</MenuItem>
-                  <MenuItem value="Autres">Autres</MenuItem> */}
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Si autre veuillez préciser"
-                  error={Boolean(touched.Avatar && errors.Avatar)}
+                  {...getFieldProps('ExplicationAutre')}
+                  value={values.ExplicationAutre}
+                  error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
                 />
               </Stack>
             </SubDivContenaire>
@@ -220,24 +200,24 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   label="Age (en mois)"
                   {...getFieldProps('Age')}
+                  value={values.Age}
                   error={Boolean(touched.Age && errors.Age)}
-                  helperText={touched.Age && errors.Age}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   label="Poid (gr)"
+                  value={values.Weight}
                   {...getFieldProps('Weight')}
                   error={Boolean(touched.Weight && errors.Weight)}
-                  helperText={touched.Weight && errors.Weight}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
+                  value={values.Pc}
                   label="Pc (cm)"
                   {...getFieldProps('Pc')}
                   error={Boolean(touched.Pc && errors.Pc)}
-                  helperText={touched.Pc && errors.Pc}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -245,9 +225,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="Taille"
                   type="text"
                   label="Taille(cm)"
+                  value={values.Taille}
                   {...getFieldProps('Taille')}
                   error={Boolean(touched.Taille && errors.Taille)}
-                  helperText={touched.Taille && errors.Taille}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -255,31 +235,27 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   label="PB (cm)"
                   {...getFieldProps('Pb')}
                   error={Boolean(touched.Pb && errors.Pb)}
-                  helperText={touched.Pb && errors.Pb}
                 />
-                <InputLabel id="demo-simple-select-outlined-label">Provenance</InputLabel>
+                <InputLabel>Provenance</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={Provenance}
-                  // {...getFieldProps('Provenace')}
-                  // error={Boolean(touched.Provenace && errors.Provenace)}
-                  onChange={(event) => {
-                    console.log(event.target.value);
-                    SetProvenance(event.target.value);
-                  }}
+                  value={values.Provenace}
+                  native
+                  {...getFieldProps('Provenance')}
+                  error={Boolean(touched.Provenance && errors.Provenace)}
                 >
-                  <MenuItem value="kadutu">Kadutu</MenuItem>
-                  <MenuItem value="Bagira">Bagira</MenuItem>
-                  <MenuItem value="Ibabda">Ibanda</MenuItem>
-                  <MenuItem value="Hors ville">Hors ville</MenuItem>
-                  <MenuItem value="Autres">Autres</MenuItem>
+                  <option value="selected"> -------------</option>
+                  <option value="kadutu">Kadutu</option>
+                  <option value="Bagira">Bagira</option>
+                  <option value="Ibabda">Ibanda</option>
+                  <option value="Hors ville">Hors ville</option>
+                  <option value="Autres">Autres</option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Si autre veuillez préciser"
-                  error={Boolean(touched.Avatar && errors.Avatar)}
+                  {...getFieldProps('ExplicationProvenance')}
+                  error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                 />
               </Stack>
             </SubDivContenaire>
