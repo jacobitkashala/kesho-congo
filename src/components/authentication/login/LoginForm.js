@@ -17,39 +17,6 @@ import { fakeAuth } from '../../../fakeAuth';
 export default function LoginForm() {
   // ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  // const [username, setUsername] = useState('');
-  const [loggedIn, setLoggedIn] = useState('');
-
-  Axios.defaults.withCredentials = true;
-  const register = () => {
-    fakeAuth.login(() => {
-      navigate(from);
-    });
-
-    // Axios.post('http://localhost:8080/user_login', {
-    //   email: emailValue,
-    //   password: passwordValue
-    // }).then((response) => {
-    //   const { message, token, name } = response.data;
-    //   setLoggedIn(token);
-    //   console.log('bien');
-
-    //   fakeAuth.login(() => {
-    //     navigate(from);
-    //   });
-    // if (token) {
-    //   fakeAuth.login(() => {
-    //     navigate(from);
-    //   });
-    // } else {
-    //   return null;
-    // }
-    // });
-  };
-=======
   const [registered, setRegistered] = useState(false);
   const [error, setError] = useState(false);
   const [username, setUsername] = useState('');
@@ -73,7 +40,6 @@ export default function LoginForm() {
   //     }
   //   });
   // };
->>>>>>> e43deff8b25f056fa26d84b44f9f8f8971a9e15f
 
   // useEffect(() => {
   //   fakeAuth.isAuthenticated = loggedIn;
