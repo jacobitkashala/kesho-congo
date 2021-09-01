@@ -30,11 +30,7 @@ export default function EnfantMoreMenu() {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem
-          component={RouterLink}
-          to="/dashboard/detail_patient"
-          sx={{ color: 'text.secondary' }}
-        >
+        <MenuItem component={RouterLink} to="detail_patient" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Icon icon={eyeFill} width={35} height={35} />
             <Typography variant="h6">Voir</Typography>
