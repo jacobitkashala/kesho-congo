@@ -4,6 +4,9 @@
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .userUpdate {
@@ -29,7 +32,7 @@
 .userShowTopTitle {
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   text-align: center;
   font-weight: bold;
 }

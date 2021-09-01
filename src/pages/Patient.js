@@ -37,11 +37,11 @@ import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom Patient', alignRight: false },
-  { id: 'DN', label: 'Date Naissance', alignRight: false },
+  { id: 'DN', label: 'Naissance', alignRight: false },
   { id: 'SE', label: 'Sexe', alignRight: false },
-  { id: 'DC', label: 'Dernière consultation ', alignRight: false },
-  { id: 'TN', label: 'Type de Malnutrition', alignRight: false },
-  { id: 'CP', label: 'Consulter par', alignRight: false },
+  { id: 'DC', label: 'Consultation ', alignRight: false },
+  { id: 'TN', label: 'Malnutrition', alignRight: false },
+  { id: 'CP', label: 'Consulté(e) par', alignRight: false },
   { id: '' }
 ];
 
