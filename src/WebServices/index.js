@@ -8,8 +8,11 @@ export const usersApi = createApi({
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => `users`
+    }),
+    getUser: builder.query({
+      query: () => `users/${1}`
     })
   })
 });
 
-export const { useGetUsersQuery } = usersApi;
+export const { useGetUsersQuery, useGetUserQuery } = usersApi;

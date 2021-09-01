@@ -9,4 +9,4 @@ export const store = configureStore({
   middleware: (getDefaultMiddware) => getDefaultMiddware().concat(usersApi.middleware)
 });
 
-setupListeners(store.dispatch());
+setupListeners(store.dispatch);

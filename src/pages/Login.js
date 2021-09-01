@@ -5,6 +5,7 @@ import { Stack, Container, Typography } from '@material-ui/core';
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
+import { useGetUsersQuery, useGetUserQuery } from '../WebServices';
 // import { fakeAuth } from '../fakeAuth';
 // ----------------------------------------------------------------------
 
@@ -40,6 +41,14 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
+  const { data, error, isLoading, isSucces, isError } = useGetUsersQuery();
+  (() => {
+    if (data) {
+      console.log(data);
+    }
+  })();
+
+  // console.log(`${data}\n${error}\n${isLoading}\n${isSucces}\n${isError}`);
   return (
     <RootStyle>
       <MHidden width="mdDown">
