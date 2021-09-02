@@ -14,7 +14,7 @@ import {
   RadioGroup,
   FormLabel,
   // Grid,
-  InputLabel,
+  // InputLabel,
   Select,
   styled
   // getCheckboxUtilityClass
@@ -124,7 +124,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   autoComplete="prenom"
                   type="text"
-                  label="Prénom"
+                  label="Prénom Patient"
                   value={values.FirstName}
                   {...getFieldProps('FirstName')}
                   error={Boolean(touched.FirstName && errors.FirstName)}
@@ -134,7 +134,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   autoComplete="name"
                   type="text"
-                  label="Nom"
+                  label="Nom patient"
                   value={values.Name}
                   // value={`${IdentiteData}?IdentiteData.Name`}
                   {...getFieldProps('Name')}
@@ -145,7 +145,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   autoComplete="lastname"
                   type="text"
-                  label="Postnom"
+                  label="Postnom patient"
                   value={values.LastName}
                   // value={`${IdentiteData}?IdentiteData.LastName`}
                   {...getFieldProps('LastName')}
@@ -154,8 +154,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  label="Adresse"
-                  value={values.Adresse}
+                  label="Adresse patient"
+                  // value={}
                   // value={`${IdentiteData}?IdentiteData.Adresse`}
                   {...getFieldProps('Adresse')}
                   error={Boolean(touched.Adresse && errors.Adresse)}
@@ -176,7 +176,6 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                     <FormControlLabel value="M" control={<Radio />} label="M" />
                   </Stack>
                 </RadioGroup>
-                <InputLabel>Mode d'arriver</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -184,14 +183,16 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   {...getFieldProps('ModeArrive')}
                   error={Boolean(touched.ModeArrive && errors.ModeArrive)}
                 >
-                  <option value="selected"> -------------</option>
+                  <option value="" selected disabled hidden>
+                    Mode d'arriver Patient
+                  </option>
                   <option value="De la maison"> De la maison</option>
                   <option value="UNT">UNT</option>
                   <option value="Autres">Autres</option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  label="Si autre veuillez préciser"
+                  label="Si le mode d'arriver est autre veuillez préciser"
                   {...getFieldProps('ExplicationAutre')}
                   value={values.ExplicationAutre}
                   error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
@@ -220,7 +221,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   value={values.Pc}
-                  label="Pc (cm)"
+                  label="perimetre cranien du patient (cm)"
                   {...getFieldProps('Pc')}
                   error={Boolean(touched.Pc && errors.Pc)}
                 />
@@ -237,11 +238,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  label="PB (cm)"
+                  label="périmètre brachial du patient (cm)"
                   {...getFieldProps('Pb')}
                   error={Boolean(touched.Pb && errors.Pb)}
                 />
-                <InputLabel>Provenance</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
@@ -249,7 +249,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   {...getFieldProps('Provenance')}
                   error={Boolean(touched.Provenance && errors.Provenace)}
                 >
-                  <option value="selected"> -------------</option>
+                  <option value="" selected disabled hidden>
+                    Provenance Patient
+                  </option>
                   <option value="kadutu">Kadutu</option>
                   <option value="Bagira">Bagira</option>
                   <option value="Ibabda">Ibanda</option>
@@ -258,7 +260,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  label="Si autre veuillez préciser"
+                  label="Si la provenance est autre veuillez préciser"
                   {...getFieldProps('ExplicationProvenance')}
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                 />
@@ -266,6 +268,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
             </SubDivContenaire>
           </SubDiv>
           <SubDiv />
+          <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
+            1/3
+          </Typography>
           <LoadingButton
             size="large"
             type="submit"

@@ -16,7 +16,7 @@ import {
   RadioGroup,
   FormLabel,
   // Grid,
-  InputLabel,
+  // InputLabel,
   Select,
   styled
 } from '@material-ui/core';
@@ -135,15 +135,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
           <SubDiv direction={{ xs: 'column', sm: 'row' }}>
             <SubDivContenaire>
               <Stack spacing={3}>
-                <InputLabel>Lieu d’accouchement</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
                   value={values.LieuAccouchement}
+                  error={Boolean(touched.LieuAccouchement && errors.LieuAccouchement)}
                   {...getFieldProps('LieuAccouchement')}
-                  // error={BoLolean(touched.LieuAccouchement && errors.LieuAccouchement)}
                 >
-                  <option vallue="vide">-----------</option>
+                  <option value="" selected disabled hidden>
+                    Lieu d'acchement patient
+                  </option>
                   <option value="Voiture">Voiture</option>
                   <option value="domicile">domicile</option>
                   <option value="Structure sanitaire oui">Structure sanitaire</option>
@@ -211,14 +212,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('PoidsNaissance')}
                   error={Boolean(touched.PoidsNaissance && errors.PoidsNaissance)}
                 />
-                <InputLabel>Asphyxie périnatale</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%' }}
                   {...getFieldProps('AsphyxiePrerinatale')}
                   error={Boolean(touched.AsphyxiePrerinatale && errors.AsphyxiePrerinatale)}
                 >
-                  <option value="vide">-------------</option>
+                  <option value="" selected disabled hidden>
+                    Asphyxie périnatale
+                  </option>
                   <option value="pas de cri">pas de cri</option>
                   <option value="a crié spontanément oui">a crié spontanément</option>
                   <option value="cri après réanimation">cri après réanimation</option>
@@ -252,14 +254,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
-                <InputLabel>Si TBC oui lequel</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%' }}
                   {...getFieldProps('TbcLequel')}
                   error={Boolean(touched.TbcLequel && errors.TbcLequel)}
                 >
-                  <option value="vide">-------------</option>
+                  <option value="" selected disabled hidden>
+                    Si TBC oui lequel
+                  </option>
                   <option value="Père">Père</option>
                   <option value="Mère">Mère</option>
                   <option value="Les deux">Les deux</option>
@@ -298,25 +301,27 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
             </SubDivContenaire>
             <SubDivContenaire>
               <Stack spacing={3}>
-                <InputLabel>Terme de la grossesse</InputLabel>
                 <Select
                   sx={{ width: '80%' }}
                   native
                   {...getFieldProps('Termegrossesse')}
                   error={Boolean(touched.Termegrossesse && errors.Termegrossesse)}
                 >
-                  <option value="vide">---------</option>
+                  <option value="" selected disabled hidden>
+                    Terme de la grossesse
+                  </option>
                   <option value="Prématuré ">Prématuré</option>
                   <option value="A terme">A terme</option>
                 </Select>
-                <InputLabel>Calendrier vaccinal</InputLabel>
                 <Select
                   sx={{ width: '80%' }}
                   native
                   {...getFieldProps('CalendrierVaccin')}
                   error={Boolean(touched.CalendrierVaccin && errors.CalendrierVaccin)}
                 >
-                  <option value="vide">---------------</option>
+                  <option value="" selected disabled hidden>
+                    Calendrier vaccinal
+                  </option>
                   <option value="A jour">A jour</option>
                   <option value="Non à jour">Non à jour</option>
                 </Select>
@@ -329,14 +334,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                       errors.PreciserCalendrierVaccinNonJour
                   )}
                 />
-                <InputLabel> DPM</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%' }}
                   {...getFieldProps('Dpm')}
                   error={Boolean(touched.Dpm && errors.Dpm)}
                 >
-                  <option value="vide">-------------</option>
+                  <option value="" selected disabled hidden>
+                    DPM
+                  </option>
                   <option value="Norrmal">Norrmal</option>
                   <option value="Anormal">Anormal</option>
                 </Select>
@@ -415,6 +421,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          2/3
+        </Typography>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}
