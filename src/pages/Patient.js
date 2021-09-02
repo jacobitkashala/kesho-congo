@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 // material
@@ -137,8 +137,12 @@ export default function User() {
   const isUserNotFound = filteredUsers.length === 0;
 
   const location = useLocation();
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
 
-  return fakeAuth.isAuthenticated ? (
+  return isAuth ? (
     <Page>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Stack } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Page from '../components/Page';
 import {
   FamilleForm,
@@ -53,7 +53,11 @@ export default function NewPatient() {
     }
   };
   const location = useLocation();
-  return fakeAuth.isAuthenticated ? (
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
+  return isAuth ? (
     <Page>
       <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
         <Typography variant="h4">Nouveau Patient</Typography>

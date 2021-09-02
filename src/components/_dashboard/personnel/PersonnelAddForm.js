@@ -16,8 +16,17 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
+import { useDispatch } from 'react-redux';
+import { addUsersAsync } from '../../../redux/reducers/userSlice';
 import data from '../../../_mocks_/personnel';
+
+// const AddTodoForm = () => {
+// 	const [value, setValue] = useState('');
+
+// 	const onSubmit = (event) => {
+// 		event.preventDefault();
+// 		console.log('user entered: ' + value);
+// 	};
 // ----------------------------------------------------------------------
 
 const Box = styled('div')(({ theme }) => ({
@@ -30,6 +39,7 @@ const Box = styled('div')(({ theme }) => ({
 
 export default function PersonnelAddFrom() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().min(1, 'Trop court!').max(50, 'Trop long!').required('Prénom requis'),
@@ -38,12 +48,12 @@ export default function PersonnelAddFrom() {
       .min(1, 'Trop court!')
       .max(50, 'Trop long!')
       .required('Post-nom requis'),
-    status: Yup.string().required('Post-nom requis'),
+    statut: Yup.string().required('Post-nom requis'),
     email: Yup.string()
       .email('Adresse mail doit être au format valide')
       .required('Adresse mail requis'),
     password: Yup.string().required('Mot de passe requis'),
-    confirmPassword: Yup.string().required('Confirmer le mot de passe')
+    isAdmin: Yup.string().required('Confirmer le mot de passe')
   });
 
   const formik = useFormik({
@@ -53,15 +63,29 @@ export default function PersonnelAddFrom() {
       middleName: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      statut: '',
+      isAdmin: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: (user) => {
+      console.log(user);
+      dispatch(
+        addUsersAsync({
+          email: user.email,
+          password: user.password,
+          nom_user: user.lastName,
+          postnom_user: user.middleName,
+          prenom_user: user.firstName,
+          is_admin: user.isAdmin,
+          image_user: 'www.google.com',
+          statut: user.statut
+        })
+      );
       navigate('/dashboard/personnel', { replace: true });
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -71,17 +95,17 @@ export default function PersonnelAddFrom() {
             <TextField
               fullWidth
               label="Prénom"
+              value={values.firstName}
               {...getFieldProps('firstName')}
               error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
             />
-
             <TextField
               fullWidth
               label="Nom"
+              value={values.lastName}
               {...getFieldProps('lastName')}
               error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              // helperText={touched.lastName && errors.lastName}
             />
 
             <TextField
@@ -89,40 +113,32 @@ export default function PersonnelAddFrom() {
               label="Post-nom"
               {...getFieldProps('middleName')}
               error={Boolean(touched.middleName && errors.middleName)}
-              helperText={touched.middleName && errors.middleName}
+              // helperText={touched.middleName && errors.middleName}
             />
-            <RadioGroup
-              name="Sexe"
-              onChange={() => {
-                console.log('bien');
-              }}
+            <Select
+              value={values.ModeArrive}
+              {...getFieldProps('statut')}
+              error={Boolean(touched.statut && errors.statut)}
             >
-              <Stack direction={{ xs: 'column', sm: 'row', alignItems: 'center' }} spacing={2}>
+              <option value="Médecin"> Médecin</option>
+              <option value="Nutritionniste">Nutritionniste</option>
+              <option value="Infirmier">Infirmier</option>
+            </Select>
+            <RadioGroup
+              {...getFieldProps('Sexe')}
+              error={Boolean(touched.Sexe && errors.Sexe)}
+              value={values.Sexe}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                spacing={1}
+              >
                 <FormLabel component="label">Sexe:</FormLabel>
                 <FormControlLabel value="F" control={<Radio />} label="F" />
                 <FormControlLabel value="M" control={<Radio />} label="M" />
               </Stack>
             </RadioGroup>
-
-            {/* <TextField
-              fullWidth
-              autoComplete="Statut"
-              type="text"
-              label="Statut "
-              {...getFieldProps('email')}
-              error={Boolean(touched.status && errors.status)}
-              helperText={touched.status && errors.status}
-            /> */}
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Médecin</MenuItem>
-              <MenuItem value={20}>Infirmier</MenuItem>
-              <MenuItem value={30}>Nutritionniste</MenuItem>
-            </Select>
 
             <TextField
               fullWidth
@@ -140,6 +156,21 @@ export default function PersonnelAddFrom() {
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
+            <RadioGroup
+              {...getFieldProps('Admin')}
+              error={Boolean(touched.Sexe && errors.Sexe)}
+              value={values.Sexe}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                spacing={1}
+              >
+                <FormLabel component="label">Admin:</FormLabel>
+                <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                <FormControlLabel value="false" control={<Radio />} label="Non" />
+              </Stack>
+            </RadioGroup>
 
             <LoadingButton
               fullWidth

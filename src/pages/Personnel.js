@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
+
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material
 import {
@@ -30,8 +33,9 @@ import {
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
 //
-import USERLIST from '../_mocks_/personnel';
+// import USERLIST from '../_mocks_/personnel';
 import { fakeAuth } from '../fakeAuth';
+import { getUsersAsync } from '../redux/reducers/userSlice';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +74,10 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_user) => _user.nom_user.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -89,9 +96,17 @@ export default function Personnel() {
     setOrderBy(property);
   };
 
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state);
+  const USERLIST = users;
+  console.log(USERLIST);
+  useEffect(() => {
+    dispatch(getUsersAsync());
+  }, [dispatch]);
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -135,8 +150,12 @@ export default function Personnel() {
 
   const isUserNotFound = filteredUsers.length === 0;
   const location = useLocation();
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
 
-  return fakeAuth.isAuthenticated ? (
+  return isAuth ? (
     <Page>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -175,9 +194,9 @@ export default function Personnel() {
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, status, prenom, sex, email, avatarUrl } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                    .map((user) => {
+                      const { id, nom_user, statut, prenom_user, sex, email, avatarUrl } = user;
+                      const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                       return (
                         <TableRow
@@ -191,20 +210,20 @@ export default function Personnel() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, nom_user)}
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={nom_user} src={avatarUrl} />
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {nom_user}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell>{prenom}</TableCell>
-                          <TableCell> {email}@gmail.com</TableCell>
-                          <TableCell>{status}</TableCell>
+                          <TableCell>{prenom_user}</TableCell>
+                          <TableCell> {email}</TableCell>
+                          <TableCell>{statut}</TableCell>
                           <TableCell>{sex}</TableCell>
                           <TableCell>
                             <PersonnelMoreMenu />

@@ -23,35 +23,6 @@ export default function LoginForm() {
   const [loggedIn, setLoggedIn] = useState('');
 
   Axios.defaults.withCredentials = true;
-  // const register = () => {
-  //   Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
-  //     email: emailValue,
-  //     password: passwordValue
-  //   }).then((response) => {
-  //     const { message, token, name } = response.data;
-  //     setLoggedIn(token);
-
-  //     if (token) {
-  //       fakeAuth.login(() => {
-  //         navigate(from);
-  //       });
-  //     } else {
-  //       return null;
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   fakeAuth.isAuthenticated = loggedIn;
-  // }, []);
-
-  // const handleEmailChange = (e) => {
-  //   setEmailValue(e.target.value);
-  // };
-
-  // const handlePasswordChange = (e) => {
-  //   setPasswordValue(e.target.value);
-  // };
 
   const navigate = useNavigate();
 
@@ -67,29 +38,6 @@ export default function LoginForm() {
       .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
       .required('Mot de passe requis')
   });
-  // const validationSchema = yup.object({
-  //   email: yup
-  //     .string('Enter your email')
-  //     .email('Enter a valid email')
-  //     .required('Email is required'),
-  //   password: yup
-  //     .string('Enter your password')
-  //     .min(8, 'Password should be of minimum 8 characters length')
-  //     .required('Password is required')
-  // });
-
-  // const WithMaterialUI = () => {
-  //   const formik = useFormik({
-  //     initialValues: {
-  //       email: '',
-  //       password: '',
-  //     },
-  //     validationSchema: validationSchema,
-  //     onSubmit: (values) => {
-  //       alert(JSON.stringify(values, null, 2));
-  //     },
-  //   });
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -103,8 +51,11 @@ export default function LoginForm() {
         password
       })
         .then((response) => {
-          const { message, token, name } = response.data;
-          // alert(message);
+          const { message, token, name, isAdmin } = response.data;
+          localStorage.setItem('token', token);
+          localStorage.setItem('name', name);
+          localStorage.setItem('isAdmin', isAdmin);
+          console.log({ message, token, name, isAdmin });
           fakeAuth.login(() => {
             navigate(from);
             navigate('/dashboard/app', { replace: true });

@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import store from './redux/store/store';
 import Router from './routes';
 import ThemeConfig from './theme';
 import ScrollToTop from './components/ScrollToTop';
