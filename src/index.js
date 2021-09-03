@@ -6,17 +6,20 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 //
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <Provider store={store}>
       <App />
-    </BrowserRouter>
-  </HelmetProvider>,
+    </Provider>
+  </BrowserRouter>,
+
   document.getElementById('root')
 );
 

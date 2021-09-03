@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Typography, Grid } from '@material-ui/core';
@@ -27,7 +28,11 @@ const Div = styled('div')(({ theme }) => ({
 
 export default function NewPatient() {
   const location = useLocation();
-  return fakeAuth.isAuthenticated ? (
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
+  return isAuth ? (
     <Page>
       <Div>
         <Box sx={{ pb: 5 }}>

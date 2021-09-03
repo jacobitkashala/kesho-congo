@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import './Details.css';
 import Chart from '../../components/charts/chart/Chart';
@@ -9,7 +9,11 @@ import { fakeAuth } from '../../fakeAuth';
 
 export default function Details() {
   const location = useLocation();
-  return fakeAuth.isAuthenticated ? (
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
+  return isAuth ? (
     <div className="product">
       <div className="productLeft">
         <PatientCard />

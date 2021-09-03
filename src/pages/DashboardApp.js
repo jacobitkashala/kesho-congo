@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 // material
 import { Box, Grid, Container, Typography } from '@material-ui/core';
 // components
@@ -16,8 +17,14 @@ import { fakeAuth } from '../fakeAuth';
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
   const location = useLocation();
-  return fakeAuth.isAuthenticated ? (
+  const token = localStorage.getItem('token');
+  // window.location.reload(false);
+  return isAuth ? (
     <Page>
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
