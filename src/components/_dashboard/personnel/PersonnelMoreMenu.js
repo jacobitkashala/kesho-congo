@@ -6,19 +6,11 @@ import Delete from '@material-ui/icons/Delete';
 import { MenuItem, ListItemIcon } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
-export default function PersonnelListToolbar(idUser) {
-  const handleClick = (id) => {
-    console.log(id);
-  };
+export default function PersonnelListToolbar() {
   return (
     <>
       <MenuItem>
-        <ListItemIcon
-          sx={{ color: 'red' }}
-          onClick={() => {
-            handleClick(idUser);
-          }}
-        >
+        <ListItemIcon sx={{ color: 'red' }}>
           <Delete width={35} height={35} />
         </ListItemIcon>
         {/* <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} /> */}

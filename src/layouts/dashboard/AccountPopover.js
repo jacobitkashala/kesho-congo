@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
-import personFill from '@iconify/icons-eva/person-fill';
+// import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
@@ -65,7 +65,11 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar sizes="100" src={account.photoURL} alt={account.Name} />
+        <Avatar
+          sizes="100"
+          src="/static/mock-images/avatars/avatar_1.jpg"
+          alt={localStorage.getItem('name')}
+        />
       </IconButton>
 
       <MenuPopover
