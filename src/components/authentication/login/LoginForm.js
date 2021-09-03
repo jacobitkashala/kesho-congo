@@ -9,25 +9,19 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-// import * as EmailValidator from 'email-validator';
-// import * as yup from 'yup';
-import { register } from 'numeral';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
   // ----------------------------------------------------------------------
 
   const [registered, setRegistered] = useState(false);
-  const [error, setError] = useState(false);
-  const [username, setUsername] = useState('');
   const [loggedIn, setLoggedIn] = useState('');
-
+  const [error, setError] = useState('');
   Axios.defaults.withCredentials = true;
 
   const navigate = useNavigate();
 
   const location = useLocation();
-  let status;
 
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +29,7 @@ export default function LoginForm() {
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Votre mail doit être valide').required('Email requis'),
     password: Yup.string()
-      .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+      .min(1, 'Le mot de passe doit contenir au moins 8 caractères')
       .required('Mot de passe requis')
   });
   const formik = useFormik({

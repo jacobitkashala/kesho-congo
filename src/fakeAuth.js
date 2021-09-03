@@ -13,6 +13,7 @@ export const fakeAuth = {
   logout(callBack) {
     localStorage.clear();
     fakeAuth.isAuthenticated = false;
+    console.log('deconncter');
 
     callBack();
   }

@@ -60,24 +60,24 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
-    NomTuteure: Yup.string().required(),
-    DateNaissanceMere: Yup.date().required(),
-    DateNaissanceTutuer: Yup.date().required(),
-    MereEnceinte: Yup.string().required(),
-    PossederTeleRadio: Yup.string().required(),
-    ProffessionChefMenage: Yup.string().required(),
-    ScolariteMere: Yup.string().required(),
-    PereMariage: Yup.string().required(),
-    NbreEnfant: Yup.number().required(),
-    NiveauSocioEconomique: Yup.string(),
-    StatutMarital: Yup.string().required(),
-    VivreAvecParent: Yup.string().required(),
-    Tribut: Yup.string().required(),
-    Religion: Yup.string().required(),
-    NbrRepasJour: Yup.number().positive(),
+    NomTuteure: Yup.string().required('champs requis'),
+    DateNaissanceMere: Yup.date().required('champs requis'),
+    DateNaissanceTutuer: Yup.date().required('champs requis'),
+    MereEnceinte: Yup.string().required('champs requis'),
+    PossederTeleRadio: Yup.string().required('champs requis'),
+    ProffessionChefMenage: Yup.string().required('champs requis'),
+    ScolariteMere: Yup.string().required('champs requis'),
+    PereMariage: Yup.string().required('champs requis'),
+    NbreEnfant: Yup.number().required('champs requis'),
+    NiveauSocioEconomique: Yup.string('champs requis'),
+    StatutMarital: Yup.string().required('champs requis'),
+    VivreAvecParent: Yup.string().required('champs requis'),
+    Tribut: Yup.string().required('champs requis'),
+    Religion: Yup.string().required('champs requis'),
+    NbrRepasJour: Yup.number().positive('champs requis'),
     // PerentEnVie: Yup.string().required(),
-    PereEnvie: Yup.string().required(),
-    TailleMenage: Yup.number().required()
+    PereEnvie: Yup.string().required('champs requis'),
+    TailleMenage: Yup.number().required('champs requis')
   });
 
   const formik = useFormik({
@@ -198,13 +198,15 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
-                <InputLabel>Profession chef ménage</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
                   {...getFieldProps('ProffessionChefMenage')}
                   error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
                 >
+                  <option value="" selected disabled hidden>
+                    Profession chef ménage
+                  </option>
                   <option value="Salariée formelle,infirmier,Ong,enseignante">
                     Salariée formelle (infirmière, enseignante, ONG.)
                   </option>
@@ -235,7 +237,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
-                <InputLabel>Scolarité mère</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -243,6 +244,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('ScolariteMere')}
                   error={Boolean(touched.ScolariteMere && errors.ScolariteMere)}
                 >
+                  <option value="" selected disabled hidden>
+                    Scolarité mère
+                  </option>
                   <option value="Analphabète">Analphabète</option>
                   <option value="Primaire">Primaire</option>
                   <option value="Universitaire">Professionnelle</option>
@@ -259,7 +263,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('TailleMenage')}
                   error={Boolean(touched.TailleMenage && errors.TailleMenage)}
                 />
-                <InputLabel>Statut marital</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -267,12 +270,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('StatutMarital')}
                   error={Boolean(touched.StatutMarital && errors.StatutMarital)}
                 >
+                  <option value="" selected disabled hidden>
+                    Statut marital
+                  </option>
                   <option value="Prématuré ">Jamais mariée</option>
                   <option value="Mariée">Mariée</option>
                   <option value="Separée ou divorcée">Separée ou divorcée</option>
                   <option value="Veuve">Veuve</option>
                 </Select>
-                <InputLabel> Si mariée</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -280,6 +285,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('PereMariage')}
                   error={Boolean(touched.PereMariage && errors.PereMariage)}
                 >
+                  <option value="" selected disabled hidden>
+                    Si statut marital est marié
+                  </option>
                   <option value="Norrmal">Polygame</option>
                   <option value="Anormal">Monogame</option>
                 </Select>
@@ -291,7 +299,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('NbreEnfant')}
                   error={Boolean(touched.NbreEnfant && errors.NbreEnfant)}
                 />
-                <InputLabel>Tribu</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -299,12 +306,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('Tribut')}
                   error={Boolean(touched.Tribut && errors.Tribut)}
                 >
+                  <option value="" selected disabled hidden>
+                    Tribu
+                  </option>
                   <option value="Norrmal">Shi</option>
                   <option value="Anormal">Rega</option>
                   <option value="Anormal">Autre ethnie du sud-kivu</option>
                   <option value="Anormal">Autre ethnie du pay et autres</option>
                 </Select>
-                <InputLabel>Réligion</InputLabel>
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
@@ -312,12 +321,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('Religion')}
                   error={Boolean(touched.Religion && errors.Religion)}
                 >
+                  <option value="" selected disabled hidden>
+                    Réligion
+                  </option>
                   <option value="Norrmal">Catholique</option>
                   <option value="Anormal">Protestant</option>
                   <option value="Anormal">Musulman</option>
                   <option value="Anormal">Autres</option>
                 </Select>
-                <InputLabel>Niveau socio-économique</InputLabel>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
@@ -325,6 +336,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('NiveauSocioEconomique')}
                   error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
                 >
+                  <option value="" selected disabled hidden>
+                    Niveau socio-économique
+                  </option>
                   <option value="Analphabète">Bas</option>
                   <option value="Primaire">Moyen</option>
                   <option value="Universitaire">Bon</option>
@@ -344,6 +358,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          3/3
+        </Typography>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}

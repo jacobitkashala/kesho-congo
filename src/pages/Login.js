@@ -40,7 +40,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  // console.log(`${data}\n${error}\n${isLoading}\n${isSucces}\n${isError}`);
   return (
     <RootStyle>
       <MHidden width="mdDown">
