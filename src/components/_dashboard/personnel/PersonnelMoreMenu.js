@@ -6,11 +6,19 @@ import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import { MenuItem, ListItemIcon } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
-export default function PersonnelListToolbar() {
+export default function PersonnelListToolbar(idUser) {
+  const handleClick = (id) => {
+    console.log(id);
+  };
   return (
     <>
       <MenuItem>
-        <ListItemIcon sx={{ color: 'red' }}>
+        <ListItemIcon
+          sx={{ color: 'red' }}
+          onClick={() => {
+            handleClick(idUser);
+          }}
+        >
           <Icon icon={trash2Outline} width={35} height={35} />
         </ListItemIcon>
         {/* <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} /> */}

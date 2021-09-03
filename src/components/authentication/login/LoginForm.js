@@ -67,10 +67,7 @@ export default function LoginForm() {
       // navigate('/dashboard/app', { replace: false });
     }
   });
-  // , values
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
-  const { isSubmitting } = formik;
-  // console.log(formik.values.password);
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };

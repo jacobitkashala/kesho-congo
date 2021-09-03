@@ -24,7 +24,7 @@ export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payl
   });
   if (response.ok) {
     const message = await response.json();
-    console.log(message);
+    // console.log(message);
   }
 });
 
@@ -33,13 +33,8 @@ const userSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers: {
-    [getUsersAsync.pending]: (state, action) => {
-      console.log('fetching data...');
-    },
-    [getUsersAsync.fulfilled]: (state, action) => {
-      console.log('fetched successfully');
-      return action.payload.users;
-    },
+    [getUsersAsync.pending]: (state, action) => {},
+    [getUsersAsync.fulfilled]: (state, action) => action.payload.users,
     [addUsersAsync.fulfilled]: (state, action) => {
       state.push(action.payload.user);
     }

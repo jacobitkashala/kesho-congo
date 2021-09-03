@@ -3,10 +3,11 @@ import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import trash2Outline from '@iconify/icons-eva/trash-2-outline';
+// import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-ui/core';
+import Delete from '@material-ui/icons/Delete';
 // import Label from '../../Label';
 // ----------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ export default function EnfantMoreMenu() {
         </MenuItem>
         <MenuItem component={RouterLink} to="/detail_patient" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={trash2Outline} width={35} height={35} />
+            <Delete width={35} height={20} />
             <Typography variant="h6">Supprimer</Typography>
           </ListItemIcon>
         </MenuItem>

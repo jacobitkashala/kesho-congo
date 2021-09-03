@@ -8,7 +8,7 @@ import {
   CauseForm,
   ShowDAtaPatient
 } from '../components/_dashboard/patient';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 
 // const ContentStyle = styled('div')(({ theme }) => ({
 //   color: '#343F59',

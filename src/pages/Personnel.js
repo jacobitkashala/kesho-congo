@@ -34,7 +34,7 @@ import {
 } from '../components/_dashboard/personnel';
 //
 // import USERLIST from '../_mocks_/personnel';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 import { getUsersAsync } from '../redux/reducers/userSlice';
 
 // ----------------------------------------------------------------------
@@ -91,6 +91,7 @@ export default function Personnel() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
+    console.log(property);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -99,7 +100,7 @@ export default function Personnel() {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
   const USERLIST = users;
-  console.log(USERLIST);
+  // console.log(USERLIST);
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
@@ -153,7 +154,7 @@ export default function Personnel() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
 
   return isAuth ? (
     <Page>

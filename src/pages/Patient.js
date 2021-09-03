@@ -31,7 +31,7 @@ import {
 } from '../components/_dashboard/patient';
 //
 import USERLIST from '../_mocks_/user';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ export default function User() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
 
   return isAuth ? (
     <Page>
