@@ -9,28 +9,28 @@ import { styled } from '@material-ui/core/styles';
 // import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useFormik, Form, FormikProvider } from 'formik';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
 import CreateIcon from '@material-ui/icons/Create';
 
 // material
 import {
-  Radio,
+  // Radio,
   Stack,
   TextField,
   // IconButton,
-  FormLabel,
-  RadioGroup,
+  // FormLabel,
+  // RadioGroup,
   // InputAdornment,
-  Typography,
-  FormControlLabel
+  Typography
+  // FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
-import data from '../../../_mocks_/personnel';
-import { fakeAuth } from '../../../fakeAuth';
+// import data from '../../../_mocks_/personnel';
+// import { fakeAuth } from '../../../fakeAuth';
 // ----------------------------------------------------------------------
 
-const Div = styled('div')(({ theme }) => ({
+const Div = styled('div')(() => ({
   textAlign: 'center',
   width: '40%',
   position: 'relative',
@@ -38,7 +38,7 @@ const Div = styled('div')(({ theme }) => ({
   transform: 'translate(-50%,0)'
 }));
 
-const Border = styled('div')(({ theme }) => ({
+const Border = styled('div')(() => ({
   border: '0.5px solid lightgrey',
   height: 'auto',
   width: '85%',
@@ -50,7 +50,7 @@ const Border = styled('div')(({ theme }) => ({
   transform: 'translate(-50%,0)'
 }));
 
-const Box = styled('div')(({ theme }) => ({
+const Box = styled('div')(() => ({
   width: '70%',
   textAlign: 'center',
   position: 'relative',
@@ -120,7 +120,7 @@ export default function PersonnelAddFrom() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
 
   return isAuth ? (
     <Border>
