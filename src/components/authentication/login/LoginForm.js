@@ -9,54 +9,23 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-// import * as EmailValidator from 'email-validator';
-// import * as yup from 'yup';
-import { register } from 'numeral';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
   // ----------------------------------------------------------------------
 
   const [registered, setRegistered] = useState(false);
-  const [error, setError] = useState(false);
-  const [username, setUsername] = useState('');
   const [loggedIn, setLoggedIn] = useState('');
 
   Axios.defaults.withCredentials = true;
-  // const register = () => {
-  //   Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
-  //     email: emailValue,
-  //     password: passwordValue
-  //   }).then((response) => {
-  //     const { message, token, name } = response.data;
-  //     setLoggedIn(token);
 
-  //     if (token) {
-  //       fakeAuth.login(() => {
-  //         navigate(from);
-  //       });
-  //     } else {
-  //       return null;
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   fakeAuth.isAuthenticated = loggedIn;
-  // }, []);
-
-  // const handleEmailChange = (e) => {
-  //   setEmailValue(e.target.value);
-  // };
-
-  // const handlePasswordChange = (e) => {
-  //   setPasswordValue(e.target.value);
-  // };
+  useEffect(() => {
+    fakeAuth.isAuthenticated = loggedIn;
+  }, []);
 
   const navigate = useNavigate();
 
   const location = useLocation();
-  let status;
 
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
@@ -64,32 +33,9 @@ export default function LoginForm() {
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Votre mail doit être valide').required('Email requis'),
     password: Yup.string()
-      .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+      .min(1, 'Le mot de passe doit contenir au moins 8 caractères')
       .required('Mot de passe requis')
   });
-  // const validationSchema = yup.object({
-  //   email: yup
-  //     .string('Enter your email')
-  //     .email('Enter a valid email')
-  //     .required('Email is required'),
-  //   password: yup
-  //     .string('Enter your password')
-  //     .min(8, 'Password should be of minimum 8 characters length')
-  //     .required('Password is required')
-  // });
-
-  // const WithMaterialUI = () => {
-  //   const formik = useFormik({
-  //     initialValues: {
-  //       email: '',
-  //       password: '',
-  //     },
-  //     validationSchema: validationSchema,
-  //     onSubmit: (values) => {
-  //       alert(JSON.stringify(values, null, 2));
-  //     },
-  //   });
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -98,28 +44,26 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }) => {
-      Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
-        email,
-        password
-      })
-        .then((response) => {
-          const { message, token, name } = response.data;
-          // alert(message);
-          fakeAuth.login(() => {
-            navigate(from);
-            navigate('/dashboard/app', { replace: true });
-          });
-        })
-        .catch((err) => {
-          setRegistered(false);
-          setError(!error);
-          formik.isSubmitting = false;
-          // alert(err);
-          // throw err;
-          //
-          //
-        });
-      // navigate('/dashboard/app', { replace: false });
+      // Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
+      //   email,
+      //   password
+      // })
+      //   .then((response) => {
+      //     const { message, token, name } = response.data;
+      //     localStorage.setItem('token', token);
+      //     localStorage.setItem('name', name);
+      //     // const b = !!localStorage.getItem('token');
+
+      fakeAuth.login(() => {
+        navigate(from);
+        navigate('/dashboard/app', { replace: true });
+      });
+      //   })
+      //   .catch((err) => {
+      //     setRegistered(false);
+      //     setError(!error);
+      //     formik.isSubmitting = false;
+      //   });
     }
   });
   // , values

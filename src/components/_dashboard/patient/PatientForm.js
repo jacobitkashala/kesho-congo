@@ -108,7 +108,6 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   console.log(IdentiteData);
-  console.log('ddd', values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -125,7 +124,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="prenom"
                   type="text"
                   label="Prénom Patient"
-                  value={values.FirstName}
+                  value={`${values.FirstName}?${values.FirstName}:${IdentiteData.FirstName}`}
                   {...getFieldProps('FirstName')}
                   error={Boolean(touched.FirstName && errors.FirstName)}
                 />
