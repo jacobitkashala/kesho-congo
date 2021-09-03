@@ -16,15 +16,8 @@ export default function LoginForm() {
 
   const [registered, setRegistered] = useState(false);
   const [loggedIn, setLoggedIn] = useState('');
-
+  const [error, setError] = useState('');
   Axios.defaults.withCredentials = true;
-<<<<<<< HEAD
-
-  useEffect(() => {
-    fakeAuth.isAuthenticated = loggedIn;
-  }, []);
-=======
->>>>>>> 76addc10cc306430da6e059760a5b9ed4251ed69
 
   const navigate = useNavigate();
 
@@ -47,28 +40,6 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }) => {
-<<<<<<< HEAD
-      // Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
-      //   email,
-      //   password
-      // })
-      //   .then((response) => {
-      //     const { message, token, name } = response.data;
-      //     localStorage.setItem('token', token);
-      //     localStorage.setItem('name', name);
-      //     // const b = !!localStorage.getItem('token');
-
-      fakeAuth.login(() => {
-        navigate(from);
-        navigate('/dashboard/app', { replace: true });
-      });
-      //   })
-      //   .catch((err) => {
-      //     setRegistered(false);
-      //     setError(!error);
-      //     formik.isSubmitting = false;
-      //   });
-=======
       Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
         email,
         password
@@ -94,7 +65,6 @@ export default function LoginForm() {
           //
         });
       // navigate('/dashboard/app', { replace: false });
->>>>>>> 76addc10cc306430da6e059760a5b9ed4251ed69
     }
   });
   // , values
