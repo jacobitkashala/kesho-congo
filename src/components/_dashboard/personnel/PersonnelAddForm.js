@@ -48,12 +48,13 @@ export default function PersonnelAddFrom() {
       .min(1, 'Trop court!')
       .max(50, 'Trop long!')
       .required('Post-nom requis'),
-    statut: Yup.string().required('Post-nom requis'),
+    status: Yup.string().required(),
     email: Yup.string()
       .email('Adresse mail doit être au format valide')
       .required('Adresse mail requis'),
     password: Yup.string().required('Mot de passe requis'),
-    isAdmin: Yup.string().required('Confirmer le mot de passe')
+    // sexe: Yup.string().required(),
+    isAdmin: Yup.string().required()
   });
 
   const formik = useFormik({
@@ -61,24 +62,26 @@ export default function PersonnelAddFrom() {
       firstName: '',
       lastName: '',
       middleName: '',
+      status: '',
       email: '',
       password: '',
-      statut: '',
+      // sexe:'',
       isAdmin: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (user) => {
-      console.log(user);
+    onSubmit: () => {
+      // console.log(user);
       dispatch(
         addUsersAsync({
-          email: user.email,
-          password: user.password,
-          nom_user: user.lastName,
-          postnom_user: user.middleName,
-          prenom_user: user.firstName,
-          is_admin: user.isAdmin,
+          email: values.email,
+          password: values.password,
+          nom_user: values.lastName,
+          postnom_user: values.middleName,
+          prenom_user: values.firstName,
+          is_admin: values.isAdmin,
           image_user: 'www.google.com',
-          statut: user.statut
+          statut: values.status
+          // sexe:value.sex
         })
       );
       navigate('/dashboard/personnel', { replace: true });
@@ -98,6 +101,7 @@ export default function PersonnelAddFrom() {
               value={values.firstName}
               {...getFieldProps('firstName')}
               error={Boolean(touched.firstName && errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
             />
             <TextField
               fullWidth
@@ -105,7 +109,7 @@ export default function PersonnelAddFrom() {
               value={values.lastName}
               {...getFieldProps('lastName')}
               error={Boolean(touched.lastName && errors.lastName)}
-              // helperText={touched.lastName && errors.lastName}
+              helperText={touched.lastName && errors.lastName}
             />
 
             <TextField
@@ -113,21 +117,23 @@ export default function PersonnelAddFrom() {
               label="Post-nom"
               {...getFieldProps('middleName')}
               error={Boolean(touched.middleName && errors.middleName)}
-              // helperText={touched.middleName && errors.middleName}
+              helperText={touched.middleName && errors.middleName}
             />
             <Select
-              value={values.ModeArrive}
-              {...getFieldProps('statut')}
-              error={Boolean(touched.statut && errors.statut)}
+              native
+              value={values.status}
+              {...getFieldProps('ModeArrive')}
+              error={Boolean(touched.status && errors.status)}
             >
-              <option value="Médecin"> Médecin</option>
-              <option value="Nutritionniste">Nutritionniste</option>
+              <option value="selected"> -------------</option>
+              <option value="Médecin">Médecin</option>
               <option value="Infirmier">Infirmier</option>
+              <option value="Nutritionniste">Nutritionniste</option>
             </Select>
-            <RadioGroup
-              {...getFieldProps('Sexe')}
-              error={Boolean(touched.Sexe && errors.Sexe)}
-              value={values.Sexe}
+            {/* <RadioGroup
+              {...getFieldProps('sex')}
+              error={Boolean(touched.sex && errors.sex)}
+              value={values.sex}
             >
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
@@ -138,7 +144,7 @@ export default function PersonnelAddFrom() {
                 <FormControlLabel value="F" control={<Radio />} label="F" />
                 <FormControlLabel value="M" control={<Radio />} label="M" />
               </Stack>
-            </RadioGroup>
+            </RadioGroup> */}
 
             <TextField
               fullWidth
@@ -152,12 +158,12 @@ export default function PersonnelAddFrom() {
             <TextField
               fullWidth
               label="Mot de passe"
-              {...getFieldProps('lastName')}
+              {...getFieldProps('password')}
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
-            <RadioGroup
-              {...getFieldProps('Admin')}
+            {/* <RadioGroup
+              {...getFieldProps('Sexe')}
               error={Boolean(touched.Sexe && errors.Sexe)}
               value={values.Sexe}
             >
@@ -166,9 +172,39 @@ export default function PersonnelAddFrom() {
                 sx={{ display: 'flex', alignItems: 'center' }}
                 spacing={1}
               >
+                <FormLabel component="label">Sexe:</FormLabel>
+                <FormControlLabel value="F" control={<Radio />} label="F" />
+                <FormControlLabel value="M" control={<Radio />} label="M" />
+              </Stack>
+            </RadioGroup> */}
+            {/* <RadioGroup
+              {...getFieldProps('Admin')}
+              error={Boolean(touched.isAdmin && errors.isAdmin)}
+              value={values.isAdmin}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                spacing={1}
+              >
                 <FormLabel component="label">Admin:</FormLabel>
-                <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                <FormControlLabel value="false" control={<Radio />} label="Non" />
+                <FormControlLabel value="" control={<Radio />} label="Oui" />
+                <FormControlLabel value="" control={<Radio />} label="Non" />
+              </Stack>
+            </RadioGroup> */}
+            <RadioGroup
+              {...getFieldProps('admin')}
+              error={Boolean(touched.isAdmin && errors.isAdmin)}
+              value={values.isAdmin}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                spacing={1}
+              >
+                <FormLabel component="label">Sexe:</FormLabel>
+                <FormControlLabel value="F" control={<Radio />} label="F" />
+                <FormControlLabel value="M" control={<Radio />} label="M" />
               </Stack>
             </RadioGroup>
 
