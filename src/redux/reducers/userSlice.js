@@ -23,8 +23,21 @@ export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payl
     body: JSON.stringify(payload)
   });
   if (response.ok) {
-    const message = await response.json();
-    console.log(message);
+    const users = await response.json();
+    return { users };
+  }
+});
+
+export const deleteUserAsync = createAsyncThunk('users/deleteUserAsync', async (payload) => {
+  const response = await fetch(`https://kesho-congo-api.herokuapp.com/users?id=${payload.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${localStorage.getItem('token')}`
+    }
+  });
+  if (response.ok) {
+    return { id: payload.id };
   }
 });
 
@@ -42,6 +55,10 @@ const userSlice = createSlice({
     },
     [addUsersAsync.fulfilled]: (state, action) => {
       state.push(action.payload.user);
+    },
+    [deleteUserAsync.fulfilled]: (state, action) => {
+      console.log('fetched successfully');
+      return state.filter((user) => user.id !== action.payload.id);
     }
   }
 });

@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { BrowserHistory } from 'react-router';
 // material
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -70,7 +71,6 @@ export default function PersonnelAddFrom() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      // console.log(user);
       dispatch(
         addUsersAsync({
           email: values.email,
@@ -84,6 +84,7 @@ export default function PersonnelAddFrom() {
           // sexe:value.sex
         })
       );
+
       navigate('/dashboard/personnel', { replace: true });
     }
   });
@@ -122,29 +123,16 @@ export default function PersonnelAddFrom() {
             <Select
               native
               value={values.status}
-              {...getFieldProps('ModeArrive')}
+              {...getFieldProps('status')}
               error={Boolean(touched.status && errors.status)}
             >
-              <option value="selected"> -------------</option>
+              <option value="" selected disabled hidden>
+                Statut
+              </option>
               <option value="Médecin">Médecin</option>
               <option value="Infirmier">Infirmier</option>
               <option value="Nutritionniste">Nutritionniste</option>
             </Select>
-            {/* <RadioGroup
-              {...getFieldProps('sex')}
-              error={Boolean(touched.sex && errors.sex)}
-              value={values.sex}
-            >
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                sx={{ display: 'flex', alignItems: 'center' }}
-                spacing={1}
-              >
-                <FormLabel component="label">Sexe:</FormLabel>
-                <FormControlLabel value="F" control={<Radio />} label="F" />
-                <FormControlLabel value="M" control={<Radio />} label="M" />
-              </Stack>
-            </RadioGroup> */}
 
             <TextField
               fullWidth
@@ -162,23 +150,8 @@ export default function PersonnelAddFrom() {
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
-            {/* <RadioGroup
-              {...getFieldProps('Sexe')}
-              error={Boolean(touched.Sexe && errors.Sexe)}
-              value={values.Sexe}
-            >
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                sx={{ display: 'flex', alignItems: 'center' }}
-                spacing={1}
-              >
-                <FormLabel component="label">Sexe:</FormLabel>
-                <FormControlLabel value="F" control={<Radio />} label="F" />
-                <FormControlLabel value="M" control={<Radio />} label="M" />
-              </Stack>
-            </RadioGroup> */}
-            {/* <RadioGroup
-              {...getFieldProps('Admin')}
+            <RadioGroup
+              {...getFieldProps('isAdmin')}
               error={Boolean(touched.isAdmin && errors.isAdmin)}
               value={values.isAdmin}
             >
@@ -188,23 +161,8 @@ export default function PersonnelAddFrom() {
                 spacing={1}
               >
                 <FormLabel component="label">Admin:</FormLabel>
-                <FormControlLabel value="" control={<Radio />} label="Oui" />
-                <FormControlLabel value="" control={<Radio />} label="Non" />
-              </Stack>
-            </RadioGroup> */}
-            <RadioGroup
-              {...getFieldProps('admin')}
-              error={Boolean(touched.isAdmin && errors.isAdmin)}
-              value={values.isAdmin}
-            >
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                sx={{ display: 'flex', alignItems: 'center' }}
-                spacing={1}
-              >
-                <FormLabel component="label">Sexe:</FormLabel>
-                <FormControlLabel value="F" control={<Radio />} label="F" />
-                <FormControlLabel value="M" control={<Radio />} label="M" />
+                <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                <FormControlLabel value="false" control={<Radio />} label="Non" />
               </Stack>
             </RadioGroup>
 
