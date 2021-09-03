@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Card, Typography } from '@material-ui/core';
@@ -15,16 +16,20 @@ const RootStyle = styled(Card)(({ theme }) => ({
 }));
 // ----------------------------------------------------------------------
 
-const TOTAL = 100;
-
-export default function AppItemOrders() {
+CardJaune.propTypes = {
+  title: propTypes.string,
+  nombreM: propTypes.number,
+  nombreF: propTypes.number
+};
+export default function CardJaune({ title, nombreM, nombreF }) {
+  const total = nombreM + nombreF || 0;
   return (
     <RootStyle>
-      <Typography variant="h3">Evolution</Typography>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+      <Typography variant="h3">{title}</Typography>
+      <Typography variant="h3">{fShortenNumber(total)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        <Typography variant="subtitle2">Garçons:30</Typography>
-        <Typography variant="subtitle2">Fille:30</Typography>
+        <Typography variant="subtitle2">Masculin:{nombreM}</Typography>
+        <Typography variant="subtitle2">Féminin:{nombreF}</Typography>
       </Typography>
     </RootStyle>
   );

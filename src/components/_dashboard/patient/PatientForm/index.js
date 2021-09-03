@@ -28,7 +28,6 @@ PatientForm.propTypes = {
 };
 
 const Div = styled('div')(() => ({
-  // border: '0.5px solid lightgrey',
   height: '90%',
   width: '200%',
   position: 'relative',
@@ -248,7 +247,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '80%', padding: '2px' }}
                   value={values.Provenace}
                   {...getFieldProps('Provenance')}
-                  error={Boolean(touched.Provenance && errors.Provenace)}
+                  error={Boolean(touched.Provenance && errors.Provenance)}
                 >
                   <option value="" selected disabled hidden>
                     Provenance Patient

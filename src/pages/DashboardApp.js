@@ -5,14 +5,14 @@ import { Box, Grid, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import {
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppWeeklySales,
+  CardBleu,
+  CardRouge,
+  CardJaune,
+  CardVert,
   AppCurrentVisits,
   AppWebsiteVisits
 } from '../components/_dashboard/app';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -20,10 +20,9 @@ export default function DashboardApp() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
   const location = useLocation();
-  const token = localStorage.getItem('token');
-  // window.location.reload(false);
+
   return isAuth ? (
     <Page>
       <Container maxWidth="xl">
@@ -33,28 +32,28 @@ export default function DashboardApp() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWeeklySales />
+            <CardVert title="Total" nombreM={100} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppNewUsers />
+            <CardBleu title="6 à 24 mois" nombreM={23} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppItemOrders />
+            <CardJaune title="24 à 59 mois" nombreM={100} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppBugReports />
+            <CardRouge title="Adult" nombreM={10} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWeeklySales />
+            <CardVert title="Aujourd'hui" nombreM={23} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppNewUsers />
+            <CardBleu title="Hier" nombreM={23} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppItemOrders />
+            <CardJaune title="MAM" nombreM={10} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppBugReports />
+            <CardRouge title="M-A-S" nombreM={10} nombreF={50} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
