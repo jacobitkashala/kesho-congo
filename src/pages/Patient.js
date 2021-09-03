@@ -31,7 +31,7 @@ import {
 } from '../components/_dashboard/patient';
 //
 import USERLIST from '../_mocks_/user';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ export default function User() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
 
   return isAuth ? (
     <Page>
@@ -185,7 +185,6 @@ export default function User() {
                       const {
                         id,
                         name,
-                        avatarUrl,
                         typeMalnutri,
                         dataNaissance,
                         sex,
@@ -211,7 +210,10 @@ export default function User() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar
+                                alt={name}
+                                src={`/static/mock-images/avatars/avatar_${id}.jpg`}
+                              />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>

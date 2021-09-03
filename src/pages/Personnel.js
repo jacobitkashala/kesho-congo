@@ -32,9 +32,9 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
-//
+
 // import USERLIST from '../_mocks_/personnel';
-import { fakeAuth } from '../fakeAuth';
+// import { fakeAuth } from '../fakeAuth';
 import { getUsersAsync } from '../redux/reducers/userSlice';
 
 // ----------------------------------------------------------------------
@@ -91,6 +91,7 @@ export default function Personnel() {
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const handleRequestSort = (event, property) => {
+    console.log(property);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -99,7 +100,7 @@ export default function Personnel() {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
   const USERLIST = users;
-  console.log(USERLIST);
+  // console.log(USERLIST);
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
@@ -153,7 +154,7 @@ export default function Personnel() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
 
   return isAuth ? (
     <Page>
@@ -195,7 +196,7 @@ export default function Personnel() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((user) => {
-                      const { id, nom_user, statut, prenom_user, sex, email, avatarUrl } = user;
+                      const { id, nom_user, statut, prenom_user, sex, email } = user;
                       const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                       return (
@@ -215,7 +216,10 @@ export default function Personnel() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={nom_user} src={avatarUrl} />
+                              <Avatar
+                                alt={nom_user}
+                                src={`/static/mock-images/avatars/avatar_${id}.jpg`}
+                              />
                               <Typography variant="subtitle2" noWrap>
                                 {nom_user}
                               </Typography>

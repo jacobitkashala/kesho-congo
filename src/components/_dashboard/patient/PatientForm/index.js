@@ -77,6 +77,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     Adresse: Yup.string().min(2).max(50).required(),
     ExplicationAutre: Yup.string(),
     ModeArrive: Yup.string().required(),
+    TypeMalnutrition: Yup.string().required(),
     ExplicationProvenance: Yup.string()
   });
 
@@ -96,6 +97,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       Provenance: '',
       ModeArrive: '',
       ExplicationAutre: '',
+      TypeMalnutrition: '',
       ExplicationProvenance: ''
     },
     validationSchema: RegisterSchema,
@@ -256,6 +258,19 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   <option value="Ibabda">Ibanda</option>
                   <option value="Hors ville">Hors ville</option>
                   <option value="Autres">Autres</option>
+                </Select>
+                <Select
+                  native
+                  sx={{ width: '80%', padding: '2px' }}
+                  value={values.Provenace}
+                  {...getFieldProps('TypeMalnutrition')}
+                  error={Boolean(touched.TypeMalnutrition && errors.TypeMalnutrition)}
+                >
+                  <option value="" selected disabled hidden>
+                    Type de malnutrition
+                  </option>
+                  <option value="Malnutrition aigue sévère">Malnutrition aigue sévère</option>
+                  <option value="Malnutrition aigue moderée">Malnutrition aigue moderée</option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}

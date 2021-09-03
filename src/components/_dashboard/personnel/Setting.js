@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { useState } from 'react';
 // import { Icon } from '@iconify/react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
@@ -117,8 +117,12 @@ export default function PersonnelAddFrom() {
   //   e.preventDefault();
   // };
   const location = useLocation();
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, []);
 
-  return fakeAuth.isAuthenticated ? (
+  return isAuth ? (
     <Border>
       <Div>
         <FormikProvider value="">
