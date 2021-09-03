@@ -43,10 +43,16 @@ export default function EnfantMoreMenu() {
             <Typography variant="h6">Edit</Typography>
           </ListItemIcon>
         </MenuItem>
-        <MenuItem component={RouterLink} to="/detail_patient" sx={{ color: 'text.secondary' }}>
+        <MenuItem
+          sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}
+          component={RouterLink}
+          to="/detail_patient"
+        >
           <ListItemIcon>
-            <Delete width={35} height={20} />
-            <Typography variant="h6">Supprimer</Typography>
+            <Delete width={35} height={15} />
+            <Typography variant="h6" sx={{ textAlign: 'center' }}>
+              Supprimer
+            </Typography>
           </ListItemIcon>
         </MenuItem>
       </Menu>
