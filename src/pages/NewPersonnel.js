@@ -4,9 +4,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { Typography, Grid } from '@material-ui/core';
 import Page from '../components/Page';
 import { PersonnelAddForm } from '../components/_dashboard/personnel';
-import { fakeAuth } from '../fakeAuth';
 
-const Box = styled('div')(({ theme }) => ({
+const Box = styled('div')(() => ({
   width: '100%',
   textAlign: 'center',
   position: 'relative',
@@ -14,7 +13,7 @@ const Box = styled('div')(({ theme }) => ({
   transform: 'translate(-50%,0)'
 }));
 
-const Div = styled('div')(({ theme }) => ({
+const Div = styled('div')(() => ({
   border: '0.5px solid lightgrey',
   height: 'auto',
   width: '85%',
@@ -31,7 +30,7 @@ export default function NewPatient() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
-  }, []);
+  }, [isAuth]);
   return isAuth ? (
     <Page>
       <Div>

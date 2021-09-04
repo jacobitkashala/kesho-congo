@@ -1,10 +1,8 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { styled, InputLabel, Stack } from '@material-ui/core';
+import { styled, InputLabel, Stack, Avatar, Grid, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { LoadingButton } from '@material-ui/lab';
 
 const useStyles = styled((theme) => ({
@@ -31,25 +29,41 @@ export default function PatientData({ DataPatient, PrevStep }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={10}>
-          <Typography variant="h3" className={classes.title}>
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{ raduis: '16px', boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%)' }}
+        >
+          {/* <Typography variant="h3" className={classes.title}>
             Identité Patient
-          </Typography>
+          </Typography> */}
+          <Avatar
+            variant="square"
+            width="100"
+            height="100"
+            sx={{
+              width: '40%',
+              height: '32%'
+            }}
+            alt={indentity.Name}
+            src={`/static/mock-images/avatars/avatar_${1}.jpg`}
+          />
           <InputLabel>Nom: {indentity.Name}</InputLabel>
           <InputLabel>Prénom: {indentity.FirstName}</InputLabel>
-          <InputLabel>Postnom:{indentity.LastName}</InputLabel>
+          <InputLabel>Postnom: {indentity.LastName}</InputLabel>
           <InputLabel>Adresse: {indentity.Adresse}</InputLabel>
-          <InputLabel>Téléphone:{indentity.Telephone}</InputLabel>
-          <InputLabel>Sexe:{indentity.Sexe}</InputLabel>
-          <InputLabel>Age en (mois):{indentity.Age}</InputLabel>
-          <InputLabel>Poids:{indentity.Weight}</InputLabel>
-          <InputLabel>Pc:{indentity.Pc}</InputLabel>
-          <InputLabel>Taille:</InputLabel>
-          <InputLabel>PB:{indentity.Pb}</InputLabel>
-          <InputLabel>Provenance:{indentity.Provenance}</InputLabel>
+          <InputLabel>Téléphone: {indentity.Telephone}</InputLabel>
+          <InputLabel>Sexe: {indentity.Sexe}</InputLabel>
+          <InputLabel>Age en (mois): {indentity.Age}</InputLabel>
+          <InputLabel>Poids: {indentity.Weight} gr</InputLabel>
+          <InputLabel>Perimetre cranien:{indentity.Pc}</InputLabel>
+          <InputLabel>Taille: </InputLabel>
+          <InputLabel>Périmètre brachial: {indentity.Pb}</InputLabel>
+          <InputLabel>Provenance: {indentity.Provenance}</InputLabel>
           <div className={classes.demo} />
         </Grid>
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={3}>
           <Typography variant="h3" className={classes.title}>
             Cause Malnutrition
           </Typography>
@@ -74,7 +88,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           <InputLabel>Vaccinatio Rougeole:{CauseMalnutrition.VaccinatioRougeole}</InputLabel>
           <div className={classes.demo} />
         </Grid>
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={5}>
           <Typography variant="h3" className={classes.title}>
             Famille
           </Typography>

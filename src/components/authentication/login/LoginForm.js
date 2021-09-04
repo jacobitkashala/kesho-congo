@@ -40,6 +40,10 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }) => {
+      fakeAuth.login(() => {
+        navigate(from);
+        navigate('/dashboard/app', { replace: true });
+      });
       Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
         email,
         password
