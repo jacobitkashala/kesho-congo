@@ -60,31 +60,31 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
-    NomTuteure: Yup.string().required('champs requis'),
-    DateNaissanceMere: Yup.date().required('champs requis'),
-    DateNaissanceTutuer: Yup.date().required('champs requis'),
-    MereEnceinte: Yup.string().required('champs requis'),
-    PossederTeleRadio: Yup.string().required('champs requis'),
-    ProffessionChefMenage: Yup.string().required('champs requis'),
-    ScolariteMere: Yup.string().required('champs requis'),
-    PereMariage: Yup.string().required('champs requis'),
-    NbreEnfant: Yup.number().required('champs requis'),
-    NiveauSocioEconomique: Yup.string('champs requis'),
-    StatutMarital: Yup.string().required('champs requis'),
-    VivreAvecParent: Yup.string().required('champs requis'),
-    Tribut: Yup.string().required('champs requis'),
-    Religion: Yup.string().required('champs requis'),
+    NomTuteur: Yup.string(),
+    DateNaissanceMere: Yup.date(),
+    dateN: Yup.date(),
+    MereEnceinte: Yup.string(),
+    PossederTeleRadio: Yup.string(),
+    ProffessionChefMenage: Yup.string(),
+    ScolariteMere: Yup.string(),
+    PereMariage: Yup.string(),
+    NbreEnfant: Yup.number(),
+    NiveauSocioEconomique: Yup,
+    StatutMarital: Yup.string(),
+    VivreAvecParent: Yup.string(),
+    Tribut: Yup.string(),
+    Religion: Yup.string(),
     NbrRepasJour: Yup.number().positive('champs requis'),
     // PerentEnVie: Yup.string().required(),
-    PereEnvie: Yup.string().required('champs requis'),
-    TailleMenage: Yup.number().required('champs requis')
+    PereEnvie: Yup.string(),
+    TailleMenage: Yup.number()
   });
 
   const formik = useFormik({
     initialValues: {
-      NomTuteure: '',
+      NomTuteur: '',
       DateNaissanceMere: '',
-      DateNaissanceTutuer: '',
+      dateN: '',
       MereEnceinte: '',
       PossederTeleRadio: '',
       ProffessionChefMenage: '',
@@ -123,8 +123,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Nom de tuteur"
-                  value={values.NomTuteure}
-                  {...getFieldProps('NomTuteure')}
+                  value={values.NomTuteur}
+                  {...getFieldProps('NomTuteur')}
                 />
                 <RadioGroup
                   {...getFieldProps('VivreAvecParent')}
@@ -144,8 +144,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="date"
-                  {...getFieldProps('DateNaissanceTutuer')}
-                  error={Boolean(touched.DateNaissanceTutuer && errors.DateNaissanceTutuer)}
+                  {...getFieldProps('dateN')}
+                  error={Boolean(touched.dateN && errors.dateN)}
                 />
                 <RadioGroup
                   {...getFieldProps('MereEnceinte')}
@@ -358,9 +358,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+        {/* <Typography variant="h5" sx={{ textAlign: 'center' }}>
           3/3
-        </Typography>
+        </Typography> */}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}

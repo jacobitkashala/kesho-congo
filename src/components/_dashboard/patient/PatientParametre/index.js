@@ -62,22 +62,22 @@ const SubDivContenaire = styled('div')(() => ({
 export default function PatientForm({ NextStep, SetDataPatient }) {
   const [IdentiteData, SetIdentiteData] = useState({});
   const RegisterSchema = Yup.object().shape({
-    Pb: Yup.number().positive(),
-    Pc: Yup.number().positive(),
-    Age: Yup.number().positive(),
+    Pb: Yup.number().required().positive(),
+    Pc: Yup.number().required().positive(),
+    age_patient: Yup.number().required().positive(),
     Telephone: Yup.string().min(10).max(13),
-    Provenance: Yup.string().min(1),
-    Weight: Yup.number().positive(),
-    Taille: Yup.number().positive(),
-    Sexe: Yup.string().min(1).max(1),
-    Name: Yup.string().min(2).max(50),
-    LastName: Yup.string().min(2).max(50),
-    FirstName: Yup.string().min(2).max(50),
-    Adresse: Yup.string().min(2).max(50),
-    data: Yup.date(),
+    Provenance_patient: Yup.string().min(1).required(),
+    poids_naissance: Yup.number().required().positive(),
+    Taille: Yup.number().required().positive(),
+    Sexe: Yup.string().min(1).max(1).required(),
+    nom_patient: Yup.string().min(2).max(50).required(),
+    postnom_patient: Yup.string().min(2).max(50).required(),
+    prenom_patient: Yup.string().min(2).max(50).required(),
+    Adresse: Yup.string().min(2).max(50).required(),
+    data: Yup.date().required(),
     ExplicationAutre: Yup.string(),
-    ModeArrive: Yup.string(),
-    TypeMalnutrition: Yup.string(),
+    ModeArrive: Yup.string().required(),
+    TypeMalnutrition: Yup.string().required(),
     ExplicationProvenance: Yup.string()
   });
 
@@ -94,7 +94,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       Adresse: '',
       Telephone: '',
       FirstName: '',
-      LastName: '',
+      nom_patient: '',
       Provenance: '',
       ModeArrive: '',
       ExplicationAutre: '',
@@ -292,9 +292,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
             </SubDivContenaire>
           </SubDiv>
           <SubDiv />
-          {/* <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
+          <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
             1/3
-          </Typography> */}
+          </Typography>
           <LoadingButton
             size="large"
             type="submit"

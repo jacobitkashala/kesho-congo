@@ -1,20 +1,29 @@
 import { Icon } from '@iconify/react';
+import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import { Link as RouterLink } from 'react-router-dom';
-// import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-ui/core';
 import Delete from '@material-ui/icons/Delete';
-// import Label from '../../Label';
+import { useDispatch } from 'react-redux';
+import { deletePatientAsync } from '../../../redux/reducers/patientSlice';
+
 // ----------------------------------------------------------------------
 
-export default function EnfantMoreMenu() {
+// PatientMoreMenu.PropTypes = {
+//   id: PropTypes.string
+// };
+export default function PatientMoreMenu({ id }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  const dispatch = useDispatch();
+  const handleDeleteClick = () => {
+    dispatch(deletePatientAsync({ id }));
+  };
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -43,16 +52,10 @@ export default function EnfantMoreMenu() {
             <Typography variant="h6">Edit</Typography>
           </ListItemIcon>
         </MenuItem>
-        <MenuItem
-          sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}
-          component={RouterLink}
-          to="/detail_patient"
-        >
-          <ListItemIcon>
+        <MenuItem onClick={handleDeleteClick}>
+          <ListItemIcon sx={{ textAlign: 'center', color: 'text.secondary' }}>
             <Delete width={35} height={15} />
-            <Typography variant="h6" sx={{ textAlign: 'center' }}>
-              Supprimer
-            </Typography>
+            <Typography variant="h6">Supprimer</Typography>
           </ListItemIcon>
         </MenuItem>
       </Menu>

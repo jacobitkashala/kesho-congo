@@ -64,27 +64,27 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [CauseData, SetCauseData] = useState({});
 
   const RegisterSchema = Yup.object().shape({
-    PoidsNaissance: Yup.number().required('Veuillez inserer quelque choses').positive(),
-    LieuAccouchement: Yup.string().required(),
-    SejourNeo: Yup.string().required(),
-    MasFratrie: Yup.string().required(),
-    MatcdMas: Yup.string().required('Veuillez inserer quelque choses'),
-    AtcdRougeole: Yup.string().required(),
-    TbcChezParent: Yup.string().required('Veuillez inserer quelque choses'),
+    PoidsNaissance: Yup.number(),
+    LieuAccouchement: Yup.string(),
+    SejourNeo: Yup.string(),
+    MasFratrie: Yup.string(),
+    MatcdMas: Yup.string(),
+    AtcdRougeole: Yup.string(),
+    TbcChezParent: Yup.string(),
     TbcLequel: Yup.string(),
     TbcTraiter: Yup.string(),
-    Tdc: Yup.string().required('Veuillez inserer quelque choses'),
+    Tdc: Yup.string(),
     Termegrossesse: Yup.string(),
     CalendrierVaccin: Yup.string(),
     PreciserCalendrierVaccinNonJour: Yup.string('Veuillez inserer quelque choses'),
-    AsphyxiePrerinatale: Yup.string().required('Veuillez inserer quelque choses'),
-    RangFratrie: Yup.string().required('Veuillez inserer quelque choses'),
-    TerrainVih: Yup.string().required('Veuillez inserer quelque choses'),
-    NombreChute: Yup.number().positive().required('Veuillez inserer quelque choses'),
-    VaccinatioRougeole: Yup.string().required('Veuillez inserer quelque choses'),
-    Eig: Yup.number().required('Veuillez inserer quelque choses'),
-    TbcGuerie: Yup.string().required('Veuillez inserer quelque choses'),
-    Dpm: Yup.string().required('Veuillez inserer quelque choses'),
+    AsphyxiePrerinatale: Yup.string(),
+    RangFratrie: Yup.string(),
+    TerrainVih: Yup.string(),
+    NombreChute: Yup.number().positive(),
+    VaccinatioRougeole: Yup.string(),
+    Eig: Yup.number(),
+    TbcGuerie: Yup.string(),
+    Dpm: Yup.string(),
     DpmAnormalPrecision: Yup.string('Veuillez inserer quelque choses')
   });
 
@@ -117,7 +117,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     onSubmit: (CauseMalnutrition) => {
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       SetCauseData(CauseMalnutrition);
-      console.log(CauseData);
+      // console.log(CauseData);
       NextStep();
     }
   });
@@ -421,9 +421,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+        {/* <Typography variant="h5" sx={{ textAlign: 'center' }}>
           2/3
-        </Typography>
+        </Typography> */}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}

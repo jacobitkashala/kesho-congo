@@ -6,8 +6,6 @@ import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
-// material
 import {
   Card,
   Table,
@@ -23,6 +21,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { getUsersAsync } from '../redux/reducers/userSlice';
+// material
 // components
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
@@ -35,7 +35,6 @@ import {
 
 // import USERLIST from '../_mocks_/personnel';
 // import { fakeAuth } from '../fakeAuth';
-import { getUsersAsync } from '../redux/reducers/userSlice';
 
 // ----------------------------------------------------------------------
 
@@ -91,7 +90,7 @@ export default function Personnel() {
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const handleRequestSort = (event, property) => {
-    console.log(property);
+    // console.log(property);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -99,8 +98,8 @@ export default function Personnel() {
 
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
+  console.log(users);
   const USERLIST = users;
-  // console.log(USERLIST);
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
@@ -196,13 +195,13 @@ export default function Personnel() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((user) => {
-                      const { id, nom_user, statut, prenom_user, sex, email } = user;
+                      const { id_user, nom_user, statut, prenom_user, sex, email } = user;
                       const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={id_user}
                           // tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -218,7 +217,7 @@ export default function Personnel() {
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar
                                 alt={nom_user}
-                                src={`/static/mock-images/avatars/avatar_${id}.jpg`}
+                                src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
                               />
                               <Typography variant="subtitle2" noWrap>
                                 {nom_user}
@@ -230,7 +229,7 @@ export default function Personnel() {
                           <TableCell>{statut}</TableCell>
                           <TableCell>{sex}</TableCell>
                           <TableCell>
-                            <PersonnelMoreMenu value={id} />
+                            <PersonnelMoreMenu value={id_user} />
                           </TableCell>
                         </TableRow>
                       );

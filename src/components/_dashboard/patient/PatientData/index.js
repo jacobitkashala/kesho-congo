@@ -63,7 +63,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           <InputLabel>Provenance: {indentity.Provenance}</InputLabel>
           <div className={classes.demo} />
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={5}>
           <Typography variant="h3" className={classes.title}>
             Cause Malnutrition
           </Typography>

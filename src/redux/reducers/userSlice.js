@@ -46,7 +46,6 @@ const userSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers: {
-    [getUsersAsync.pending]: (state, action) => {},
     [getUsersAsync.fulfilled]: (state, action) => action.payload.users,
     [addUsersAsync.fulfilled]: (state, action) => {
       state.push(action.payload.user);

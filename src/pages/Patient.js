@@ -20,6 +20,8 @@ import {
   TablePagination
 } from '@material-ui/core';
 // components
+import { useSelector, useDispatch } from 'react-redux';
+import { getPatientsAsync } from '../redux/reducers/patientSlice';
 import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
@@ -32,7 +34,6 @@ import {
 //
 import USERLIST from '../_mocks_/user';
 // import { fakeAuth } from '../fakeAuth';
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -76,14 +77,20 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+export default function Patient() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const dispatch = useDispatch();
+  const { patients } = useSelector((state) => state);
+  const patientList = patients;
+  console.log(patients);
+  useEffect(() => {
+    dispatch(getPatientsAsync());
+  }, [dispatch]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -92,7 +99,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = patientList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -130,11 +137,11 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredPatient = applySortFilter(patientList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isUserNotFound = filteredPatient.length === 0;
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
@@ -179,24 +186,25 @@ export default function User() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
+                  {filteredPatient
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
-                        id,
-                        name,
-                        typeMalnutri,
-                        dataNaissance,
-                        sex,
-                        derniereDataCons,
-                        consulete
+                        id_patient,
+                        nom_patient,
+                        type_malnutrition,
+                        date_naissance,
+                        sexe_patient,
+                        date_Consultation,
+                        nom_consultant,
+                        postnom_consultant
                       } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={id_patient}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -205,35 +213,37 @@ export default function User() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, nom_patient)}
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar
-                                alt={name}
-                                src={`/static/mock-images/avatars/avatar_${id}.jpg`}
+                                alt={nom_patient}
+                                src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
                               />
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {nom_patient}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="center">{dataNaissance}</TableCell>
-                          <TableCell align="center">{sex}</TableCell>
-                          <TableCell align="center">{derniereDataCons}</TableCell>
+                          <TableCell align="center">{date_naissance}</TableCell>
+                          <TableCell align="center">{sexe_patient}</TableCell>
+                          <TableCell align="center">{date_Consultation}</TableCell>
                           <TableCell align="center">
                             <Label
                               variant="ghost"
-                              color={(typeMalnutri === 'Aigu modéré' && 'error') || 'success'}
+                              color={(type_malnutrition === 'Aigu modéré' && 'error') || 'success'}
                             >
-                              {typeMalnutri}
+                              {type_malnutrition}
                             </Label>
                           </TableCell>
-                          <TableCell align="center">Dr {consulete}</TableCell>
+                          <TableCell align="center">
+                            {nom_consultant} {postnom_consultant}
+                          </TableCell>
 
                           <TableCell align="right">
-                            <PatientMoreMenu />
+                            <PatientMoreMenu id={id_patient} />
                           </TableCell>
                         </TableRow>
                       );
@@ -260,7 +270,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={patientList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -53,7 +53,7 @@ export default function DashboardApp() {
             <CardJaune title="MAM" nombreM={10} nombreF={50} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <CardRouge title="M-A-S" nombreM={10} nombreF={50} />
+            <CardRouge title="MAS" nombreM={10} nombreF={50} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
