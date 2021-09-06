@@ -54,7 +54,7 @@ export default function PersonnelAddFrom() {
       .email('Adresse mail doit être au format valide')
       .required('Adresse mail requis'),
     password: Yup.string().required('Mot de passe requis'),
-    // sexe: Yup.string().required(),
+    sex: Yup.string().required(),
     isAdmin: Yup.string().required()
   });
 
@@ -66,7 +66,7 @@ export default function PersonnelAddFrom() {
       status: '',
       email: '',
       password: '',
-      // sexe:'',
+      sex: '',
       isAdmin: ''
     },
     validationSchema: RegisterSchema,
@@ -80,8 +80,8 @@ export default function PersonnelAddFrom() {
           prenom_user: values.firstName,
           is_admin: values.isAdmin,
           image_user: 'www.google.com',
-          statut: values.status
-          // sexe:value.sex
+          statut: values.status,
+          sexe_user: values.sex
         })
       );
 
@@ -120,6 +120,21 @@ export default function PersonnelAddFrom() {
               error={Boolean(touched.middleName && errors.middleName)}
               helperText={touched.middleName && errors.middleName}
             />
+            <RadioGroup
+              {...getFieldProps('sex')}
+              error={Boolean(touched.sex && errors.sex)}
+              value={values.sex}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                spacing={1}
+              >
+                <FormLabel component="label">Sexe:</FormLabel>
+                <FormControlLabel value="M" control={<Radio />} label="M" />
+                <FormControlLabel value="F" control={<Radio />} label="F" />
+              </Stack>
+            </RadioGroup>
             <Select
               native
               value={values.status}
