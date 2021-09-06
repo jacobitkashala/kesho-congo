@@ -29,15 +29,35 @@ export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payl
 });
 
 export const deleteUserAsync = createAsyncThunk('users/deleteUserAsync', async (payload) => {
-  const response = await fetch(`https://kesho-congo-api.herokuapp.com/users?id=${payload.id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `bearer ${localStorage.getItem('token')}`
+  const response = await fetch(
+    `https://kesho-congo-api.herokuapp.com/users?id_user=${payload.id_user}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
     }
-  });
+  );
   if (response.ok) {
-    return { id: payload.id };
+    return { id_user: payload.id_user };
+  }
+});
+
+export const getOneUserAsync = createAsyncThunk('users/getOneUserAsync', async () => {
+  const response = await fetch(
+    `https://kesho-congo-api.herokuapp.com/user?id_user=${localStorage.getItem('id_user')}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    }
+  );
+  if (response.ok) {
+    const user = await response.json();
+    return { user };
   }
 });
 
@@ -52,7 +72,13 @@ const userSlice = createSlice({
     },
     [deleteUserAsync.fulfilled]: (state, action) => {
       console.log('fetched successfully');
-      return state.filter((user) => user.id !== action.payload.id);
+      return state.filter((user) => user.id_user !== action.payload.id_user);
+    },
+    [getOneUserAsync.fulfilled]: (state, action) => {
+      console.log('fetched successfully');
+      // return action.payload.user;
+      // console.log(action.payload.user);
+      return action.payload.user;
     }
   }
 });

@@ -6,6 +6,17 @@ import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
+// -------------------MODAL
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+// ----------------------------------------------------------------------
+
+// material
 import {
   Card,
   Table,
@@ -35,8 +46,6 @@ import {
 
 // import USERLIST from '../_mocks_/personnel';
 // import { fakeAuth } from '../fakeAuth';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignRight: false },
@@ -96,10 +105,14 @@ export default function Personnel() {
     setOrderBy(property);
   };
 
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
   const USERLIST = users;
+  console.log(USERLIST);
   useEffect(() => {
+    setLoading(false);
     dispatch(getUsersAsync());
   }, [dispatch]);
 
@@ -170,98 +183,109 @@ export default function Personnel() {
             personnel
           </Button>
         </Stack>
+        {loading ? (
+          <h1>loading...</h1>
+        ) : (
+          <Card>
+            <PersonnelListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
 
-        <Card>
-          <PersonnelListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
-
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <PersonnelListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((user) => {
-                      const { id_user, nom_user, statut, prenom_user, sex, email } = user;
-                      const isItemSelected = selected.indexOf(nom_user) !== -1;
-
-                      return (
-                        <TableRow
-                          hover
-                          key={id_user}
-                          // tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, nom_user)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar
-                                alt={nom_user}
-                                src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
-                              />
-                              <Typography variant="subtitle2" noWrap>
-                                {nom_user}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell>{prenom_user}</TableCell>
-                          <TableCell> {email}</TableCell>
-                          <TableCell>{statut}</TableCell>
-                          <TableCell>{sex}</TableCell>
-                          <TableCell>
-                            <PersonnelMoreMenu value={id_user} />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
+            <Scrollbar>
+              <TableContainer sx={{ minWidth: 800 }}>
+                <Table>
+                  <PersonnelListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={USERLIST.length}
+                    numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                    onSelectAllClick={handleSelectAllClick}
+                  />
                   <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                    {filteredUsers
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((user) => {
+                        const {
+                          id_user,
+                          nom_user,
+                          prenom_user,
+                          email,
+                          sexe_user,
+                          is_admin,
+                          statut
+                        } = user;
+                        const isItemSelected = selected.indexOf(nom_user) !== -1;
 
-          <TablePagination
-            rowsPerPageOptions={[50, 100, 150]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
+                        return (
+                          <TableRow
+                            hover
+                            key={id_user}
+                            // tabIndex={-1}
+                            role="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onChange={(event) => handleClick(event, nom_user)}
+                              />
+                            </TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar
+                                  alt={nom_user}
+                                  src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
+                                />
+                                <Typography variant="subtitle2" noWrap>
+                                  {nom_user}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+                            <TableCell>{prenom_user}</TableCell>
+                            <TableCell> {email}</TableCell>
+                            <TableCell>{statut}</TableCell>
+                            <TableCell>{sexe_user}</TableCell>
+                            <TableCell>
+                              <PersonnelMoreMenu value={id_user} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                  {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+
+            <TablePagination
+              rowsPerPageOptions={[50, 100, 150]}
+              component="div"
+              count={USERLIST.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>
+        )}
       </Container>
     </Page>
   ) : (
