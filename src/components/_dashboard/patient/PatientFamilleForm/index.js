@@ -60,9 +60,9 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
-    NomTuteur: Yup.string(),
+    nomTuteur: Yup.string(),
     DateNaissanceMere: Yup.date(),
-    dateN: Yup.date(),
+    dateNaissTuteur: Yup.date(),
     MereEnceinte: Yup.string(),
     PossederTeleRadio: Yup.string(),
     ProffessionChefMenage: Yup.string(),
@@ -74,17 +74,16 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     VivreAvecParent: Yup.string(),
     Tribut: Yup.string(),
     Religion: Yup.string(),
-    NbrRepasJour: Yup.number().positive('champs requis'),
-    // PerentEnVie: Yup.string().required(),
+    NbrRepasJour: Yup.number(),
     PereEnvie: Yup.string(),
     TailleMenage: Yup.number()
   });
 
   const formik = useFormik({
     initialValues: {
-      NomTuteur: '',
+      nomTuteur: '',
       DateNaissanceMere: '',
-      dateN: '',
+      dateNaissTuteur: '',
       MereEnceinte: '',
       PossederTeleRadio: '',
       ProffessionChefMenage: '',
@@ -96,20 +95,20 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       Tribut: '',
       Religion: '',
       NbrRepasJour: '',
-      // PerentEnVie: '',
       VivreAvecParent: '',
       PereEnvie: '',
       TailleMenage: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (FamalyData) => {
-      SetDataPatient((current) => ({ ...current, FamalyData }));
+    onSubmit: () => {
+      // SetDataPatient((current) => ({ ...current, FamalyData }));
       NextStep();
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   console.log(errors);
+  console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -122,13 +121,15 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               <Stack spacing={3}>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
                   label="Nom de tuteur"
-                  value={values.NomTuteur}
-                  {...getFieldProps('NomTuteur')}
+                  value={values.nomTuteur}
+                  {...getFieldProps('nomTuteur')}
+                  error={Boolean(touched.nomTuteur && errors.nomTuteur)}
                 />
                 <RadioGroup
                   {...getFieldProps('VivreAvecParent')}
-                  error={Boolean(touched.VivreAvecParent && errors.VivreAvecParent)}
+                  // error={Boolean(touched.VivreAvecParent && errors.VivreAvecParent)}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -144,8 +145,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="date"
-                  {...getFieldProps('dateN')}
-                  error={Boolean(touched.dateN && errors.dateN)}
+                  {...getFieldProps('dateNaissTuteur')}
+                  error={Boolean(touched.dateNaissTuteur && errors.dateNaissTuteur)}
                 />
                 <RadioGroup
                   {...getFieldProps('MereEnceinte')}
@@ -267,8 +268,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   native
                   selected={values.StatutMarital}
-                  {...getFieldProps('StatutMarital')}
-                  error={Boolean(touched.StatutMarital && errors.StatutMarital)}
+                  // {...getFieldProps('StatutMarital')}
+                  // error={Boolean(touched.StatutMarital && errors.StatutMarital)}
                 >
                   <option value="" selected disabled hidden>
                     Statut marital
@@ -281,8 +282,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
-                  Value={values.PereMariage}
-                  {...getFieldProps('PereMariage')}
+                  // Value={values.PereMariage}
+                  // {...getFieldProps('PereMariage')}
                   error={Boolean(touched.PereMariage && errors.PereMariage)}
                 >
                   <option value="" selected disabled hidden>
@@ -295,8 +296,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   label="Nombre enfant"
-                  selected={values.NbreEnfant}
-                  {...getFieldProps('NbreEnfant')}
+                  // value={values.NbreEnfant}
+                  // {...getFieldProps('NbreEnfant')}
                   error={Boolean(touched.NbreEnfant && errors.NbreEnfant)}
                 />
                 <Select
@@ -379,7 +380,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
           <LoadingButton
             type="submit"
             variant="contained"
-            loading={isSubmitting}
+            // loading={isSubmitting}
+            onClick={() => {
+              NextStep();
+            }}
             size="large"
             sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >

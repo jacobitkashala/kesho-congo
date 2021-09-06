@@ -243,7 +243,7 @@ export default function Patient() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <PatientMoreMenu id={id_patient} />
+                            <PatientMoreMenu id_patient={id_patient} />
                           </TableCell>
                         </TableRow>
                       );

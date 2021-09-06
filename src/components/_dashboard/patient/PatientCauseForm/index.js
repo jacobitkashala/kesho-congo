@@ -106,6 +106,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       PreciserCalendrierVaccinNonJour: '',
       AsphyxiePrerinatale: '',
       TailleFratrie: '',
+      MasFratrie: '',
       TerrainVih: '',
       NombreChute: '',
       VaccinatioRougeole: '',
@@ -207,7 +208,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="text"
-                  label="Poids de naissance(gr)"
+                  label="Poids de naissance (Gr)"
                   value={values.PoidsNaissance}
                   {...getFieldProps('PoidsNaissance')}
                   error={Boolean(touched.PoidsNaissance && errors.PoidsNaissance)}
@@ -322,12 +323,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Calendrier vaccinal
                   </option>
-                  <option value="A jour">A jour</option>
-                  <option value="Non à jour">Non à jour</option>
+                  <option value="Calendrier vaccinal a jour">Calendrier vaccinal a jour</option>
+                  <option value="Calendrier vaccinal non à jour">
+                    Calendrier vaccinal non à jour
+                  </option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  label="Si non à jour veuillez préciser le vaccin non recu ..."
+                  label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
                   {...getFieldProps('PreciserCalendrierVaccinNonJour')}
                   error={Boolean(
                     touched.PreciserCalendrierVaccinNonJour &&
@@ -401,7 +404,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 />
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
-                  type="text"
                   label="Taille de la fratrie"
                   {...getFieldProps('VaccinatioRougeole')}
                   error={Boolean(touched.VaccinatioRougeole && errors.VaccinatioRougeole)}
@@ -421,9 +423,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
-        {/* <Typography variant="h5" sx={{ textAlign: 'center' }}>
-          2/3
-        </Typography> */}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}

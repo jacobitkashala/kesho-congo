@@ -128,7 +128,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="prenom"
                   type="text"
                   label="Prénom Patient"
-                  // value={`${values.FirstName}?${values.FirstName}:${IdentiteData.FirstName}`}
+                  value={values.FirstName}
                   {...getFieldProps('FirstName')}
                   error={Boolean(touched.FirstName && errors.FirstName)}
                 />
@@ -139,7 +139,6 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   type="text"
                   label="Nom patient"
                   value={values.Name}
-                  // value={`${IdentiteData}?IdentiteData.Name`}
                   {...getFieldProps('Name')}
                   error={Boolean(touched.Name && errors.Name)}
                 />
@@ -150,7 +149,6 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   type="text"
                   label="Postnom patient"
                   value={values.LastName}
-                  // value={`${IdentiteData}?IdentiteData.LastName`}
                   {...getFieldProps('LastName')}
                   error={Boolean(touched.LastName && errors.LastName)}
                 />
@@ -195,7 +193,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   error={Boolean(touched.ModeArrive && errors.ModeArrive)}
                 >
                   <option value="" selected disabled hidden>
-                    Mode d'arriver Patient
+                    Mode d'arriver
                   </option>
                   <option value="De la maison"> De la maison</option>
                   <option value="UNT">UNT</option>
@@ -232,7 +230,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   value={values.Pc}
-                  label="perimetre cranien du patient (cm)"
+                  label="Périmètre cranien (Cm)"
                   {...getFieldProps('Pc')}
                   error={Boolean(touched.Pc && errors.Pc)}
                 />
@@ -241,7 +239,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   autoComplete="Taille"
                   type="text"
-                  label="Taille(cm)"
+                  label="Taille (Cm)"
                   value={values.Taille}
                   {...getFieldProps('Taille')}
                   error={Boolean(touched.Taille && errors.Taille)}
@@ -249,7 +247,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  label="périmètre brachial du patient (cm)"
+                  label="périmètre brachial du patient (Cm)"
                   {...getFieldProps('Pb')}
                   error={Boolean(touched.Pb && errors.Pb)}
                 />

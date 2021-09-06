@@ -62,7 +62,6 @@ export default function NewPatient() {
         <Typography variant="h4">Nouveau Patient</Typography>
       </Box>
       <div className="progress-bar-total">
-        {/* <div className="" /> */}
         <div className="progress-step progress-step-active" data-title="Indentité" />
         <div
           className={`progress-step  ${Step >= 2 && 'progress-step-active'}`}
@@ -71,6 +70,10 @@ export default function NewPatient() {
         <div
           className={`progress-step  ${Step >= 3 && 'progress-step-active'}`}
           data-title="Famille"
+        />
+        <div
+          className={`progress-step  ${Step >= 4 && 'progress-step-active'}`}
+          data-title="Valider"
         />
       </div>
       <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'center' }} spacing={2}>

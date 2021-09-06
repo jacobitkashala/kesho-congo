@@ -16,13 +16,13 @@ import { deletePatientAsync } from '../../../redux/reducers/patientSlice';
 // PatientMoreMenu.PropTypes = {
 //   id: PropTypes.string
 // };
-export default function PatientMoreMenu({ id }) {
+export default function PatientMoreMenu({ id_patient }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useDispatch();
   const handleDeleteClick = () => {
-    dispatch(deletePatientAsync({ id }));
+    dispatch(deletePatientAsync({ id: id_patient }));
   };
   return (
     <>
