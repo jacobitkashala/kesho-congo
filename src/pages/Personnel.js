@@ -98,7 +98,6 @@ export default function Personnel() {
 
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
-  console.log(users);
   const USERLIST = users;
   useEffect(() => {
     dispatch(getUsersAsync());

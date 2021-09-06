@@ -10,7 +10,7 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 // components
 import MenuPopover from '../../components/MenuPopover';
 //
-import account from '../../_mocks_/account';
+// import account from '../../_mocks_/account';
 import { fakeAuth } from '../../fakeAuth';
 
 // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ export default function AccountPopover() {
   };
 
   const navigate = useNavigate();
-
+  console.log(localStorage.getItem('name'));
   return (
     <>
       <IconButton
@@ -80,7 +80,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 2.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {localStorage.getItem('name')}
           </Typography>
         </Box>
 

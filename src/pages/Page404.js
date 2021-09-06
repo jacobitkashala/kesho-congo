@@ -32,7 +32,7 @@ export default function Page404() {
             </motion.div>
             <Typography sx={{ color: 'text.secondary' }}>page introuvable</Typography>
             <Button to="/" size="large" variant="contained" component={RouterLink}>
-              Go to Home
+              Page de connexion
             </Button>
           </Box>
         </MotionContainer>

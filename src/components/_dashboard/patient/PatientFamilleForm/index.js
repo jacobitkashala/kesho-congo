@@ -100,13 +100,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       TailleMenage: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: (FamalyData) => {
       // SetDataPatient((current) => ({ ...current, FamalyData }));
       NextStep();
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, values } = formik;
   console.log(errors);
   console.log(values);
   return (

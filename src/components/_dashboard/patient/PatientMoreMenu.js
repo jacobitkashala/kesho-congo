@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -13,9 +13,10 @@ import { deletePatientAsync } from '../../../redux/reducers/patientSlice';
 
 // ----------------------------------------------------------------------
 
-// PatientMoreMenu.PropTypes = {
-//   id: PropTypes.string
-// };
+PatientMoreMenu.propTypes = {
+  id_patient: propTypes.string
+};
+
 export default function PatientMoreMenu({ id_patient }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);

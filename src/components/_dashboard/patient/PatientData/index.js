@@ -43,7 +43,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               width: '40%',
               height: '32%'
             }}
-            alt={indentity.Name}
+            alt="N"
             src={`/static/mock-images/avatars/avatar_${1}.jpg`}
           />
           <InputLabel>Nom: jon</InputLabel>

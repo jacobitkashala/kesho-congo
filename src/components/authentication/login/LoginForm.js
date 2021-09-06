@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Axios from 'axios';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -15,7 +15,7 @@ export default function LoginForm() {
   // ----------------------------------------------------------------------
 
   const [registered, setRegistered] = useState(false);
-  const [loggedIn, setLoggedIn] = useState('');
+  // const [loggedIn, setLoggedIn] = useState('');
   const [error, setError] = useState('');
   Axios.defaults.withCredentials = true;
 
@@ -60,6 +60,7 @@ export default function LoginForm() {
           });
         })
         .catch((err) => {
+          console.log(err);
           setRegistered(false);
           setError(!error);
           formik.isSubmitting = false;

@@ -72,7 +72,10 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -81,9 +84,9 @@ export default function Patient() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const dispatch = useDispatch();
   const { patients } = useSelector((state) => state);
   const patientList = patients;
@@ -99,7 +102,7 @@ export default function Patient() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = patientList.map((n) => n.name);
+      const newSelecteds = patientList.map((n) => n.nom_patient);
       setSelected(newSelecteds);
       return;
     }
@@ -268,7 +271,7 @@ export default function Patient() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[50, 100, 150]}
             component="div"
             count={patientList.length}
             rowsPerPage={rowsPerPage}

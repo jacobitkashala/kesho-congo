@@ -12,6 +12,7 @@ export const getPatientsAsync = createAsyncThunk('patient/getPatientAsync', asyn
     const patients = await response.json();
     return { patients };
   }
+  return [];
 });
 // export const addUsersAsync = createAsyncThunk('patient/addPatient', async (payload) => {
 //   const response = await fetch('https://kesho-congo-api.herokuapp.com/patients', {
@@ -42,6 +43,7 @@ export const deletePatientAsync = createAsyncThunk(
     if (response.ok) {
       return { id: payload.id };
     }
+    return [];
   }
 );
 

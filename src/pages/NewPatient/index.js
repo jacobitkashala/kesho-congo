@@ -50,11 +50,6 @@ export default function NewPatient() {
         return null;
     }
   };
-  const ProgressBar = (() => {
-    if (Step >= 1) return 'progressfist';
-    if (Step >= 3) return 'progressmiddle';
-    return 'progresslast';
-  })();
 
   return isAuth ? (
     <Page>
