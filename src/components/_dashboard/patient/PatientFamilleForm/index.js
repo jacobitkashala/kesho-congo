@@ -101,7 +101,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
-      // SetDataPatient((current) => ({ ...current, FamalyData }));
+      SetDataPatient((current) => ({ ...current, FamalyData }));
       NextStep();
     }
   });

@@ -64,6 +64,13 @@ export default function PersonnelAddFrom() {
   const [lName, setLname] = useState(true);
   const [middleInitial, setMiddleInitial] = useState(true);
   const [pword, setPword] = useState(true);
+
+  const location = useLocation();
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+  useEffect(() => {
+    setIsAuth(isAuth);
+  }, [isAuth]);
+
   const handleFName = () => {
     setFname(false);
   };
@@ -116,12 +123,6 @@ export default function PersonnelAddFrom() {
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   // };
-  const location = useLocation();
-  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-  useEffect(() => {
-    setIsAuth(isAuth);
-  }, [isAuth]);
-
   return isAuth ? (
     <Border>
       <Div>

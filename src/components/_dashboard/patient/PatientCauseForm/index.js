@@ -10,7 +10,7 @@ import {
   // MenuItem,
   Stack,
   TextField,
-  Typography,
+  // Typography,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -64,42 +64,53 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [CauseData, SetCauseData] = useState({});
 
   const RegisterSchema = Yup.object().shape({
-    PoidsNaissance: Yup.number(),
-    LieuAccouchement: Yup.string(),
-    SejourNeo: Yup.string(),
-    MasFratrie: Yup.string(),
-    MatcdMas: Yup.string(),
-    AtcdRougeole: Yup.string(),
-    TbcChezParent: Yup.string(),
-    TbcLequel: Yup.string(),
-    TbcTraiter: Yup.string(),
-    Tdc: Yup.string(),
-    Termegrossesse: Yup.string(),
-    CalendrierVaccin: Yup.string(),
+    PoidsNaissance: Yup.number().required(),
+    lieu_accouchement: Yup.string().required('*'),
+    SejourNeo: Yup.string().required(),
+    MasFratrie: Yup.string().required(),
+    MatcdMas: Yup.string().required(),
+    AtcdRougeole: Yup.string().required(),
+    TbcChezParent: Yup.string().required(),
+    TbcLequel: Yup.string().required(),
+    TbcTraiter: Yup.string().required(),
+    Tdc: Yup.string().required().required('*'),
+    hospitalisation_recente: Yup.string().required('*'),
+    diagnostique_hospitalisation: Yup.string(),
+    Tdc_duree_traitement: Yup.number().required('*'),
+    Termegrossesse: Yup.string().required('*'),
+    CalendrierVaccin: Yup.string().required('*'),
+    atcd_du_tbc_dans_fratrie: Yup.string().required('*'),
     PreciserCalendrierVaccinNonJour: Yup.string('Veuillez inserer quelque choses'),
-    AsphyxiePrerinatale: Yup.string(),
-    RangFratrie: Yup.string(),
-    TerrainVih: Yup.string(),
-    NombreChute: Yup.number().positive(),
-    VaccinatioRougeole: Yup.string(),
-    Eig: Yup.number(),
-    TbcGuerie: Yup.string(),
-    Dpm: Yup.string(),
+    AsphyxiePrerinatale: Yup.string().required('*'),
+    RangFratrie: Yup.string().required('*'),
+    atcd_mas: Yup.string().required('*'),
+    TerrainVih: Yup.string().required('*'),
+    NombreChute: Yup.number().positive().required('*'),
+    VaccinatioRougeole: Yup.string().required('*'),
+    Eig: Yup.number().required('*'),
+    TbcGuerie: Yup.string().required('*'),
+    Dpm: Yup.string().required('*'),
+    cocktail_atb: Yup.string().required('*'),
+    cocktail_atb_preci: Yup.string().required('*'),
+    // duree_prise_tcb: Yup.string().required('*'),
     DpmAnormalPrecision: Yup.string('Veuillez inserer quelque choses')
   });
 
   const formik = useFormik({
     initialValues: {
+      atcd_mas: '',
       RangFratrie: '',
-      PoidsNaissance: '',
+      lieu_accouchement: '',
       LieuAccouchement: '',
       SejourNeo: '',
+      cocktail_atb_preci: '',
+      cocktail_atb: '',
       MatcdMas: '',
       AtcdRougeole: '',
       TbcChezParent: '',
       TbcLequel: '',
       TbcTraiter: '',
-      Tdc: '',
+      Tdc_duree_traitement: '',
       TbcGuerie: '',
       Termegrossesse: '',
       CalendrierVaccin: '',
@@ -112,7 +123,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       VaccinatioRougeole: '',
       Eig: '',
       Dpm: '',
-      DpmAnormalPrecision: 'Anormal parce que :'
+      hospitalisation_recente: '',
+      diagnostique_hospitalisation: '',
+      atcd_du_tbc_dans_fratrie: '',
+      DpmAnormalPrecision: 'DPM est Anormal parce que :'
     },
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
@@ -124,24 +138,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  // console.log(errors);
   console.log(errors);
+  console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
-            Cause Malnutrition
-          </Typography>
           <SubDiv direction={{ xs: 'column', sm: 'row' }}>
             <SubDivContenaire>
               <Stack spacing={3}>
                 <Select
                   native
                   sx={{ width: '80%', padding: '2px' }}
-                  value={values.LieuAccouchement}
-                  error={Boolean(touched.LieuAccouchement && errors.LieuAccouchement)}
-                  {...getFieldProps('LieuAccouchement')}
+                  value={values.lieu_accouchement}
+                  error={Boolean(touched.lieu_accouchement && errors.lieu_accouchement)}
+                  {...getFieldProps('lieu_accouchement')}
                 >
                   <option value="" selected disabled hidden>
                     Lieu d'acchement patient
@@ -164,47 +175,48 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
-                  <TextField
-                    sx={{ width: '80%', padding: '2px' }}
-                    label="EIG moyen (année)"
-                    {...getFieldProps('Eig')}
-                    error={Boolean(touched.Eig && errors.Eig)}
-                  />
-                  <RadioGroup
-                    {...getFieldProps('MatcdMas')}
-                    error={Boolean(touched.MatcdMas && errors.MatcdMas)}
-                  >
-                    <Stack
-                      direction={{ xs: 'column', sm: 'row' }}
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      spacing={1}
-                    >
-                      <FormLabel component="label">MATCD de MAS:</FormLabel>
-                      <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                      <FormControlLabel value="Non" control={<Radio />} label="Non" />
-                    </Stack>
-                  </RadioGroup>
-                  <TextField
-                    sx={{ width: '80%', padding: '2px' }}
-                    label="Rang dans la fratrie"
-                    {...getFieldProps('RangFratrie')}
-                    error={Boolean(touched.RangFratrie && errors.RangFratrie)}
-                  />
-                  <RadioGroup
-                    {...getFieldProps('MasFratrie')}
-                    error={Boolean(touched.MasFratrie && errors.MasFratrie)}
-                  >
-                    <Stack
-                      direction={{ xs: 'column', sm: 'row' }}
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      spacing={1}
-                    >
-                      <FormLabel component="label">MAS dans la fratrie:</FormLabel>
-                      <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                      <FormControlLabel value="Non" control={<Radio />} label="Non" />
-                    </Stack>
-                  </RadioGroup>
                 </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="EIG moyen (année)"
+                  {...getFieldProps('Eig')}
+                  error={Boolean(touched.Eig && errors.Eig)}
+                />
+                <RadioGroup
+                  {...getFieldProps('MatcdMas')}
+                  error={Boolean(touched.MatcdMas && errors.MatcdMas)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">MATCD de MAS:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="Rang dans la fratrie"
+                  {...getFieldProps('RangFratrie')}
+                  error={Boolean(touched.RangFratrie && errors.RangFratrie)}
+                />
+                <RadioGroup
+                  {...getFieldProps('MasFratrie')}
+                  error={Boolean(touched.MasFratrie && errors.MasFratrie)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">MAS dans la fratrie:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="text"
@@ -293,11 +305,42 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Tbc déclarée guérie:</FormLabel>
+                    <FormLabel component="label">TBC déclarée guérie:</FormLabel>
                     <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Durée de traitement TBC"
+                  {...getFieldProps('Tdc_duree_traitement')}
+                  error={Boolean(touched.Tdc_duree_traitement && errors.Tdc_duree_traitement)}
+                />
+                <RadioGroup
+                  sx={{ width: '80%' }}
+                  {...getFieldProps('hospitalisation_recente')}
+                  error={Boolean(touched.hospitalisation_recente && errors.hospitalisation_recente)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">Hospitalisation récente:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Diagnostic hopital"
+                  {...getFieldProps('diagnostique_hospitalisation')}
+                  error={Boolean(
+                    touched.diagnostique_hospitalisation && errors.diagnostique_hospitalisation
+                  )}
+                />
               </Stack>
             </SubDivContenaire>
             <SubDivContenaire>
@@ -337,6 +380,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                       errors.PreciserCalendrierVaccinNonJour
                   )}
                 />
+                <RadioGroup
+                  sx={{ width: '80%' }}
+                  {...getFieldProps('atcd_mas')}
+                  error={Boolean(touched.atcd_mas && errors.atcd_mas)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">ATCD de MAS:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
                 <Select
                   native
                   sx={{ width: '80%' }}
@@ -414,6 +472,47 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Vaccination rougeole:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <RadioGroup
+                  sx={{ width: '80%', padding: '2px' }}
+                  label="Taille de la fratrie"
+                  {...getFieldProps('cocktail_atb')}
+                  error={Boolean(touched.cocktail_atb && errors.cocktail_atb)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">Notion de prise de cocktail d’ATB</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  type="text"
+                  label="Si notion de prise de cocktail est Oui, veuillez préciser la durée"
+                  {...getFieldProps('cocktail_atb_preci')}
+                  error={Boolean(touched.cocktail_atb_preci && errors.cocktail_atb_preci)}
+                />
+                <RadioGroup
+                  sx={{ width: '80%' }}
+                  {...getFieldProps('atcd_du_tbc_dans_fratrie')}
+                  error={Boolean(
+                    touched.atcd_du_tbc_dans_fratrie && errors.atcd_du_tbc_dans_fratrie
+                  )}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">ATCD de TBC dans la fratrie:</FormLabel>
                     <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
