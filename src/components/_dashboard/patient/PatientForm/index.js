@@ -76,7 +76,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     mode_arrive: Yup.string().required('*'),
     fin_allaitement: Yup.number().required('*'),
     typeMalnutrition: Yup.string().required('*'),
-    finAlletement: Yup.string().required('*'),
+    finAlletement: Yup.string(),
+    allaitementExclisif: Yup.string().required('*'),
     // mois_finAllaitement: Yup.string().min(1).required('*'),
     diversification_aliment: Yup.string().required('*'),
     telephone: Yup.string().min(10).max(13).required('*'),
@@ -234,18 +235,35 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  label="Mois fin alletement"
-                  {...getFieldProps('finAlletement')}
-                  value={values.finAlletement}
-                  error={Boolean(touched.finAlletement && errors.finAlletement)}
-                />
-                <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
                   label="Age (en mois)"
                   {...getFieldProps('age_patient')}
                   value={values.age_patient}
                   error={Boolean(touched.age_patient && errors.age_patient)}
+                />
+                <RadioGroup
+                  {...getFieldProps('sexe_patient')}
+                  error={Boolean(touched.allaitementExclisif && errors.allaitementExclisif)}
+                  // value={values.Sexe}
+                  // setValues={values.Sexe}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                    error={Boolean(touched.allaitementExclisif && errors.allaitementExclisif)}
+                  >
+                    <FormLabel component="label">Allaitement exclusif jusqu’à 6mois:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Mois fin alletement"
+                  {...getFieldProps('finAlletement')}
+                  value={values.finAlletement}
+                  error={Boolean(touched.finAlletement && errors.finAlletement)}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
