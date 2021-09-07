@@ -235,30 +235,54 @@ hobed bayekula  8 h 56
     // add table famille
 
     const {
-      taille_famille,
-      vivre_deux_parents,
-      mere_enceinte,
-      mere_en_vie,
-      pere_en_vie,
-      profession_mere,
-      profession_chef_menage,
-      age_mere,
-      scolarite_mere,
+      id_famille char(36) 
+taille_menage int 
+vivre_deux_parents tinyint(1) 
+nom_tuteur varchar(255) 
+date_naissance_tuteur date 
+mere_enceinte varchar(255) 
+pere_en_vie tinyint(1) 
+mere_en_vie tinyint(1) 
+age_mere int 
+profession_mere varchar(255) 
+profession_chef_menage varchar(255) 
+scolarite_mere varchar(255) 
+contraception_mere tinyint(1) 
+type_contraception varchar(255) 
+contraception_naturelle varchar(255) 
+contraception_moderne varchar(255) 
+niveau_socioeconomique varchar(255) 
+statut_marital varchar(255) 
+type_statut_marital varchar(255) 
+nbre_femme_pere int 
+tribu varchar(255) 
+religion varchar(255) 
+posseder_radio_tele tinyint(1) 
+nbre_repas int 
+consommation_poisson tinyint(1) 
+atb tinyint(1) 
+liste_atb text 
+tbc_parents tinyint(1) 
+tbc_chez varchar(255) 
+tbc_gueris tinyint(1) 
+duree_traitement_tbc varchar(255) 
+tbc_declarer_finie tinyint(1)
+
       contraception_mere,
       contraception_moderne,
-      niveau_socioeconomique,
-      statut_marital,
+      niveau_socioeconomique,ok
+      statut_marital,ok
       nbre_femme_pere,
-      tribu,
-      religion,
-      posseder_radio_tele,
-      nbre_repas,
+      tribu,ok
+      religion,ok
+      posseder_radio_tele,ok
+      nbre_repas,ok
       consommation_poisson,
-      atb,
-      liste_atb,
-      tbc_chez_parents,
-      tbc_chez,
-      tbc_gueris,
-      duree_traitement_tbc,
-      tbc_declarer_finie,
-      nom_tuteur,
+      atb,ok
+      liste_atb,ok
+      tbc_chez_parents,ok
+      tbc_chez,ok
+      tbc_gueris,ok
+      duree_traitement_tbc,ok
+      tbc_declarer_finie,ok
+      nom_tuteur,ok

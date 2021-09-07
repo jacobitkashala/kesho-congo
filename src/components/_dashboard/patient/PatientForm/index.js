@@ -69,16 +69,17 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     nom_patient: Yup.string().required('*'),
     postnom_patient: Yup.string().required('*'),
     prenom_patient: Yup.string().required('*'),
-    poids_naissance: Yup.string().required('*'),
+    poids_naissance: Yup.number().required('*'),
     sexe_patient: Yup.string().required('*'),
-    age_patient: Yup.string().required('*'),
+    age_patient: Yup.number().required('*'),
     provenance_patient: Yup.string().required('*'),
-    mode_arrive: Yup.string().min(1).required('*'),
+    mode_arrive: Yup.string().required('*'),
     fin_allaitement: Yup.number().required('*'),
     typeMalnutrition: Yup.string().required('*'),
+    finAlletement: Yup.string().required('*'),
     // mois_finAllaitement: Yup.string().min(1).required('*'),
-    diversification_aliment: Yup.string().max(50).required('*'),
-    // telephone: Yup.string().min(10).max(13).required('*'),
+    diversification_aliment: Yup.string().required('*'),
+    telephone: Yup.string().min(10).max(13).required('*'),
     adresse_patient: Yup.string().min(2).max(50).required('*')
   });
 
@@ -90,9 +91,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       prenom_patient: '',
       nom_patient: '',
       postnom_patient: '',
-      // telephone: '',
+      telephone: '',
       diversification_aliment: '',
       // mois_fin_allaitement: '',
+      finAlletement: '',
       sexe_patient: '',
       age_patient: '',
       provenance_patient: '',
@@ -100,7 +102,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       mode_arrive: '',
       explicationAutre: '',
       fin_allaitement: '',
-      explicationProvenance: '',
+      // explicationProvenance: '',
       poids_naissance: '',
       peri_brachail: '',
       typeMalnutrition: ''
@@ -152,6 +154,16 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   // value={values.}
                   {...getFieldProps('postnom_patient')}
                   error={Boolean(touched.postnom_patient && errors.postnom_patient)}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  autoComplete="tel"
+                  type="tel"
+                  label="Téléphone"
+                  value={values.telephone}
+                  {...getFieldProps('telephone')}
+                  error={Boolean(touched.telephone && errors.telephone)}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -219,6 +231,14 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
             </SubDivContenaire>
             <SubDivContenaire>
               <Stack spacing={3}>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Mois fin alletement"
+                  {...getFieldProps('finAlletement')}
+                  value={values.finAlletement}
+                  error={Boolean(touched.finAlletement && errors.finAlletement)}
+                />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth

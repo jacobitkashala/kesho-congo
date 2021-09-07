@@ -76,7 +76,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     Tdc: Yup.string().required(),
     hospitalisation_recente: Yup.string().required('*'),
     diagnostique_hospitalisation: Yup.string(),
-    Tdc_duree_traitement: Yup.number().required('*'),
+    duree_traitement_tbc: Yup.string().required('*'),
     Termegrossesse: Yup.string().required('*'),
     CalendrierVaccin: Yup.string().required('*'),
     atcd_du_tbc_dans_fratrie: Yup.string().required('*'),
@@ -90,8 +90,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     Eig: Yup.number().required('*'),
     TbcGuerie: Yup.string().required('*'),
     Dpm: Yup.string().required('*'),
-    cocktail_atb: Yup.string(),
-    cocktail_atb_preci: Yup.string().required('*'),
+    cocktail_atb: Yup.string().required('*'),
+    cocktail_atb_preci: Yup.string(),
     // duree_prise_tcb: Yup.string().required('*'),
     DpmAnormalPrecision: Yup.string('Veuillez inserer quelque choses')
   });
@@ -110,7 +110,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       TbcChezParent: '',
       TbcLequel: '',
       TbcTraiter: '',
-      Tdc_duree_traitement: '',
+      duree_traitement_tbc: '',
       TbcGuerie: '',
       Termegrossesse: '',
       CalendrierVaccin: '',
@@ -301,8 +301,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   label="Durée de traitement TBC"
-                  {...getFieldProps('Tdc_duree_traitement')}
-                  error={Boolean(touched.Tdc_duree_traitement && errors.Tdc_duree_traitement)}
+                  {...getFieldProps('duree_traitement_tbc')}
+                  error={Boolean(touched.duree_traitement_tbc && errors.duree_traitement_tbc)}
                 />
                 <RadioGroup
                   sx={{ width: '80%' }}

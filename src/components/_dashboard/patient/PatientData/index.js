@@ -25,7 +25,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
-  console.log(DataPatient.FamalyData);
+  console.log(indentity);
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
@@ -44,20 +44,23 @@ export default function PatientData({ DataPatient, PrevStep }) {
               height: '32%'
             }}
             alt="N"
-            src={`/static/mock-images/avatars/avatar_${1}.jpg`}
+            src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
           />
-          <InputLabel>Nom: jon</InputLabel>
-          <InputLabel>Prénom: jjjjd</InputLabel>
-          <InputLabel>Postnom: kknd</InputLabel>
-          <InputLabel>Adresse: kkd</InputLabel>
+          <InputLabel>Nom: {indentity.prenom_patient}</InputLabel>
+          <InputLabel>Prénom: {indentity.prenom_patient}</InputLabel>
+          <InputLabel>Postnom: {indentity.postnom_patient}</InputLabel>
+          <InputLabel>Taille: {indentity.taille} Cm </InputLabel>
+          <InputLabel>Périmètre brachial: {indentity.peri_brachail}</InputLabel>
+          <InputLabel>Périmètre Cranien: {indentity.peri_cranien}</InputLabel>
+          <InputLabel>Provenance: {indentity.provenance_patient}</InputLabel>
+          <InputLabel>Poids Actuel: {indentity.poidsActuel}</InputLabel>
+          <InputLabel>Adresse: {indentity.adresse_patient}</InputLabel>
           <InputLabel>Téléphone: 0815824640</InputLabel>
-          <InputLabel>Sexe: F</InputLabel>
-          <InputLabel>Age en (mois): 48</InputLabel>
-          <InputLabel>Poids: 34 gr</InputLabel>
-          <InputLabel>Perimetre cranien:34</InputLabel>
-          <InputLabel>Taille (Cm): 2 </InputLabel>
-          <InputLabel>Périmètre brachial: 23 </InputLabel>
-          <InputLabel>Provenance: kadutu</InputLabel>
+          <InputLabel>Sexe: {indentity.sexe_patient}</InputLabel>
+          <InputLabel>Age : {indentity.age_patient} mois</InputLabel>
+          <InputLabel>Poids naissance: {indentity.poids_naissance} g</InputLabel>
+          <InputLabel>Mode arriver:{indentity.mode_arrive} </InputLabel>
+          <InputLabel>Diversification aliment :{indentity.diversification_aliment}</InputLabel>
           <div className={classes.demo} />
         </Grid>
         <Grid item xs={12} md={5}>
