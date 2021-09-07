@@ -62,6 +62,10 @@ const SubDivContenaire = styled('div')(() => ({
 export default function PatientForm({ NextStep, SetDataPatient }) {
   const [IdentiteData, SetIdentiteData] = useState({});
   const RegisterSchema = Yup.object().shape({
+    poidsActuel: Yup.number().required('*'),
+    taille: Yup.number().required('*'),
+    peri_brachail: Yup.number().required('*'),
+    peri_cranien: Yup.number().required('*'),
     nom_patient: Yup.string().required('*'),
     postnom_patient: Yup.string().required('*'),
     prenom_patient: Yup.string().required('*'),
@@ -71,18 +75,22 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     provenance_patient: Yup.string().required('*'),
     mode_arrive: Yup.string().min(1).required('*'),
     fin_allaitement: Yup.number().required('*'),
+    typeMalnutrition: Yup.string().required('*'),
     // mois_finAllaitement: Yup.string().min(1).required('*'),
     diversification_aliment: Yup.string().max(50).required('*'),
-    telephone: Yup.string().min(10).max(13).required('*'),
+    // telephone: Yup.string().min(10).max(13).required('*'),
     adresse_patient: Yup.string().min(2).max(50).required('*')
   });
 
   const formik = useFormik({
     initialValues: {
+      taille: '',
+      poidsActuel: '',
+      peri_cranien: '',
       prenom_patient: '',
       nom_patient: '',
       postnom_patient: '',
-      telephone: '',
+      // telephone: '',
       diversification_aliment: '',
       // mois_fin_allaitement: '',
       sexe_patient: '',
@@ -93,7 +101,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       explicationAutre: '',
       fin_allaitement: '',
       explicationProvenance: '',
-      poids_naissance: ''
+      poids_naissance: '',
+      peri_brachail: '',
+      typeMalnutrition: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
@@ -106,14 +116,11 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   console.log(errors);
-  console.log(values);
+  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          {/* <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
-            Identité
-          </Typography> */}
           <SubDiv>
             <SubDivContenaire>
               <Stack spacing={3}>
@@ -154,7 +161,22 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   {...getFieldProps('adresse_patient')}
                   error={Boolean(touched.adresse_patient && errors.adresse_patient)}
                 />
-
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Poid naissance (gr)"
+                  value={values.poids_naissance}
+                  {...getFieldProps('poids_naissance')}
+                  error={Boolean(touched.poids_naissance && errors.poids_naissance)}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  value={values.fin_allaitement}
+                  label="Nombre de mois allaitement"
+                  {...getFieldProps('fin_allaitement')}
+                  error={Boolean(touched.fin_allaitement && errors.fin_allaitement)}
+                />
                 <RadioGroup
                   {...getFieldProps('sexe_patient')}
                   error={Boolean(touched.sexe_patient && errors.sexe_patient)}
@@ -208,27 +230,35 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  label="Poid naissance (gr)"
-                  value={values.poids_naissance}
-                  {...getFieldProps('poids_naissance')}
-                  error={Boolean(touched.poids_naissance && errors.poids_naissance)}
+                  label="périmètre crânien "
+                  {...getFieldProps('peri_cranien')}
+                  value={values.peri_cranien}
+                  error={Boolean(touched.peri_cranien && errors.peri_cranien)}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
-                  value={values.fin_allaitement}
-                  label="Nombre de mois allaitement"
-                  {...getFieldProps('fin_allaitement')}
-                  error={Boolean(touched.fin_allaitement && errors.fin_allaitement)}
+                  label="périmètre branchial"
+                  value={values.peri_brachail}
+                  {...getFieldProps('peri_brachail')}
+                  error={Boolean(touched.peri_brachail && errors.peri_brachail)}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  value={values.poidsActuel}
+                  label="Poids actuelle"
+                  {...getFieldProps('poidsActuel')}
+                  error={Boolean(touched.poidsActuel && errors.poidsActuel)}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
                   type="tel"
-                  label="Téléphone"
-                  value={values.telephone}
-                  {...getFieldProps('telephone')}
-                  error={Boolean(touched.telephone && errors.telephone)}
+                  label="Taille en Cm"
+                  value={values.taille}
+                  {...getFieldProps('taille')}
+                  error={Boolean(touched.taille && errors.taille)}
                 />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
@@ -259,19 +289,48 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   {...getFieldProps('ExplicationProvenance')}
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                 />
+                <Select
+                  native
+                  sx={{ width: '80%', padding: '2px' }}
+                  // value={values.Provenace}
+                  {...getFieldProps('typeMalnutrition')}
+                  error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
+                >
+                  <option value="" selected disabled hidden>
+                    Form de malnutrition
+                  </option>
+                  <option value="Malnutrition aiguê modéré">Malnutrition aiguê modéré</option>
+                  <option value="Malnutrition aiguê sévère">Malnutrition aiguê sévère</option>
+                </Select>
               </Stack>
             </SubDivContenaire>
           </SubDiv>
           <SubDiv />
-          <LoadingButton
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            sx={{ width: 200, margin: 'auto', marginTop: '20px' }}
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
           >
-            Suivant
-          </LoadingButton>
+            {/* <LoadingButton
+              size="large"
+              type="button"
+              variant="contained"
+              onClick={() => {
+                PrevStep();
+              }}
+              sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
+            >
+              Précédant
+            </LoadingButton> */}
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              sx={{ width: 200, margin: 'auto', marginTop: '20px' }}
+            >
+              Suivant
+            </LoadingButton>
+          </Stack>
         </Div>
       </Form>
     </FormikProvider>

@@ -213,41 +213,7 @@ Je pourrais pas être là
 Je vais travailler en remote les gars
 
 hobed bayekula  8 h 56
-// Cause malnutrition
-    const {
-      atcd_mas,ok
-      nbre_chute, ok
-      mas_fratie,ok
-      terme_grossesse, ok
-      sejour_neonat, ok
-      eig, ok
-      lieu_accouchement, ok
-      asphyxie_perinatal,ok
-      cause_dpm,ok
-      dpm,ok
-      caliendrier_vaccinal, ok
-      rang_fratrie,ok
-      taille_fratrie,ok
-      atcd_rougeole_fratrie,ok
-      vaccination_rougeole,ok
-      terrain_vih,ok
-      tbc,ok
-      atcd_du_tbc_dans_fratrie,ok
-      hospitalisation_recente,ok
-      diagnostique_hospitalisation,ok
-      cocktail_atb ,ok
-      duree_prise_atb,ok
-      mas_fratrie, ok
-    } = req.body;
 
-    // Table Parametres Anthropometriques
-    const {
-      peri_cranien,
-      peri_brachail,
-      poids,
-      taille,
-      type_malnutrition,
-    } = req.body;
 
     // Table Patient
     const {

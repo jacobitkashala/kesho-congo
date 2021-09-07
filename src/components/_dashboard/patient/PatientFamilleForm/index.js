@@ -359,9 +359,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
           </SubDiv>
           <SubDiv />
         </Div>
-        {/* <Typography variant="h5" sx={{ textAlign: 'center' }}>
-          3/3
-        </Typography> */}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ display: 'flex', justifyContent: 'center' }}

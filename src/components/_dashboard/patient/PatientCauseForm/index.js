@@ -73,7 +73,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     TbcChezParent: Yup.string().required(),
     TbcLequel: Yup.string().required(),
     TbcTraiter: Yup.string().required(),
-    Tdc: Yup.string().required().required('*'),
+    Tdc: Yup.string().required(),
     hospitalisation_recente: Yup.string().required('*'),
     diagnostique_hospitalisation: Yup.string(),
     Tdc_duree_traitement: Yup.number().required('*'),
@@ -90,7 +90,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     Eig: Yup.number().required('*'),
     TbcGuerie: Yup.string().required('*'),
     Dpm: Yup.string().required('*'),
-    cocktail_atb: Yup.string().required('*'),
+    cocktail_atb: Yup.string(),
     cocktail_atb_preci: Yup.string().required('*'),
     // duree_prise_tcb: Yup.string().required('*'),
     DpmAnormalPrecision: Yup.string('Veuillez inserer quelque choses')
@@ -132,14 +132,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     onSubmit: (CauseMalnutrition) => {
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       SetCauseData(CauseMalnutrition);
-      // console.log(CauseData);
+      console.log(CauseData);
       NextStep();
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   console.log(errors);
-  console.log(values);
+  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -225,19 +225,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('PoidsNaissance')}
                   error={Boolean(touched.PoidsNaissance && errors.PoidsNaissance)}
                 />
-                <Select
-                  native
-                  sx={{ width: '80%' }}
-                  {...getFieldProps('AsphyxiePrerinatale')}
-                  error={Boolean(touched.AsphyxiePrerinatale && errors.AsphyxiePrerinatale)}
-                >
-                  <option value="" selected disabled hidden>
-                    Asphyxie périnatale
-                  </option>
-                  <option value="pas de cri">pas de cri</option>
-                  <option value="a crié spontanément oui">a crié spontanément</option>
-                  <option value="cri après réanimation">cri après réanimation</option>
-                </Select>
                 <RadioGroup
                   sx={{ width: '80%' }}
                   {...getFieldProps('Tdc')}
@@ -476,6 +463,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
+                <Select
+                  native
+                  sx={{ width: '80%' }}
+                  {...getFieldProps('AsphyxiePrerinatale')}
+                  error={Boolean(touched.AsphyxiePrerinatale && errors.AsphyxiePrerinatale)}
+                >
+                  <option value="" selected disabled hidden>
+                    Asphyxie périnatale
+                  </option>
+                  <option value="pas de cri">pas de cri</option>
+                  <option value="a crié spontanément oui">a crié spontanément</option>
+                  <option value="cri après réanimation">cri après réanimation</option>
+                </Select>
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
                   label="Taille de la fratrie"
