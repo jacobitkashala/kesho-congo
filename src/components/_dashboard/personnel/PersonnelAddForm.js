@@ -1,8 +1,13 @@
+import generator from 'generate-password';
+import { useState } from 'react';
+import password from 'secure-random-password';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { BrowserHistory } from 'react-router';
+import Axios from 'axios';
+
 // material
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -18,17 +23,10 @@ import {
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 import { addUsersAsync } from '../../../redux/reducers/userSlice';
 import data from '../../../_mocks_/personnel';
-
-// const AddTodoForm = () => {
-// 	const [value, setValue] = useState('');
-
-// 	const onSubmit = (event) => {
-// 		event.preventDefault();
-// 		console.log('user entered: ' + value);
-// 	};
-// ----------------------------------------------------------------------
+import { fakeAuth } from '../../../fakeAuth';
 
 const Box = styled('div')(({ theme }) => ({
   width: '100%',
@@ -39,8 +37,23 @@ const Box = styled('div')(({ theme }) => ({
 }));
 
 export default function PersonnelAddFrom() {
+  const useStyles = makeStyles((theme) => ({
+    labelRoot: {
+      '&&': {
+        color: 'red'
+      }
+    }
+  }));
+  const classes = useStyles();
+
+  const generatedPassword = generator.generate({
+    length: 5,
+    numbers: true
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().min(1, 'Trop court!').max(50, 'Trop long!').required('Prénom requis'),
@@ -50,46 +63,75 @@ export default function PersonnelAddFrom() {
       .max(50, 'Trop long!')
       .required('Post-nom requis'),
     status: Yup.string().required(),
-    email: Yup.string()
+    myEmail: Yup.string()
       .email('Adresse mail doit être au format valide')
       .required('Adresse mail requis'),
-    password: Yup.string().required('Mot de passe requis'),
+    myPassword: Yup.string().required('Mot de passe requis'),
     sex: Yup.string().required(),
     isAdmin: Yup.string().required()
   });
 
+  const location = useLocation();
+
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const formik = useFormik({
+    enableReinitialize: false,
     initialValues: {
       firstName: '',
       lastName: '',
       middleName: '',
       status: '',
-      email: '',
-      password: '',
+      myEmail: '',
+      myPassword: password.randomPassword({
+        length: 8,
+        characters: [password.lower, password.upper, password.digits]
+      }),
       sex: '',
       isAdmin: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      dispatch(
-        addUsersAsync({
-          email: values.email,
-          password: values.password,
-          nom_user: values.lastName,
-          postnom_user: values.middleName,
-          prenom_user: values.firstName,
-          is_admin: values.isAdmin,
-          image_user: 'www.google.com',
-          statut: values.status,
-          sexe_user: values.sex
+    onSubmit: ({ firstName, lastName, middleName, status, myEmail, myPassword, sex, isAdmin }) => {
+      setLoader(true);
+      Axios.post(
+        `https://kesho-congo-api.herokuapp.com/user/register`,
+        {
+          email: myEmail,
+          password: myPassword,
+          nom_user: lastName,
+          postnom_user: middleName,
+          sexe_user: sex,
+          prenom_user: firstName,
+          is_admin: isAdmin,
+          statut: status
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
+        .then((response) => {
+          setLoader(false);
+          const message = response.data;
+          console.log('Yves', message);
+          fakeAuth.login(() => {
+            navigate(from);
+            navigate('/dashboard/personnel', { replace: true });
+          });
         })
-      );
-
-      navigate('/dashboard/personnel', { replace: true });
+        .catch((err) => {
+          setError(true);
+          setLoader(false);
+          console.log(err);
+        });
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
+    formik;
+
+  // ------------------------------------------------------------------------------------
 
   return (
     <FormikProvider value={formik}>
@@ -154,16 +196,18 @@ export default function PersonnelAddFrom() {
               autoComplete="Email"
               type="email"
               label="Email "
-              {...getFieldProps('email')}
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
+              {...getFieldProps('myEmail')}
+              error={Boolean(touched.myEmail && errors.myEmail)}
+              helperText={touched.myEmail && errors.myEmail}
             />
             <TextField
               fullWidth
               label="Mot de passe"
-              {...getFieldProps('password')}
-              error={Boolean(touched.password && errors.password)}
-              helperText={touched.password && errors.password}
+              value={values.myPassword}
+              onChange={handleChange}
+              {...getFieldProps('myPassword')}
+              error={Boolean(touched.myPassword && errors.myPassword)}
+              helperText={touched.myPassword && errors.myPassword}
             />
             <RadioGroup
               {...getFieldProps('isAdmin')}
@@ -181,12 +225,20 @@ export default function PersonnelAddFrom() {
               </Stack>
             </RadioGroup>
 
+            {error ? (
+              <span className={classes.labelRoot}>
+                Cet adresse mail existe, veuillez entrer un autre adresse mail
+              </span>
+            ) : (
+              ''
+            )}
+
             <LoadingButton
               fullWidth
               size="large"
               type="submit"
               variant="contained"
-              loading={isSubmitting}
+              loading={loader}
             >
               Créer
             </LoadingButton>

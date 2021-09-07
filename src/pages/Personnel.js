@@ -32,6 +32,8 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
@@ -56,10 +58,8 @@ const TABLE_HEAD = [
   { id: '' }
 ];
 
-// ----------------------------------------------------------------------
-
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  if (b[orderBy] > a[orderBy]) {
     return -1;
   }
   if (b[orderBy] > a[orderBy]) {
@@ -91,6 +91,52 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Personnel() {
+  // ----------------------------------USERS--------------------
+  const [usersList, setUsersList] = useState([]);
+
+  const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `bearer ${localStorage.getItem('token')}`
+    }
+  };
+
+  useEffect(() => {
+    fetch(getUsers, options)
+      .then((response) => response.json())
+      .then((data) => {
+        setLoader(false);
+        console.log('myData', data);
+        setUsersList(data);
+        // // formik.setValues(data);
+        // formik.setFieldValue('firstName', data.prenom_user);
+        // formik.setFieldValue('lastName', data.nom_user);
+        // formik.setFieldValue('middleName', data.postnom_user);
+      });
+  }, []);
+
+  const [loader, setLoader] = useState(true);
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      position: 'absolute',
+      left: '60%',
+      top: '45%',
+      zIndex: '100'
+      // transform: 'translate(-50%)'
+    },
+    labelRoot: {
+      '&&': {
+        color: 'red'
+      }
+    }
+  }));
+  const classes = useStyles();
+
+  // ----------------------------------------------------------------------
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -104,21 +150,24 @@ export default function Personnel() {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  // --------------------------REDUX LOGIC-------------------------------
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  const dispatch = useDispatch();
-  const { users } = useSelector((state) => state);
-  const USERLIST = users;
-  console.log(USERLIST);
-  useEffect(() => {
-    setLoading(false);
-    dispatch(getUsersAsync());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+  // const { users } = useSelector((state) => state);
+  // const USERLIST = users;
+  // console.log(USERLIST);
+  // useEffect(() => {
+  //   setLoading(false);
+  //   dispatch(getUsersAsync());
+  // }, [dispatch]);
+
+  // --------------------------REDUX LOGIC-------------------------------
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.nom_user); // ici*******************
+      const newSelecteds = usersList.map((n) => n.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -156,9 +205,9 @@ export default function Personnel() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
   const location = useLocation();
@@ -169,23 +218,25 @@ export default function Personnel() {
 
   return isAuth ? (
     <Page>
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Personnel
-          </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="add_Personnel"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            personnel
-          </Button>
-        </Stack>
-        {loading ? (
-          <h1>loading...</h1>
-        ) : (
+      {loader ? (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Container>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              Personnel
+            </Typography>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="add_Personnel"
+              startIcon={<Icon icon={plusFill} />}
+            >
+              personnel
+            </Button>
+          </Stack>
           <Card>
             <PersonnelListToolbar
               numSelected={selected.length}
@@ -200,7 +251,7 @@ export default function Personnel() {
                     order={order}
                     orderBy={orderBy}
                     headLabel={TABLE_HEAD}
-                    rowCount={USERLIST.length}
+                    rowCount={usersList.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
@@ -278,15 +329,15 @@ export default function Personnel() {
             <TablePagination
               rowsPerPageOptions={[50, 100, 150]}
               component="div"
-              count={USERLIST.length}
+              count={usersList.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Card>
-        )}
-      </Container>
+        </Container>
+      )}
     </Page>
   ) : (
     <Navigate to="/" state={{ from: location }} />

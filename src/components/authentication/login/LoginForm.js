@@ -9,14 +9,16 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
   // ----------------------------------------------------------------------
 
   const [registered, setRegistered] = useState(false);
-  // const [loggedIn, setLoggedIn] = useState('');
-  const [error, setError] = useState('');
+  const [loader, setLoader] = useState(false);
+  const [errorWord, setErrorWord] = useState(false);
   Axios.defaults.withCredentials = true;
 
   const navigate = useNavigate();
@@ -25,6 +27,19 @@ export default function LoginForm() {
 
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      position: 'absolute',
+      left: '73%'
+      // transform: 'translate(-50%,0)'
+    },
+    labelRoot: {
+      '&&': {
+        color: 'red'
+      }
+    }
+  }));
+  const classes = useStyles();
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Votre mail doit être valide').required('Email requis'),
@@ -40,20 +55,19 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }) => {
-      // fakeAuth.login(() => {
-      //   navigate(from);
-      //   navigate('/dashboard/app', { replace: true });
-      // });
+      setLoader(true);
+      setErrorWord(false);
       Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
         email,
         password
       })
         .then((response) => {
-          const { message, token, name, isAdmin, id_user } = response.data;
+          const { message, token, name, isAdmin, id_user, status } = response.data;
           localStorage.setItem('token', token);
           localStorage.setItem('name', name);
           localStorage.setItem('isAdmin', isAdmin);
           localStorage.setItem('id_user', id_user);
+          localStorage.setItem('status', status);
           console.log({ message, token, name, isAdmin });
           fakeAuth.login(() => {
             navigate(from);
@@ -63,14 +77,9 @@ export default function LoginForm() {
         .catch((err) => {
           console.log(err);
           setRegistered(false);
-          setError(!error);
-          formik.isSubmitting = false;
-          // alert(err);
-          // throw err;
-          //
-          //
+          setLoader(false);
+          setErrorWord(true);
         });
-      // navigate('/dashboard/app', { replace: false });
     }
   });
   const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
@@ -121,19 +130,27 @@ export default function LoginForm() {
             mot de passe oublié
           </Link>
         </Stack>
+        {loader ? (
+          <>
+            <div className={classes.root}>
+              <CircularProgress />
+            </div>
+            <br />
+          </>
+        ) : (
+          ''
+        )}
 
-        {registered ? <span>Adresse mail ou mot de passe incorrecte</span> : ''}
+        {errorWord ? (
+          <span className={classes.labelRoot}>Adresse mail ou mot de passe incorrecte</span>
+        ) : (
+          ''
+        )}
         <br />
         <br />
 
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Se connecter
+        <LoadingButton fullWidth size="large" type="submit" variant="contained">
+          Connexion
         </LoadingButton>
       </Form>
     </FormikProvider>

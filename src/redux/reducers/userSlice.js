@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const getUsersAsync = createAsyncThunk('users/getUsersAsync', async () => {
-  const response = await fetch('https://kesho-congo-api.herokuapp.com/users', {
+  const response = await fetch('https://kesho-congo-api.herokuapp.com/user/all', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const getUsersAsync = createAsyncThunk('users/getUsersAsync', async () =>
   }
 });
 export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payload) => {
-  const response = await fetch('https://kesho-congo-api.herokuapp.com/register/user', {
+  const response = await fetch('https://kesho-congo-api.herokuapp.com/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payl
 
 export const deleteUserAsync = createAsyncThunk('users/deleteUserAsync', async (payload) => {
   const response = await fetch(
-    `https://kesho-congo-api.herokuapp.com/users?id_user=${payload.id_user}`,
+    `https://kesho-congo-api.herokuapp.com/user?id_user=${payload.id_user}`,
     {
       method: 'DELETE',
       headers: {
