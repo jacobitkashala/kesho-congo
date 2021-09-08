@@ -72,10 +72,10 @@ export default function PersonnelAddFrom() {
   const [loader2, setLoader2] = useState(false);
   const useStyles = makeStyles((theme) => ({
     root: {
-      position: 'relative',
-      left: '50%',
-      top: '100%',
-      transform: 'translate(-50%)'
+      position: 'absolute',
+      left: '60%',
+      top: '40%'
+      // transform: 'translate(-50%)'
     },
     labelRoot: {
       '&&': {
@@ -207,108 +207,110 @@ export default function PersonnelAddFrom() {
   }, [isAuth]);
 
   return isAuth ? (
-    <Border>
-      <Div>
-        {loader ? (
-          <div className={classes.root}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <FormikProvider value={formik}>
-            <Form onSubmit={handleSubmit}>
-              <Box sx={{ pb: 5 }}>
-                <Typography variant="h4">Mes Informations</Typography>
-              </Box>
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="Prénom"
-                  value={values.firstName}
-                  onChange={handleChange}
-                  disabled={fName}
-                  {...getFieldProps('firstName')}
-                  error={Boolean(touched.firstName && errors.firstName)}
-                  helperText={touched.firstName && errors.firstName}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="right" onClick={handleFName}>
-                        <CreateIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+    <>
+      {loader ? (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Border>
+          <Div>
+            <FormikProvider value={formik}>
+              <Form onSubmit={handleSubmit}>
+                <Box sx={{ pb: 5 }}>
+                  <Typography variant="h4">Mes Informations</Typography>
+                </Box>
+                <Stack spacing={3}>
+                  <TextField
+                    fullWidth
+                    label="Prénom"
+                    value={values.firstName}
+                    onChange={handleChange}
+                    disabled={fName}
+                    {...getFieldProps('firstName')}
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="right" onClick={handleFName}>
+                          <CreateIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Nom"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  disabled={lName}
-                  {...getFieldProps('lastName')}
-                  error={Boolean(touched.lastName && errors.lastName)}
-                  helperText={touched.lastName && errors.lastName}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="right" onClick={handleLName}>
-                        <CreateIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                  <TextField
+                    fullWidth
+                    label="Nom"
+                    value={values.lastName}
+                    onChange={handleChange}
+                    disabled={lName}
+                    {...getFieldProps('lastName')}
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    helperText={touched.lastName && errors.lastName}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="right" onClick={handleLName}>
+                          <CreateIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Post-nom"
-                  value={values.middleName}
-                  disabled={middleInitial}
-                  onChange={handleChange}
-                  {...getFieldProps('middleName')}
-                  error={Boolean(touched.middleName && errors.middleName)}
-                  helperText={touched.middleName && errors.middleName}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end" onClick={handleMiddleInitial}>
-                        <CreateIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                  <TextField
+                    fullWidth
+                    label="Post-nom"
+                    value={values.middleName}
+                    disabled={middleInitial}
+                    onChange={handleChange}
+                    {...getFieldProps('middleName')}
+                    error={Boolean(touched.middleName && errors.middleName)}
+                    helperText={touched.middleName && errors.middleName}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end" onClick={handleMiddleInitial}>
+                          <CreateIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
 
-                <TextField
-                  fullWidth
-                  autoComplete="current-password"
-                  type={showPassword2 ? 'text' : 'password'}
-                  label="Nouveau Mot de passe"
-                  {...getFieldProps('newPassword')}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleShowPassword2} edge="end">
-                          <Icon icon={showPassword2 ? eyeFill : eyeOffFill} />
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                  error={Boolean(touched.newassword && errors.newPassword)}
-                  helperText={touched.newPassword && errors.newPassword}
-                  onChange={formik.handleChange}
-                  value={formik.values.newPassword}
-                />
-                <LoadingButton
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  loading={loader2}
-                >
-                  Mettre à jour
-                </LoadingButton>
-              </Stack>
-            </Form>
-          </FormikProvider>
-        )}
-      </Div>
-    </Border>
+                  <TextField
+                    fullWidth
+                    autoComplete="current-password"
+                    type={showPassword2 ? 'text' : 'password'}
+                    label="Nouveau Mot de passe"
+                    {...getFieldProps('newPassword')}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword2} edge="end">
+                            <Icon icon={showPassword2 ? eyeFill : eyeOffFill} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.newassword && errors.newPassword)}
+                    helperText={touched.newPassword && errors.newPassword}
+                    onChange={formik.handleChange}
+                    value={formik.values.newPassword}
+                  />
+                  <LoadingButton
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={loader2}
+                  >
+                    Mettre à jour
+                  </LoadingButton>
+                </Stack>
+              </Form>
+            </FormikProvider>
+          </Div>
+        </Border>
+      )}
+    </>
   ) : (
     <Navigate to="/" state={{ from: location }} />
   );
