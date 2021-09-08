@@ -71,10 +71,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string(),
     nbrEnfant: Yup.number().required('*'),
+    nbrFemme: Yup.number(),
     NiveauSocioEconomique: Yup.string().required('*'),
     statutMarital: Yup.string(),
     typeContraceptionNaturel: Yup.string('*'),
     mereEnVie: Yup.string(),
+    dateNaissanceChefMenage: Yup.date().required('*'),
     vivreAvecParent: Yup.string().required('*'),
     Tribut: Yup.string().required('*'),
     Religion: Yup.string().required('*'),
@@ -107,9 +109,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       NiveauSocioEconomique: '',
       statutMarital: '',
       Tribut: '',
+      dateNaissanceChefMenage: '',
       Religion: '',
       NbrRepasJour: '',
       pereEnvie: '',
+      nbrFemme: '',
       tailleMenage: '',
       contraceptionType: ''
     },
@@ -275,6 +279,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </option>
                   <option value="Cultivatrice">Cultivatrice</option>
                 </Select>
+                <InputLabel>Date de naissance Chef ménage</InputLabel>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  type="date"
+                  {...getFieldProps('dateNaissanceChefMenage')}
+                  error={Boolean(touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage)}
+                />
                 <RadioGroup
                   {...getFieldProps('PossederTeleRadio')}
                   error={Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio)}
@@ -329,6 +340,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   value={values.nbrEnfant}
                   {...getFieldProps('nbrEnfant')}
                   error={Boolean(touched.nbrEnfant && errors.nbrEnfant)}
+                />
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Si Polygame nbre de femme"
+                  value={values.nbrFemme}
+                  {...getFieldProps('nbrFemme')}
+                  error={Boolean(touched.nbrFemme && errors.nbrFemme)}
                 />
                 <RadioGroup
                   {...getFieldProps('contraceptionMere')}

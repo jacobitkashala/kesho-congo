@@ -64,7 +64,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [CauseData, SetCauseData] = useState({});
 
   const RegisterSchema = Yup.object().shape({
-    PoidsNaissance: Yup.number().required(),
+    // PoidsNaissance: Yup.number().required(),
     lieu_accouchement: Yup.string().required('*'),
     SejourNeo: Yup.string().required(),
     MasFratrie: Yup.string().required(),
@@ -84,6 +84,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     AsphyxiePrerinatale: Yup.string().required('*'),
     RangFratrie: Yup.string().required('*'),
     atcd_mas: Yup.string().required('*'),
+    produitPlante: Yup.string().required('*'),
     TerrainVih: Yup.string().required('*'),
     NombreChute: Yup.number().positive().required('*'),
     VaccinatioRougeole: Yup.string().required('*'),
@@ -123,6 +124,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       VaccinatioRougeole: '',
       Eig: '',
       Dpm: '',
+      produitPlante: '',
       hospitalisation_recente: '',
       diagnostique_hospitalisation: '',
       atcd_du_tbc_dans_fratrie: '',
@@ -216,15 +218,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="Non" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
-
-                <TextField
+                {/* <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="text"
                   label="Poids de naissance (Gr)"
                   value={values.PoidsNaissance}
                   {...getFieldProps('PoidsNaissance')}
                   error={Boolean(touched.PoidsNaissance && errors.PoidsNaissance)}
-                />
+                /> */}
                 <RadioGroup
                   sx={{ width: '80%' }}
                   {...getFieldProps('Tdc')}
@@ -327,6 +328,28 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   error={Boolean(
                     touched.diagnostique_hospitalisation && errors.diagnostique_hospitalisation
                   )}
+                />
+                <RadioGroup
+                  sx={{ width: '80%' }}
+                  {...getFieldProps('produitPlante')}
+                  error={Boolean(touched.produitPlante && errors.produitPlante)}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
+                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                  </Stack>
+                </RadioGroup>
+                <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Si Oui veuillez précisez la durée"
+                  {...getFieldProps('dureeProduitPlante')}
+                  error={Boolean(touched.dureeProduitPlante && errors.dureeProduitPlante)}
                 />
               </Stack>
             </SubDivContenaire>
