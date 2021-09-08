@@ -4,7 +4,7 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // -------------------MODAL
@@ -47,7 +47,7 @@ import {
 } from '../components/_dashboard/personnel';
 
 // import USERLIST from '../_mocks_/personnel';
-// import { fakeAuth } from '../fakeAuth';
+import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignRight: false },
@@ -115,6 +115,13 @@ export default function Personnel() {
         // formik.setFieldValue('firstName', data.prenom_user);
         // formik.setFieldValue('lastName', data.nom_user);
         // formik.setFieldValue('middleName', data.postnom_user);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        fakeAuth.login(() => {
+          navigate(from);
+          navigate('/dashboard/app', { replace: true });
+        });
       });
   }, []);
 
@@ -211,6 +218,8 @@ export default function Personnel() {
 
   const isUserNotFound = filteredUsers.length === 0;
   const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
