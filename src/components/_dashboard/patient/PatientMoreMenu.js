@@ -65,7 +65,11 @@ export default function PatientMoreMenu({ id_patient }) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem component={RouterLink} to="detail_patient" sx={{ color: 'text.secondary' }}>
+        <MenuItem
+          component={RouterLink}
+          to={`detail_patient/${id_patient}`}
+          sx={{ color: 'text.secondary' }}
+        >
           <ListItemIcon>
             <div
               style={{
