@@ -41,7 +41,16 @@ export default function PatientMoreMenu({ id_patient }) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem component={RouterLink} to="detail_patient" sx={{ color: 'text.secondary' }}>
+        <MenuItem
+          component={RouterLink}
+          to={{
+            pathname: 'detail_patient',
+            state: {
+              fromNotifications: true
+            }
+          }}
+          sx={{ color: 'text.secondary' }}
+        >
           <ListItemIcon>
             <Icon icon={eyeFill} width={35} height={35} />
             <Typography variant="h6">Voir</Typography>
