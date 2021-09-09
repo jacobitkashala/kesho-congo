@@ -48,7 +48,6 @@ export default function Details() {
       });
   }, []);
 
-  console.log('un Patient', onePatient.Patient);
   useEffect(() => {
     setIsAuth(isAuth);
   }, []);
