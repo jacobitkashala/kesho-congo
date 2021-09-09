@@ -2,9 +2,10 @@ import { Icon } from '@iconify/react';
 import propTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
+import Axios from 'axios';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import deleteFill from '@iconify/icons-eva/person-delete-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 // -------------------MODAL
@@ -22,6 +23,7 @@ import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-
 import Delete from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
 import { deletePatientAsync } from '../../../redux/reducers/patientSlice';
+import { fakeAuth } from '../../../fakeAuth';
 
 // ----------------------------------------------------------------------
 
@@ -30,9 +32,35 @@ PatientMoreMenu.propTypes = {
 };
 
 export default function PatientMoreMenu({ id_patient }) {
+  const navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
+
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
+  // ---------------------------------LOgic state-------------------------------------
+  const handleDeleteClick = () => {
+    setLoader(true);
+    Axios.delete(`https://kesho-congo-api.herokuapp.com/patient?id_patient=${id_patient}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then((response) => {
+        const message = response.data;
+        console.log('Yves', message);
+        fakeAuth.login(() => {
+          navigate(from);
+          navigate('/dashboard/user', { replace: true });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // ---------------------------------LOgic state------------------------------------
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [loader, setLoader] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -44,11 +72,11 @@ export default function PatientMoreMenu({ id_patient }) {
     setOpen(false);
   };
 
-  const dispatch = useDispatch();
-  const handleDeleteClick = () => {
-    setLoader(true);
-    dispatch(deletePatientAsync({ id: id_patient }));
-  };
+  // const dispatch = useDispatch();
+  // const handleDeleteClick = () => {
+  //   setLoader(true);
+  //   dispatch(deletePatientAsync({ id: id_patient }));
+  // };
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>

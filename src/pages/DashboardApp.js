@@ -2,6 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 // material
 import { Box, Grid, Container, Typography } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/styles';
 // components
 import Page from '../components/Page';
 import {
@@ -12,13 +14,14 @@ import {
   AppCurrentVisits,
   AppWebsiteVisits
 } from '../components/_dashboard/app';
+
 // import { fakeAuth } from '../fakeAuth';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loader, setLoader] = useState(true);
   const getReporting = `https://kesho-congo-api.herokuapp.com/reporting`;
 
   const options = {
@@ -33,7 +36,7 @@ export default function DashboardApp() {
       .then((response) => response.json())
       .then((data) => {
         setReports(data);
-        setLoading(false);
+        setLoader(false);
         console.log(data.NbreGarconMoins3Ans[0].NbreGarconMoins3Ans);
       })
       .catch((error) => {
@@ -46,13 +49,30 @@ export default function DashboardApp() {
     setIsAuth(isAuth);
   }, [isAuth]);
   const location = useLocation();
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      position: 'absolute',
+      left: '60%',
+      top: '45%',
+      zIndex: '100'
+      // transform: 'translate(-50%)'
+    },
+    labelRoot: {
+      '&&': {
+        color: 'red'
+      }
+    }
+  }));
+  const classes = useStyles();
 
   // console.log('Données', reports.NbreGarconMoins3Ans[0]);
 
   return isAuth ? (
     <>
-      {loading ? (
-        <h1>Loading...</h1>
+      {loader ? (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
       ) : (
         <Page>
           <Container maxWidth="xl">
