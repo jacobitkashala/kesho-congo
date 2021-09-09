@@ -124,7 +124,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps, values } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, values, isSubmitting } = formik;
   console.log(errors);
   // console.log(values);
   return (
@@ -143,6 +143,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   value={values.tailleMenage}
                   {...getFieldProps('tailleMenage')}
                   error={Boolean(touched.tailleMenage && errors.tailleMenage)}
+                  // helperText={touched.tailleMenage && errors.tailleMenage}
                 />
                 <RadioGroup
                   {...getFieldProps('vivreAvecParent')}
@@ -165,10 +166,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   value={values.nomTuteur}
                   {...getFieldProps('nomTuteur')}
                   error={Boolean(touched.nomTuteur && errors.nomTuteur)}
+                  // helperText={touched.nomTuteur && errors.nomTuteur}
                 />
                 <RadioGroup
                   {...getFieldProps('mereEnVie')}
                   error={Boolean(touched.mereEnVie && errors.mereEnVie)}
+                  helperText={touched.mereEnVie && errors.mereEnVie}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -186,6 +189,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   type="date"
                   {...getFieldProps('dateNaissanceMere')}
                   error={Boolean(touched.dateNaissanceMere && errors.dateNaissanceMere)}
+                  helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
                 />
                 <RadioGroup
                   {...getFieldProps('mereEnceinte')}
@@ -207,6 +211,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   selected={values.scolariteMere}
                   {...getFieldProps('scolariteMere')}
                   error={Boolean(touched.scolariteMere && errors.scolariteMere)}
+                  helperText={touched.scolariteMere && errors.scolariteMere}
                 >
                   <option value="" selected disabled hidden>
                     Scolarité mère
@@ -222,6 +227,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   selected={values.professionMere}
                   {...getFieldProps('professionMere')}
                   error={Boolean(touched.professionMere && errors.professionMere)}
+                  helperText={touched.professionMere && errors.professionMere}
                 >
                   <option value="" selected disabled hidden>
                     Profession mère
@@ -260,6 +266,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   {...getFieldProps('ProffessionChefMenage')}
                   error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
+                  // helperText={touched.ProffessionChefMenage && errors.ProffessionChefMenage}
                 >
                   <option value="" selected disabled hidden>
                     Profession chef ménage
@@ -490,7 +497,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%', padding: '2px' }}
                   label="Nombre de repas par jour"
                   value={values.NbrRepasJour}
-                  {...getFieldProps('NbreRepasJour')}
+                  {...getFieldProps('NbrRepasJour')}
                   error={Boolean(touched.NbrRepasJour && errors.NbrRepasJour)}
                 />
               </Stack>
@@ -516,10 +523,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
           <LoadingButton
             type="submit"
             variant="contained"
-            // loading={isSubmitting}
-            onClick={() => {
-              NextStep();
-            }}
+            loading={isSubmitting}
             size="large"
             sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >

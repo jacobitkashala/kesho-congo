@@ -14,17 +14,24 @@ export const getUsersAsync = createAsyncThunk('users/getUsersAsync', async () =>
   }
 });
 export const addUsersAsync = createAsyncThunk('users/addUsersAsync', async (payload) => {
-  const response = await fetch('https://kesho-congo-api.herokuapp.com/user/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify(payload)
-  });
-  if (response.ok) {
-    const users = await response.json();
-    return { users };
+  try {
+    const response = await fetch('https://kesho-congo-api.herokuapp.com/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(payload)
+    });
+    if (response.ok) {
+      const users = await response.json();
+      // console.log(`dans response ok ${response}`);
+      return { users };
+    }
+    console.log(`dans else ${response}`);
+    return null;
+  } catch (error) {
+    console.log(error);
   }
 });
 

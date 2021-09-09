@@ -18,6 +18,8 @@ export default function NewPatient() {
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
 
+  console.log(DataPatient);
+
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);

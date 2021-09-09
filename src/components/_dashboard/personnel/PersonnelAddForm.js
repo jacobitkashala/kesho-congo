@@ -24,8 +24,8 @@ import {
 import { LoadingButton } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { addUsersAsync } from '../../../redux/reducers/userSlice';
-import data from '../../../_mocks_/personnel';
+// import { addUsersAsync } from '../../../redux/reducers/userSlice';
+// import data from '../../../_mocks_/personnel';
 import { fakeAuth } from '../../../fakeAuth';
 
 const Box = styled('div')(({ theme }) => ({

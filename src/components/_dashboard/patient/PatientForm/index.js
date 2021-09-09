@@ -14,7 +14,7 @@ import {
   RadioGroup,
   FormLabel,
   // Grid,
-  // InputLabel,
+  InputLabel,
   Select,
   styled
   // getCheckboxUtilityClass
@@ -29,11 +29,11 @@ PatientForm.propTypes = {
 
 const Div = styled('div')(() => ({
   height: '90%',
-  width: '100%',
+  width: '150%',
   position: 'relative',
   borderRadius: '15px',
   paddingTop: '30px',
-  paddingBottom: '80px',
+  paddingBottom: '90px',
   left: '50%',
   transform: 'translate(-50%,0)',
   display: 'flex',
@@ -49,7 +49,6 @@ const SubDiv = styled('div')(() => ({
   justifyContent: 'space-between'
 }));
 const SubDivContenaire = styled('div')(() => ({
-  height: '100%',
   width: '50%',
   position: 'relative',
   left: '30%',
@@ -62,29 +61,29 @@ const SubDivContenaire = styled('div')(() => ({
 export default function PatientForm({ NextStep, SetDataPatient }) {
   const [IdentiteData, SetIdentiteData] = useState({});
   const RegisterSchema = Yup.object().shape({
-    poidsActuel: Yup.number().required('*'),
-    taille: Yup.number().required('*'),
-    peri_brachail: Yup.number().required('*'),
-    peri_cranien: Yup.number().required('*'),
-    nom_patient: Yup.string().required('*'),
+    poidsActuel: Yup.number('number').required('poids requis'),
+    taille: Yup.number('number').required('taille requis'),
+    peri_brachail: Yup.number('number').required('perimetre requis'),
+    peri_cranien: Yup.number('number').required('perimetre requis'),
+    nom_patient: Yup.string().required('nom requis'),
     constitutionAliment: Yup.string(),
-    postnom_patient: Yup.string().required('*'),
-    prenom_patient: Yup.string().required('*'),
-    poids_naissance: Yup.number().required('*'),
-    sexe_patient: Yup.string().required('*'),
-    age_patient: Yup.number().required('*'),
-    provenance_patient: Yup.string().required('*'),
-    mode_arrive: Yup.string().required('*'),
+    postnom_patient: Yup.string().required('postnon requis'),
+    prenom_patient: Yup.string().required('prenom requis'),
+    poids_naissance: Yup.number('number').required('poids requis'),
+    sexe_patient: Yup.string().required('sexe requis'),
+    dataNaissancePatient: Yup.date().required('date requis'),
+    provenance_patient: Yup.string().required('provenance requis'),
+    mode_arrive: Yup.string().required('mode arriver requis'),
     // fin_allaitement: Yup.number().required('*'),
-    typeMalnutrition: Yup.string().required('*'),
-    traitementNutritionnelAutre: Yup.string('*'),
-    ageFinAllaitement: Yup.number(),
-    traitementNutritionnel: Yup.string().required('*'),
-    allaitementExclisif: Yup.string().required('*'),
+    typeMalnutrition: Yup.string().required('type malnutrition requis'),
+    traitementNutritionnelAutre: Yup.string(''),
+    ageFinAllaitement: Yup.string(),
+    traitementNutritionnel: Yup.string(),
+    allaitementExclisif: Yup.string().required('allaitment requis'),
     // mois_finAllaitement: Yup.string().min(1).required('*'),
     diversification_aliment: Yup.string().required('*'),
-    telephone: Yup.string().min(10).max(13).required('*'),
-    adresse_patient: Yup.string().min(2).max(50).required('*')
+    telephone: Yup.string().min(10).max(13).required('telephone requis'),
+    adresse_patient: Yup.string().min(2).max(50).required('adresse requis')
   });
 
   const formik = useFormik({
@@ -100,7 +99,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       // mois_fin_allaitement: '',
       ageFinAlletement: '',
       sexe_patient: '',
-      age_patient: '',
+      dataNaissancePatient: '',
       constitutionAliment: '',
       provenance_patient: '',
       adresse_patient: '',
@@ -120,12 +119,12 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       SetDataPatient((current) => ({ ...current, indentity }));
       SetIdentiteData(indentity);
       NextStep();
-      console.log(IdentiteData);
+      // console.log(IdentiteData);
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  console.log(errors);
+  // console.log(errors);
   // console.log(values);
   return (
     <FormikProvider value={formik}>
@@ -142,6 +141,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   value={values.prenom_patient}
                   {...getFieldProps('prenom_patient')}
                   error={Boolean(touched.prenom_patient && errors.prenom_patient)}
+                  helperText={touched.prenom_patient && errors.prenom_patient}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
@@ -152,9 +152,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   value={values.nom_patient}
                   {...getFieldProps('nom_patient')}
                   error={Boolean(touched.nom_patient && errors.nom_patient)}
+                  helperText={touched.nom_patient && errors.nom_patient}
                 />
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   autoComplete="lastname"
                   type="text"
@@ -162,9 +163,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   // value={values.}
                   {...getFieldProps('postnom_patient')}
                   error={Boolean(touched.postnom_patient && errors.postnom_patient)}
+                  helperText={touched.postnom_patient && errors.postnom_patient}
                 />
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   autoComplete="tel"
                   type="tel"
@@ -172,33 +174,37 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   value={values.telephone}
                   {...getFieldProps('telephone')}
                   error={Boolean(touched.telephone && errors.telephone)}
+                  helperText={touched.telephone && errors.telephone}
                 />
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Adresse patient"
                   value={values.adresse_patient}
                   {...getFieldProps('adresse_patient')}
+                  helperText={touched.adresse_patient && errors.adresse_patient}
                   error={Boolean(touched.adresse_patient && errors.adresse_patient)}
                 />
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Poid naissance (gr)"
                   value={values.poids_naissance}
                   {...getFieldProps('poids_naissance')}
+                  helperText={touched.poids_naissance && errors.poids_naissance}
                   error={Boolean(touched.poids_naissance && errors.poids_naissance)}
                 />
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   value={values.poidsActuel}
                   label="Poids actuelle"
                   {...getFieldProps('poidsActuel')}
+                  helperText={touched.poidsActuel && errors.poidsActuel}
                   error={Boolean(touched.poidsActuel && errors.poidsActuel)}
                 />
                 {/* <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   value={values.fin_allaitement}
                   label="Nombre de mois allaitement"
@@ -207,6 +213,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 /> */}
                 <RadioGroup
                   {...getFieldProps('sexe_patient')}
+                  helperText={touched.sexe_patient && errors.sexe_patient}
                   error={Boolean(touched.sexe_patient && errors.sexe_patient)}
                   // value={values.Sexe}
                   // setValues={values.Sexe}
@@ -223,11 +230,12 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   </Stack>
                 </RadioGroup>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   // value={values.ModeArrive}
                   {...getFieldProps('mode_arrive')}
                   error={Boolean(touched.mode_arrive && errors.mode_arrive)}
+                  helperText={touched.mode_arrive && errors.mode_arrive}
                 >
                   <option value="" selected disabled hidden>
                     Mode d'arriver
@@ -237,14 +245,14 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   <option value="Autres">Autres</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Si le mode d'arriver est autre veuillez préciser"
                   {...getFieldProps('ExplicationAutre')}
                   value={values.ExplicationAutre}
                   error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
                 />
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   // value={values.ModeArrive}
                   {...getFieldProps('traitementNutritionnel')}
@@ -258,7 +266,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   <option value="Autres">Autres</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Si le traitement nutritionnel est autre veuillez préciser"
                   {...getFieldProps('traitementNutritionnelAutre')}
                   value={values.traitementNutritionnelAutre}
@@ -270,13 +278,39 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
             </SubDivContenaire>
             <SubDivContenaire>
               <Stack spacing={3}>
+                <Select
+                  native
+                  sx={{ width: '90%', padding: '2px' }}
+                  // value={values.Provenace}
+                  {...getFieldProps('provenance_patient')}
+                  error={Boolean(touched.provenance_patient && errors.provenance_patient)}
+                  helperText={touched.provenance_patient && errors.provenance_patient}
+                >
+                  <option value="" selected disabled hidden>
+                    Provenance Patient
+                  </option>
+                  <option value="kadutu">Kadutu</option>
+                  <option value="Bagira">Bagira</option>
+                  <option value="Ibabda">Ibanda</option>
+                  <option value="Hors ville">Hors ville</option>
+                  <option value="Autres">Autres</option>
+                </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
+                  label="Si la provenance est autre veuillez préciser"
+                  {...getFieldProps('ExplicationProvenance')}
+                  error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
+                  helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
+                />
+                <InputLabel>Date de naissance</InputLabel>
+                <TextField
+                  sx={{ width: '90%', padding: '2px' }}
+                  type="date"
                   fullWidth
-                  label="Age (en mois)"
-                  {...getFieldProps('age_patient')}
-                  value={values.age_patient}
-                  error={Boolean(touched.age_patient && errors.age_patient)}
+                  // label="Age (en mois)"
+                  {...getFieldProps('dataNaissancePatient')}
+                  value={values.dataNaissancePatient}
+                  error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
                   {...getFieldProps('allaitementExclisif')}
@@ -296,7 +330,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   </Stack>
                 </RadioGroup>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Si non à quel âge fin allaitement (mois)"
                   {...getFieldProps('ageFinAllaitement')}
@@ -304,7 +338,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
                 />
                 {/* <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label=" Age fin alletement (mois)"
                   {...getFieldProps('ageFinAlletement')}
@@ -313,11 +347,12 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 /> */}
 
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Constitution/type d’aliment"
                   {...getFieldProps('constitutionAliment')}
                   value={values.constitutionAliment}
+                  helperText={touched.constitutionAliment && errors.constitutionAliment}
                   error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <TextField
@@ -326,6 +361,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   label="périmètre crânien "
                   {...getFieldProps('peri_cranien')}
                   value={values.peri_cranien}
+                  helperText={touched.peri_cranien && errors.peri_cranien}
                   error={Boolean(touched.peri_cranien && errors.peri_cranien)}
                 />
                 <TextField
@@ -334,6 +370,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   label="périmètre branchial"
                   value={values.peri_brachail}
                   {...getFieldProps('peri_brachail')}
+                  helperText={touched.prenom_brachial && errors.prenom_brachail}
                   error={Boolean(touched.peri_brachail && errors.peri_brachail)}
                 />
                 <TextField
@@ -343,6 +380,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   label="Taille en Cm"
                   value={values.taille}
                   {...getFieldProps('taille')}
+                  helperText={touched.taille && errors.taille}
                   error={Boolean(touched.taille && errors.taille)}
                 />
                 <TextField
@@ -350,29 +388,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   label="Diversification aliment"
                   {...getFieldProps('diversification_aliment')}
+                  helperText={touched.diversification_aliment && errors.diversification_aliment}
                   error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
-                />
-                <Select
-                  native
-                  sx={{ width: '90%', padding: '2px' }}
-                  // value={values.Provenace}
-                  {...getFieldProps('provenance_patient')}
-                  error={Boolean(touched.provenance_patient && errors.provenance_patient)}
-                >
-                  <option value="" selected disabled hidden>
-                    Provenance Patient
-                  </option>
-                  <option value="kadutu">Kadutu</option>
-                  <option value="Bagira">Bagira</option>
-                  <option value="Ibabda">Ibanda</option>
-                  <option value="Hors ville">Hors ville</option>
-                  <option value="Autres">Autres</option>
-                </Select>
-                <TextField
-                  sx={{ width: '90%', padding: '2px' }}
-                  label="Si la provenance est autre veuillez préciser"
-                  {...getFieldProps('ExplicationProvenance')}
-                  error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                 />
                 <Select
                   native
@@ -384,8 +401,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   <option value="" selected disabled hidden>
                     Form de malnutrition
                   </option>
-                  <option value="Malnutrition aiguê modéré">Malnutrition aiguê modéré</option>
-                  <option value="Malnutrition aiguê sévère">Malnutrition aiguê sévère</option>
+                  <option value="Malnutrition aiguê modéré">Malnutrition aigue modéré</option>
+                  <option value="Malnutrition aiguê sévère">Malnutrition aigue sévère</option>
                 </Select>
               </Stack>
             </SubDivContenaire>
@@ -411,7 +428,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
               variant="contained"
               size="large"
               loading={isSubmitting}
-              sx={{ width: 200, margin: 'auto', marginTop: '20px' }}
+              sx={{ width: 200, margin: 'auto', marginTop: '40px' }}
             >
               Suivant
             </LoadingButton>
