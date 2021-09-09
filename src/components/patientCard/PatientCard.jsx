@@ -3,7 +3,7 @@ import { CalendarToday, LocationSearching, PhoneAndroid } from '@material-ui/ico
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import FaceIcon from '@material-ui/icons/Face';
 
-const PatientCard = () => (
+const PatientCard = ({ name, sex, age, birthdate, number, tutor, location }) => (
   <div className="userShow">
     <div className="userShowTop">
       <img
@@ -12,30 +12,30 @@ const PatientCard = () => (
         className="userShowImg"
       />
       <div className="userShowTopTitle">
-        <span className="userShowUsername">Hobed Bayekula</span>
-        <span className="userShowUserTitle">M</span>
+        <span className="userShowUsername">{name}</span>
+        <span className="userShowUserTitle">{sex}</span>
       </div>
     </div>
     <div className="userShowBottom">
       <div className="userShowInfo">
         <ChildCareIcon className="userShowIcon" />
-        <span className="userShowInfoTitle">21 mois</span>
+        <span className="userShowInfoTitle">{age}</span>
       </div>
       <div className="userShowInfo">
         <CalendarToday className="userShowIcon" />
-        <span className="userShowInfoTitle">10.12.1999</span>
+        <span className="userShowInfoTitle">{birthdate}</span>
       </div>
       <div className="userShowInfo">
         <PhoneAndroid className="userShowIcon" />
-        <span className="userShowInfoTitle">+1 123 456 67</span>
+        <span className="userShowInfoTitle">{number}</span>
       </div>
       <div className="userShowInfo">
         <FaceIcon className="userShowIcon" />
-        <span className="userShowInfoTitle">Yves Mutshipayi</span>
+        <span className="userShowInfoTitle">{tutor}</span>
       </div>
       <div className="userShowInfo">
         <LocationSearching className="userShowIcon" />
-        <span className="userShowInfoTitle">Uvira</span>
+        <span className="userShowInfoTitle">{location}</span>
       </div>
     </div>
   </div>

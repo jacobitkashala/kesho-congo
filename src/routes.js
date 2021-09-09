@@ -30,7 +30,7 @@ export default function Router() {
         { path: 'user', element: <Patient /> },
         { path: 'app', element: <DashboardApp /> },
         { path: 'personnel', element: <Personnel /> },
-        { path: 'user/detail_patient', element: <PageDetail /> },
+        { path: 'user/detail_patient/:id', element: <PageDetail /> },
         { path: 'user/add_Patient', element: <NewPatient /> },
         { path: 'personnel/add_Personnel', element: <NewPersonnel /> }
       ]
