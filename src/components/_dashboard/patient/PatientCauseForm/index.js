@@ -102,7 +102,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       atcd_mas: '',
       RangFratrie: '',
       lieu_accouchement: '',
-      LieuAccouchement: '',
       SejourNeo: '',
       cocktail_atb_preci: '',
       cocktail_atb: '',
@@ -134,7 +133,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     onSubmit: (CauseMalnutrition) => {
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       SetCauseData(CauseMalnutrition);
-      console.log(CauseData);
+      // console.log(CauseData);
       NextStep();
     }
   });
