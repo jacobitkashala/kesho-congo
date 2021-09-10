@@ -1,20 +1,9 @@
 /* eslint-disable camelcase */
-
+import React, { useState, useEffect } from 'react';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
-// -------------------MODAL
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
-// ----------------------------------------------------------------------
 
 // material
 import {
@@ -34,28 +23,32 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getUsersAsync } from '../redux/reducers/userSlice';
+import CloseIcon from '@material-ui/icons/Close';
+import Fab from '@material-ui/core/Fab';
 // material
 // components
-import Page from '../components/Page';
-import Scrollbar from '../components/Scrollbar';
-import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
-import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
-import Label from '../components/Label';
+import SearchNotFound from '../../components/SearchNotFound';
+// import Scrollbar from '/../../components/Scrollbar';
+import Scrollbar from '../../components/Scrollbar';
+
+import Page from '../../components/Page';
+import {
+  PersonnelListHead,
+  PersonnelListToolbar,
+  PersonnelMoreMenu
+} from '../../components/_dashboard/personnel';
 
 // import USERLIST from '../_mocks_/personnel';
-import { fakeAuth } from '../fakeAuth';
+import { fakeAuth } from '../../fakeAuth';
 
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom', alignRight: false },
-  { id: 'NE', label: 'Prénom', alignRight: false },
-  { id: 'DN', label: 'Naissance', alignRight: false },
-  { id: 'SE', label: 'Sexe', alignRight: false },
-  { id: 'DC', label: 'Consultation', alignRight: false },
-  { id: 'SxE', label: 'Malnutrition', alignRight: false },
-  { id: 'SxE', label: 'Consulté(e) par', alignCenter: true },
-  { id: '' }
+  { id: 'NE', label: 'Consulté(e) par', alignRight: false },
+  { id: 'DN', label: 'Date', alignRight: false },
+  { id: 'SE', label: 'PB(cm)', alignRight: false },
+  { id: 'DC', label: 'PC(cm)', alignRight: false },
+  { id: 'SxE', label: 'Poids(kg)', alignRight: false },
+  { id: 'SxE', label: 'Taille(cm)', alignRight: false },
+  { id: 'SxE', label: 'Malnutrition', alignRight: false }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -84,17 +77,20 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user.nom_user.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Patient() {
-  // ----------------------------------Patients--------------------
-  const [patientsList, setPatientsList] = useState([]);
+export default function MoreDetails() {
+  const location = useLocation();
+  const myId = location.pathname.split('/')[5];
+  console.log(myId);
 
-  const getUsers = `https://kesho-congo-api.herokuapp.com/patient/all`;
+  const [usersList, setUsersList] = useState([]);
+
+  const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 
   const options = {
     method: 'GET',
@@ -108,17 +104,20 @@ export default function Patient() {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        setPatientsList(data.Patients);
         setLoader(false);
         console.log('myData', data);
-        // setUsersList(data);
+        setUsersList(data);
+        // // formik.setValues(data);
+        // formik.setFieldValue('firstName', data.prenom_user);
+        // formik.setFieldValue('lastName', data.nom_user);
+        // formik.setFieldValue('middleName', data.postnom_user);
       })
       .catch((error) => {
-        console.error('MyError:', error);
-        // fakeAuth.login(() => {
-        //   navigate(from);
-        //   navigate('/dashboard/app', { replace: true });
-        // });
+        console.error('Error:', error);
+        fakeAuth.login(() => {
+          navigate(from);
+          navigate('/dashboard/app', { replace: true });
+        });
       });
   }, []);
 
@@ -140,20 +139,16 @@ export default function Patient() {
   const classes = useStyles();
 
   // ----------------------------------------------------------------------
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('nom_patient');
+  const [orderBy, setOrderBy] = useState('nom_user');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(50);
-  // const dispatch = useDispatch();
-  // const { patients } = useSelector((state) => state);
-  // -----------------const patientList = patients;
-  // console.log(patients);
-  // useEffect(() => {
-  //   dispatch(getPatientsAsync());
-  // }, [dispatch]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const handleRequestSort = (event, property) => {
+    // console.log(property);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -161,7 +156,7 @@ export default function Patient() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = patientsList.map((n) => n.nom_patient);
+      const newSelecteds = usersList.map((n) => n.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -199,13 +194,13 @@ export default function Patient() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
-  const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredPatient.length === 0;
-
-  const location = useLocation();
+  const isUserNotFound = filteredUsers.length === 0;
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
@@ -221,18 +216,17 @@ export default function Patient() {
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              Liste patient
+              Rapport patient
             </Typography>
-            <Button
-              variant="contained"
+            <Fab
+              color="primary"
               component={RouterLink}
-              to="add_Patient"
-              startIcon={<Icon icon={plusFill} />}
+              aria-label="edit"
+              to={`/dashboard/patient/detail_patient/${myId}`}
             >
-              patient
-            </Button>
+              <CloseIcon />
+            </Fab>
           </Stack>
-
           <Card>
             <PersonnelListToolbar
               numSelected={selected.length}
@@ -247,33 +241,31 @@ export default function Patient() {
                     order={order}
                     orderBy={orderBy}
                     headLabel={TABLE_HEAD}
-                    rowCount={patientsList.length}
+                    rowCount={usersList.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {filteredPatient
+                    {filteredUsers
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row) => {
+                      .map((user) => {
                         const {
-                          id_patient,
-                          nom_patient,
-                          type_malnutrition,
-                          date_naissance,
-                          sexe_patient,
-                          date_Consultation,
-                          nom_consultant,
-                          postnom_consultant,
-                          prenom_patient
-                        } = row;
-                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                          id_user,
+                          nom_user,
+                          prenom_user,
+                          email,
+                          sexe_user,
+                          is_admin,
+                          statut
+                        } = user;
+                        const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                         return (
                           <TableRow
                             hover
-                            key={id_patient}
-                            tabIndex={-1}
+                            key={id_user}
+                            // tabIndex={-1}
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
@@ -281,40 +273,29 @@ export default function Patient() {
                             <TableCell padding="checkbox">
                               <Checkbox
                                 checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_patient)}
+                                onChange={(event) => handleClick(event, nom_user)}
                               />
                             </TableCell>
                             <TableCell component="th" scope="row" padding="none">
                               <Stack direction="row" alignItems="center" spacing={2}>
                                 <Avatar
-                                  alt={nom_patient}
-                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                                  alt={nom_user}
+                                  src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
                                 />
                                 <Typography variant="subtitle2" noWrap>
-                                  {nom_patient}
+                                  {nom_user}
                                 </Typography>
                               </Stack>
                             </TableCell>
-                            <TableCell align="center">{prenom_patient}</TableCell>
-                            <TableCell align="center">{date_naissance}</TableCell>
-                            <TableCell align="center">{sexe_patient}</TableCell>
-                            <TableCell align="center">{date_Consultation}</TableCell>
-                            <TableCell align="center">
-                              <Label
-                                variant="ghost"
-                                color={
-                                  (type_malnutrition === 'Aigu modéré' && 'error') || 'success'
-                                }
-                              >
-                                {type_malnutrition}
-                              </Label>
+                            <TableCell>{prenom_user}</TableCell>
+                            <TableCell> {email}</TableCell>
+                            <TableCell>{statut}</TableCell>
+                            <TableCell>{sexe_user}</TableCell>
+                            <TableCell>
+                              <PersonnelMoreMenu value={id_user} />
                             </TableCell>
-                            <TableCell align="left">
-                              {nom_consultant} {postnom_consultant}
-                            </TableCell>
-
-                            <TableCell align="right">
-                              <PatientMoreMenu id_patient={id_patient} />
+                            <TableCell>
+                              <PersonnelMoreMenu value={id_user} />
                             </TableCell>
                           </TableRow>
                         );
@@ -339,9 +320,9 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              rowsPerPageOptions={[50, 100, 150]}
+              rowsPerPageOptions={[10, 20, 30]}
               component="div"
-              count={patientsList.length}
+              count={usersList.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

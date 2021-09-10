@@ -1,16 +1,17 @@
 import './PatientCard.css';
 import { CalendarToday, LocationSearching, PhoneAndroid } from '@material-ui/icons';
+import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import FaceIcon from '@material-ui/icons/Face';
+import { Avatar } from '@material-ui/core';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import moment from 'moment';
 
-const PatientCard = ({ name, sex, age, birthdate, number, tutor, location }) => (
+const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, malnutrition }) => (
   <div className="userShow">
     <div className="userShowTop">
-      <img
-        src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-        alt=""
-        className="userShowImg"
-      />
+      <Avatar alt={name} src={`/static/mock-images/avatars/avatar_${id}.jpg`} />
       <div className="userShowTopTitle">
         <span className="userShowUsername">{name}</span>
         <span className="userShowUserTitle">{sex}</span>
@@ -23,19 +24,23 @@ const PatientCard = ({ name, sex, age, birthdate, number, tutor, location }) => 
       </div>
       <div className="userShowInfo">
         <CalendarToday className="userShowIcon" />
-        <span className="userShowInfoTitle">{birthdate}</span>
+        <span className="userShowInfoTitle">{moment(birthdate).format('DD/MM/YYYY')}</span>
       </div>
       <div className="userShowInfo">
         <PhoneAndroid className="userShowIcon" />
         <span className="userShowInfoTitle">{number}</span>
       </div>
       <div className="userShowInfo">
-        <FaceIcon className="userShowIcon" />
+        <EmojiPeopleIcon className="userShowIcon" />
         <span className="userShowInfoTitle">{tutor}</span>
       </div>
       <div className="userShowInfo">
-        <LocationSearching className="userShowIcon" />
+        <LocationOnIcon className="userShowIcon" />
         <span className="userShowInfoTitle">{location}</span>
+      </div>
+      <div className="userShowInfo">
+        <LocalHospitalIcon className="userShowIcon" />
+        <span className="userShowInfoTitle">{malnutrition}</span>
       </div>
     </div>
   </div>
