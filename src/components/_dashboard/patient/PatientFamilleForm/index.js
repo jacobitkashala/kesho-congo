@@ -62,7 +62,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().required('*'),
     dateNaissanceMere: Yup.date().required('*'),
-    // dateNaissTuteur: Yup.date(),
     contraceptionNaturel: Yup.string(),
     mereEnceinte: Yup.string().required('*'),
     PossederTeleRadio: Yup.string().required('*'),
@@ -70,12 +69,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     scolariteMere: Yup.string().required('*'),
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string(),
-    nbrEnfant: Yup.number().required('*'),
     nbrFemme: Yup.number(),
     NiveauSocioEconomique: Yup.string().required('*'),
     statutMarital: Yup.string(),
-    typeContraceptionNaturel: Yup.string('*'),
-    mereEnVie: Yup.string(),
+    typeContraceptionNaturel: Yup.string(),
+    mereEnVie: Yup.string().required('*'),
     dateNaissanceChefMenage: Yup.date().required('*'),
     vivreAvecParent: Yup.string().required('*'),
     Tribut: Yup.string().required('*'),
@@ -95,7 +93,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       professionMere: '',
       nomTuteur: '',
       dateNaissanceMere: '',
-      dateNaissTuteur: '',
       mereEnceinte: '',
       PossederTeleRadio: '',
       ProffessionChefMenage: '',
@@ -103,7 +100,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       pereMariage: '',
       contraceptionNaturel: '',
       mereEnVie: '',
-      nbrEnfant: '',
+      // nbrEnfant: '',
       consommationPoisson: '',
       typeContraceptionNaturel: '',
       NiveauSocioEconomique: '',
@@ -155,8 +152,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Vit avec ces deux parents:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <TextField
@@ -179,8 +176,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Mère en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <InputLabel>Date de naissance mère</InputLabel>
@@ -201,8 +198,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Mère enceinte :</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
@@ -257,8 +254,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Père en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
@@ -303,10 +300,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">
-                      Possession radio et/ou poste téléviseur:
+                      Possesseder radio et/ou poste téléviseur:
                     </FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
               </Stack>
@@ -337,17 +334,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Si statut marital est marié
                   </option>
-                  <option value="Norrmal">Polygame</option>
-                  <option value="Anormal">Monogame</option>
+                  <option value="Polygame">Polygame</option>
+                  <option value="Monogame">Monogame</option>
                 </Select>
-                <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
-                  label="Nombre enfant"
-                  value={values.nbrEnfant}
-                  {...getFieldProps('nbrEnfant')}
-                  error={Boolean(touched.nbrEnfant && errors.nbrEnfant)}
-                />
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   fullWidth
@@ -356,6 +345,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('nbrFemme')}
                   error={Boolean(touched.nbrFemme && errors.nbrFemme)}
                 />
+                {/* <TextField
+                  sx={{ width: '80%', padding: '2px' }}
+                  fullWidth
+                  label="Nombre enfant"
+                  value={values.nbrEnfant}
+                  {...getFieldProps('nbrEnfant')}
+                  error={Boolean(touched.nbrEnfant && errors.nbrEnfant)}
+                /> */}
                 <RadioGroup
                   {...getFieldProps('contraceptionMere')}
                   error={Boolean(touched.contraceptionMere && errors.contraceptionMere)}
@@ -366,8 +363,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Contraception par la mère:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
@@ -457,8 +454,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Consommation de poisson:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
@@ -486,12 +483,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Niveau socio-économique
                   </option>
-                  <option value="Analphabète">Bas</option>
-                  <option value="Primaire">Moyen</option>
+                  <option value="Bas">Bas</option>
+                  <option value="Moyen">Moyen</option>
                   <option value="Universitaire">Bon</option>
                   <option value="Inferieur à 1$">Inferieur a 1$ </option>
-                  <option value="Superieur">Supérieur a 5$ </option>
-                  <option value="Secondaire">5 dollars</option>
+                  <option value="Supérieur a 5$ ">Supérieur a 5$ </option>
+                  <option value="5 dollars">5 dollars</option>
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}

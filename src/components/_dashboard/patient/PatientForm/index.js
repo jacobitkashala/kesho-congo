@@ -59,7 +59,28 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 
 export default function PatientForm({ NextStep, SetDataPatient }) {
-  const [IdentiteData, SetIdentiteData] = useState({});
+  const [identiteData, SetIdentiteData] = useState({
+    taille: '',
+    poidsActuel: '',
+    peri_cranien: '',
+    prenom_patient: '',
+    nom_patient: '',
+    postnom_patient: '',
+    telephone: '',
+    diversification_aliment: '',
+    sexe_patient: '',
+    dataNaissancePatient: '',
+    constitutionAliment: '',
+    provenance_patient: '',
+    adresse_patient: '',
+    mode_arrive: '',
+    ageFinAllaitement: '',
+    traitementNutritionnelAutre: '',
+    poids_naissance: '',
+    traitementNutritionnel: '',
+    peri_brachail: '',
+    typeMalnutrition: ''
+  });
   const RegisterSchema = Yup.object().shape({
     poidsActuel: Yup.number('number').required('poids requis'),
     taille: Yup.number('number').required('taille requis'),
@@ -74,13 +95,11 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     dataNaissancePatient: Yup.date().required('date requis'),
     provenance_patient: Yup.string().required('provenance requis'),
     mode_arrive: Yup.string().required('mode arriver requis'),
-    // fin_allaitement: Yup.number().required('*'),
     typeMalnutrition: Yup.string().required('type malnutrition requis'),
     traitementNutritionnelAutre: Yup.string(''),
-    ageFinAllaitement: Yup.string(),
+    ageFinAllaitement: Yup.number(),
     traitementNutritionnel: Yup.string(),
-    allaitementExclisif: Yup.string().required('allaitment requis'),
-    // mois_finAllaitement: Yup.string().min(1).required('*'),
+    allaitementExclisifSixMois: Yup.string().required('allaitment requis'),
     diversification_aliment: Yup.string().required('*'),
     telephone: Yup.string().min(10).max(13).required('telephone requis'),
     adresse_patient: Yup.string().min(2).max(50).required('adresse requis')
@@ -92,20 +111,16 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       poidsActuel: '',
       peri_cranien: '',
       prenom_patient: '',
-      nom_patient: '',
+      nom_patient: `${identiteData.nom_patient !== '' ? '' : identiteData.nom_patient}`,
       postnom_patient: '',
       telephone: '',
       diversification_aliment: '',
-      // mois_fin_allaitement: '',
-      ageFinAlletement: '',
       sexe_patient: '',
       dataNaissancePatient: '',
       constitutionAliment: '',
       provenance_patient: '',
       adresse_patient: '',
       mode_arrive: '',
-      explicationAutre: '',
-      // fin_allaitement: '',
       ageFinAllaitement: '',
       traitementNutritionnelAutre: '',
       // explicationProvenance: '',
@@ -119,12 +134,21 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
       SetDataPatient((current) => ({ ...current, indentity }));
       SetIdentiteData(indentity);
       NextStep();
-      // console.log(IdentiteData);
+      console.log(identiteData.nom_patient);
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  // console.log(errors);
+  const {
+    errors,
+    touched,
+    Field,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    handleChange,
+    values
+  } = formik;
+  console.log(errors);
   // console.log(values);
   return (
     <FormikProvider value={formik}>
@@ -139,6 +163,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   type="text"
                   label="Prénom"
                   value={values.prenom_patient}
+                  onChange={handleChange}
                   {...getFieldProps('prenom_patient')}
                   error={Boolean(touched.prenom_patient && errors.prenom_patient)}
                   helperText={touched.prenom_patient && errors.prenom_patient}
@@ -147,12 +172,12 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   autoComplete="name"
-                  type="text"
                   label="Nom"
-                  value={values.nom_patient}
+                  onChange={handleChange}
+                  // value={`${identiteData.nom_patient !== '' && identiteData.nom_patient}`}
                   {...getFieldProps('nom_patient')}
                   error={Boolean(touched.nom_patient && errors.nom_patient)}
-                  helperText={touched.nom_patient && errors.nom_patient}
+                  // helperText={touched.nom_patient && errors.nom_patient}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
@@ -160,6 +185,7 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="lastname"
                   type="text"
                   label="Postnom"
+                  onChange={handleChange}
                   // value={values.}
                   {...getFieldProps('postnom_patient')}
                   error={Boolean(touched.postnom_patient && errors.postnom_patient)}
@@ -181,17 +207,19 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   label="Adresse patient"
                   value={values.adresse_patient}
+                  onChange={handleChange}
                   {...getFieldProps('adresse_patient')}
-                  helperText={touched.adresse_patient && errors.adresse_patient}
+                  // helperText={touched.adresse_patient && errors.adresse_patient}
                   error={Boolean(touched.adresse_patient && errors.adresse_patient)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Poid naissance (gr)"
+                  onChange={handleChange}
                   value={values.poids_naissance}
                   {...getFieldProps('poids_naissance')}
-                  helperText={touched.poids_naissance && errors.poids_naissance}
+                  // helperText={touched.poids_naissance && errors.poids_naissance}
                   error={Boolean(touched.poids_naissance && errors.poids_naissance)}
                 />
                 <TextField
@@ -307,26 +335,24 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '90%', padding: '2px' }}
                   type="date"
                   fullWidth
-                  // label="Age (en mois)"
                   {...getFieldProps('dataNaissancePatient')}
                   value={values.dataNaissancePatient}
                   error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
-                  {...getFieldProps('allaitementExclisif')}
-                  error={Boolean(touched.allaitementExclisif && errors.allaitementExclisif)}
-                  // value={values.Sexe}
-                  // setValues={values.Sexe}
+                  {...getFieldProps('allaitementExclisifSixMois')}
+                  error={Boolean(
+                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                  )}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
-                    error={Boolean(touched.allaitementExclisif && errors.allaitementExclisif)}
                   >
                     <FormLabel component="label">Allaitement exclusif jusqu’à 6mois:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <TextField
@@ -337,15 +363,6 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   value={values.ageFinAllaitement}
                   error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
                 />
-                {/* <TextField
-                  sx={{ width: '90%', padding: '2px' }}
-                  fullWidth
-                  label=" Age fin alletement (mois)"
-                  {...getFieldProps('ageFinAlletement')}
-                  value={values.ageFinAlletement}
-                  error={Boolean(touched.ageFinAlletement && errors.ageFinAlletement)}
-                /> */}
-
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
@@ -401,8 +418,9 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   <option value="" selected disabled hidden>
                     Form de malnutrition
                   </option>
-                  <option value="Malnutrition aiguê modéré">Malnutrition aigue modéré</option>
-                  <option value="Malnutrition aiguê sévère">Malnutrition aigue sévère</option>
+                  <option value="MAM">Malnutrition aigue modéré</option>
+                  <option value="MAS">Malnutrition aigue sévère</option>
+                  <option value="MAC">Malnutrition aigue chronique</option>
                 </Select>
               </Stack>
             </SubDivContenaire>

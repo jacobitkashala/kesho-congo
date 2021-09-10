@@ -10,6 +10,7 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 // components
 import MenuPopover from '../../components/MenuPopover';
 //
+import Label from '../../components/Label';
 // import account from '../../_mocks_/account';
 import { fakeAuth } from '../../fakeAuth';
 
@@ -78,10 +79,13 @@ export default function AccountPopover() {
         anchorEl={anchorRef.current}
         sx={{ width: 220 }}
       >
-        <Box sx={{ my: 2.5, px: 2.5 }}>
+        <Box sx={{ my: 2.5, px: 2.5, textAlign: 'center' }}>
           <Typography variant="subtitle1" noWrap>
             {localStorage.getItem('name')}
           </Typography>
+          <Label variant="subtitle1" noWrap>
+            {localStorage.getItem('status')}
+          </Label>
         </Box>
 
         <Divider sx={{ my: 1 }} />
