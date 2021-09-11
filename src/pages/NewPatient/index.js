@@ -12,13 +12,35 @@ import {
 import './styledNewPatient.css';
 
 export default function NewPatient() {
+  const initialValues = {
+    taille: '',
+    poidsActuel: '',
+    peri_cranien: '',
+    prenom_patient: '',
+    nom_patient: '',
+    postnom_patient: '',
+    telephone: '',
+    diversification_aliment: '',
+    sexe_patient: '',
+    dataNaissancePatient: '',
+    constitutionAliment: '',
+    provenance_patient: '',
+    adresse_patient: '',
+    mode_arrive: '',
+    ageFinAllaitement: '',
+    traitementNutritionnelAutre: '',
+    poids_naissance: '',
+    traitementNutritionnel: '',
+    peri_brachail: '',
+    typeMalnutrition: ''
+  };
   const [Step, SetStep] = useState(1);
-  const [DataPatient, SetDataPatient] = useState({});
+  const [DataPatient, SetDataPatient] = useState();
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
 
-  console.log(DataPatient);
+  // console.log(DataPatient);
 
   useEffect(() => {
     setIsAuth(isAuth);
@@ -26,6 +48,7 @@ export default function NewPatient() {
 
   const NextStep = () => {
     // console.log(Step);
+    SetDataPatient((currentState) => ({ ...currentState, initialValues }));
     SetStep((CurrentState) => CurrentState + 1);
   };
   // Go to prev step
@@ -37,10 +60,21 @@ export default function NewPatient() {
     // console.log(`key vaut :${key}`, DataPatient);
     switch (key) {
       case 1:
-        return <PatientForm NextStep={NextStep} SetDataPatient={SetDataPatient} />;
+        return (
+          <PatientForm
+            DataPatient={DataPatient}
+            NextStep={NextStep}
+            SetDataPatient={SetDataPatient}
+          />
+        );
       case 2:
         return (
-          <CauseForm PrevStep={PrevStep} NextStep={NextStep} SetDataPatient={SetDataPatient} />
+          <CauseForm
+            DataPatient={DataPatient}
+            PrevStep={PrevStep}
+            NextStep={NextStep}
+            SetDataPatient={SetDataPatient}
+          />
         );
       case 3:
         return (

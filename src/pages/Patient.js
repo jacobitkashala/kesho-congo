@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* no-nested-ternary */
 
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
@@ -185,7 +186,6 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -267,6 +267,14 @@ export default function Patient() {
                           postnom_consultant,
                           prenom_patient
                         } = row;
+                        let color = '';
+                        if (type_malnutrition === 'MAC') {
+                          color = 'red';
+                        } else if (type_malnutrition === 'MAS') {
+                          color = 'orange';
+                        } else {
+                          color = 'light';
+                        }
                         const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
                         return (
@@ -302,9 +310,7 @@ export default function Patient() {
                             <TableCell align="center">
                               <Label
                                 variant="ghost"
-                                color={
-                                  (type_malnutrition === 'Aigu modéré' && 'error') || 'success'
-                                }
+                                color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
                               >
                                 {type_malnutrition}
                               </Label>

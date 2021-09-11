@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
-import { useFormik, Form, FormikProvider } from 'formik';
+import { useState, useEffect } from 'react';
+// import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
 // material
@@ -24,7 +24,8 @@ import { LoadingButton } from '@material-ui/lab';
 // ----------------------------------------------------------------------
 PatientForm.propTypes = {
   NextStep: propTypes.func,
-  SetDataPatient: propTypes.func
+  SetDataPatient: propTypes.func,
+  DataPatient: propTypes.object
 };
 
 const Div = styled('div')(() => ({
@@ -58,8 +59,8 @@ const SubDivContenaire = styled('div')(() => ({
   justifyContent: 'space-between'
 }));
 
-export default function PatientForm({ NextStep, SetDataPatient }) {
-  const [identiteData, SetIdentiteData] = useState({
+export default function PatientForm({ DataPatient, NextStep, SetDataPatient }) {
+  const initialValues = {
     taille: '',
     poidsActuel: '',
     peri_cranien: '',
@@ -80,7 +81,8 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     traitementNutritionnel: '',
     peri_brachail: '',
     typeMalnutrition: ''
-  });
+  };
+  const [identite, setIdentite] = useState(initialValues);
   const RegisterSchema = Yup.object().shape({
     poidsActuel: Yup.number('number').required('poids requis'),
     taille: Yup.number('number').required('taille requis'),
@@ -105,54 +107,51 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
     adresse_patient: Yup.string().min(2).max(50).required('adresse requis')
   });
 
-  const formik = useFormik({
-    initialValues: {
-      taille: '',
-      poidsActuel: '',
-      peri_cranien: '',
-      prenom_patient: '',
-      nom_patient: `${identiteData.nom_patient !== '' ? '' : identiteData.nom_patient}`,
-      postnom_patient: '',
-      telephone: '',
-      diversification_aliment: '',
-      sexe_patient: '',
-      dataNaissancePatient: '',
-      constitutionAliment: '',
-      provenance_patient: '',
-      adresse_patient: '',
-      mode_arrive: '',
-      ageFinAllaitement: '',
-      traitementNutritionnelAutre: '',
-      // explicationProvenance: '',
-      poids_naissance: '',
-      traitementNutritionnel: '',
-      peri_brachail: '',
-      typeMalnutrition: ''
-    },
-    validationSchema: RegisterSchema,
-    onSubmit: (indentity) => {
-      SetDataPatient((current) => ({ ...current, indentity }));
-      SetIdentiteData(indentity);
-      NextStep();
-      console.log(identiteData.nom_patient);
-    }
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     taille: '',
+  //     poidsActuel: '',
+  //     peri_cranien: '',
+  //     prenom_patient: '',
+  //     nom_patient: '',
+  //     postnom_patient: '',
+  //     telephone: '',
+  //     diversification_aliment: '',
+  //     sexe_patient: '',
+  //     dataNaissancePatient: '',
+  //     constitutionAliment: '',
+  //     provenance_patient: '',
+  //     adresse_patient: '',
+  //     mode_arrive: '',
+  //     ageFinAllaitement: '',
+  //     traitementNutritionnelAutre: '',
+  //     poids_naissance: '',
+  //     traitementNutritionnel: '',
+  //     peri_brachail: '',
+  //     typeMalnutrition: ''
+  //   },
+  //   validationSchema: RegisterSchema,
+  //   onSubmit: (indentity) => {
+  //     SetDataPatient((current) => ({ ...current, indentity }));
+  //     console.log(DataPatient);
+  //     NextStep();
+  //   }
+  // });
+  const handleChange = (input) => (e) => {
+    SetDataPatient({ [input]: e.target.value });
+    console.log(DataPatient);
+  };
+  const handleSubmit = () => {
+    NextStep();
+  };
+  console.log(DataPatient);
+  // const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  // setIdentiteData((current) => ({ ...current, values }));
 
-  const {
-    errors,
-    touched,
-    Field,
-    handleSubmit,
-    isSubmitting,
-    getFieldProps,
-    handleChange,
-    values
-  } = formik;
-  console.log(errors);
-  // console.log(values);
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+    // <FormikProvider value={formik}>
+    <>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <Div>
           <SubDiv>
             <SubDivContenaire>
@@ -162,22 +161,22 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   fullWidth
                   type="text"
                   label="Prénom"
-                  value={values.prenom_patient}
-                  onChange={handleChange}
-                  {...getFieldProps('prenom_patient')}
-                  error={Boolean(touched.prenom_patient && errors.prenom_patient)}
-                  helperText={touched.prenom_patient && errors.prenom_patient}
+                  defaultValue={DataPatient.prenom_patient}
+                  onChange={handleChange('prenom_patient')}
+                  // // {...getFieldProps('prenom_patient')}
+                  // error={Boolean(touched.prenom_patient && errors.prenom_patient)}
+                  // // helperText={touched.prenom_patient && errors.prenom_patient}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   autoComplete="name"
                   label="Nom"
-                  onChange={handleChange}
-                  // value={`${identiteData.nom_patient !== '' && identiteData.nom_patient}`}
-                  {...getFieldProps('nom_patient')}
-                  error={Boolean(touched.nom_patient && errors.nom_patient)}
-                  // helperText={touched.nom_patient && errors.nom_patient}
+                  onChange={handleChange('nom_patient')}
+                  // defaultValue={`${identiteData.nom_patient !== '' && identiteData.nom_patient}`}
+                  // {...getFieldProps('nom_patient')}
+                  // error={Boolean(touched.nom_patient && errors.nom_patient)}
+                  // // helperText={touched.nom_patient && errors.nom_patient}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
@@ -185,11 +184,12 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="lastname"
                   type="text"
                   label="Postnom"
-                  onChange={handleChange}
-                  // value={values.}
-                  {...getFieldProps('postnom_patient')}
-                  error={Boolean(touched.postnom_patient && errors.postnom_patient)}
-                  helperText={touched.postnom_patient && errors.postnom_patient}
+                  onChange={handleChange('postnom_patient')}
+                  // onChange={handleChange}
+                  defaultValue={identite.postnom_patient}
+                  // {...getFieldProps('postnom_patient')}
+                  // error={Boolean(touched.postnom_patient && errors.postnom_patient)}
+                  // // helperText={touched.postnom_patient && errors.postnom_patient}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
@@ -197,60 +197,62 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   autoComplete="tel"
                   type="tel"
                   label="Téléphone"
-                  value={values.telephone}
-                  {...getFieldProps('telephone')}
-                  error={Boolean(touched.telephone && errors.telephone)}
-                  helperText={touched.telephone && errors.telephone}
+                  defaultValue={identite.telephone}
+                  onChange={handleChange('telephone')}
+                  // {...getFieldProps('telephone')}
+                  // error={Boolean(touched.telephone && errors.telephone)}
+                  // // helperText={touched.telephone && errors.telephone}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Adresse patient"
-                  value={values.adresse_patient}
-                  onChange={handleChange}
-                  {...getFieldProps('adresse_patient')}
-                  // helperText={touched.adresse_patient && errors.adresse_patient}
-                  error={Boolean(touched.adresse_patient && errors.adresse_patient)}
+                  defaultValue={identite.adresse_patient}
+                  onChange={handleChange('adresse_patient')}
+                  // {...getFieldProps('adresse_patient')}
+                  // // helperText={touched.adresse_patient && errors.adresse_patient}
+                  // error={Boolean(touched.adresse_patient && errors.adresse_patient)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Poid naissance (gr)"
-                  onChange={handleChange}
-                  value={values.poids_naissance}
-                  {...getFieldProps('poids_naissance')}
-                  // helperText={touched.poids_naissance && errors.poids_naissance}
-                  error={Boolean(touched.poids_naissance && errors.poids_naissance)}
+                  defaultValue={identite.poids_naissance}
+                  onChange={handleChange('poids_naissance')}
+                  // {...getFieldProps('poids_naissance')}
+                  // // helperText={touched.poids_naissance && errors.poids_naissance}
+                  // error={Boolean(touched.poids_naissance && errors.poids_naissance)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
-                  value={values.poidsActuel}
+                  defaultValue={identite.poidsActuel}
                   label="Poids actuelle"
-                  {...getFieldProps('poidsActuel')}
-                  helperText={touched.poidsActuel && errors.poidsActuel}
-                  error={Boolean(touched.poidsActuel && errors.poidsActuel)}
+                  onChange={handleChange('poidsActuel')}
+                  // {...getFieldProps('poidsActuel')}
+                  // helperText={touched.poidsActuel && errors.poidsActuel}
+                  // error={Boolean(touched.poidsActuel && errors.poidsActuel)}
                 />
                 {/* <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
-                  value={values.fin_allaitement}
+                  value={identite.fin_allaitement}
                   label="Nombre de mois allaitement"
-                  {...getFieldProps('fin_allaitement')}
-                  error={Boolean(touched.fin_allaitement && errors.fin_allaitement)}
+                  // {...getFieldProps('fin_allaitement')}
+                // error={Boolean(touched.fin_allaitement && errors.fin_allaitement)}
                 /> */}
                 <RadioGroup
-                  {...getFieldProps('sexe_patient')}
-                  helperText={touched.sexe_patient && errors.sexe_patient}
-                  error={Boolean(touched.sexe_patient && errors.sexe_patient)}
-                  // value={values.Sexe}
-                  // setValues={values.Sexe}
+                  // {...getFieldProps('sexe_patient')}
+                  // helperText={touched.sexe_patient && errors.sexe_patient}
+                  // error={Boolean(touched.sexe_patient && errors.sexe_patient)}
+                  onChange={handleChange('sexe_patient')}
+                  // setValues={identite.Sexe}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
-                    error={Boolean(touched.sexe_patient && errors.sexe_patient)}
+                    // error={Boolean(touched.sexe_patient && errors.sexe_patient)}
                   >
                     <FormLabel component="label">Sexe:</FormLabel>
                     <FormControlLabel value="F" control={<Radio />} label="F" />
@@ -260,10 +262,11 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <Select
                   sx={{ width: '90%', padding: '2px' }}
                   native
-                  // value={values.ModeArrive}
-                  {...getFieldProps('mode_arrive')}
-                  error={Boolean(touched.mode_arrive && errors.mode_arrive)}
-                  helperText={touched.mode_arrive && errors.mode_arrive}
+                  // value={identite.ModeArrive}
+                  // {...getFieldProps('mode_arrive')}
+                  onChange={handleChange('mode_arrive')}
+                  // error={Boolean(touched.mode_arrive && errors.mode_arrive)}
+                  // helperText={touched.mode_arrive && errors.mode_arrive}
                 >
                   <option value="" selected disabled hidden>
                     Mode d'arriver
@@ -275,16 +278,18 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   label="Si le mode d'arriver est autre veuillez préciser"
-                  {...getFieldProps('ExplicationAutre')}
-                  value={values.ExplicationAutre}
-                  error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
+                  // {...getFieldProps('ExplicationAutre')}
+                  defaultValue={identite.ExplicationAutre}
+                  onChange={handleChange('ExplicationAutre')}
+                  // error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
                 />
                 <Select
                   sx={{ width: '90%', padding: '2px' }}
                   native
-                  // value={values.ModeArrive}
-                  {...getFieldProps('traitementNutritionnel')}
-                  error={Boolean(touched.traitementNutritionnel && errors.traitementNutritionnel)}
+                  onChange={handleChange('traitementNutritionnel')}
+                  // value={identite.ModeArrive}
+                  // {...getFieldProps('traitementNutritionnel')}
+                  // error={Boolean(touched.traitementNutritionnel && errors.traitementNutritionnel)}
                 >
                   <option value="" selected disabled hidden>
                     Traitement nutritionnel
@@ -296,11 +301,11 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   label="Si le traitement nutritionnel est autre veuillez préciser"
-                  {...getFieldProps('traitementNutritionnelAutre')}
-                  value={values.traitementNutritionnelAutre}
-                  error={Boolean(
-                    touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
-                  )}
+                  onChange={handleChange('traitementNutritionnelAutre')}
+                  defaultValue={identite.traitementNutritionnelAutre}
+                  // error={Boolean(
+                  //   touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
+                  // )}
                 />
               </Stack>
             </SubDivContenaire>
@@ -309,10 +314,10 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <Select
                   native
                   sx={{ width: '90%', padding: '2px' }}
-                  // value={values.Provenace}
-                  {...getFieldProps('provenance_patient')}
-                  error={Boolean(touched.provenance_patient && errors.provenance_patient)}
-                  helperText={touched.provenance_patient && errors.provenance_patient}
+                  // value={identite.Provenace}
+                  onChange={handleChange('provenance_patient')}
+                  // error={Boolean(touched.provenance_patient && errors.provenance_patient)}
+                  // helperText={touched.provenance_patient && errors.provenance_patient}
                 >
                   <option value="" selected disabled hidden>
                     Provenance Patient
@@ -326,24 +331,25 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   label="Si la provenance est autre veuillez préciser"
-                  {...getFieldProps('ExplicationProvenance')}
-                  error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
-                  helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
+                  onChange={handleChange('ExplicationProvenance')}
+                  // {...getFieldProps('ExplicationProvenance')}
+                  // error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
+                  // helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
                 />
                 <InputLabel>Date de naissance</InputLabel>
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   type="date"
                   fullWidth
-                  {...getFieldProps('dataNaissancePatient')}
-                  value={values.dataNaissancePatient}
-                  error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
+                  onChange={handleChange('ExplicationProvenance')}
+                  defaultValue={identite.dataNaissancePatient}
+                  // error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
-                  {...getFieldProps('allaitementExclisifSixMois')}
-                  error={Boolean(
-                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
-                  )}
+                  // error={Boolean(
+                  onChange={handleChange('allaitementExclisifSixMois')}
+                  //   touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                  // )}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -359,61 +365,61 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Si non à quel âge fin allaitement (mois)"
-                  {...getFieldProps('ageFinAllaitement')}
-                  value={values.ageFinAllaitement}
-                  error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
+                  // {...getFieldProps('ageFinAllaitement')}
+                  defaultValue={identite.ageFinAllaitement}
+                  // error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Constitution/type d’aliment"
-                  {...getFieldProps('constitutionAliment')}
-                  value={values.constitutionAliment}
-                  helperText={touched.constitutionAliment && errors.constitutionAliment}
-                  error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
+                  // {...getFieldProps('constitutionAliment')}
+                  value={identite.constitutionAliment}
+                  // helperText={touched.constitutionAliment && errors.constitutionAliment}
+                  // error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="périmètre crânien "
-                  {...getFieldProps('peri_cranien')}
-                  value={values.peri_cranien}
-                  helperText={touched.peri_cranien && errors.peri_cranien}
-                  error={Boolean(touched.peri_cranien && errors.peri_cranien)}
+                  // {...getFieldProps('peri_cranien')}
+                  defaultValue={identite.peri_cranien}
+                  // helperText={touched.peri_cranien && errors.peri_cranien}
+                  // error={Boolean(touched.peri_cranien && errors.peri_cranien)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="périmètre branchial"
-                  value={values.peri_brachail}
-                  {...getFieldProps('peri_brachail')}
-                  helperText={touched.prenom_brachial && errors.prenom_brachail}
-                  error={Boolean(touched.peri_brachail && errors.peri_brachail)}
+                  value={identite.peri_brachail}
+                  // {...getFieldProps('peri_brachail')}
+                  // helperText={touched.prenom_brachial && errors.prenom_brachail}
+                  // error={Boolean(touched.peri_brachail && errors.peri_brachail)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   type="tel"
                   label="Taille en Cm"
-                  value={values.taille}
-                  {...getFieldProps('taille')}
-                  helperText={touched.taille && errors.taille}
-                  error={Boolean(touched.taille && errors.taille)}
+                  defaultValue={identite.taille}
+                  // {...getFieldProps('taille')}
+                  // helperText={touched.taille && errors.taille}
+                  // error={Boolean(touched.taille && errors.taille)}
                 />
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}
                   fullWidth
                   label="Diversification aliment"
-                  {...getFieldProps('diversification_aliment')}
-                  helperText={touched.diversification_aliment && errors.diversification_aliment}
-                  error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
+                  // {...getFieldProps('diversification_aliment')}
+                  // helperText={touched.diversification_aliment && errors.diversification_aliment}
+                  // error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
                 />
                 <Select
                   native
                   sx={{ width: '90%', padding: '2px' }}
-                  // value={values.Provenace}
-                  {...getFieldProps('typeMalnutrition')}
-                  error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
+                  // value={identite.Provenace}
+                  // {...getFieldProps('typeMalnutrition')}
+                  // error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
                 >
                   <option value="" selected disabled hidden>
                     Form de malnutrition
@@ -445,14 +451,15 @@ export default function PatientForm({ NextStep, SetDataPatient }) {
               type="submit"
               variant="contained"
               size="large"
-              loading={isSubmitting}
+              // loading={isSubmitting}
               sx={{ width: 200, margin: 'auto', marginTop: '40px' }}
             >
               Suivant
             </LoadingButton>
           </Stack>
         </Div>
-      </Form>
-    </FormikProvider>
+      </form>
+    </>
+    // </FormikProvider>
   );
 }
