@@ -48,9 +48,9 @@ export default function NewPatient() {
         return (
           <CauseForm
             DataPatient={DataPatient}
+            SetDataPatient={SetDataPatient}
             PrevStep={PrevStep}
             NextStep={NextStep}
-            SetDataPatient={SetDataPatient}
           />
         );
       case 3:

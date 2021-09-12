@@ -61,38 +61,34 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 
 export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
-  // const [SetCauseData] = useState({});
-
   const RegisterSchema = Yup.object().shape({
-    // PoidsNaissance: Yup.number().required(),
-    lieu_accouchement: Yup.string().required('*'),
+    lieu_accouchement: Yup.string().required(),
     TailleFratrie: Yup.number().required(),
     SejourNeo: Yup.string().required(),
     MasFratrie: Yup.string().required(),
     atcdMas: Yup.string().required(),
     AtcdRougeole: Yup.string().required(),
     TbcChezParent: Yup.string().required(),
-    TbcLequel: Yup.string().required(),
+    TbcLequel: Yup.string(),
     TbcTraiter: Yup.string().required(),
     Tdc: Yup.string().required(),
-    hospitalisation_recente: Yup.string().required('*'),
-    diagnostique_hospitalisation: Yup.string().required('*'),
-    duree_traitement_tbc: Yup.string().required('*'),
-    Termegrossesse: Yup.string().required('*'),
-    CalendrierVaccin: Yup.string().required('*'),
+    hospitalisation_recente: Yup.string().required(),
+    diagnostique_hospitalisation: Yup.string(),
+    duree_traitement_tbc: Yup.string(),
+    Termegrossesse: Yup.string().required(),
+    CalendrierVaccin: Yup.string().required(),
     atcd_du_tbc_dans_fratrie: Yup.string().required('*'),
-    PreciserCalendrierVaccinNonJour: Yup.string('Veuillez inserer quelque choses'),
-    AsphyxiePrerinatale: Yup.string().required('*'),
-    RangFratrie: Yup.string().required('*'),
-    // atcd_mas: Yup.string().required('*'),
-    produitPlante: Yup.string().required('*'),
-    TerrainVih: Yup.string().required('*'),
-    NombreChute: Yup.number().positive().required('*'),
-    VaccinatioRougeole: Yup.string().required('*'),
-    Eig: Yup.number().required('*'),
-    TbcGuerie: Yup.string().required('*'),
-    Dpm: Yup.string().required('*'),
-    cocktail_atb: Yup.string().required('*'),
+    PreciserCalendrierVaccinNonJour: Yup.string(),
+    AsphyxiePrerinatale: Yup.string().required(),
+    RangFratrie: Yup.string().required(),
+    produitPlante: Yup.string().required(),
+    TerrainVih: Yup.string().required(),
+    NombreChute: Yup.number().positive().required(),
+    VaccinatioRougeole: Yup.string().required(),
+    Eig: Yup.number().required(),
+    TbcGuerie: Yup.string().required(),
+    Dpm: Yup.string().required(),
+    cocktail_atb: Yup.string().required(),
     cocktail_atb_preci: Yup.string(),
     dureeProduitPlante: Yup.number(),
     // duree_prise_tcb: Yup.string().required('*'),
@@ -143,8 +139,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  console.log(errors);
-  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -153,6 +147,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
             <SubDivContenaire>
               <Stack spacing={3}>
                 <Select
+                  required
                   native
                   sx={{ width: '80%', padding: '2px' }}
                   value={values.lieu_accouchement}
@@ -167,6 +162,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Structure sanitaire oui">Structure sanitaire</option>
                 </Select>
                 <RadioGroup
+                  required
                   error={Boolean(touched.SejourNeo && errors.SejourNeo)}
                   {...getFieldProps('SejourNeo')}
                 >
@@ -182,6 +178,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </RadioGroup>
                 <TextField
+                  required
                   sx={{ width: '80%', padding: '2px' }}
                   label="EIG moyen (année)"
                   {...getFieldProps('Eig')}
@@ -190,12 +187,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   label="Rang dans la fratrie"
+                  required
                   {...getFieldProps('RangFratrie')}
                   error={Boolean(touched.RangFratrie && errors.RangFratrie)}
                 />
                 <RadioGroup
                   {...getFieldProps('MasFratrie')}
                   error={Boolean(touched.MasFratrie && errors.MasFratrie)}
+                  required
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -207,16 +206,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
-                {/* <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  type="text"
-                  label="Poids de naissance (Gr)"
-                  value={values.PoidsNaissance}
-                  {...getFieldProps('PoidsNaissance')}
-                  error={Boolean(touched.PoidsNaissance && errors.PoidsNaissance)}
-                /> */}
                 <RadioGroup
                   sx={{ width: '80%' }}
+                  required
                   {...getFieldProps('Tdc')}
                   error={Boolean(touched.Tdc && errors.Tdc)}
                 >
@@ -232,6 +224,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <RadioGroup
                   {...getFieldProps('TbcChezParent')}
+                  required
                   error={Boolean(touched.TbcChezParent && errors.TbcChezParent)}
                 >
                   <Stack
@@ -296,6 +289,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 />
                 <RadioGroup
                   sx={{ width: '80%' }}
+                  required
                   {...getFieldProps('hospitalisation_recente')}
                   error={Boolean(touched.hospitalisation_recente && errors.hospitalisation_recente)}
                 >
@@ -347,10 +341,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%' }}
                   native
+                  required
                   {...getFieldProps('Termegrossesse')}
                   error={Boolean(touched.Termegrossesse && errors.Termegrossesse)}
                 >
-                  <option value="" selected disabled hidden>
+                  <option defaultValue="" selected disabled hidden>
                     Terme de la grossesse
                   </option>
                   <option value="Prématuré ">Prématuré</option>
@@ -360,12 +355,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{ width: '80%' }}
                   native
                   {...getFieldProps('CalendrierVaccin')}
+                  required
                   error={Boolean(touched.CalendrierVaccin && errors.CalendrierVaccin)}
                 >
                   <option value="" selected disabled hidden>
                     Calendrier vaccinal
                   </option>
-                  <option value="Calendrier vaccinal a jour">Calendrier vaccinal a jour</option>
+                  <option value="Calendrier vaccinal à jour">Calendrier vaccinal à jour</option>
                   <option value="Calendrier vaccinal non à jour">
                     Calendrier vaccinal non à jour
                   </option>
@@ -381,6 +377,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 />
                 <RadioGroup
                   sx={{ width: '80%' }}
+                  required
                   {...getFieldProps('atcdMas')}
                   error={Boolean(touched.atcdMas && errors.atcdMas)}
                 >
@@ -396,6 +393,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <Select
                   native
+                  required
                   sx={{ width: '80%' }}
                   {...getFieldProps('Dpm')}
                   error={Boolean(touched.Dpm && errors.Dpm)}
@@ -403,7 +401,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     DPM
                   </option>
-                  <option value="Norrmal">Norrmal</option>
+                  <option value="Normal">Normal</option>
                   <option value="Anormal">Anormal</option>
                 </Select>
                 <TextField
@@ -414,6 +412,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 />
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
+                  required
                   {...getFieldProps('AtcdRougeole')}
                   error={Boolean(touched.AtcdRougeole && errors.AtcdRougeole)}
                 >
@@ -429,7 +428,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  type="text"
+                  required
                   label="Taille de la fratrie"
                   {...getFieldProps('TailleFratrie')}
                   error={Boolean(touched.TailleFratrie && errors.TailleFratrie)}
@@ -437,6 +436,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
                   {...getFieldProps('TerrainVih')}
+                  required
                   error={Boolean(touched.TerrainVih && errors.TerrainVih)}
                 >
                   <Stack
@@ -455,12 +455,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   fullWidth
                   autoComplete="nbr"
                   type="text"
-                  label="Nnombre de chute"
+                  required
+                  label="Nombre de chute"
                   {...getFieldProps('NombreChute')}
                   error={Boolean(touched.NombreChute && errors.NombreChute)}
                 />
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
+                  required
                   {...getFieldProps('VaccinatioRougeole')}
                   error={Boolean(touched.VaccinatioRougeole && errors.VaccinatioRougeole)}
                 >
@@ -476,6 +478,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <Select
                   native
+                  required
                   sx={{ width: '80%' }}
                   {...getFieldProps('AsphyxiePrerinatale')}
                   error={Boolean(touched.AsphyxiePrerinatale && errors.AsphyxiePrerinatale)}
@@ -489,6 +492,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Select>
                 <RadioGroup
                   sx={{ width: '80%', padding: '2px' }}
+                  required
                   {...getFieldProps('cocktail_atb')}
                   error={Boolean(touched.cocktail_atb && errors.cocktail_atb)}
                 >
@@ -513,6 +517,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <RadioGroup
                   sx={{ width: '80%' }}
                   {...getFieldProps('atcd_du_tbc_dans_fratrie')}
+                  required
                   error={Boolean(
                     touched.atcd_du_tbc_dans_fratrie && errors.atcd_du_tbc_dans_fratrie
                   )}

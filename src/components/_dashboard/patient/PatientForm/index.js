@@ -183,7 +183,7 @@ export default function PatientForm({
                     required
                     type="tel"
                     label="Téléphone"
-                    // // // // // // // // defaultValue={DataPatient.telephone}
+                    // defaultValue={DataPatient.telephone}
                     {...getFieldProps('telephone')}
                     error={Boolean(touched.telephone && errors.telephone)}
                     // // helperText={touched.telephone && errors.telephone}
@@ -288,7 +288,7 @@ export default function PatientForm({
                     // value={DataPatient.Provenace}
                     error={Boolean(touched.provenance_patient && errors.provenance_patient)}
                   >
-                    <option defaultvalue="" selected disabled hidden>
+                    <option value="" selected disabled hidden>
                       Provenance Patient
                     </option>
                     <option value="kadutu">Kadutu</option>
