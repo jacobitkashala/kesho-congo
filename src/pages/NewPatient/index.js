@@ -1,6 +1,6 @@
 /* eslint no-nested-ternary: "error" */
 import { Navigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Stack } from '@material-ui/core';
+import { Box, Typography, Stack, Grid } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
@@ -86,9 +86,9 @@ export default function NewPatient() {
       </div>
       <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'center' }} spacing={2}>
         {/* <Grid container spacing={3}> */}
-        {/* <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}> */}
-        {FormPatientInfo(Step)}
-        {/* </Grid> */}
+        <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}>
+          {FormPatientInfo(Step)}
+        </Grid>
         {/* </Grid> */}
       </Stack>
     </Page>

@@ -2,9 +2,8 @@ import { useState } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';, Typography
 import propTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { InputLabel, Stack, Avatar, Grid } from '@material-ui/core';
+import { InputLabel, Stack, Avatar, Grid, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
@@ -16,20 +15,12 @@ PatientData.propTypes = {
 };
 export default function PatientData({ DataPatient, PrevStep }) {
   const [loader, setLoader] = useState(false);
-  // const classes = useStyles();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const message = useSelector((state) => state);
-  // const [error, setError] = useState(false);
-  // const [loader, setLoader] = useState(false);
+
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
 
   const newPatient = {};
-
-  // : "Primaire"
-  // : "Oui"
-
   // FamalyData.Tribut: "Autre ethnie du sud-kivu"
 
   // FamalyData.contraceptionNaturel: ""
@@ -154,7 +145,6 @@ export default function PatientData({ DataPatient, PrevStep }) {
       .catch((Error) => {
         console.log(Error);
       });
-    // navigate('/dashboard/user', { replace: true });
   };
 
   return (
@@ -165,11 +155,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
         </div>
       )}
       <Grid container spacing={2}>
-        <Grid item xs={12} md={9} className="presentation">
+        <Grid item xs={10} md={5} className="presentation">
           <Avatar
             variant="square"
-            width="100"
-            height="100"
             sx={{
               width: '40%',
               height: '32%'
@@ -177,7 +165,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             alt={indentity.prenom_patient}
             src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
           />
-          <InputLabel>Nom: {indentity.prenom_patient}</InputLabel>
+          <InputLabel>{indentity.prenom_patient}</InputLabel>
           <InputLabel>Prénom: {indentity.prenom_patient}</InputLabel>
           <InputLabel>Postnom: {indentity.postnom_patient}</InputLabel>
           <InputLabel>Taille: {indentity.taille} Cm </InputLabel>
@@ -194,29 +182,29 @@ export default function PatientData({ DataPatient, PrevStep }) {
           <InputLabel>Diversification aliment :{indentity.diversification_aliment}</InputLabel>
           <div />
         </Grid>
-        {/* <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={6}>
           <Typography variant="h3"> Cause Malnutrition</Typography>
           <InputLabel>AsphyxiePrerinatale: </InputLabel>
-          <InputLabel>ATC Rougeole:{ CauseMalnutrition.AtcdRougeole} </InputLabel>
+          <InputLabel>ATC Rougeole:{CauseMalnutrition.AtcdRougeole} </InputLabel>
           <InputLabel>CalendrierVaccin: </InputLabel>
-          <InputLabel>Dpm: { CauseMalnutrition.Dpm}</InputLabel>
-          <InputLabel>Dpm AnormalPrecision: { CauseMalnutrition.DpmAnormalPrecision}</InputLabel>
-          <InputLabel>Eig: { CauseMalnutrition.Eig}</InputLabel>
-          <InputLabel>Lieu d'accouchement: { CauseMalnutrition.LieuAccouchement}</InputLabel>
-          <InputLabel>MasFratrie: { CauseMalnutrition.MasFratrie}</InputLabel>
-          <InputLabel>MatcdMas: { CauseMalnutrition.MatcdMas}</InputLabel>
-          <InputLabel>Nombre de Chute: { CauseMalnutrition.NombreChute}</InputLabel>
+          <InputLabel>Dpm: {CauseMalnutrition.Dpm}</InputLabel>
+          <InputLabel>Dpm AnormalPrecision: {CauseMalnutrition.DpmAnormalPrecision}</InputLabel>
+          <InputLabel>Eig: {CauseMalnutrition.Eig}</InputLabel>
+          <InputLabel>Lieu d'accouchement: {CauseMalnutrition.LieuAccouchement}</InputLabel>
+          <InputLabel>MasFratrie: {CauseMalnutrition.MasFratrie}</InputLabel>
+          <InputLabel>MatcdMas: {CauseMalnutrition.MatcdMas}</InputLabel>
+          <InputLabel>Nombre de Chute: {CauseMalnutrition.NombreChute}</InputLabel>
           <InputLabel>Poids de naissance: </InputLabel>
-          <InputLabel>Rang Fratrie: { CauseMalnutrition.RangFratrie}</InputLabel>
-          <InputLabel>SejourNeo: { CauseMalnutrition.SejourNeo}</InputLabel>
-          <InputLabel>Taille Fratrie: { CauseMalnutrition.TailleFratrie}</InputLabel>
-          <InputLabel>Tbc Chez Parent: { CauseMalnutrition.TbcChezParent}</InputLabel>
-          <InputLabel>Tbc Chez TbcGuerie: { CauseMalnutrition.TbcGuerie}</InputLabel>
-          <InputLabel>Terme grossesse:{ CauseMalnutrition.Termegrossesse}</InputLabel>
-          <InputLabel>Terrain Vih: { CauseMalnutrition.TerrainVih}</InputLabel>
+          <InputLabel>Rang Fratrie: {CauseMalnutrition.RangFratrie}</InputLabel>
+          <InputLabel>SejourNeo: {CauseMalnutrition.SejourNeo}</InputLabel>
+          <InputLabel>Taille Fratrie: {CauseMalnutrition.TailleFratrie}</InputLabel>
+          <InputLabel>Tbc Chez Parent: {CauseMalnutrition.TbcChezParent}</InputLabel>
+          <InputLabel>Tbc Chez TbcGuerie: {CauseMalnutrition.TbcGuerie}</InputLabel>
+          <InputLabel>Terme grossesse:{CauseMalnutrition.Termegrossesse}</InputLabel>
+          <InputLabel>Terrain Vih: {CauseMalnutrition.TerrainVih}</InputLabel>
           <InputLabel>Vaccinatio Rougeole:</InputLabel>
           <div />
-        </Grid> */}
+        </Grid>
         {/* <Grid item xs={12} md={5}>
           <Typography variant="h3">Famille</Typography>
           <InputLabel>Nom tuteur: </InputLabel>

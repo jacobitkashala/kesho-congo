@@ -126,7 +126,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       diagnostique_hospitalisation: 'rien',
       atcd_du_tbc_dans_fratrie: '',
       DpmAnormalPrecision: 'DPM est Anormal parce que :',
-      dureeProduitPlante: 'null',
+      dureeProduitPlante: '0',
       remember: true
     },
     validationSchema: RegisterSchema,
