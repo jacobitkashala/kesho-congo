@@ -62,7 +62,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().required('*'),
     dateNaissanceMere: Yup.date().required('*'),
-    contraceptionNaturel: Yup.string(),
     mereEnceinte: Yup.string().required('*'),
     PossederTeleRadio: Yup.string().required('*'),
     ProffessionChefMenage: Yup.string().required('*'),
@@ -90,7 +89,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const formik = useFormik({
     initialValues: {
       vivreAvecParent: '',
-      typeContraceptionModerne: 'null',
+      typeContraceptionModerne: '',
       contraceptionMere: 'null',
       professionMere: '',
       nomTuteur: '',
@@ -100,10 +99,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       ProffessionChefMenage: '',
       scolariteMere: '',
       pereMariage: '',
-      contraceptionNaturel: 'null',
       mereEnVie: '',
       consommationPoisson: '',
-      typeContraceptionNaturel: 'null',
+      typeContraceptionNaturel: '',
       NiveauSocioEconomique: '',
       statutMarital: '',
       Tribut: '',
@@ -113,7 +111,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       pereEnvie: '',
       nbrFemme: '1',
       tailleMenage: '',
-      contraceptionType: 'null'
+      contraceptionType: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {

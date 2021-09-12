@@ -1,0 +1,14 @@
+.root{
+	color: #e7f0f6
+}
+.loading{
+	position:absolute;
+	left:0;
+	bottom:0;
+	top:0;
+	right:0;
+}
+
+.presentation{
+	border :2px solid #0000;
+}

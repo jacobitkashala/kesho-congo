@@ -8,43 +8,13 @@ import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
-// import { addPatientAsync } from '../../../../redux/reducers/patientSlice';
-// import newPatientData from '../../../../_mocks_/patient';
-
-// const useStyles = styled((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     maxWidth: 752
-//   },
-//   demo: {
-//     backgroundColor: theme.palette.background.paper
-//   },
-//   title: {
-//     margin: theme.spacing(4, 0, 2)
-//   }
-// }));
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: '#fff',
-    zIndex: '100'
-  },
-  labelRoot: {
-    '&&': {
-      color: 'red'
-    }
-  }
-}));
+import './styledPatientData.css';
 
 PatientData.propTypes = {
   DataPatient: propTypes.object,
   PrevStep: propTypes.func
 };
 export default function PatientData({ DataPatient, PrevStep }) {
-  const classes = useStyles();
   const [loader, setLoader] = useState(false);
   // const classes = useStyles();
   const navigate = useNavigate();
@@ -188,19 +158,14 @@ export default function PatientData({ DataPatient, PrevStep }) {
   };
 
   return (
-    <div>
+    <div className="root">
       {loader && (
-        <div className={classes.root}>
+        <div className="loading">
           <CircularProgress />
         </div>
       )}
       <Grid container spacing={2}>
-        <Grid
-          item
-          xs={12}
-          md={9}
-          sx={{ raduis: '16px', boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%)' }}
-        >
+        <Grid item xs={12} md={9} className="presentation">
           <Avatar
             variant="square"
             width="100"
