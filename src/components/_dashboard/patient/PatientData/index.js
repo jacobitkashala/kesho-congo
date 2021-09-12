@@ -3,12 +3,27 @@ import { useState } from 'react';
 import propTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
 import Label from '../../../Label';
-import css from './styledPatientData';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    position: 'absolute',
+    left: '60%',
+    top: '45%',
+    zIndex: '100'
+    // transform: 'translate(-50%)'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    }
+  }
+}));
 
 PatientData.propTypes = {
   DataPatient: propTypes.object,
@@ -17,7 +32,7 @@ PatientData.propTypes = {
 export default function PatientData({ DataPatient, PrevStep }) {
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-
+  const classes = useStyles();
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
 
@@ -150,165 +165,241 @@ export default function PatientData({ DataPatient, PrevStep }) {
 
   return (
     <Container>
-      <div className={css.root}>
-        {loader && (
-          <div className={css.loading}>
-            <CircularProgress />
-          </div>
-        )}
-        <Grid container spacing={0.5}>
-          <Grid item xs={10} md={6}>
-            <Card
-              sx={{
-                margin: 2,
-                padding: 5
-              }}
-            >
-              <Avatar
-                variant="square"
-                sx={{
-                  width: '160px',
-                  height: '180px'
-                }}
-                alt={indentity.prenom_patient}
-                src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
-              />
-              <Typography>{`${indentity.prenom_patient}  ${indentity.nom_patient}`}</Typography>
-              <Label
-                variant="filled"
-                color={`${
-                  indentity.typeMalnutrition === 'MAC'
-                    ? 'error'
-                    : indentity.typeMalnutrition === 'MAM'
-                    ? 'secondary'
-                    : 'primary'
-                }`}
-              >
-                {indentity.typeMalnutrition}
-              </Label>
-              <InputLabel>
-                Sex : <span style={{ color: 'black' }}>{indentity.sexe_patient}</span>
-              </InputLabel>
-              <InputLabel>
-                ATC Rougeole:
-                <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
-              </InputLabel>
-              <InputLabel>
-                Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
-              </InputLabel>
-              <InputLabel>
-                Périmètre brachial :
-                <span style={{ color: 'black' }}> {indentity.peri_brachail}</span>
-              </InputLabel>
-              <InputLabel>
-                Périmètre Cranien :<span style={{ color: 'black' }}> {indentity.peri_cranien}</span>
-              </InputLabel>
-              <InputLabel>
-                Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}gr</span>
-              </InputLabel>
-              <InputLabel>
-                Provenance :<span style={{ color: 'black' }}> {indentity.provenance_patient}</span>
-              </InputLabel>
-              <InputLabel>
-                Adresse :<span style={{ color: 'black' }}> {indentity.adresse_patient}</span>
-              </InputLabel>
-              <InputLabel>
-                Date de naissance :
-                <span style={{ color: 'black' }}> {indentity.dataNaissancePatient}</span>
-              </InputLabel>
-              <InputLabel>
-                Mode arriver:
-                <span style={{ color: 'black' }}> {indentity.mode_arrive}</span>
-              </InputLabel>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                margin: 2,
-                padding: 5
-              }}
-            >
-              <Typography>Famille</Typography>
-              <InputLabel>
-                Nom chef Menage :<span style={{ color: 'black' }}> {indentity.poidsActuel}gr</span>
-              </InputLabel>
-              <InputLabel>
-                Date de naissance Père:
-                <span style={{ color: 'black' }}> {indentity.poidsActuel}gr</span>
-              </InputLabel>
-              <InputLabel>
-                Profession Père:<span style={{ color: 'black' }}> {indentity.poidsActuel}gr</span>
-              </InputLabel>
-              <InputLabel>
-                Réligion :<span style={{ color: 'black' }}> {indentity.poidsActuel}gr</span>
-              </InputLabel>
-              <InputLabel>Dpm: {CauseMalnutrition.Dpm}</InputLabel>
-              <InputLabel>Dpm AnormalPrecision: {CauseMalnutrition.DpmAnormalPrecision}</InputLabel>
-              <InputLabel>Eig: {CauseMalnutrition.Eig}</InputLabel>
-              <InputLabel>Lieu d'accouchement: {CauseMalnutrition.LieuAccouchement}</InputLabel>
-              <InputLabel>MasFratrie: {CauseMalnutrition.MasFratrie}</InputLabel>
-              <InputLabel>MatcdMas: {CauseMalnutrition.MatcdMas}</InputLabel>
-              <InputLabel>Nombre de Chute: {CauseMalnutrition.NombreChute}</InputLabel>
-              <InputLabel>Poids de naissance: </InputLabel>
-              <InputLabel>Rang Fratrie: {CauseMalnutrition.RangFratrie}</InputLabel>
-              <InputLabel>SejourNeo: {CauseMalnutrition.SejourNeo}</InputLabel>
-              <InputLabel>Taille Fratrie: {CauseMalnutrition.TailleFratrie}</InputLabel>
-              <InputLabel>Tbc Chez Parent: {CauseMalnutrition.TbcChezParent}</InputLabel>
-              <InputLabel>Tbc Chez TbcGuerie: {CauseMalnutrition.TbcGuerie}</InputLabel>
-              <InputLabel>Terme grossesse:{CauseMalnutrition.Termegrossesse}</InputLabel>
-              <InputLabel>Terrain Vih: {CauseMalnutrition.TerrainVih}</InputLabel>
-              <InputLabel>Vaccinatio Rougeole:</InputLabel>
-              <Typography>Mère</Typography>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                margin: 2,
-                marginTop: -10,
-                padding: 5
-              }}
-            >
-              <Typography>Synthome </Typography>
-              <InputLabel>AsphyxiePrerinatale: </InputLabel>
-              <InputLabel>
-                ATC Rougeole:
-                <span style={{ color: 'red' }}> {CauseMalnutrition.AtcdRougeole} </span>
-              </InputLabel>
-              <InputLabel>CalendrierVaccin: </InputLabel>
-              <InputLabel>Dpm: {CauseMalnutrition.Dpm}</InputLabel>
-              <InputLabel>Dpm AnormalPrecision: {CauseMalnutrition.DpmAnormalPrecision}</InputLabel>
-            </Card>
-          </Grid>
-        </Grid>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          sx={{ display: 'flex', justifyContent: 'center' }}
-        >
-          <LoadingButton
-            size="large"
-            type="button"
-            variant="contained"
-            onClick={() => {
-              PrevStep();
+      {loader && (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
+      )}
+      <Grid container spacing={0.5}>
+        <Grid item xs={10} md={6}>
+          <Card
+            sx={{
+              margin: 2,
+              padding: 5
             }}
-            sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >
-            Précédant
-          </LoadingButton>
-          <LoadingButton
-            type="button"
-            variant="contained"
-            onClick={handleSubmit}
-            onSubmit={handleSubmit}
-            size="large"
-            sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
+            <Avatar
+              variant="square"
+              sx={{
+                width: '160px',
+                height: '180px'
+              }}
+              alt={indentity.prenom_patient}
+              src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
+            />
+            <Typography>{`${indentity.prenom_patient}  ${indentity.nom_patient}`}</Typography>
+            <Label
+              variant="filled"
+              color={`${
+                indentity.typeMalnutrition === 'MAC'
+                  ? 'error'
+                  : indentity.typeMalnutrition === 'MAM'
+                  ? 'secondary'
+                  : 'primary'
+              }`}
+            >
+              {indentity.typeMalnutrition}
+            </Label>
+            <InputLabel>
+              Sex : <span style={{ color: 'black' }}>{indentity.sexe_patient}</span>
+            </InputLabel>
+            <InputLabel>
+              Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
+            </InputLabel>
+            <InputLabel>
+              Périmètre brachial :<span style={{ color: 'black' }}> {indentity.peri_brachail}</span>
+            </InputLabel>
+            <InputLabel>
+              Périmètre Cranien :<span style={{ color: 'black' }}> {indentity.peri_cranien}</span>
+            </InputLabel>
+            <InputLabel>
+              Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}Kg</span>
+            </InputLabel>
+            <InputLabel>
+              Poids naissance :<span style={{ color: 'black' }}> {indentity.poids_naissance}g</span>
+            </InputLabel>
+            <InputLabel>
+              Provenance :<span style={{ color: 'black' }}> {indentity.provenance_patient}</span>
+            </InputLabel>
+            <InputLabel>
+              Adresse :<span style={{ color: 'black' }}> {indentity.adresse_patient}</span>
+            </InputLabel>
+            <InputLabel>
+              Date de naissance :
+              <span style={{ color: 'black' }}> {indentity.dataNaissancePatient}</span>
+            </InputLabel>
+            <InputLabel>
+              Mode arriver:
+              <span style={{ color: 'black' }}> {indentity.mode_arrive}</span>
+            </InputLabel>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card
+            sx={{
+              margin: 2,
+              padding: 5
+            }}
           >
-            Enregistrer
-          </LoadingButton>
-        </Stack>
-      </div>
+            <Typography>Famille</Typography>
+            <InputLabel>
+              Nom chef Menage :<span style={{ color: 'black' }}> {FamalyData.nomTuteur}</span>
+            </InputLabel>
+            <InputLabel>
+              Date de Père :
+              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
+            </InputLabel>
+            <InputLabel>
+              Posseder une radio ou télé :
+              <span style={{ color: 'black' }}>
+                {`${FamalyData.PossederTeleRadio ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              ATC Rougeole:
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.AtcdRougeole ? 'Oui' : 'Nom'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Profession Père :
+              <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
+            </InputLabel>
+            <InputLabel>
+              Dpm :<span style={{ color: 'black' }}> {CauseMalnutrition.Dpm}</span>
+            </InputLabel>
+            <InputLabel>
+              Dpm AnormalPrecision :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.DpmAnormalPrecision}</span>
+            </InputLabel>
+            <InputLabel>
+              Taille ménage :<span style={{ color: 'black' }}> {FamalyData.tailleMenage}</span>
+            </InputLabel>
+            <InputLabel>
+              Eig:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.Eig}</span>
+            </InputLabel>
+            <InputLabel>
+              MasFratrie:
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Réligion:
+              <span style={{ color: 'black' }}> {FamalyData.Religion}</span>
+            </InputLabel>
+            <InputLabel>
+              MatcdMasn:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
+            </InputLabel>
+            <InputLabel>
+              Rang Fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.RangFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Se jour Neo :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Taille Fratrie:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.TailleFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Tbc Chez Parent :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Tbc traiter :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.TbcTraiter ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Tbc Chez TbcGuerie :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.TbcGuerie ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Terrain Vih :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <Typography>Mère</Typography>
+            <InputLabel>
+              Mère en vie :
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
+            </InputLabel>
+            <InputLabel>
+              Profession mère :<span style={{ color: 'black' }}> {FamalyData.professionMere}</span>
+            </InputLabel>
+            <InputLabel>
+              Hospitalisation :
+              <span style={{ color: 'black' }}>
+                {CauseMalnutrition.diagnostique_hospitalisation}
+              </span>
+            </InputLabel>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card
+            sx={{
+              margin: 2,
+              marginTop: -10,
+              padding: 5
+            }}
+          >
+            <Typography>Synthome</Typography>
+            <InputLabel>
+              Terme grossesse:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.Termegrossesse} </span>
+            </InputLabel>
+            <InputLabel>
+              Lieu d'accouchement :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.lieu_accouchement}</span>
+            </InputLabel>
+            <InputLabel>
+              ATC Rougeole:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
+            </InputLabel>
+          </Card>
+        </Grid>
+      </Grid>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
+        <LoadingButton
+          size="large"
+          type="button"
+          variant="contained"
+          onClick={() => {
+            PrevStep();
+          }}
+          sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
+        >
+          Précédant
+        </LoadingButton>
+        <LoadingButton
+          type="button"
+          variant="contained"
+          onClick={handleSubmit}
+          onSubmit={handleSubmit}
+          size="large"
+          sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
+        >
+          Enregistrer
+        </LoadingButton>
+      </Stack>
     </Container>
   );
 }

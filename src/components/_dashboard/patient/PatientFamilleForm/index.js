@@ -463,10 +463,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Réligion
                   </option>
-                  <option value="Norrmal">Catholique</option>
-                  <option value="Anormal">Protestant</option>
-                  <option value="Anormal">Musulman</option>
-                  <option value="Anormal">Autres</option>
+                  <option value="Catholique">Catholique</option>
+                  <option value="Protestant">Protestant</option>
+                  <option value="Musulman">Musulman</option>
+                  <option value="Autres">Autres</option>
                 </Select>
                 <Select
                   sx={{ width: '90%', padding: '2px' }}
