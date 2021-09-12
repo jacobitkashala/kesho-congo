@@ -106,7 +106,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       atcdMas: '',
       AtcdRougeole: '',
       TbcChezParent: 'null',
-      TbcLequel: 'null',
+      TbcLequel: '',
       TbcTraiter: 'null',
       duree_traitement_tbc: '0',
       TbcGuerie: 'null',

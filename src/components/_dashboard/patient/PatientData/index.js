@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
+import Label from '../../../Label';
 import './styledPatientData.css';
 
 PatientData.propTypes = {
@@ -165,6 +166,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
             alt={indentity.prenom_patient}
             src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
           />
+          <Label
+            variant="filled"
+            color={`${indentity.typeMalnutrition === 'MAC' ? 'error' : 'warning'}`}
+          >
+            {indentity.typeMalnutrition}
+          </Label>
           <InputLabel>{indentity.prenom_patient}</InputLabel>
           <InputLabel>Prénom: {indentity.prenom_patient}</InputLabel>
           <InputLabel>Postnom: {indentity.postnom_patient}</InputLabel>

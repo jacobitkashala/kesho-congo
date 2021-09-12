@@ -5,7 +5,7 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 // import { useSelector, useDispatch } from 'react-redux';
 
 // -------------------MODAL
@@ -95,18 +95,14 @@ export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
 
-  const getUsers = `https://kesho-congo-api.herokuapp.com/patient/all`;
-
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `bearer ${localStorage.getItem('token')}`
-    }
-  };
-
   useEffect(() => {
-    fetch(getUsers, options)
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => {
         setPatientsList(data.Patients);
@@ -267,14 +263,6 @@ export default function Patient() {
                           postnom_consultant,
                           prenom_patient
                         } = row;
-                        let color = '';
-                        if (type_malnutrition === 'MAC') {
-                          color = 'red';
-                        } else if (type_malnutrition === 'MAS') {
-                          color = 'orange';
-                        } else {
-                          color = 'light';
-                        }
                         const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
                         return (

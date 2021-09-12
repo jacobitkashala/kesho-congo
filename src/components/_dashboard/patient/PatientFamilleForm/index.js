@@ -30,7 +30,6 @@ FamilleForm.propTypes = {
 };
 const Div = styled('div')(() => ({
   height: '90%',
-  // width: '150%',
   position: 'relative',
   borderRadius: '15px',
   paddingTop: '30px',
@@ -132,7 +131,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               <Stack spacing={3}>
                 <TextField
                   required
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Taille ménage"
                   value={values.tailleMenage}
                   {...getFieldProps('tailleMenage')}
@@ -154,7 +153,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </RadioGroup>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Nom de tuteur"
                   required
                   value={values.nomTuteur}
@@ -178,7 +177,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <InputLabel>Date de naissance mère</InputLabel>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   type="date"
                   required
                   {...getFieldProps('dateNaissanceMere')}
@@ -201,7 +200,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </RadioGroup>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   required
                   selected={values.scolariteMere}
@@ -218,7 +217,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Universitaire">Universitaire</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   required
                   {...getFieldProps('professionMere')}
@@ -261,7 +260,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   native
                   required
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   {...getFieldProps('ProffessionChefMenage')}
                   error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
                 >
@@ -286,7 +285,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Select>
                 <InputLabel>Date de naissance Chef ménage</InputLabel>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   type="date"
                   required
                   {...getFieldProps('dateNaissanceChefMenage')}
@@ -311,7 +310,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
             <SubDivContenaire>
               <Stack spacing={3}>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   required
                   selected={values.statutMarital}
@@ -327,7 +326,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Veuve">Veuve</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   {...getFieldProps('pereMariage')}
                   error={Boolean(touched.pereMariage && errors.pereMariage)}
@@ -339,8 +338,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Monogame">Monogame</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Si Polygame nbre de femme"
                   value={values.nbrFemme}
                   {...getFieldProps('nbrFemme')}
@@ -362,7 +360,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </RadioGroup>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   selected={values.contraceptionType}
                   {...getFieldProps('contraceptionType')}
@@ -376,7 +374,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Pas de contraception">Pas de contraception</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   selected={values.typeContraceptionNaturel}
                   {...getFieldProps('typeContraceptionNaturel')}
@@ -395,7 +393,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="MAMA">MAMA</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   {...getFieldProps('typeContraceptionModerne')}
                   error={Boolean(
@@ -424,7 +422,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Vasectomie">Vasectomie</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   required
                   {...getFieldProps('Tribut')}
@@ -458,7 +456,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   native
                   required
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   selected={values.Religion}
                   {...getFieldProps('Religion')}
                   error={Boolean(touched.Religion && errors.Religion)}
@@ -472,7 +470,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Anormal">Autres</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   required
                   {...getFieldProps('NiveauSocioEconomique')}
@@ -489,7 +487,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="5 dollars">5 dollars</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   required
                   label="Nombre de repas par jour"
                   value={values.NbrRepasJour}
