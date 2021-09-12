@@ -67,9 +67,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     PossederTeleRadio: Yup.string().required('*'),
     ProffessionChefMenage: Yup.string().required('*'),
     scolariteMere: Yup.string().required('*'),
-    pereMariage: Yup.string(),
+    pereMariage: Yup.string().required(),
     consommationPoisson: Yup.string(),
-    nbrFemme: Yup.number(),
+    nbrFemme: Yup.number().required(),
     NiveauSocioEconomique: Yup.string().required('*'),
     statutMarital: Yup.string(),
     typeContraceptionNaturel: Yup.string(),
@@ -79,6 +79,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     Tribut: Yup.string().required('*'),
     Religion: Yup.string().required('*'),
     contraceptionType: Yup.string(),
+    typeContraceptionModerne: Yup.string(),
     NbrRepasJour: Yup.number().required('*'),
     pereEnvie: Yup.string().required('*'),
     tailleMenage: Yup.number().required('*'),
@@ -89,7 +90,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const formik = useFormik({
     initialValues: {
       vivreAvecParent: '',
-      contraceptionMere: '',
+      typeContraceptionModerne: 'null',
+      contraceptionMere: 'null',
       professionMere: '',
       nomTuteur: '',
       dateNaissanceMere: '',
@@ -98,11 +100,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       ProffessionChefMenage: '',
       scolariteMere: '',
       pereMariage: '',
-      contraceptionNaturel: '',
+      contraceptionNaturel: 'null',
       mereEnVie: '',
-      // nbrEnfant: '',
       consommationPoisson: '',
-      typeContraceptionNaturel: '',
+      typeContraceptionNaturel: 'null',
       NiveauSocioEconomique: '',
       statutMarital: '',
       Tribut: '',
@@ -110,9 +111,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       Religion: '',
       NbrRepasJour: '',
       pereEnvie: '',
-      nbrFemme: '',
+      nbrFemme: '1',
       tailleMenage: '',
-      contraceptionType: ''
+      contraceptionType: 'null'
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
@@ -128,21 +129,19 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          {/* <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
-            Famille
-          </Typography> */}
           <SubDiv direction={{ xs: 'column', sm: 'row' }}>
             <SubDivContenaire>
               <Stack spacing={3}>
                 <TextField
+                  required
                   sx={{ width: '80%', padding: '2px' }}
                   label="Taille ménage"
                   value={values.tailleMenage}
                   {...getFieldProps('tailleMenage')}
                   error={Boolean(touched.tailleMenage && errors.tailleMenage)}
-                  // helperText={touched.tailleMenage && errors.tailleMenage}
                 />
                 <RadioGroup
+                  required
                   {...getFieldProps('vivreAvecParent')}
                   error={Boolean(touched.vivreAvecParent && errors.vivreAvecParent)}
                 >
@@ -151,31 +150,30 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Vit avec ces deux parents:</FormLabel>
+                    <FormLabel component="label">Les deux parents en vie:</FormLabel>
                     <FormControlLabel value="true" control={<Radio />} label="Oui" />
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
                   label="Nom de tuteur"
+                  required
                   value={values.nomTuteur}
                   {...getFieldProps('nomTuteur')}
                   error={Boolean(touched.nomTuteur && errors.nomTuteur)}
-                  // helperText={touched.nomTuteur && errors.nomTuteur}
                 />
                 <RadioGroup
                   {...getFieldProps('mereEnVie')}
+                  required
                   error={Boolean(touched.mereEnVie && errors.mereEnVie)}
-                  helperText={touched.mereEnVie && errors.mereEnVie}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Mère en vit:</FormLabel>
+                    <FormLabel component="label">Mère en vie:</FormLabel>
                     <FormControlLabel value="true" control={<Radio />} label="Oui" />
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
@@ -184,11 +182,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="date"
+                  required
                   {...getFieldProps('dateNaissanceMere')}
                   error={Boolean(touched.dateNaissanceMere && errors.dateNaissanceMere)}
                   helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
                 />
                 <RadioGroup
+                  required
                   {...getFieldProps('mereEnceinte')}
                   error={Boolean(touched.mereEnceinte && errors.mereEnceinte)}
                 >
@@ -205,6 +205,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
+                  required
                   selected={values.scolariteMere}
                   {...getFieldProps('scolariteMere')}
                   error={Boolean(touched.scolariteMere && errors.scolariteMere)}
@@ -221,7 +222,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
-                  selected={values.professionMere}
+                  required
                   {...getFieldProps('professionMere')}
                   error={Boolean(touched.professionMere && errors.professionMere)}
                   helperText={touched.professionMere && errors.professionMere}
@@ -243,6 +244,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     Sans profession (sans emploi)
                   </option>
                   <option value="Cultivatrice">Cultivatrice</option>
+                  <option value="Autre">Autre</option>
                 </Select>
                 <RadioGroup
                   {...getFieldProps('pereEnvie')}
@@ -253,17 +255,17 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Père en vit:</FormLabel>
+                    <FormLabel component="label">Père en vie:</FormLabel>
                     <FormControlLabel value="true" control={<Radio />} label="Oui" />
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
                   native
+                  required
                   sx={{ width: '80%', padding: '2px' }}
                   {...getFieldProps('ProffessionChefMenage')}
                   error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
-                  // helperText={touched.ProffessionChefMenage && errors.ProffessionChefMenage}
                 >
                   <option value="" selected disabled hidden>
                     Profession chef ménage
@@ -282,11 +284,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     Sans profession (sans emploi)
                   </option>
                   <option value="Cultivatrice">Cultivatrice</option>
+                  <option value="Autre">autre</option>
                 </Select>
                 <InputLabel>Date de naissance Chef ménage</InputLabel>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
                   type="date"
+                  required
                   {...getFieldProps('dateNaissanceChefMenage')}
                   error={Boolean(touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage)}
                 />
@@ -299,9 +303,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">
-                      Possesseder radio et/ou poste téléviseur:
-                    </FormLabel>
+                    <FormLabel component="label">Possesseder radio ou télévision:</FormLabel>
                     <FormControlLabel value="true" control={<Radio />} label="Oui" />
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
@@ -313,6 +315,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
+                  required
                   selected={values.statutMarital}
                   {...getFieldProps('statutMarital')}
                   error={Boolean(touched.statutMarital && errors.statutMarital)}
@@ -345,17 +348,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('nbrFemme')}
                   error={Boolean(touched.nbrFemme && errors.nbrFemme)}
                 />
-                {/* <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
-                  label="Nombre enfant"
-                  value={values.nbrEnfant}
-                  {...getFieldProps('nbrEnfant')}
-                  error={Boolean(touched.nbrEnfant && errors.nbrEnfant)}
-                /> */}
                 <RadioGroup
                   {...getFieldProps('contraceptionMere')}
                   error={Boolean(touched.contraceptionMere && errors.contraceptionMere)}
+                  required
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -379,6 +375,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </option>
                   <option value="Naturel">Naturel</option>
                   <option value="Moderne">Moderne</option>
+                  <option value="Pas de contraception">Pas de contraception</option>
                 </Select>
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
@@ -402,9 +399,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
-                  selected={values.typeContraceptionModerne}
-                  {...getFieldProps('contraceptionNaturel')}
-                  error={Boolean(touched.contraceptionModerne && errors.contraceptionModerne)}
+                  {...getFieldProps('typeContraceptionModerne')}
+                  error={Boolean(
+                    touched.typeContraceptionModerne && errors.typeContraceptionModerne
+                  )}
                 >
                   <option value="" selected disabled hidden>
                     Si la contraception Moderne veuillez preciser
@@ -430,7 +428,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
-                  selected={values.Tribut}
+                  required
                   {...getFieldProps('Tribut')}
                   error={Boolean(touched.Tribut && errors.Tribut)}
                 >
@@ -446,6 +444,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Select>
                 <RadioGroup
                   {...getFieldProps('consommationPoisson')}
+                  required
                   error={Boolean(touched.consommationPoisson && errors.consommationPoisson)}
                 >
                   <Stack
@@ -460,6 +459,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </RadioGroup>
                 <Select
                   native
+                  required
                   sx={{ width: '80%', padding: '2px' }}
                   selected={values.Religion}
                   {...getFieldProps('Religion')}
@@ -476,7 +476,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <Select
                   sx={{ width: '80%', padding: '2px' }}
                   native
-                  // selected={values.NiveauSocioEconomique}
+                  required
                   {...getFieldProps('NiveauSocioEconomique')}
                   error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
                 >
@@ -492,6 +492,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Select>
                 <TextField
                   sx={{ width: '80%', padding: '2px' }}
+                  required
                   label="Nombre de repas par jour"
                   value={values.NbrRepasJour}
                   {...getFieldProps('NbrRepasJour')}

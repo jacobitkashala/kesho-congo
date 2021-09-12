@@ -70,11 +70,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     AtcdRougeole: Yup.string().required(),
     TbcChezParent: Yup.string().required(),
     TbcLequel: Yup.string(),
-    TbcTraiter: Yup.string().required(),
+    TbcTraiter: Yup.string(),
     Tdc: Yup.string().required(),
     hospitalisation_recente: Yup.string().required(),
     diagnostique_hospitalisation: Yup.string(),
-    duree_traitement_tbc: Yup.string(),
+    duree_traitement_tbc: Yup.number(),
     Termegrossesse: Yup.string().required(),
     CalendrierVaccin: Yup.string().required(),
     atcd_du_tbc_dans_fratrie: Yup.string().required('*'),
@@ -86,7 +86,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     NombreChute: Yup.number().positive().required(),
     VaccinatioRougeole: Yup.string().required(),
     Eig: Yup.number().required(),
-    TbcGuerie: Yup.string().required(),
+    TbcGuerie: Yup.string(),
     Dpm: Yup.string().required(),
     cocktail_atb: Yup.string().required(),
     cocktail_atb_preci: Yup.string(),
@@ -107,9 +107,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       AtcdRougeole: '',
       TbcChezParent: '',
       TbcLequel: '',
-      TbcTraiter: '',
+      TbcTraiter: 'null',
       duree_traitement_tbc: '',
-      TbcGuerie: '',
+      TbcGuerie: 'null',
       Termegrossesse: '',
       CalendrierVaccin: '',
       PreciserCalendrierVaccinNonJour: '',
@@ -345,7 +345,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   {...getFieldProps('Termegrossesse')}
                   error={Boolean(touched.Termegrossesse && errors.Termegrossesse)}
                 >
-                  <option defaultValue="" selected disabled hidden>
+                  <option value="" selected disabled hidden>
                     Terme de la grossesse
                   </option>
                   <option value="Prématuré ">Prématuré</option>
