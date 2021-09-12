@@ -12,59 +12,36 @@ import {
 import './styledNewPatient.css';
 
 export default function NewPatient() {
-  const initialValues = {
-    taille: '',
-    poidsActuel: '',
-    peri_cranien: '',
-    prenom_patient: '',
-    nom_patient: '',
-    postnom_patient: '',
-    telephone: '',
-    diversification_aliment: '',
-    sexe_patient: '',
-    dataNaissancePatient: '',
-    constitutionAliment: '',
-    provenance_patient: '',
-    adresse_patient: '',
-    mode_arrive: '',
-    ageFinAllaitement: '',
-    traitementNutritionnelAutre: '',
-    poids_naissance: '',
-    traitementNutritionnel: '',
-    peri_brachail: '',
-    typeMalnutrition: ''
-  };
   const [Step, SetStep] = useState(1);
-  const [DataPatient, SetDataPatient] = useState();
+  const [prenomPatient, setPrenomPatient] = useState('');
+  const [nomPatient, setNomPatient] = useState('');
+  const [DataPatient, SetDataPatient] = useState({});
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-
-  // console.log(DataPatient);
 
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
 
   const NextStep = () => {
-    // console.log(Step);
-    SetDataPatient((currentState) => ({ ...currentState, initialValues }));
     SetStep((CurrentState) => CurrentState + 1);
   };
-  // Go to prev step
   const PrevStep = () => {
     SetStep((CurrentState) => CurrentState - 1);
   };
 
   const FormPatientInfo = (key) => {
-    // console.log(`key vaut :${key}`, DataPatient);
     switch (key) {
       case 1:
         return (
           <PatientForm
-            DataPatient={DataPatient}
+            setPrenomPatient={setPrenomPatient}
+            prenomPatient={prenomPatient}
             NextStep={NextStep}
             SetDataPatient={SetDataPatient}
+            nomPatient={nomPatient}
+            setNomPatient={setNomPatient}
           />
         );
       case 2:
