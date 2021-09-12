@@ -89,7 +89,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     initialValues: {
       vivreAvecParent: '',
       typeContraceptionModerne: '',
-      contraceptionMere: 'null',
+      contraceptionMere: '',
       professionMere: '',
       nomTuteur: '',
       dateNaissanceMere: '',
@@ -120,8 +120,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   });
 
   const { errors, touched, handleSubmit, getFieldProps, values, isSubmitting } = formik;
-  console.log(errors);
-  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -336,6 +334,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </option>
                   <option value="Polygame">Polygame</option>
                   <option value="Monogame">Monogame</option>
+                  <option value="Mariage libre">Mariage libre</option>
                 </Select>
                 <TextField
                   sx={{ width: '90%', padding: '2px' }}

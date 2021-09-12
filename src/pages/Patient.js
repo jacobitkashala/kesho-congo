@@ -45,9 +45,6 @@ import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboar
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
 import Label from '../components/Label';
 
-// import USERLIST from '../_mocks_/personnel';
-// import { fakeAuth } from '../fakeAuth';
-
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignRight: true },
   { id: 'PR', label: 'Prénom', alignRight: true },
