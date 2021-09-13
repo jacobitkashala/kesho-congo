@@ -86,10 +86,8 @@ export default function NewPatient() {
       </div>
       <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'center' }} spacing={2}>
         {/* <Grid container spacing={3}> */}
-        <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}>
-          {FormPatientInfo(Step)}
-        </Grid>
-        {/* </Grid> */}
+        {/* <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}> */}
+        {FormPatientInfo(Step)}
       </Stack>
     </Page>
   ) : (
