@@ -43,6 +43,7 @@ export default function PatientForm({
   const [allaitement, setAllaitement] = useState(false);
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
+  const [traitementNutri, setTraitementNutri] = useState(true);
 
   const handleChangeAllaitement = (event) => {
     const { value } = event.target;
@@ -58,6 +59,14 @@ export default function PatientForm({
       setProvenance(false);
     } else {
       setProvenance(true);
+    }
+  };
+  const handleChangeModeArriver = (event) => {
+    const { value } = event.target;
+    if (value === 'Autres') {
+      setModeArriver(false);
+    } else {
+      setModeArriver(true);
     }
   };
   const RegisterSchema = Yup.object().shape({
@@ -224,7 +233,8 @@ export default function PatientForm({
                 <Select
                   sx={{ padding: '2px' }}
                   native
-                  {...getFieldProps('mode_arrive')}
+                  // {...getFieldProps('mode_arrive')}
+                  onChange={handleChangeModeArriver}
                   error={Boolean(touched.mode_arrive && errors.mode_arrive)}
                   helperText={touched.mode_arrive && errors.mode_arrive}
                 >
@@ -240,6 +250,7 @@ export default function PatientForm({
                   fullWidth
                   label="Si le mode d'arriver est autre veuillez préciser"
                   {...getFieldProps('ExplicationAutre')}
+                  disabled={modeArriver}
                   // defaultValue={DataPatient.ExplicationAutre}
                   helperText={touched.ExplicationAutre && errors.ExplicationAutre}
                   error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
