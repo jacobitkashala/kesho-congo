@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-// import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -40,25 +40,45 @@ export default function PatientForm({
   nomPatient,
   setNomPatient
 }) {
+  const [allaitement, setAllaitement] = useState(false);
+  const [provenance, setProvenance] = useState(true);
+  const [modeArriver, setModeArriver] = useState(true);
+
+  const handleChangeAllaitement = (event) => {
+    const { value } = event.target;
+    if (value) {
+      setAllaitement((prevState) => !prevState);
+    }
+  };
+
+  const handleChangeProvenance = (event) => {
+    const { value } = event.target;
+    console.log(value);
+    if (value === 'Autres') {
+      setProvenance(false);
+    } else {
+      setProvenance(true);
+    }
+  };
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number().required('champs requis'),
+    taille: Yup.number('un chiffre').required('Taille requis'),
     ExplicationAutre: Yup.string(),
-    allaitementExclisifSixMois: Yup.string().required('champs requis'),
-    nom_patient: Yup.string().required('champs requis'),
-    poidsActuel: Yup.number().required('champs requis'),
-    peri_cranien: Yup.number().required('champs requis'),
-    prenom_patient: Yup.string().required('champs requis'),
-    peri_brachail: Yup.number().required('champs requis'),
-    postnom_patient: Yup.string().required('champs requis'),
-    telephone: Yup.string().required('champs requis'),
-    diversification_aliment: Yup.string().required('champs requis'),
-    sexe_patient: Yup.string().required('champs requis'),
-    dataNaissancePatient: Yup.date().required('champs requis'),
-    constitutionAliment: Yup.string().required('champs requis'),
-    provenance_patient: Yup.string().required('champs requis'),
+    allaitementExclisifSixMois: Yup.string().required('Radio requis'),
+    nom_patient: Yup.string().required('Nom requis'),
+    poidsActuel: Yup.number('un chiffre').required('Poinds requis'),
+    peri_cranien: Yup.number('un chiffre').required('Perimetre cranien requis'),
+    prenom_patient: Yup.string().required('Prenom requis'),
+    peri_brachail: Yup.number().required('Perimetre brachial requis'),
+    postnom_patient: Yup.string().required('Postnom requis'),
+    telephone: Yup.string().required('téléphone requis'),
+    diversification_aliment: Yup.string().required('diversification requis'),
+    sexe_patient: Yup.string().required('Sexe requis'),
+    dataNaissancePatient: Yup.date().required('Data de naissance requis'),
+    constitutionAliment: Yup.string().required('constitution aliment requis'),
+    provenance_patient: Yup.string().required('Provenance requiq'),
     mode_arrive: Yup.string().required('champs requis'),
-    typeMalnutrition: Yup.string().required('champs requis'),
-    poids_naissance: Yup.number().required('champs requis'),
+    typeMalnutrition: Yup.string().required('Type malnutriton requis'),
+    poids_naissance: Yup.number().required('poids naissance requis'),
     traitementNutritionnel: Yup.string(),
     traitementNutritionnelAutre: Yup.string(),
     adresse_patient: Yup.string().required('champs requis'),
@@ -116,20 +136,18 @@ export default function PatientForm({
               <Stack spacing={3}>
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
                   fullWidth
                   label="Prénom"
                   defaultValue={prenomPatient}
                   {...getFieldProps('prenom_patient')}
                   error={Boolean(touched.prenom_patient && errors.prenom_patient)}
-                  helperText={touched.nom_patient && errors.nom_patient}
+                  helperText={touched.prenom_patient && errors.prenom_patient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   autoComplete="name"
                   fullWidth
                   label="Nom"
-                  required
                   defaultValue={nomPatient}
                   {...getFieldProps('nom_patient')}
                   error={Boolean(touched.nom_patient && errors.nom_patient)}
@@ -140,56 +158,54 @@ export default function PatientForm({
                   fullWidth
                   autoComplete="lastname"
                   type="text"
-                  required
                   label="Postnom"
                   // defaultValue={DataPatient.postnom_patient}
                   {...getFieldProps('postnom_patient')}
-                  // error={Boolean(touched.postnom_patient && errors.postnom_patient)}
-                  // // helperText={touched.postnom_patient && errors.postnom_patient}
+                  error={Boolean(touched.postnom_patient && errors.postnom_patient)}
+                  helperText={touched.postnom_patient && errors.postnom_patient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
                   autoComplete="tel"
-                  required
                   type="tel"
                   label="Téléphone"
                   // defaultValue={DataPatient.telephone}
                   {...getFieldProps('telephone')}
                   error={Boolean(touched.telephone && errors.telephone)}
-                  // // helperText={touched.telephone && errors.telephone}
+                  helperText={touched.telephone && errors.telephone}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
-                  required
                   label="Adresse patient"
                   // defaultValue={DataPatient.adresse_patient}
                   {...getFieldProps('adresse_patient')}
+                  helperText={touched.adresse_patient && errors.adresse_patient}
                   error={Boolean(touched.adresse_patient && errors.adresse_patient)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
-                  required
                   label="Poid naissance (gr)"
                   //  defaultValue={DataPatient.poids_naissance}
                   {...getFieldProps('poids_naissance')}
+                  helperText={touched.poids_naissance && errors.poids_naissance}
                   error={Boolean(touched.poids_naissance && errors.poids_naissance)}
                 />
                 <TextField
                   fullWidth
                   sx={{ padding: '2px' }}
-                  required
                   //  defaultValue={DataPatient.poidsActuel}
                   label="Poids actuelle (kg)"
                   {...getFieldProps('poidsActuel')}
+                  helperText={touched.poidsActuel && errors.poidsActuel}
                   error={Boolean(touched.poidsActuel && errors.poidsActuel)}
                 />
                 <RadioGroup
                   {...getFieldProps('sexe_patient')}
                   error={Boolean(touched.sexe_patient && errors.sexe_patient)}
-                  required
+                  helperText={touched.sexe_patient && errors.sexe_patient}
                   // setValues={  DataPatient.Sexe}
                 >
                   <Stack
@@ -208,9 +224,9 @@ export default function PatientForm({
                 <Select
                   sx={{ padding: '2px' }}
                   native
-                  required
                   {...getFieldProps('mode_arrive')}
                   error={Boolean(touched.mode_arrive && errors.mode_arrive)}
+                  helperText={touched.mode_arrive && errors.mode_arrive}
                 >
                   <option value="" selected disabled hidden>
                     Mode d'arriver
@@ -225,13 +241,14 @@ export default function PatientForm({
                   label="Si le mode d'arriver est autre veuillez préciser"
                   {...getFieldProps('ExplicationAutre')}
                   // defaultValue={DataPatient.ExplicationAutre}
+                  helperText={touched.ExplicationAutre && errors.ExplicationAutre}
                   error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
                 />
                 <Select
                   sx={{ padding: '2px' }}
                   native
-                  required
                   {...getFieldProps('traitementNutritionnel')}
+                  helperText={touched.traitementNutritionnel && errors.traitementNutritionnel}
                   error={Boolean(touched.traitementNutritionnel && errors.traitementNutritionnel)}
                 >
                   <option value="" selected disabled hidden>
@@ -246,6 +263,9 @@ export default function PatientForm({
                   fullWidth
                   label="Si le traitement nutritionnel est autre veuillez préciser"
                   // defaultValue={DataPatient.traitementNutritionnelAutre}
+                  helperText={
+                    touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
+                  }
                   {...getFieldProps('traitementNutritionnelAutre')}
                   error={Boolean(
                     touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
@@ -253,16 +273,15 @@ export default function PatientForm({
                 />
               </Stack>
             </Grid>
-            {/* </SubDivContenaire> */}
-            {/* <SubDivContenaire> */}
             <Grid item xs={12} sm={6} md={6}>
               <Stack spacing={3}>
                 <Select
                   native
                   sx={{ padding: '2px' }}
-                  required
-                  {...getFieldProps('provenance_patient')}
+                  // {...getFieldProps('provenance_patient')}
+                  onChange={handleChangeProvenance}
                   // value={DataPatient.Provenace}
+                  helperText={touched.provenance_patient && errors.provenance_patient}
                   error={Boolean(touched.provenance_patient && errors.provenance_patient)}
                 >
                   <option value="" selected disabled hidden>
@@ -279,24 +298,28 @@ export default function PatientForm({
                   fullWidth
                   label="Si la provenance est autre veuillez préciser"
                   {...getFieldProps('ExplicationProvenance')}
+                  disabled={provenance}
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
-                  // helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
+                  helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
                 />
                 <InputLabel>Date de naissance</InputLabel>
                 <TextField
                   sx={{ padding: '2px' }}
                   type="date"
                   fullWidth
-                  required
                   {...getFieldProps('dataNaissancePatient')}
+                  helperText={touched.dataNaissancePatient && errors.dataNaissancePatient}
                   error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
-                  required
-                  {...getFieldProps('allaitementExclisifSixMois')}
+                  // {...getFieldProps('allaitementExclisifSixMois')}
+                  helperText={
+                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                  }
                   error={Boolean(
                     touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
                   )}
+                  onChange={handleChangeAllaitement}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -304,68 +327,75 @@ export default function PatientForm({
                     spacing={1}
                   >
                     <FormLabel component="label">Allaitement exclusif 6mois:</FormLabel>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <Stack direction={{ xs: 'row', sm: 'row' }}>
+                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    </Stack>
                   </Stack>
                 </RadioGroup>
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
+                  disabled={allaitement}
                   label="Si non à quel âge fin allaitement (mois)"
                   {...getFieldProps('ageFinAllaitement')}
                   //  defaultValue={DataPatient.ageFinAllaitement}
+                  helperText={touched.ageFinAllaitement && errors.ageFinAllaitement}
                   error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
                   label="Constitution/type d’aliment"
                   {...getFieldProps('constitutionAliment')}
                   // defaultValue={DataPatient.constitutionAliment}
+                  helperText={touched.constitutionAliment && errors.constitutionAliment}
                   error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
                   fullWidth
                   label="périmètre crânien "
                   {...getFieldProps('peri_cranien')}
                   // defaultValue={DataPatient.peri_cranien}
+                  helperText={touched.peri_cranien && errors.peri_cranien}
                   error={Boolean(touched.peri_cranien && errors.peri_cranien)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
+                  // required
                   fullWidth
                   label="périmètre branchial"
                   // defaultValue={DataPatient.peri_brachail}
                   {...getFieldProps('peri_brachail')}
+                  helperText={touched.peri_brachail && errors.peri_brachail}
                   error={Boolean(touched.peri_brachail && errors.peri_brachail)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
+                  // required
                   fullWidth
                   label="Taille en Cm"
                   // defaultValue={DataPatient.taille}
                   {...getFieldProps('taille')}
                   error={Boolean(touched.taille && errors.taille)}
+                  helperText={touched.taille && errors.taille}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  required
+                  // required
                   fullWidth
                   label="Diversification aliment"
                   {...getFieldProps('diversification_aliment')}
                   // defaultValue={DataPatient.diversification_aliment}
+                  helperText={touched.diversification_aliment && errors.diversification_aliment}
                   error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
                 />
                 <Select
                   native
                   sx={{ padding: '2px' }}
-                  required
                   // defaultValue={identite.typeMalnutrition}
                   {...getFieldProps('typeMalnutrition')}
+                  helperText={touched.typeMalnutrition && errors.typeMalnutrition}
                   error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
                 >
                   <option value="" selected disabled hidden>
@@ -377,11 +407,9 @@ export default function PatientForm({
                 </Select>
               </Stack>
             </Grid>
-            {/* </SubDivContenaire> */}
-            {/* </SubDiv> */}
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
+              sx={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}
             >
               <LoadingButton
                 type="submit"
