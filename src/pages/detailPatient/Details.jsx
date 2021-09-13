@@ -9,13 +9,16 @@ import { styled } from '@material-ui/core/styles';
 import { Icon } from '@iconify/react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import Axios from 'axios';
+import moment from 'moment';
 import Chart from '../../components/charts/chart/Chart';
 import { productData } from '../../_mocks_/dummyData';
 import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
+
 // import { fakeAuth } from '../../fakeAuth';
 
 export default function Details() {
+  console.log('hobed', moment().toDate('MM/DD/YYYY'));
   const location = useLocation();
   const [loader, setLoader] = useState(true);
   const [onePatient, setOnePatient] = useState([]);

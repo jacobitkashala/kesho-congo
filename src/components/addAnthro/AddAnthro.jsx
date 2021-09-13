@@ -93,7 +93,7 @@ export default function AddAnthro({ id }) {
           console.log('Yves', message);
           fakeAuth.login(() => {
             navigate(from);
-            navigate(`/dashboard/user/detail_patient/${id}`, { replace: true });
+            navigate(`/dashboard/patient/detail_patient/${id}`, { replace: true });
           });
         })
         .catch((err) => {
