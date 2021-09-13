@@ -43,7 +43,7 @@ export default function AccountPopover() {
   };
 
   const navigate = useNavigate();
-  console.log(localStorage.getItem('name'));
+  // console.log(localStorage.getItem('name'));
   return (
     <>
       <IconButton
@@ -55,7 +55,7 @@ export default function AccountPopover() {
           height: 50,
           ...(open && {
             '&:before': {
-              zIndex: 1,
+              zIndex: 223,
               content: "''",
               width: '100%',
               height: '100%',
