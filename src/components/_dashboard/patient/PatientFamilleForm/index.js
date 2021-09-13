@@ -30,7 +30,6 @@ FamilleForm.propTypes = {
 };
 const Div = styled('div')(() => ({
   height: '90%',
-  // width: '150%',
   position: 'relative',
   borderRadius: '15px',
   paddingTop: '30px',
@@ -62,25 +61,23 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().required('*'),
     dateNaissanceMere: Yup.date().required('*'),
-    // dateNaissTuteur: Yup.date(),
-    contraceptionNaturel: Yup.string(),
     mereEnceinte: Yup.string().required('*'),
     PossederTeleRadio: Yup.string().required('*'),
     ProffessionChefMenage: Yup.string().required('*'),
     scolariteMere: Yup.string().required('*'),
-    pereMariage: Yup.string(),
+    pereMariage: Yup.string().required(),
     consommationPoisson: Yup.string(),
-    nbrEnfant: Yup.number().required('*'),
-    nbrFemme: Yup.number(),
+    nbrFemme: Yup.number().required(),
     NiveauSocioEconomique: Yup.string().required('*'),
     statutMarital: Yup.string(),
-    typeContraceptionNaturel: Yup.string('*'),
-    mereEnVie: Yup.string(),
+    typeContraceptionNaturel: Yup.string(),
+    mereEnVie: Yup.string().required('*'),
     dateNaissanceChefMenage: Yup.date().required('*'),
     vivreAvecParent: Yup.string().required('*'),
     Tribut: Yup.string().required('*'),
     Religion: Yup.string().required('*'),
     contraceptionType: Yup.string(),
+    typeContraceptionModerne: Yup.string(),
     NbrRepasJour: Yup.number().required('*'),
     pereEnvie: Yup.string().required('*'),
     tailleMenage: Yup.number().required('*'),
@@ -91,19 +88,17 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const formik = useFormik({
     initialValues: {
       vivreAvecParent: '',
+      typeContraceptionModerne: '',
       contraceptionMere: '',
       professionMere: '',
       nomTuteur: '',
       dateNaissanceMere: '',
-      dateNaissTuteur: '',
       mereEnceinte: '',
       PossederTeleRadio: '',
       ProffessionChefMenage: '',
       scolariteMere: '',
       pereMariage: '',
-      contraceptionNaturel: '',
       mereEnVie: '',
-      nbrEnfant: '',
       consommationPoisson: '',
       typeContraceptionNaturel: '',
       NiveauSocioEconomique: '',
@@ -113,7 +108,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       Religion: '',
       NbrRepasJour: '',
       pereEnvie: '',
-      nbrFemme: '',
+      nbrFemme: '1',
       tailleMenage: '',
       contraceptionType: ''
     },
@@ -125,27 +120,23 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   });
 
   const { errors, touched, handleSubmit, getFieldProps, values, isSubmitting } = formik;
-  console.log(errors);
-  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Div>
-          {/* <Typography variant="h5" pb={4} sx={{ textAlign: 'center' }}>
-            Famille
-          </Typography> */}
           <SubDiv direction={{ xs: 'column', sm: 'row' }}>
             <SubDivContenaire>
               <Stack spacing={3}>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  required
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Taille ménage"
                   value={values.tailleMenage}
                   {...getFieldProps('tailleMenage')}
                   error={Boolean(touched.tailleMenage && errors.tailleMenage)}
-                  // helperText={touched.tailleMenage && errors.tailleMenage}
                 />
                 <RadioGroup
+                  required
                   {...getFieldProps('vivreAvecParent')}
                   error={Boolean(touched.vivreAvecParent && errors.vivreAvecParent)}
                 >
@@ -154,44 +145,45 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Vit avec ces deux parents:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormLabel component="label">Les deux parents en vie:</FormLabel>
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Nom de tuteur"
+                  required
                   value={values.nomTuteur}
                   {...getFieldProps('nomTuteur')}
                   error={Boolean(touched.nomTuteur && errors.nomTuteur)}
-                  // helperText={touched.nomTuteur && errors.nomTuteur}
                 />
                 <RadioGroup
                   {...getFieldProps('mereEnVie')}
+                  required
                   error={Boolean(touched.mereEnVie && errors.mereEnVie)}
-                  helperText={touched.mereEnVie && errors.mereEnVie}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Mère en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormLabel component="label">Mère en vie:</FormLabel>
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <InputLabel>Date de naissance mère</InputLabel>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   type="date"
+                  required
                   {...getFieldProps('dateNaissanceMere')}
                   error={Boolean(touched.dateNaissanceMere && errors.dateNaissanceMere)}
                   helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
                 />
                 <RadioGroup
+                  required
                   {...getFieldProps('mereEnceinte')}
                   error={Boolean(touched.mereEnceinte && errors.mereEnceinte)}
                 >
@@ -201,13 +193,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Mère enceinte :</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
+                  required
                   selected={values.scolariteMere}
                   {...getFieldProps('scolariteMere')}
                   error={Boolean(touched.scolariteMere && errors.scolariteMere)}
@@ -222,9 +215,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Universitaire">Universitaire</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
-                  selected={values.professionMere}
+                  required
                   {...getFieldProps('professionMere')}
                   error={Boolean(touched.professionMere && errors.professionMere)}
                   helperText={touched.professionMere && errors.professionMere}
@@ -246,6 +239,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     Sans profession (sans emploi)
                   </option>
                   <option value="Cultivatrice">Cultivatrice</option>
+                  <option value="Autre">Autre</option>
                 </Select>
                 <RadioGroup
                   {...getFieldProps('pereEnvie')}
@@ -256,17 +250,17 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Père en vit:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormLabel component="label">Père en vie:</FormLabel>
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
                   native
-                  sx={{ width: '80%', padding: '2px' }}
+                  required
+                  sx={{ width: '90%', padding: '2px' }}
                   {...getFieldProps('ProffessionChefMenage')}
                   error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
-                  // helperText={touched.ProffessionChefMenage && errors.ProffessionChefMenage}
                 >
                   <option value="" selected disabled hidden>
                     Profession chef ménage
@@ -285,11 +279,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     Sans profession (sans emploi)
                   </option>
                   <option value="Cultivatrice">Cultivatrice</option>
+                  <option value="Autre">autre</option>
                 </Select>
                 <InputLabel>Date de naissance Chef ménage</InputLabel>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   type="date"
+                  required
                   {...getFieldProps('dateNaissanceChefMenage')}
                   error={Boolean(touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage)}
                 />
@@ -302,11 +298,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">
-                      Possession radio et/ou poste téléviseur:
-                    </FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormLabel component="label">Possesseder radio ou télévision:</FormLabel>
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
               </Stack>
@@ -314,8 +308,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
             <SubDivContenaire>
               <Stack spacing={3}>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
+                  required
                   selected={values.statutMarital}
                   {...getFieldProps('statutMarital')}
                   error={Boolean(touched.statutMarital && errors.statutMarital)}
@@ -329,7 +324,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Veuve">Veuve</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   {...getFieldProps('pereMariage')}
                   error={Boolean(touched.pereMariage && errors.pereMariage)}
@@ -337,20 +332,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Si statut marital est marié
                   </option>
-                  <option value="Norrmal">Polygame</option>
-                  <option value="Anormal">Monogame</option>
+                  <option value="Polygame">Polygame</option>
+                  <option value="Monogame">Monogame</option>
+                  <option value="Mariage libre">Mariage libre</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
-                  label="Nombre enfant"
-                  value={values.nbrEnfant}
-                  {...getFieldProps('nbrEnfant')}
-                  error={Boolean(touched.nbrEnfant && errors.nbrEnfant)}
-                />
-                <TextField
-                  sx={{ width: '80%', padding: '2px' }}
-                  fullWidth
+                  sx={{ width: '90%', padding: '2px' }}
                   label="Si Polygame nbre de femme"
                   value={values.nbrFemme}
                   {...getFieldProps('nbrFemme')}
@@ -359,6 +346,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <RadioGroup
                   {...getFieldProps('contraceptionMere')}
                   error={Boolean(touched.contraceptionMere && errors.contraceptionMere)}
+                  required
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -366,12 +354,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Contraception par la mère:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   selected={values.contraceptionType}
                   {...getFieldProps('contraceptionType')}
@@ -382,9 +370,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   </option>
                   <option value="Naturel">Naturel</option>
                   <option value="Moderne">Moderne</option>
+                  <option value="Pas de contraception">Pas de contraception</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
                   selected={values.typeContraceptionNaturel}
                   {...getFieldProps('typeContraceptionNaturel')}
@@ -403,11 +392,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="MAMA">MAMA</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
-                  selected={values.typeContraceptionModerne}
-                  {...getFieldProps('contraceptionNaturel')}
-                  error={Boolean(touched.contraceptionModerne && errors.contraceptionModerne)}
+                  {...getFieldProps('typeContraceptionModerne')}
+                  error={Boolean(
+                    touched.typeContraceptionModerne && errors.typeContraceptionModerne
+                  )}
                 >
                   <option value="" selected disabled hidden>
                     Si la contraception Moderne veuillez preciser
@@ -431,9 +421,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="Vasectomie">Vasectomie</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
-                  selected={values.Tribut}
+                  required
                   {...getFieldProps('Tribut')}
                   error={Boolean(touched.Tribut && errors.Tribut)}
                 >
@@ -449,6 +439,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Select>
                 <RadioGroup
                   {...getFieldProps('consommationPoisson')}
+                  required
                   error={Boolean(touched.consommationPoisson && errors.consommationPoisson)}
                 >
                   <Stack
@@ -457,13 +448,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     spacing={1}
                   >
                     <FormLabel component="label">Consommation de poisson:</FormLabel>
-                    <FormControlLabel value="Oui" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="Non" control={<Radio />} label="Non" />
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
                   </Stack>
                 </RadioGroup>
                 <Select
                   native
-                  sx={{ width: '80%', padding: '2px' }}
+                  required
+                  sx={{ width: '90%', padding: '2px' }}
                   selected={values.Religion}
                   {...getFieldProps('Religion')}
                   error={Boolean(touched.Religion && errors.Religion)}
@@ -471,30 +463,31 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <option value="" selected disabled hidden>
                     Réligion
                   </option>
-                  <option value="Norrmal">Catholique</option>
-                  <option value="Anormal">Protestant</option>
-                  <option value="Anormal">Musulman</option>
-                  <option value="Anormal">Autres</option>
+                  <option value="Catholique">Catholique</option>
+                  <option value="Protestant">Protestant</option>
+                  <option value="Musulman">Musulman</option>
+                  <option value="Autres">Autres</option>
                 </Select>
                 <Select
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
                   native
-                  // selected={values.NiveauSocioEconomique}
+                  required
                   {...getFieldProps('NiveauSocioEconomique')}
                   error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
                 >
                   <option value="" selected disabled hidden>
                     Niveau socio-économique
                   </option>
-                  <option value="Analphabète">Bas</option>
-                  <option value="Primaire">Moyen</option>
+                  <option value="Bas">Bas</option>
+                  <option value="Moyen">Moyen</option>
                   <option value="Universitaire">Bon</option>
                   <option value="Inferieur à 1$">Inferieur a 1$ </option>
-                  <option value="Superieur">Supérieur a 5$ </option>
-                  <option value="Secondaire">5 dollars</option>
+                  <option value="Supérieur a 5$ ">Supérieur a 5$ </option>
+                  <option value="5 dollars">5 dollars</option>
                 </Select>
                 <TextField
-                  sx={{ width: '80%', padding: '2px' }}
+                  sx={{ width: '90%', padding: '2px' }}
+                  required
                   label="Nombre de repas par jour"
                   value={values.NbrRepasJour}
                   {...getFieldProps('NbrRepasJour')}

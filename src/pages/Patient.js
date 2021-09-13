@@ -1,18 +1,19 @@
 /* eslint-disable camelcase */
+/* no-nested-ternary */
 
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+// import { useSelector, useDispatch } from 'react-redux';
 
 // -------------------MODAL
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getUsersAsync } from '../redux/reducers/userSlice';
+// import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
 import Page from '../components/Page';
@@ -44,17 +45,14 @@ import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboar
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
 import Label from '../components/Label';
 
-// import USERLIST from '../_mocks_/personnel';
-import { fakeAuth } from '../fakeAuth';
-
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom', alignRight: false },
-  { id: 'NE', label: 'Prénom', alignRight: false },
+  { id: 'NE', label: 'Nom', alignRight: true },
+  { id: 'PR', label: 'Prénom', alignRight: true },
   { id: 'DN', label: 'Naissance', alignRight: false },
   { id: 'SE', label: 'Sexe', alignRight: false },
   { id: 'DC', label: 'Consultation', alignRight: false },
-  { id: 'SxE', label: 'Malnutrition', alignRight: false },
-  { id: 'SxE', label: 'Consulté(e) par', alignCenter: true },
+  { id: 'MN', label: 'Malnutrition', alignRight: false },
+  { id: 'CS', label: 'Consulté(e) par', alignCenter: true },
   { id: '' }
 ];
 
@@ -94,18 +92,14 @@ export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
 
-  const getUsers = `https://kesho-congo-api.herokuapp.com/patient/all`;
-
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `bearer ${localStorage.getItem('token')}`
-    }
-  };
-
   useEffect(() => {
-    fetch(getUsers, options)
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => {
         setPatientsList(data.Patients);
@@ -123,7 +117,7 @@ export default function Patient() {
   }, []);
 
   const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '60%',
@@ -185,7 +179,6 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -302,9 +295,7 @@ export default function Patient() {
                             <TableCell align="center">
                               <Label
                                 variant="ghost"
-                                color={
-                                  (type_malnutrition === 'Aigu modéré' && 'error') || 'success'
-                                }
+                                color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
                               >
                                 {type_malnutrition}
                               </Label>

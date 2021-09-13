@@ -15,14 +15,12 @@ import {
   AppWebsiteVisits
 } from '../components/_dashboard/app';
 
-// import { fakeAuth } from '../fakeAuth';
-
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
   const [loader, setLoader] = useState(true);
-  const getReporting = `https://kesho-congo-api.herokuapp.com/reporting`;
+  // const getReporting = `https://kesho-congo-api.herokuapp.com/reporting`;
 
   const options = {
     method: 'GET',
@@ -32,7 +30,7 @@ export default function DashboardApp() {
     }
   };
   useEffect(() => {
-    fetch(getReporting, options)
+    fetch(`https://kesho-congo-api.herokuapp.com/reporting`, options)
       .then((response) => response.json())
       .then((data) => {
         setReports(data);
@@ -49,7 +47,7 @@ export default function DashboardApp() {
     setIsAuth(isAuth);
   }, [isAuth]);
   const location = useLocation();
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '60%',

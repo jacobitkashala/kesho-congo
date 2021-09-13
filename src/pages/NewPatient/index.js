@@ -1,6 +1,6 @@
 /* eslint no-nested-ternary: "error" */
 import { Navigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Stack } from '@material-ui/core';
+import { Box, Typography, Stack, Grid } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
@@ -13,34 +13,45 @@ import './styledNewPatient.css';
 
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
+  const [prenomPatient, setPrenomPatient] = useState('');
+  const [nomPatient, setNomPatient] = useState('');
   const [DataPatient, SetDataPatient] = useState({});
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-
-  console.log(DataPatient);
 
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
 
   const NextStep = () => {
-    // console.log(Step);
     SetStep((CurrentState) => CurrentState + 1);
   };
-  // Go to prev step
   const PrevStep = () => {
     SetStep((CurrentState) => CurrentState - 1);
   };
 
   const FormPatientInfo = (key) => {
-    // console.log(`key vaut :${key}`, DataPatient);
     switch (key) {
       case 1:
-        return <PatientForm NextStep={NextStep} SetDataPatient={SetDataPatient} />;
+        return (
+          <PatientForm
+            setPrenomPatient={setPrenomPatient}
+            prenomPatient={prenomPatient}
+            NextStep={NextStep}
+            SetDataPatient={SetDataPatient}
+            nomPatient={nomPatient}
+            setNomPatient={setNomPatient}
+          />
+        );
       case 2:
         return (
-          <CauseForm PrevStep={PrevStep} NextStep={NextStep} SetDataPatient={SetDataPatient} />
+          <CauseForm
+            DataPatient={DataPatient}
+            SetDataPatient={SetDataPatient}
+            PrevStep={PrevStep}
+            NextStep={NextStep}
+          />
         );
       case 3:
         return (
@@ -75,9 +86,9 @@ export default function NewPatient() {
       </div>
       <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'center' }} spacing={2}>
         {/* <Grid container spacing={3}> */}
-        {/* <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}> */}
-        {FormPatientInfo(Step)}
-        {/* </Grid> */}
+        <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}>
+          {FormPatientInfo(Step)}
+        </Grid>
         {/* </Grid> */}
       </Stack>
     </Page>
