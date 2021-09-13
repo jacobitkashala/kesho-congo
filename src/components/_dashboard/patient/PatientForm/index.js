@@ -32,38 +32,6 @@ PatientForm.propTypes = {
   nomPatient: propTypes.string
 };
 
-const Div = styled('div')(() => ({
-  height: '90%',
-  width: '150%',
-  position: 'relative',
-  borderRadius: '15px',
-  paddingTop: '30px',
-  paddingBottom: '90px',
-  left: '50%',
-  transform: 'translate(-50%,0)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-around'
-}));
-
-const SubDiv = styled('div')(() => ({
-  height: '100%',
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  flexWrap: 'wrap'
-}));
-const SubDivContenaire = styled('div')(() => ({
-  width: '50%',
-  position: 'relative',
-  left: '30%',
-  transform: 'translate(-50%,0)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-}));
-
 export default function PatientForm({
   setPrenomPatient,
   prenomPatient,
@@ -73,29 +41,29 @@ export default function PatientForm({
   setNomPatient
 }) {
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number().required(),
+    taille: Yup.number().required('champs requis'),
     ExplicationAutre: Yup.string(),
-    allaitementExclisifSixMois: Yup.string().required(),
-    nom_patient: Yup.string().required(),
-    poidsActuel: Yup.number().required(),
-    peri_cranien: Yup.number().required(),
-    prenom_patient: Yup.string().required(),
-    peri_brachail: Yup.number().required(),
-    postnom_patient: Yup.string().required(),
-    telephone: Yup.string().required(),
-    diversification_aliment: Yup.string().required(),
-    sexe_patient: Yup.string().required(),
-    dataNaissancePatient: Yup.date().required(),
-    constitutionAliment: Yup.string().required(),
-    provenance_patient: Yup.string().required(),
-    mode_arrive: Yup.string().required(),
-    typeMalnutrition: Yup.string().required(),
-    poids_naissance: Yup.number().required(),
+    allaitementExclisifSixMois: Yup.string().required('champs requis'),
+    nom_patient: Yup.string().required('champs requis'),
+    poidsActuel: Yup.number().required('champs requis'),
+    peri_cranien: Yup.number().required('champs requis'),
+    prenom_patient: Yup.string().required('champs requis'),
+    peri_brachail: Yup.number().required('champs requis'),
+    postnom_patient: Yup.string().required('champs requis'),
+    telephone: Yup.string().required('champs requis'),
+    diversification_aliment: Yup.string().required('champs requis'),
+    sexe_patient: Yup.string().required('champs requis'),
+    dataNaissancePatient: Yup.date().required('champs requis'),
+    constitutionAliment: Yup.string().required('champs requis'),
+    provenance_patient: Yup.string().required('champs requis'),
+    mode_arrive: Yup.string().required('champs requis'),
+    typeMalnutrition: Yup.string().required('champs requis'),
+    poids_naissance: Yup.number().required('champs requis'),
     traitementNutritionnel: Yup.string(),
     traitementNutritionnelAutre: Yup.string(),
-    adresse_patient: Yup.string().required(),
+    adresse_patient: Yup.string().required('champs requis'),
     ExplicationProvenance: Yup.string(),
-    ageFinAllaitement: Yup.number()
+    ageFinAllaitement: Yup.number('nombre de mois')
   });
 
   const formik = useFormik({
@@ -143,10 +111,7 @@ export default function PatientForm({
     <>
       <FormikProvider value={formik}>
         <Form autoComplete="off" onSubmit={handleSubmit}>
-          {/* <Div> */}
           <Grid container spacing={3}>
-            {/* <SubDiv> */}
-            {/* <SubDivContenaire> */}
             <Grid item xs={12} sm={6} md={6}>
               <Stack spacing={3}>
                 <TextField
@@ -157,6 +122,7 @@ export default function PatientForm({
                   defaultValue={prenomPatient}
                   {...getFieldProps('prenom_patient')}
                   error={Boolean(touched.prenom_patient && errors.prenom_patient)}
+                  helperText={touched.nom_patient && errors.nom_patient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -167,7 +133,7 @@ export default function PatientForm({
                   defaultValue={nomPatient}
                   {...getFieldProps('nom_patient')}
                   error={Boolean(touched.nom_patient && errors.nom_patient)}
-                  // helperText={touched.nom_patient && errors.nom_patient}
+                  helperText={touched.nom_patient && errors.nom_patient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
