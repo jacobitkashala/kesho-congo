@@ -36,12 +36,12 @@ export default function NewPatient() {
       case 1:
         return (
           <PatientForm
-            setPrenomPatient={setPrenomPatient}
-            prenomPatient={prenomPatient}
             NextStep={NextStep}
             SetDataPatient={SetDataPatient}
-            nomPatient={nomPatient}
+            setPrenomPatient={setPrenomPatient}
+            prenomPatient={prenomPatient}
             setNomPatient={setNomPatient}
+            nomPatient={nomPatient}
           />
         );
       case 2:

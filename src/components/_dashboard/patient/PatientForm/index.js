@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -15,8 +15,8 @@ import {
   FormLabel,
   Grid,
   InputLabel,
-  Select,
-  styled
+  Select
+  // styled
   // getCheckboxUtilityClass
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -45,39 +45,16 @@ export default function PatientForm({
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
 
-  const handleChangeAllaitement = (event) => {
-    const { value } = event.target;
-    if (value) {
-      setAllaitement((prevState) => !prevState);
-    }
-  };
-
-  const handleChangeProvenance = (event) => {
-    const { value } = event.target;
-    console.log(value);
-    if (value === 'Autres') {
-      setProvenance(false);
-    } else {
-      setProvenance(true);
-    }
-  };
-  const handleChangeModeArriver = (event) => {
-    const { value } = event.target;
-    if (value === 'Autres') {
-      setModeArriver(false);
-    } else {
-      setModeArriver(true);
-    }
-  };
+  console.log(nomPatient, prenomPatient);
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre').required('Taille requis'),
+    taille: Yup.number('un chiffre requis').required('Taille requis'),
     ExplicationAutre: Yup.string(),
     allaitementExclisifSixMois: Yup.string().required('Radio requis'),
     nom_patient: Yup.string().required('Nom requis'),
-    poidsActuel: Yup.number('un chiffre').required('Poinds requis'),
-    peri_cranien: Yup.number('un chiffre').required('Perimetre cranien requis'),
+    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis'),
+    peri_cranien: Yup.number('un chiffre requis').required('Perimetre cranien requis'),
     prenom_patient: Yup.string().required('Prenom requis'),
-    peri_brachail: Yup.number().required('Perimetre brachial requis'),
+    peri_brachail: Yup.number('un chiffre requis').required('Perimetre brachial requis'),
     postnom_patient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
     diversification_aliment: Yup.string().required('diversification requis'),
@@ -87,12 +64,12 @@ export default function PatientForm({
     provenance_patient: Yup.string().required('Provenance requiq'),
     mode_arrive: Yup.string().required('champs requis'),
     typeMalnutrition: Yup.string().required('Type malnutriton requis'),
-    poids_naissance: Yup.number().required('poids naissance requis'),
+    poids_naissance: Yup.number('un chiffre requis').required('poids naissance requis'),
     traitementNutritionnel: Yup.string(),
     traitementNutritionnelAutre: Yup.string(),
     adresse_patient: Yup.string().required('champs requis'),
     ExplicationProvenance: Yup.string(),
-    ageFinAllaitement: Yup.number('nombre de mois')
+    ageFinAllaitement: Yup.number('un chiffre requis')
   });
 
   const formik = useFormik({
@@ -132,9 +109,44 @@ export default function PatientForm({
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-  console.log(errors);
-  console.log(prenomPatient, nomPatient);
+  const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+
+  const handleChangeAllaitement = (event) => {
+    const { value } = event.target;
+    setFieldValue('allaitementExclisifSixMois', value);
+    if (value) {
+      setAllaitement((prevState) => !prevState);
+    }
+  };
+
+  const handleChangeProvenance = (event) => {
+    const { value } = event.target;
+    setFieldValue('provenance_patient', value);
+    if (value === 'Autres') {
+      setProvenance(false);
+    } else {
+      setProvenance(true);
+    }
+  };
+  const handleChangeModeArriver = (event) => {
+    const { value } = event.target;
+    setFieldValue('mode_arrive', value);
+    if (value === 'Autres') {
+      setModeArriver(false);
+    } else {
+      setModeArriver(true);
+    }
+  };
+  const handleChangeTraitementNutri = (event) => {
+    const { value } = event.target;
+    setFieldValue('traitementNutritionnel', value);
+
+    if (value === 'Autres') {
+      setTraitementNutri(false);
+    } else {
+      setTraitementNutri(true);
+    }
+  };
 
   return (
     <>
@@ -157,7 +169,7 @@ export default function PatientForm({
                   autoComplete="name"
                   fullWidth
                   label="Nom"
-                  defaultValue={nomPatient}
+                  value={nomPatient}
                   {...getFieldProps('nom_patient')}
                   error={Boolean(touched.nom_patient && errors.nom_patient)}
                   helperText={touched.nom_patient && errors.nom_patient}
@@ -167,7 +179,8 @@ export default function PatientForm({
                   fullWidth
                   autoComplete="lastname"
                   type="text"
-                  label="Postnom"
+                  label={prenomPatient}
+                  defaultValue={prenomPatient}
                   // defaultValue={DataPatient.postnom_patient}
                   {...getFieldProps('postnom_patient')}
                   error={Boolean(touched.postnom_patient && errors.postnom_patient)}
@@ -258,7 +271,8 @@ export default function PatientForm({
                 <Select
                   sx={{ padding: '2px' }}
                   native
-                  {...getFieldProps('traitementNutritionnel')}
+                  // {...getFieldProps('traitementNutritionnel')}
+                  onChange={handleChangeTraitementNutri}
                   helperText={touched.traitementNutritionnel && errors.traitementNutritionnel}
                   error={Boolean(touched.traitementNutritionnel && errors.traitementNutritionnel)}
                 >
@@ -274,6 +288,7 @@ export default function PatientForm({
                   fullWidth
                   label="Si le traitement nutritionnel est autre veuillez préciser"
                   // defaultValue={DataPatient.traitementNutritionnelAutre}
+                  disabled={traitementNutri}
                   helperText={
                     touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
                   }
@@ -295,7 +310,7 @@ export default function PatientForm({
                   helperText={touched.provenance_patient && errors.provenance_patient}
                   error={Boolean(touched.provenance_patient && errors.provenance_patient)}
                 >
-                  <option value="" selected disabled hidden>
+                  <option defaultValue="" selected disabled hidden>
                     Provenance Patient
                   </option>
                   <option value="kadutu">Kadutu</option>
