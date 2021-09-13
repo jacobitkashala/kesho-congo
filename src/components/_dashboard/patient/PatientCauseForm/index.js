@@ -74,7 +74,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     Tdc: Yup.string().required(),
     hospitalisation_recente: Yup.string().required(),
     diagnostique_hospitalisation: Yup.string(),
-    duree_traitement_tbc: Yup.number(),
+    duree_traitement_tbc: Yup.string(),
     Termegrossesse: Yup.string().required(),
     CalendrierVaccin: Yup.string().required(),
     atcd_du_tbc_dans_fratrie: Yup.string().required('*'),
@@ -90,8 +90,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     Dpm: Yup.string().required(),
     cocktail_atb: Yup.string().required(),
     cocktail_atb_preci: Yup.string(),
-    dureeProduitPlante: Yup.number(),
-    // duree_prise_tcb: Yup.string().required('*'),
+    dureeProduitPlante: Yup.string(),
     DpmAnormalPrecision: Yup.string()
   });
 

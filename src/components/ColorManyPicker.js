@@ -68,7 +68,6 @@ export default function ColorManyPicker({ colors, onChecked, sx, ...other }) {
                 sx={{
                   transform: 'scale(1.4)',
                   '&:before': {
-                    opacity: 0.48,
                     width: '100%',
                     content: "''",
                     height: '100%',
