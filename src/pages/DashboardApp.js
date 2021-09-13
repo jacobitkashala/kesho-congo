@@ -122,7 +122,7 @@ export default function DashboardApp() {
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardRouge
-                  title="Adult"
+                  title="Adultes"
                   nombreM={reports.nombre_garcon_adulte[0].nombre_garcon_adulte}
                   nombreF={reports.nombre_fille_adulte[0].nombre_fille_adulte}
                 />
