@@ -4,6 +4,7 @@ import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
 import Login from './pages/Login';
+import Reset from './pages/fortgoPassword';
 import Patient from './pages/Patient';
 import NotFound from './pages/Page404';
 import Personnel from './pages/Personnel';
@@ -21,6 +22,10 @@ export default function Router() {
     {
       path: '/',
       element: <Login />
+    },
+    {
+      path: '/renitialiser_psw',
+      element: <Reset />
     },
     {
       path: '/dashboard',
