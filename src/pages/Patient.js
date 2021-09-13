@@ -308,8 +308,8 @@ export default function Patient() {
                                     type_malnutrition === 'MAC'
                                       ? 'red'
                                       : type_malnutrition === 'MAM'
-                                      ? 'orange'
-                                      : 'green'
+                                      ? 'green'
+                                      : 'orange'
                                   }`
                                 }}
                                 // variant="ghost"
