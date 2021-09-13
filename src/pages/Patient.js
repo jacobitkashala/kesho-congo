@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* no-nested-ternary */
 
@@ -294,8 +295,16 @@ export default function Patient() {
                             <TableCell align="center">{date_Consultation}</TableCell>
                             <TableCell align="center">
                               <Label
-                                variant="ghost"
-                                color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
+                                variant="filled"
+                                color={`${
+                                  type_malnutrition === 'MAC'
+                                    ? 'error'
+                                    : type_malnutrition === 'MAM'
+                                    ? 'secondary'
+                                    : 'primary'
+                                }`}
+                                // variant="ghost"
+                                // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
                               >
                                 {type_malnutrition}
                               </Label>

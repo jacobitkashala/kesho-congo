@@ -153,7 +153,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
         const resp = response.data;
         if (resp.message === 'Enregistrement effectuer avec succès') {
           setLoader((prevState) => !prevState);
-          navigate('/dashboard/user', { replace: true });
+          navigate('/dashboard/patient', { replace: true });
         } else {
           setLoader((prevState) => !prevState);
         }
