@@ -51,7 +51,7 @@ export default function PatientMoreMenu({ id_patient }) {
         console.log('Yves', message);
         fakeAuth.login(() => {
           navigate(from);
-          navigate('/dashboard/user', { replace: true });
+          navigate('/dashboard/patient', { replace: true });
         });
       })
       .catch((err) => {

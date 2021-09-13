@@ -12,6 +12,7 @@ import Settings from './components/_dashboard/personnel/Setting';
 import DashboardApp from './pages/DashboardApp';
 import NewPersonnel from './pages/NewPersonnel';
 import PageDetail from './pages/detailPatient/Details';
+import MoreDetail from './pages/detailPatient/MoreDetails';
 
 // ----------------------------------------------------------------------
 
@@ -27,11 +28,12 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'setting', element: <Settings /> },
-        { path: 'user', element: <Patient /> },
+        { path: 'patient', element: <Patient /> },
         { path: 'app', element: <DashboardApp /> },
         { path: 'personnel', element: <Personnel /> },
-        { path: 'user/detail_patient/:id', element: <PageDetail /> },
-        { path: 'user/add_Patient', element: <NewPatient /> },
+        { path: 'patient/detail_patient/:id', element: <PageDetail /> },
+        { path: 'patient/detail_patient/more/:id', element: <MoreDetail /> },
+        { path: 'patient/add_Patient', element: <NewPatient /> },
         { path: 'personnel/add_Personnel', element: <NewPersonnel /> }
       ]
     },

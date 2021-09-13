@@ -51,16 +51,20 @@ export const userData = [
 
 export const productData = [
   {
-    name: 'Jan',
-    Sales: 4000
+    date_examen: '2020-01-23',
+    peri_brachial: 1.4,
+    peri_cranien: 1.4,
+    poids: 2,
+    taille: 1.45,
+    type_malnutrition: 'Severe'
   },
   {
     name: 'Feb',
-    Sales: 3000
+    Valeur: 3000
   },
   {
     name: 'Mar',
-    Sales: 5000
+    Valeur: 5000
   }
 ];
 

@@ -15,7 +15,7 @@ const sidebarConfig = [
   },
   {
     title: 'Patient',
-    path: '/dashboard/user',
+    path: '/dashboard/patient',
     icon: getIcon(peopleFill)
   },
   {

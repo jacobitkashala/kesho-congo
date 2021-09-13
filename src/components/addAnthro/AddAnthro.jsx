@@ -2,11 +2,14 @@ import * as Yup from 'yup';
 import propTypes from 'prop-types';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 
 // material
 import { Stack, TextField, Select, styled } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import Axios from 'axios';
+import { fakeAuth } from '../../fakeAuth';
 
 // ----------------------------------------------------------------------
 const Div = styled('div')(() => ({
@@ -35,27 +38,69 @@ const SubDivContenaire = styled('div')(() => ({
   justifyContent: 'center'
 }));
 
-export default function AddAnthro() {
+export default function AddAnthro({ id }) {
   // const [IdentiteData, SetIdentiteData] = useState({});
+  // const RegisterSchema = Yup.object().shape({
+  //   weight: Yup.number('number').required('Poids requis'),
+  //   height: Yup.number('number').required('Taille requise'),
+  //   brachialPerim: Yup.number('number').required('Périmètre requis'),
+  //   cranianPerim: Yup.number('number').required('Périmètre requis'),
+  //   MalnutType: Yup.string().required()
+  // });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const RegisterSchema = Yup.object().shape({
-    poidsActuel: Yup.number('number').required('poids requis'),
-    taille: Yup.number('number').required('taille requis'),
-    peri_brachail: Yup.number('number').required('perimetre requis'),
-    peri_cranien: Yup.number('number').required('perimetre requis'),
-    formMalnutrition: Yup.string().required()
+    weight: Yup.number().required('Poids requis'),
+    height: Yup.number().required('Taille requise'),
+    brachial: Yup.number().required('Périmètre brachial requis'),
+    cranian: Yup.number().required('Périmètre cranien requis'),
+    malnutrition: Yup.string().required()
   });
+  const [loader, setLoader] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      peri_cranien: '',
-      taille: '',
-      poidsActuel: '',
-      peri_brachail: '',
-      formMalnutrition: ''
+      weight: '',
+      height: '',
+      brachial: '',
+      cranian: '',
+      malnutrition: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (anthro) => {
-      console.log(anthro);
+    onSubmit: ({ weight, height, brachial, cranian, malnutrition }) => {
+      setLoader(true);
+      Axios.post(
+        `https://kesho-congo-api.herokuapp.com/anthropometrique?id_patient=${id}`,
+        {
+          peri_cranien: cranian,
+          peri_brachial: brachial,
+          poids: weight,
+          taille: height,
+          type_malnutrition: malnutrition,
+          date_examen: '2020-01-25'
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
+        .then((response) => {
+          setLoader(false);
+          const message = response.data;
+          console.log('Yves', message);
+          fakeAuth.login(() => {
+            navigate(from);
+            navigate(`/dashboard/user/detail_patient/${id}`, { replace: true });
+          });
+        })
+        .catch((err) => {
+          // setError(true);
+          // setLoader(false);
+          console.log(err);
+        });
     }
   });
 
@@ -69,50 +114,50 @@ export default function AddAnthro() {
           <SubDivContenaire>
             <Stack spacing={3}>
               <TextField
-                sx={{ width: '90%', padding: '2px' }}
+                sx={{ width: '100%', padding: '2px' }}
                 fullWidth
-                value={values.poidsActuel}
-                label="Poids actuelle"
-                {...getFieldProps('poidsActuel')}
-                helperText={touched.poidsActuel && errors.poidsActuel}
-                error={Boolean(touched.poidsActuel && errors.poidsActuel)}
+                value={values.weight}
+                label="Poids"
+                {...getFieldProps('weight')}
+                helperText={touched.weight && errors.weight}
+                error={Boolean(touched.weight && errors.weight)}
               />
               <TextField
-                sx={{ width: '90%', padding: '2px' }}
+                sx={{ width: '100%', padding: '2px' }}
                 fullWidth
+                value={values.height}
                 label="Taille "
-                {...getFieldProps('taille')}
-                value={values.taille}
-                helperText={touched.taille && errors.taille}
-                error={Boolean(touched.taille && errors.taille)}
+                {...getFieldProps('height')}
+                helperText={touched.height && errors.height}
+                error={Boolean(touched.height && errors.height)}
               />
               <TextField
-                sx={{ width: '90%', padding: '2px' }}
+                sx={{ width: '100%', padding: '2px' }}
                 fullWidth
-                label="périmètre crânien "
-                {...getFieldProps('peri_cranien')}
-                value={values.peri_cranien}
-                helperText={touched.peri_cranien && errors.peri_cranien}
-                error={Boolean(touched.peri_cranien && errors.peri_cranien)}
+                value={values.cranian}
+                label="Périmètre crânien "
+                {...getFieldProps('cranian')}
+                helperText={touched.cranian && errors.cranian}
+                error={Boolean(touched.cranian && errors.cranian)}
               />
               <TextField
-                sx={{ width: '90%', padding: '2px' }}
+                sx={{ width: '100%', padding: '2px' }}
                 fullWidth
-                label="périmètre branchial"
-                value={values.peri_brachail}
-                {...getFieldProps('peri_brachail')}
-                helperText={touched.prenom_brachial && errors.prenom_brachail}
-                error={Boolean(touched.peri_brachail && errors.peri_brachail)}
+                label="Périmètre brachial"
+                value={values.brachial}
+                {...getFieldProps('brachial')}
+                helperText={touched.brachial && errors.brachial}
+                error={Boolean(touched.brachial && errors.brachial)}
               />
               <Select
                 native
-                sx={{ width: '90%', padding: '2px' }}
-                // value={values.Provenace}
-                {...getFieldProps('formMalnutrition')}
-                error={Boolean(touched.formMalnutrition && errors.formMalnutrition)}
+                sx={{ width: '100%', padding: '2px' }}
+                value={values.malnutrition}
+                {...getFieldProps('malnutrition')}
+                error={Boolean(touched.malnutrition && errors.malnutrition)}
               >
                 <option value="" selected disabled hidden>
-                  Form de malnutrition
+                  Type de malnutrition
                 </option>
                 <option value="Malnutrition aigue modérée">Malnutrition aigue modérée</option>
                 <option value="Malnutrition aigue sévère">Malnutrition aigue sévère</option>
