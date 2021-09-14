@@ -38,12 +38,12 @@ export default function AppCurrentVisits() {
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.success.main,
       theme.palette.warning.main,
       theme.palette.error.main
     ],
-    labels: ['Retabli', 'bonne évolution', 'Malade'],
+    labels: ['MAC', 'MAM', 'MAS'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -63,7 +63,7 @@ export default function AppCurrentVisits() {
 
   return (
     <Card>
-      <CardHeader title="" />
+      <CardHeader title="Ratio Annuel Malnutrition" />
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
       </ChartWrapperStyle>

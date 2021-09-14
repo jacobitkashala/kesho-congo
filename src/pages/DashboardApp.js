@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Box, Grid, Container, Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
+import Axios from 'axios';
 // components
 import Page from '../components/Page';
 import {
@@ -22,25 +23,46 @@ export default function DashboardApp() {
   const [loader, setLoader] = useState(true);
   // const getReporting = `https://kesho-congo-api.herokuapp.com/reporting`;
 
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `bearer ${localStorage.getItem('token')}`
-    }
-  };
-  useEffect(() => {
-    fetch(`https://kesho-congo-api.herokuapp.com/reporting`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        setReports(data);
-        setLoader(false);
-        console.log(data.NbreGarconMoins3Ans[0].NbreGarconMoins3Ans);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+  // const options = {
+  //   method: 'GET',
+  //   headers: {
+  //     Accept: 'application/json',
+  //     Authorization: `bearer ${localStorage.getItem('token')}`
+  //   }
+  // };
+  useEffect(async () => {
+    try {
+      const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
       });
+      const data = await response.data;
+      setReports(await data);
+      setLoader(false);
+      // const Patient = await data;
+      // const PatientBrachial = Patient.Anthropometrique;
+      // setAnthro(PatientBrachial);
+      // setOnePatient(Patient);
+      // setLoader(false);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
+  // useEffect(() => {
+  //   fetch(`https://kesho-congo-api.herokuapp.com/reporting`, options)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setReports(data);
+  //       // setLoader(false);
+  //       console.log('Données', data.nombre_fille[0].nombre_fille);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }, []);
+  console.log('Données2 : ', reports);
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
@@ -63,8 +85,6 @@ export default function DashboardApp() {
   }));
   const classes = useStyles();
 
-  // console.log('Données', reports.NbreGarconMoins3Ans[0]);
-
   return isAuth ? (
     <>
       {loader ? (
@@ -80,48 +100,60 @@ export default function DashboardApp() {
 
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={3}>
-                <CardVert title="Total" nombreM={reports.nbreGarcon} nombreF={reports.nbreFille} />
+                <CardVert
+                  title="Total"
+                  nombreM={reports.nombre_garcon[0].nombre_garcon}
+                  nombreF={reports.nombre_fille[0].nombre_fille}
+                />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardBleu
                   title="6 à 24 mois"
-                  nombreM={reports.NbreGarconMoins3Ans[0].NbreGarconMoins3Ans}
-                  nombreF={reports.NbreFilleMoins3Ans[0].NbreFilleMoins3Ans}
+                  nombreM={reports.nombre_garcon_moins_3ans[0].nombre_garcon_moins_3ans}
+                  nombreF={reports.nombre_fille_moins_3ans[0].nombre_fille_moins_3ans}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardJaune
                   title="24 à 59 mois"
-                  nombreM={reports.NbreGarcon3_5Ans[0].NbreGarcon3_5Ans}
-                  nombreF={reports.NbreFille3_5Ans[0].NbreFille3_5Ans}
+                  nombreM={reports.nombre_garcon_3_5ans[0].nombre_garcon_3_5ans}
+                  nombreF={reports.nombre_fille_3_5ans[0].nombre_fille_3_5ans}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardRouge
-                  title="Adult"
-                  nombreM={reports.NbreGarconAdulte[0].NbreGarconAdulte}
-                  nombreF={reports.NbreFilleAdulte[0].NbreFilleAdulte}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardVert
-                  title="Aujourd'hui"
-                  nombreM={reports.NbreGarconToday}
-                  nombreF={reports.NbreFilleToday}
+                  title="Adultes"
+                  nombreM={reports.nombre_garcon_adulte[0].nombre_garcon_adulte}
+                  nombreF={reports.nombre_fille_adulte[0].nombre_fille_adulte}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardBleu
                   title="Hier"
-                  nombreM={reports.NbreGarconYesterday}
-                  nombreF={reports.NbreFilleYesterday}
+                  nombreM={reports.nbre_garcon_yesterday}
+                  nombreF={reports.nbre_fille_yesterday}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <CardJaune title="MAM" nombreM={10} nombreF={50} />
+                <CardRouge
+                  title="MAC"
+                  nombreM={reports.chronique_nombre_garcon[0].chronique_nombre_garcon}
+                  nombreF={reports.chronique_nombre_fille[0].chronique_nombre_fille}
+                />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <CardRouge title="MAS" nombreM={10} nombreF={50} />
+                <CardJaune
+                  title="MAS"
+                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
+                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardVert
+                  title="MAM"
+                  nombreM={reports.moderee_nombre_garcon[0].moderee_nombre_garcon}
+                  nombreF={reports.moderee_nombre_fille[0].moderee_nombre_fille}
+                />
               </Grid>
 
               <Grid item xs={12} md={6} lg={8}>

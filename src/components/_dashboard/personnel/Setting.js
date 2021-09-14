@@ -70,6 +70,7 @@ const Box = styled('div')(() => ({
 export default function PersonnelAddFrom() {
   const [loader, setLoader] = useState(true);
   const [loader2, setLoader2] = useState(false);
+  const [errorWord, setErrorWord] = useState(false);
   const useStyles = makeStyles((theme) => ({
     root: {
       position: 'absolute',
@@ -127,6 +128,7 @@ export default function PersonnelAddFrom() {
       .min(2, 'Trop court')
       .max(50, 'Trop long')
       .required('Le post-nom est requis'),
+    oldPassword: Yup.string().required('Confirmez votre mot de passe '),
     newPassword: Yup.string().required('Confirmez votre mot de passe ')
   });
 
@@ -163,16 +165,19 @@ export default function PersonnelAddFrom() {
       firstName: '',
       lastName: '',
       middleName: '',
+      oldPassword: '',
       newPassword: '',
       remember: true
     },
     validationSchema: RegisterSchema,
-    onSubmit: ({ newPassword, lastName, middleName, firstName }) => {
+    onSubmit: ({ oldPassword, newPassword, lastName, middleName, firstName }) => {
       setLoader2(true);
+      setErrorWord(false);
       Axios.put(
         `https://kesho-congo-api.herokuapp.com/user?id_user=${localStorage.getItem('id_user')}`,
         {
           password: newPassword,
+          old_password: oldPassword,
           nom_user: lastName,
           postnom_user: middleName,
           prenom_user: firstName
@@ -195,6 +200,8 @@ export default function PersonnelAddFrom() {
         })
         .catch((err) => {
           console.log(err);
+          setLoader2(false);
+          setErrorWord(true);
         });
     }
   });
@@ -274,6 +281,26 @@ export default function PersonnelAddFrom() {
                       )
                     }}
                   />
+                  <TextField
+                    fullWidth
+                    autoComplete="current-password"
+                    type={showPassword ? 'text' : 'password'}
+                    label="Ancien Mot de passe"
+                    {...getFieldProps('oldPassword')}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword} edge="end">
+                            <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.oldPassword && errors.oldPassword)}
+                    helperText={touched.oldPassword && errors.oldPassword}
+                    onChange={formik.handleChange}
+                    value={formik.values.oldPassword}
+                  />
 
                   <TextField
                     fullWidth
@@ -295,6 +322,11 @@ export default function PersonnelAddFrom() {
                     onChange={formik.handleChange}
                     value={formik.values.newPassword}
                   />
+                  {errorWord ? (
+                    <span className={classes.labelRoot}>Ancien mot de passe incorrecte</span>
+                  ) : (
+                    ''
+                  )}
                   <LoadingButton
                     fullWidth
                     size="large"
