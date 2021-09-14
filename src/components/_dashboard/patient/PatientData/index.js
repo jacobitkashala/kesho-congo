@@ -170,8 +170,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
           <CircularProgress />
         </div>
       )}
-      <Grid container spacing={0.5}>
-        <Grid item xs={10} md={6}>
+      <Grid container spacing={2}>
+        <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
               margin: 2,
@@ -234,7 +234,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
               margin: 2,
@@ -350,7 +350,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
               margin: 2,
