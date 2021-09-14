@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -30,6 +30,13 @@ CauseForm.propTypes = {
 };
 
 export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
+  const [tbcDesabled, setTbcDesabled] = useState(true);
+  const handleDesablebComponent = (event) => {
+    const { value } = event.target;
+    if (value === false) {
+      setTbcDesabled((prevState) => !prevState);
+    }
+  };
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),
@@ -107,7 +114,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={11} sm={6} md={6}>
             <Stack spacing={3}>
               <Select
                 native
@@ -175,8 +182,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </RadioGroup>
               <RadioGroup
                 fullWidth
-                {...getFieldProps('tbc')}
-                error={Boolean(touched.tbc && errors.tbc)}
+                onChange={handleDesablebComponent}
+                // {...getFieldProps('tbc')}
+                // error={Boolean(touched.tbc && errors.tbc)}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -202,8 +210,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 >
                   <FormLabel component="label"> TBC chez les parents:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
@@ -212,6 +230,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 fullWidth
                 {...getFieldProps('tbcLequel')}
                 error={Boolean(touched.tbcLequel && errors.tbcLequel)}
+                disabled={tbcDesabled}
               >
                 <option value="" selected disabled hidden>
                   Si TBC oui lequel
@@ -232,8 +251,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 >
                   <FormLabel component="label">TBC traitée :</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
@@ -249,8 +278,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 >
                   <FormLabel component="label">TBC déclarée guérie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      disabled={tbcDesabled}
+                      control={<Radio />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
@@ -313,7 +352,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               />
             </Stack>
           </Grid>
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={11} sm={6} md={6}>
             <Stack spacing={3}>
               <Select
                 {...getFieldProps('termeGrossesse')}
