@@ -98,8 +98,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
-      // SetCauseData(CauseMalnutrition);
-      // console.log(CauseData);
       NextStep();
     }
   });
@@ -113,6 +111,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
             <Stack spacing={3}>
               <Select
                 native
+                fullWidth
                 sx={{ padding: '2px' }}
                 value={values.lieuAccouchement}
                 error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
@@ -126,6 +125,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="Structure sanitaire oui">Structure sanitaire</option>
               </Select>
               <RadioGroup
+                fullWidth
+                sx={{ visibility: 0 }}
                 error={Boolean(touched.sejourNeo && errors.sejourNeo)}
                 {...getFieldProps('sejourNeo')}
               >
@@ -142,6 +143,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Stack>
               </RadioGroup>
               <TextField
+                fullWidth
                 sx={{ padding: '2px' }}
                 label="eig moyen (année)"
                 {...getFieldProps('eig')}
@@ -150,11 +152,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               <TextField
                 sx={{ padding: '2px' }}
                 label="Rang dans la fratrie"
-                required
+                fullWidth
                 {...getFieldProps('rangFratrie')}
                 error={Boolean(touched.rangFratrie && errors.rangFratrie)}
               />
               <RadioGroup
+                fullWidth
                 {...getFieldProps('masFratrie')}
                 error={Boolean(touched.masFratrie && errors.masFratrie)}
               >
@@ -170,7 +173,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </Stack>
               </RadioGroup>
-              <RadioGroup {...getFieldProps('tbc')} error={Boolean(touched.tbc && errors.tbc)}>
+              <RadioGroup
+                fullWidth
+                {...getFieldProps('tbc')}
+                error={Boolean(touched.tbc && errors.tbc)}
+              >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
                   sx={{ display: 'flex', alignItems: 'center' }}
@@ -184,6 +191,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Stack>
               </RadioGroup>
               <RadioGroup
+                fullWidth
                 {...getFieldProps('tbcChezParent')}
                 error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
               >
@@ -201,6 +209,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </RadioGroup>
               <Select
                 native
+                fullWidth
                 {...getFieldProps('tbcLequel')}
                 error={Boolean(touched.tbcLequel && errors.tbcLequel)}
               >
@@ -212,6 +221,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="Les deux">Les deux</option>
               </Select>
               <RadioGroup
+                fullWidth
                 {...getFieldProps('tbcTraiter')}
                 error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
               >
@@ -228,6 +238,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Stack>
               </RadioGroup>
               <RadioGroup
+                fullWidth
                 {...getFieldProps('TbcGuerie')}
                 error={Boolean(touched.TbcGuerie && errors.TbcGuerie)}
               >
