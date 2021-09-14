@@ -39,7 +39,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     PossederTeleRadio: Yup.string().required('Posseder un télé requis'),
     ProffessionChefMenage: Yup.string().required('Profession requis'),
     scolariteMere: Yup.string().required('Scolarité requis'),
-    pereMariage: Yup.string().required('champs requis'),
+    pereMariage: Yup.string(),
     consommationPoisson: Yup.string(),
     nbrFemme: Yup.number().required('nombre de femme requis'),
     NiveauSocioEconomique: Yup.string().required('niveau socio-économique requis'),
@@ -93,7 +93,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps, values, isSubmitting } = formik;
+  const { errors, setFieldValue, touched, handleSubmit, getFieldProps, values, isSubmitting } =
+    formik;
+  console.log(errors);
   const handleStatutMarital = (event) => {
     const { value } = event.target;
     if (value === 'Mariée') {
@@ -104,6 +106,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   };
   const handleContraceptionMere = (event) => {
     const { value } = event.target;
+    //
+    setFieldValue('contraceptionMere', value);
     if (value === 'true') {
       setContraceptionMeredisable(false);
     } else {
