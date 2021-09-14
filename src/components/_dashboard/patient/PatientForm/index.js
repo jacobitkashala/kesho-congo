@@ -155,7 +155,7 @@ export default function PatientForm({
       <FormikProvider value={formik}>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={6}>
+            <Grid item xs={11} sm={6} md={6}>
               <Stack spacing={3}>
                 <TextField
                   sx={{ padding: '2px' }}
@@ -301,7 +301,7 @@ export default function PatientForm({
                 />
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={6} md={6}>
+            <Grid item xs={11} sm={6} md={6}>
               <Stack spacing={3}>
                 <Select
                   native
