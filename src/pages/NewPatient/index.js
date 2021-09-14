@@ -84,13 +84,7 @@ export default function NewPatient() {
           data-title="Valider"
         />
       </div>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        sx={{ justifyContent: 'center', width: '100%' }}
-        spacing={2}
-      >
-        {/* <Grid container spacing={3}> */}
-        {/* <Grid item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center' }}> */}
+      <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'center' }}>
         {FormPatientInfo(Step)}
       </Stack>
     </Page>

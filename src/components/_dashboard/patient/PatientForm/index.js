@@ -456,7 +456,6 @@ export default function PatientForm({
               </LoadingButton>
             </Stack>
           </Grid>
-          {/* </Div> */}
         </Form>
       </FormikProvider>
     </>
