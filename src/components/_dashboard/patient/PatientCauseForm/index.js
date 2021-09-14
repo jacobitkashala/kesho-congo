@@ -56,8 +56,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     vaccinationRougeole: Yup.string().required(),
     eig: Yup.number().required('Eig requis'),
     TbcGuerie: Yup.string(),
-    dpm: Yup.string().required('champs dpm requis'),
-    cocktailAtb: Yup.string().required(),
+    dpm: Yup.string().required('Dpm requis'),
+    cocktailAtb: Yup.string().required('cocktailAtb requis'),
     cocktailAtbDuree: Yup.string(),
     dureeTraitementProduitPlante: Yup.string(),
     dpmAnormalPrecision: Yup.string()
@@ -72,11 +72,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       cocktailAtb: '',
       atcdMas: '',
       atcdRougeole: '',
-      tbcChezParent: 'null',
+      tbcChezParent: '',
       tbcLequel: '',
-      tbcTraiter: 'null',
+      tbcTraiter: '',
       dureeTraitementTbc: '0',
-      TbcGuerie: 'null',
+      TbcGuerie: '',
       termeGrossesse: '',
       calendrierVaccin: '',
       preciserCalendrierVaccinNonjour: '',
@@ -93,8 +93,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       diagnostiqueHospitalisation: '',
       atcdDuTbcDansFratrie: '',
       dpmAnormalPrecision: '',
-      dureeTraitementProduitPlante: '',
-      remember: true
+      dureeTraitementProduitPlante: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
