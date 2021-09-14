@@ -31,12 +31,9 @@ CauseForm.propTypes = {
 
 export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [tbcDesabled, setTbcDesabled] = useState(true);
-  const handleDesablebComponent = (event) => {
-    const { value } = event.target;
-    if (value === false) {
-      setTbcDesabled((prevState) => !prevState);
-    }
-  };
+  const [hospitalisationDesabled, setHospitalisationDesabled] = useState(true);
+  const [priseProduitBasePlanteDesabled, setpriseProduitBasePlanteDesabled] = useState(true);
+
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),
@@ -95,6 +92,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
       vaccinationRougeole: '',
       eig: '',
       dpm: '',
+      tbc: '',
       produitPlante: '',
       hospitalisationRecente: '',
       diagnostiqueHospitalisation: '',
@@ -109,7 +107,31 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  const { errors, touched, setFieldValue, handleSubmit, isSubmitting, getFieldProps, values } =
+    formik;
+
+  const handleDesablebComponent = (event) => {
+    const { value } = event.target;
+    setFieldValue('tbc', value);
+    if (value === 'true') {
+      setTbcDesabled(false);
+    } else {
+      setTbcDesabled(true);
+    }
+  };
+  const handleChangeHospitalisation = (event) => {
+    const { value } = event.target;
+    setFieldValue('hospitalisationRecente', value);
+    if (value === 'true') setHospitalisationDesabled(false);
+    else setHospitalisationDesabled(true);
+  };
+  const handleChangePriseProduitBasePlante = (event) => {
+    const { value } = event.target;
+    setFieldValue('produitPlante', value);
+
+    if (value === 'true') setpriseProduitBasePlanteDesabled(false);
+    else setpriseProduitBasePlanteDesabled(true);
+  };
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -135,6 +157,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 fullWidth
                 sx={{ visibility: 0 }}
                 error={Boolean(touched.sejourNeo && errors.sejourNeo)}
+                helperText={touched.sejourNeo && errors.sejourNeo}
                 {...getFieldProps('sejourNeo')}
               >
                 <Stack
@@ -155,6 +178,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 label="eig moyen (année)"
                 {...getFieldProps('eig')}
                 error={Boolean(touched.eig && errors.eig)}
+                helperText={touched.eig && errors.eig}
               />
               <TextField
                 sx={{ padding: '2px' }}
@@ -162,6 +186,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 fullWidth
                 {...getFieldProps('rangFratrie')}
                 error={Boolean(touched.rangFratrie && errors.rangFratrie)}
+                helperText={touched.rangFratrie && errors.rangFratrie}
               />
               <RadioGroup
                 fullWidth
@@ -297,12 +322,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 sx={{ padding: '2px' }}
                 fullWidth
                 label="Durée de traitement TBC"
+                disabled={tbcDesabled}
                 {...getFieldProps('dureeTraitementTbc')}
                 error={Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc)}
               />
               <RadioGroup
-                {...getFieldProps('hospitalisationRecente')}
-                error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
+                onChange={handleChangeHospitalisation}
+                // {...getFieldProps('hospitalisationRecente')}
+                // error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -320,13 +347,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 sx={{ padding: '2px' }}
                 fullWidth
                 label="Diagnostic hopital"
+                disabled={hospitalisationDesabled}
                 {...getFieldProps('diagnostiqueHospitalisation')}
                 error={Boolean(
                   touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
                 )}
               />
               <RadioGroup
-                {...getFieldProps('produitPlante')}
+                onChange={handleChangePriseProduitBasePlante}
                 error={Boolean(touched.produitPlante && errors.produitPlante)}
               >
                 <Stack
@@ -345,6 +373,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 sx={{ padding: '2px' }}
                 fullWidth
                 label="Si Oui veuillez précisez la durée"
+                disabled={priseProduitBasePlanteDesabled}
                 {...getFieldProps('dureeTraitementProduitPlante')}
                 error={Boolean(
                   touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante

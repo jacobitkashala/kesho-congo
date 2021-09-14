@@ -40,7 +40,7 @@ export default function PatientForm({
   nomPatient,
   setNomPatient
 }) {
-  const [allaitement, setAllaitement] = useState(false);
+  const [allaitement, setAllaitement] = useState(true);
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
@@ -114,8 +114,10 @@ export default function PatientForm({
   const handleChangeAllaitement = (event) => {
     const { value } = event.target;
     setFieldValue('allaitementExclisifSixMois', value);
-    if (value) {
-      setAllaitement((prevState) => !prevState);
+    if (value === 'true') {
+      setAllaitement(true);
+    } else {
+      setAllaitement(false);
     }
   };
 
