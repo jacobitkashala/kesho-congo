@@ -161,7 +161,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Prénom"
-                  defaultValue={prenomPatient}
+                  // defaultValue={prenomPatient}
                   {...getFieldProps('fistNamePatient')}
                   error={Boolean(touched.fistNamePatient && errors.fistNamePatient)}
                   helperText={touched.fistNamePatient && errors.fistNamePatient}
