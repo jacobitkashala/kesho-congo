@@ -175,7 +175,6 @@ export default function PatientMoreMenu({ id_patient }) {
                 size="medium"
                 type="submit"
                 variant="contained"
-                color="#f44336"
                 loading={loader}
               >
                 Accepter
