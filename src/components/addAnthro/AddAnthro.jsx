@@ -1,9 +1,6 @@
 import * as Yup from 'yup';
-import propTypes from 'prop-types';
-import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate, Navigate, useLocation } from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // material
 import { Stack, TextField, Select, styled } from '@material-ui/core';
@@ -57,7 +54,6 @@ export default function AddAnthro({ id }) {
     cranian: Yup.number().required('Périmètre cranien requis'),
     malnutrition: Yup.string().required()
   });
-  const [loader, setLoader] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -69,7 +65,6 @@ export default function AddAnthro({ id }) {
     },
     validationSchema: RegisterSchema,
     onSubmit: ({ weight, height, brachial, cranian, malnutrition }) => {
-      setLoader(true);
       Axios.post(
         `https://kesho-congo-api.herokuapp.com/anthropometrique?id_patient=${id}`,
         {
@@ -88,7 +83,6 @@ export default function AddAnthro({ id }) {
         }
       )
         .then((response) => {
-          setLoader(false);
           const message = response.data;
           console.log('Yves', message);
           fakeAuth.login(() => {
@@ -117,7 +111,7 @@ export default function AddAnthro({ id }) {
                 sx={{ width: '100%', padding: '2px' }}
                 fullWidth
                 value={values.weight}
-                label="Poids"
+                label="Poids (gr)"
                 {...getFieldProps('weight')}
                 helperText={touched.weight && errors.weight}
                 error={Boolean(touched.weight && errors.weight)}
@@ -126,7 +120,7 @@ export default function AddAnthro({ id }) {
                 sx={{ width: '100%', padding: '2px' }}
                 fullWidth
                 value={values.height}
-                label="Taille "
+                label="Taille (cm) "
                 {...getFieldProps('height')}
                 helperText={touched.height && errors.height}
                 error={Boolean(touched.height && errors.height)}
@@ -135,7 +129,7 @@ export default function AddAnthro({ id }) {
                 sx={{ width: '100%', padding: '2px' }}
                 fullWidth
                 value={values.cranian}
-                label="Périmètre crânien "
+                label="Périmètre crânien (cm) "
                 {...getFieldProps('cranian')}
                 helperText={touched.cranian && errors.cranian}
                 error={Boolean(touched.cranian && errors.cranian)}
@@ -143,7 +137,7 @@ export default function AddAnthro({ id }) {
               <TextField
                 sx={{ width: '100%', padding: '2px' }}
                 fullWidth
-                label="Périmètre brachial"
+                label="Périmètre brachial(cm)"
                 value={values.brachial}
                 {...getFieldProps('brachial')}
                 helperText={touched.brachial && errors.brachial}

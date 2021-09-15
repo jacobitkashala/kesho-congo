@@ -1,9 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
+// import { Link as useLocation } from 'react-router-dom';
 
 // material
 import {
@@ -11,7 +9,6 @@ import {
   Table,
   Stack,
   Avatar,
-  Button,
   Checkbox,
   TableRow,
   TableBody,
@@ -21,25 +18,13 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CloseIcon from '@material-ui/icons/Close';
-import Fab from '@material-ui/core/Fab';
-// material
-// components
+// import { makeStyles } from '@material-ui/styles';
 import SearchNotFound from '../../components/SearchNotFound';
 // import Scrollbar from '/../../components/Scrollbar';
 import Scrollbar from '../../components/Scrollbar';
 
 import Page from '../../components/Page';
-import {
-  PersonnelListHead,
-  PersonnelListToolbar,
-  PersonnelMoreMenu
-} from '../../components/_dashboard/personnel';
-
-// import USERLIST from '../_mocks_/personnel';
-import { fakeAuth } from '../../fakeAuth';
+import { PersonnelListHead, PersonnelListToolbar } from '../../components/_dashboard/personnel';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Consulté(e) par', alignRight: false },
@@ -84,7 +69,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function MoreDetails({ id }) {
-  const location = useLocation();
+  // const location = useLocation();
   const myId = id;
 
   const [usersList, setUsersList] = useState([]);
@@ -105,37 +90,31 @@ export default function MoreDetails({ id }) {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        setLoader(false);
         console.log('myData', data.consultants);
         setConsultants([data.consultants]);
-        // for (const [oneUser] of Object.entries(data.consultants[0].user)) {
-        //   console.log('myData : ', oneUser);
-        // }
         setUsersList(data.consultants);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   console.log('consultants: ', consultants);
-
-  const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      position: 'absolute',
-      left: '60%',
-      top: '45%',
-      zIndex: '100'
-      // transform: 'translate(-50%)'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
-  const classes = useStyles();
-
-  // ----------------------------------------------------------------------
+  // const useStyles = makeStyles(() => ({
+  //   root: {
+  //     position: 'absolute',
+  //     left: '60%',
+  //     top: '45%',
+  //     zIndex: '100'
+  //     // transform: 'translate(-50%)'
+  //   },
+  //   labelRoot: {
+  //     '&&': {
+  //       color: 'red'
+  //     }
+  //   }
+  // }));
+  // const classes = useStyles();
 
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -196,8 +175,7 @@ export default function MoreDetails({ id }) {
   const filteredUsers = applySortFilter(consultants, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
-  const navigate = useNavigate();
-  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
+  // const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
@@ -206,17 +184,6 @@ export default function MoreDetails({ id }) {
   return (
     <Page>
       <Container>
-        {/* <Typography variant="h4" gutterBottom>
-            Rapport patient
-          </Typography> */}
-        {/* <Fab
-            color="primary"
-            component={RouterLink}
-            aria-label="edit"
-            to={`/dashboard/patient/detail_patient/${myId}`}
-          >
-            <CloseIcon />
-          </Fab> */}
         <Card>
           <PersonnelListToolbar
             numSelected={selected.length}

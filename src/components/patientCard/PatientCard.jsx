@@ -1,9 +1,8 @@
 import './PatientCard.css';
-import { CalendarToday, LocationSearching, PhoneAndroid } from '@material-ui/icons';
+import { CalendarToday, PhoneAndroid } from '@material-ui/icons';
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import FaceIcon from '@material-ui/icons/Face';
 import { Avatar } from '@material-ui/core';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import moment from 'moment';

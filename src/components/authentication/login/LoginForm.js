@@ -10,14 +10,9 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { Link, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { fakeAuth } from '../../../fakeAuth';
 
 export default function LoginForm() {
-  // ----------------------------------------------------------------------
-
-  const [registered, setRegistered] = useState(false);
-  const [loader, setLoader] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [errorWord, setErrorWord] = useState(false);
   Axios.defaults.withCredentials = true;
@@ -28,7 +23,7 @@ export default function LoginForm() {
 
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [showPassword, setShowPassword] = useState(false);
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '73%'
@@ -56,11 +51,6 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }) => {
-      // fakeAuth.login(() => {
-      //   navigate(from);
-      //   navigate('/dashboard/app', { replace: true });
-      // });
-      setLoader(true);
       setErrorWord(false);
       setLoadingButton(true);
       Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
@@ -83,14 +73,12 @@ export default function LoginForm() {
         })
         .catch((err) => {
           console.log(err);
-          setRegistered(false);
-          setLoader(false);
           setErrorWord(true);
           setLoadingButton(false);
         });
     }
   });
-  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
+  const { errors, touched, getFieldProps } = formik;
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };

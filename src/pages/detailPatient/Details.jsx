@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link as RouterLink, useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { Link as Navigate, useLocation } from 'react-router-dom';
 import './Details.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { styled } from '@material-ui/core/styles';
-import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
+// import { styled } from '@material-ui/core/styles';
 import Axios from 'axios';
 import moment from 'moment';
 import Chart from '../../components/charts/chart/Chart';
-import { productData } from '../../_mocks_/dummyData';
 import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
 import MoreDetails from './MoreDetails';
-
-// import { fakeAuth } from '../../fakeAuth';
 
 export default function Details() {
   console.log('hobed', moment().toDate('MM/DD/YYYY'));
@@ -48,9 +42,6 @@ export default function Details() {
     }
   }, []);
 
-  // console.log('un patient', onePatient.Patient.date_naissance_patient);
-  // console.log('Anthro', anthro);
-  // console.log('anthro', anthro[0].type_malnutrition);
   const brachialPerim = [];
   const cranianPerim = [];
   const height = [];
@@ -76,12 +67,11 @@ export default function Details() {
   useEffect(() => {
     setIsAuth(isAuth);
   }, []);
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '60%',
       top: '40%'
-      // transform: 'translate(-50%)'
     },
     labelRoot: {
       '&&': {
@@ -90,12 +80,6 @@ export default function Details() {
     }
   }));
   const classes = useStyles();
-  const Div = styled('div')(() => ({
-    position: 'absolute',
-    top: '15%',
-    left: '78%'
-    // transform: 'translate(-50%,0)'
-  }));
   return isAuth ? (
     <>
       {loader ? (
@@ -104,19 +88,6 @@ export default function Details() {
         </div>
       ) : (
         <>
-          {/* <Div>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              // to="add_Personnel"
-              to={`/dashboard/patient/detail_patient/more/${myId}`}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Details
-            </Button>
-          </Div>
-          <br />
-          <br /> */}
           <div className="product">
             <div className="productLeft">
               <PatientCard
@@ -160,7 +131,7 @@ export default function Details() {
                 <Chart
                   data={weight}
                   dataKey="Valeur"
-                  title={`Poids: ${weight.reverse()[weight.length - 1].Valeur} cm`}
+                  title={`Poids: ${weight.reverse()[weight.length - 1].Valeur} kg`}
                 />
               </div>
               <div className="productRightCard">

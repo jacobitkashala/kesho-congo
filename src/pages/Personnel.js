@@ -5,18 +5,6 @@ import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
-// -------------------MODAL
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
-// ----------------------------------------------------------------------
-
-// material
 import {
   Card,
   Table,
@@ -34,7 +22,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
 import Page from '../components/Page';
@@ -45,8 +32,6 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
-
-// import USERLIST from '../_mocks_/personnel';
 import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
@@ -111,10 +96,6 @@ export default function Personnel() {
         setLoader(false);
         console.log('myData', data);
         setUsersList(data);
-        // // formik.setValues(data);
-        // formik.setFieldValue('firstName', data.prenom_user);
-        // formik.setFieldValue('lastName', data.nom_user);
-        // formik.setFieldValue('middleName', data.postnom_user);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -126,7 +107,7 @@ export default function Personnel() {
   }, []);
 
   const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '60%',
@@ -157,21 +138,6 @@ export default function Personnel() {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  // --------------------------REDUX LOGIC-------------------------------
-
-  // const [loading, setLoading] = useState(true);
-
-  // const dispatch = useDispatch();
-  // const { users } = useSelector((state) => state);
-  // const USERLIST = users;
-  // console.log(USERLIST);
-  // useEffect(() => {
-  //   setLoading(false);
-  //   dispatch(getUsersAsync());
-  // }, [dispatch]);
-
-  // --------------------------REDUX LOGIC-------------------------------
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = usersList.map((n) => n.nom_user); // ici*******************
@@ -269,15 +235,7 @@ export default function Personnel() {
                     {filteredUsers
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((user) => {
-                        const {
-                          id_user,
-                          nom_user,
-                          prenom_user,
-                          email,
-                          sexe_user,
-                          is_admin,
-                          statut
-                        } = user;
+                        const { id_user, nom_user, prenom_user, email, sexe_user, statut } = user;
                         const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                         return (
@@ -336,7 +294,7 @@ export default function Personnel() {
             </Scrollbar>
 
             <TablePagination
-              rowsPerPageOptions={[50, 100, 150]}
+              rowsPerPageOptions={[10, 20, 30]}
               component="div"
               count={usersList.length}
               rowsPerPage={rowsPerPage}

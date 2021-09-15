@@ -1,16 +1,12 @@
-import generator from 'generate-password';
 import { useState } from 'react';
 import password from 'secure-random-password';
 import * as Yup from 'yup';
-import { useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { BrowserHistory } from 'react-router';
 import Axios from 'axios';
-
 // material
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import {
   Radio,
   Stack,
@@ -22,13 +18,10 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-// import { addUsersAsync } from '../../../redux/reducers/userSlice';
-// import data from '../../../_mocks_/personnel';
 import { fakeAuth } from '../../../fakeAuth';
 
-const Box = styled('div')(({ theme }) => ({
+const Box = styled('div')(() => ({
   width: '100%',
   textAlign: 'center',
   position: 'relative',
@@ -37,7 +30,7 @@ const Box = styled('div')(({ theme }) => ({
 }));
 
 export default function PersonnelAddFrom() {
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     labelRoot: {
       '&&': {
         color: 'red'
@@ -45,13 +38,7 @@ export default function PersonnelAddFrom() {
     }
   }));
   const classes = useStyles();
-
-  const generatedPassword = generator.generate({
-    length: 5,
-    numbers: true
-  });
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
 
@@ -128,11 +115,7 @@ export default function PersonnelAddFrom() {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
-    formik;
-
-  // ------------------------------------------------------------------------------------
-
+  const { errors, touched, handleSubmit, getFieldProps, values, handleChange } = formik;
   return (
     <FormikProvider value={formik}>
       <Box>

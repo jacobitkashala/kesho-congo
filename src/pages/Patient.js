@@ -110,10 +110,6 @@ export default function Patient() {
       })
       .catch((error) => {
         console.error('MyError:', error);
-        // fakeAuth.login(() => {
-        //   navigate(from);
-        //   navigate('/dashboard/app', { replace: true });
-        // });
       });
   }, []);
 
@@ -124,7 +120,6 @@ export default function Patient() {
       left: '60%',
       top: '45%',
       zIndex: '100'
-      // transform: 'translate(-50%)'
     },
     labelRoot: {
       '&&': {

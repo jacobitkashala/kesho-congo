@@ -12,7 +12,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import InputAdornment from '@material-ui/core/InputAdornment';
 // import AccountCircle from '@material-ui/icons/AccountCircle';
 import CreateIcon from '@material-ui/icons/Create';
-import { useSelector, useDispatch } from 'react-redux';
 
 // material
 import {
@@ -24,7 +23,6 @@ import {
   // RadioGroup,
   // InputAdornment,
   Typography,
-  FormControlLabel,
   IconButton
 } from '@material-ui/core';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -33,11 +31,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { Icon } from '@iconify/react';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getOneUserAsync } from '../../../redux/reducers/userSlice';
-
-// import data from '../../../_mocks_/personnel';
 import { fakeAuth } from '../../../fakeAuth';
-// ----------------------------------------------------------------------
 
 const Div = styled('div')(() => ({
   textAlign: 'center',
@@ -71,7 +65,7 @@ export default function PersonnelAddFrom() {
   const [loader, setLoader] = useState(true);
   const [loader2, setLoader2] = useState(false);
   const [errorWord, setErrorWord] = useState(false);
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       position: 'absolute',
       left: '60%',
@@ -93,7 +87,6 @@ export default function PersonnelAddFrom() {
   const [fName, setFname] = useState(true);
   const [lName, setLname] = useState(true);
   const [middleInitial, setMiddleInitial] = useState(true);
-  const [pword, setPword] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const handleFName = () => {
@@ -102,9 +95,7 @@ export default function PersonnelAddFrom() {
   const handleLName = () => {
     setLname(false);
   };
-  const handlePword = () => {
-    setPword(false);
-  };
+
   const handleMiddleInitial = () => {
     setMiddleInitial(false);
   };
@@ -131,9 +122,6 @@ export default function PersonnelAddFrom() {
     oldPassword: Yup.string().required('Confirmez votre mot de passe '),
     newPassword: Yup.string().required('Confirmez votre mot de passe ')
   });
-
-  const [oneUser, setOneUser] = useState([]);
-
   const getUrl = `https://kesho-congo-api.herokuapp.com/user?id_user=${localStorage.getItem(
     'id_user'
   )}`;
@@ -151,8 +139,6 @@ export default function PersonnelAddFrom() {
       .then((response) => response.json())
       .then((data) => {
         setLoader(false);
-        setOneUser(data);
-        // formik.setValues(data);
         formik.setFieldValue('firstName', data.prenom_user);
         formik.setFieldValue('lastName', data.nom_user);
         formik.setFieldValue('middleName', data.postnom_user);
@@ -195,7 +181,7 @@ export default function PersonnelAddFrom() {
           console.log('Yves', message);
           fakeAuth.login(() => {
             navigate(from);
-            navigate('/dashboard/setting', { replace: true });
+            navigate('/dashboard/app', { replace: true });
           });
         })
         .catch((err) => {
@@ -206,8 +192,7 @@ export default function PersonnelAddFrom() {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
-    formik;
+  const { errors, touched, handleSubmit, getFieldProps, values, handleChange } = formik;
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);

@@ -1,13 +1,13 @@
 import { Icon } from '@iconify/react';
 import propTypes from 'prop-types';
 import { useRef, useState } from 'react';
-import editFill from '@iconify/icons-eva/edit-fill';
 import Axios from 'axios';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import deleteFill from '@iconify/icons-eva/person-delete-fill';
-import { Link as RouterLink, useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
-// material
+// import { makeStyles } from '@material-ui/styles';
+// import red from '@material-ui/core/colors/red';
 // -------------------MODAL
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,16 +16,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { LoadingButton } from '@material-ui/lab';
-import { useFormik, Form, FormikProvider } from 'formik';
-
-// ----------------------------------------------------------------------
 import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-ui/core';
-import Delete from '@material-ui/icons/Delete';
-import { useDispatch } from 'react-redux';
-import { deletePatientAsync } from '../../../redux/reducers/patientSlice';
 import { fakeAuth } from '../../../fakeAuth';
-
-// ----------------------------------------------------------------------
 
 PatientMoreMenu.propTypes = {
   id_patient: propTypes.string
@@ -71,12 +63,26 @@ export default function PatientMoreMenu({ id_patient }) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  // const dispatch = useDispatch();
-  // const handleDeleteClick = () => {
-  //   setLoader(true);
-  //   dispatch(deletePatientAsync({ id: id_patient }));
-  // };
+  // const useStyles = makeStyles(() => ({
+  //   root: {
+  //     position: 'absolute',
+  //     left: '60%',
+  //     top: '45%',
+  //     zIndex: '100'
+  //   },
+  //   palette: {
+  //     primary: {
+  //       light: '#757ce8',
+  //       main: '#3f50b5',
+  //       dark: '#002884',
+  //       contrastText: '#fff'
+  //     },
+  //     secondary: {
+  //       main: red
+  //     }
+  //   }
+  // }));
+  // const classes = useStyles();
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -112,7 +118,7 @@ export default function PatientMoreMenu({ id_patient }) {
             </div>
           </ListItemIcon>
         </MenuItem>
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        {/* <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <div
               style={{
@@ -126,7 +132,7 @@ export default function PatientMoreMenu({ id_patient }) {
               <Typography variant="h6">éditer</Typography>
             </div>
           </ListItemIcon>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem>
           <ListItemIcon
             sx={{ textAlign: 'center', color: 'text.secondary' }}
@@ -169,6 +175,7 @@ export default function PatientMoreMenu({ id_patient }) {
                 size="medium"
                 type="submit"
                 variant="contained"
+                color="#f44336"
                 loading={loader}
               >
                 Accepter

@@ -7,22 +7,8 @@ import { Box, Grid, Container, Typography, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
-import moment from 'moment-timezone';
-import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-// import search from '@iconify/icons-fa-solid/search';
-
-// @iconify/icons-fa-solid/search
-// eva:plus-fill
 
 import { LoadingButton } from '@material-ui/lab';
-// components
-// import isWeekend from 'date-fns/isWeekend';
-// import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-// import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-// import StaticDatePicker from '@material-ui/lab/StaticDatePicker';
-// import DateFnsUtils from '@date-io/date-fns';
-// import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Page from '../components/Page';
 import {
   CardBleu,
@@ -39,17 +25,6 @@ export default function DashboardApp() {
   const [reports, setReports] = useState([]);
   const [loader, setLoader] = useState(true);
   const [buttonLoader, setButtonLoader] = useState(false);
-  // const [value, setValue] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
-  // const getReporting = `https://kesho-congo-api.herokuapp.com/reporting`;
-
-  // const options = {
-  //   method: 'GET',
-  //   headers: {
-  //     Accept: 'application/json',
-  //     Authorization: `bearer ${localStorage.getItem('token')}`
-  //   }
-  // };
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
@@ -70,19 +45,6 @@ export default function DashboardApp() {
       console.log(err);
     }
   }, []);
-  // useEffect(() => {
-  //   fetch(`https://kesho-congo-api.herokuapp.com/reporting`, options)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setReports(data);
-  //       // setLoader(false);
-  //       console.log('Données', data.nombre_fille[0].nombre_fille);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error);
-  //     });
-  // }, []);
-  // console.log('Données2 : ', reports);
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
@@ -118,8 +80,6 @@ export default function DashboardApp() {
     startDate: Yup.date().required('selectionnez une date'),
     endDate: Yup.date()
   });
-  const todayDate = moment().format('YYYY MM DD');
-  // console.log(moment().format('YYYY MM DD'));
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -160,12 +120,7 @@ export default function DashboardApp() {
       }
     }
   });
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
-    formik;
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-  //   console.log('clicked');
-  // };
+  const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return isAuth ? (
     <>
