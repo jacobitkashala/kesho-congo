@@ -1,81 +1,141 @@
+import { useState } from 'react';
 import * as Yup from 'yup';
-// import { useState } from 'react';
-// import Axios from 'axios';
-// import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-// import { Icon } from '@iconify/react';
-// import eyeFill from '@iconify/icons-eva/eye-fill';
-// import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-// material
-import { Stack, TextField } from '@material-ui/core';
+import { Stack, TextField, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-// import { makeStyles } from '@material-ui/styles';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-// import { fakeAuth } from '../../../fakeAuth';
+import { Link as RouterLink } from 'react-router-dom';
+import { styled } from '@material-ui/core/styles';
+import Axios from 'axios';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
+const Div = styled('div')(() => ({
+  // textAlign: 'center',
+  width: '100%',
+  // border: '1px solid black',
+  position: 'relative',
+  left: '50%',
+  transform: 'translate(-50%,0)',
+  paddingLeft: '60%'
+}));
 export default function FortgoPasswordForm() {
-  // ----------------------------------------------------------------------
-
-  // const navigate = useNavigate();
-
-  // const location = useLocation();
-
-  // const { from } = location.state || { from: { pathname: '/dashboard/app' } };
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Votre mail doit être valide').required('Email requis'),
-    fistName: Yup.string()
-      .min(1, 'Le mot de passe doit contenir au moins 8 caractères')
-      .required('Mot de passe requis')
+    myEmail: Yup.string().email('Votre mail doit être valide').required('Email requis'),
+    firstName: Yup.string().required('Prénom requis'),
+    lastName: Yup.string().required('Nom requis')
   });
   const formik = useFormik({
     initialValues: {
-      email: '',
-      fistName: ''
+      myEmail: '',
+      firstName: '',
+      lastName: ''
     },
     validationSchema: LoginSchema,
-    onSubmit: ({ email, fistName }) => {
-      console.log(email, fistName);
+    onSubmit: ({ myEmail, firstName, lastName }) => {
+      setLoading(true);
+      console.log('clicked');
+      Axios.post(
+        `https://kesho-congo-api.herokuapp.com/`,
+        {
+          nom_user: lastName,
+          prenom_user: firstName,
+          email: myEmail
+        }
+        // {
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `bearer ${localStorage.getItem('token')}`
+        //   }
+        // }
+      )
+        .then((response) => {
+          setOpen(true);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
   });
-  const { errors, touched, getFieldProps } = formik;
+  const { errors, touched, getFieldProps, values, handleSubmit, handleChange } = formik;
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
-        <Stack spacing={3}>
-          <TextField
-            fullWidth
-            type="text"
-            label="prénom"
-            {...getFieldProps('fistName')}
-            error={Boolean(touched.fistName && errors.fistName)}
-            helperText={touched.fistName && errors.fistName}
-            onChange={formik.handleChange}
-            value={formik.value}
-          />
-          <TextField
-            fullWidth
-            autoComplete="username"
-            type="email"
-            label="Adresse mail"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-            onChange={formik.handleChange}
-            value={formik.values.email}
-          />
-        </Stack>
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{ marginTop: 5 }}
-        >
-          Réinitialiser
-        </LoadingButton>
-      </Form>
-    </FormikProvider>
+    <>
+      <FormikProvider value={formik}>
+        <Form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              label="Prénom"
+              value={values.firstName}
+              onChange={handleChange}
+              {...getFieldProps('firstName')}
+              error={Boolean(touched.firstName && errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+            />
+            <TextField
+              fullWidth
+              label="Nom"
+              value={values.lastName}
+              onChange={handleChange}
+              {...getFieldProps('lastName')}
+              error={Boolean(touched.lastName && errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
+            />
+            <TextField
+              fullWidth
+              autoComplete="username"
+              label="Adresse mail"
+              value={values.myEmail}
+              onChange={handleChange}
+              {...getFieldProps('myEmail')}
+              error={Boolean(touched.myEmail && errors.myEmail)}
+              helperText={touched.myEmail && errors.myEmail}
+            />
+          </Stack>
+          <Div>
+            <LoadingButton size="large" component={RouterLink} to="/" sx={{ marginTop: 5 }}>
+              Annuler
+            </LoadingButton>
+            <LoadingButton
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={loading}
+              sx={{ marginTop: 5 }}
+            >
+              Réinitialiser
+            </LoadingButton>
+          </Div>
+        </Form>
+      </FormikProvider>
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">"Réinitialisation du mot de passe"</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Un mail vous a été envoyé avec votre nouveau mot de passe à ...... Connectez-vous avec
+            votre nouveau mot de passe
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" component={RouterLink} to="/">
+            ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
