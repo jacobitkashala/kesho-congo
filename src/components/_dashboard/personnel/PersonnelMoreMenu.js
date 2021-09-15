@@ -21,7 +21,7 @@ import {
   IconButton,
   Stack,
   FormControlLabel,
-  FormLabel,
+  // FormLabel,
   Radio,
   RadioGroup
 } from '@material-ui/core';
@@ -42,7 +42,7 @@ export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
-  const [openChangeStatus, setOpenChangeStatus] = useState(false);
+  const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
@@ -71,15 +71,20 @@ export default function PersonnelListToolbar({ value }) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClickOpenStatus = () => {
-    setOpenChangeStatus(true);
-  };
-  const handleCloseModaleChangeStatus = () => {
-    setOpenChangeStatus(false);
-  };
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleClickOpenStatus = () => {
+    setopenModalChangeStatus(true);
+  };
+  const handleCloseModaleChangeStatus = () => {
+    setopenModalChangeStatus(false);
+  };
+  const handleClickChangeStatus = () => {
+    setopenModalChangeStatus(true);
+  };
+
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -147,7 +152,7 @@ export default function PersonnelListToolbar({ value }) {
             </div>
           </ListItemIcon>
           <Dialog
-            open={openChangeStatus}
+            open={openModalChangeStatus}
             onClose={handleCloseModaleChangeStatus}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -184,14 +189,14 @@ export default function PersonnelListToolbar({ value }) {
                 Annuler
               </Button>
               <LoadingButton
-                onClick={handleDeleteClick}
+                onClick={handleClickChangeStatus}
                 size="medium"
                 type="submit"
                 variant="contained"
                 loading={loader}
                 color="error"
               >
-                Accepter
+                Changer de statut
               </LoadingButton>
             </DialogActions>
           </Dialog>
