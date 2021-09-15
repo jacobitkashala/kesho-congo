@@ -8,6 +8,7 @@ import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-ro
 import {
   Card,
   Table,
+  RadioGroup,
   Stack,
   Avatar,
   Button,
@@ -18,6 +19,9 @@ import {
   Container,
   Typography,
   TableContainer,
+  Radio,
+  FormLabel,
+  FormControlLabel,
   TablePagination
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -247,35 +251,6 @@ export default function Personnel() {
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
                   />
-                  <Dialog
-                    open={open}
-                    onClose={handleCloseModal}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">"Supprimer un utilisateur?"</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        Cette action est irreversible, si vous supprimez un utilisateur vous ne
-                        serrez plus en mésure de recuperer ses informations.
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleCloseModal} color="primary">
-                        Annuler
-                      </Button>
-                      <LoadingButton
-                        // onClick={handleDeleteClick}
-                        size="medium"
-                        type="submit"
-                        color="error"
-                        variant="contained"
-                        loading={loader}
-                      >
-                        Accepter
-                      </LoadingButton>
-                    </DialogActions>
-                  </Dialog>
                   <TableBody>
                     {filteredUsers
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
