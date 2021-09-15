@@ -24,6 +24,7 @@ const Div = styled('div')(() => ({
 export default function FortgoPasswordForm() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const LoginSchema = Yup.object().shape({
     myEmail: Yup.string().email('Votre mail doit être valide').required('Email requis'),
@@ -39,9 +40,10 @@ export default function FortgoPasswordForm() {
     validationSchema: LoginSchema,
     onSubmit: ({ myEmail, firstName, lastName }) => {
       setLoading(true);
+
       console.log('clicked');
       Axios.post(
-        `https://kesho-congo-api.herokuapp.com/`,
+        `https://kesho-congo-api.herokuapp.com/user/reset`,
         {
           nom_user: lastName,
           prenom_user: firstName,
@@ -55,8 +57,10 @@ export default function FortgoPasswordForm() {
         // }
       )
         .then((response) => {
-          setOpen(true);
           setLoading(false);
+          console.log('Ma reponse:', response.data.email);
+          setOpen(true);
+          setUserEmail(response.data.email);
         })
         .catch((err) => {
           setLoading(false);
@@ -123,11 +127,11 @@ export default function FortgoPasswordForm() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">"Réinitialisation du mot de passe"</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Réinitialisation du mot de passe</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Un mail vous a été envoyé avec votre nouveau mot de passe à ...... Connectez-vous avec
-            votre nouveau mot de passe
+            Un mail vous a été envoyé avec votre nouveau mot de passe à "{userEmail}".,
+            Connectez-vous avec votre nouveau mot de passe
           </DialogContentText>
         </DialogContent>
         <DialogActions>
