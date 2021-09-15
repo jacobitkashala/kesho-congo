@@ -40,7 +40,7 @@ export default function PatientForm({
   nomPatient,
   setNomPatient
 }) {
-  const [allaitement, setAllaitement] = useState(false);
+  const [allaitement, setAllaitement] = useState(true);
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
@@ -50,24 +50,24 @@ export default function PatientForm({
     taille: Yup.number('un chiffre requis').required('Taille requis'),
     ExplicationAutre: Yup.string(),
     allaitementExclisifSixMois: Yup.string().required('Radio requis'),
-    nom_patient: Yup.string().required('Nom requis'),
+    NomPatient: Yup.string().required('Nom requis'),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis'),
-    peri_cranien: Yup.number('un chiffre requis').required('Perimetre cranien requis'),
-    prenom_patient: Yup.string().required('Prenom requis'),
-    peri_brachail: Yup.number('un chiffre requis').required('Perimetre brachial requis'),
-    postnom_patient: Yup.string().required('Postnom requis'),
+    perimetreCranien: Yup.number('un chiffre requis').required('Perimetre cranien requis'),
+    fistNamePatient: Yup.string().required('Prenom requis'),
+    perimetreBrachail: Yup.number('un chiffre requis').required('Perimetre brachial requis'),
+    postNomPatient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
     diversification_aliment: Yup.string().required('diversification requis'),
-    sexe_patient: Yup.string().required('Sexe requis'),
+    sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
     constitutionAliment: Yup.string().required('constitution aliment requis'),
-    provenance_patient: Yup.string().required('Provenance requiq'),
-    mode_arrive: Yup.string().required('champs requis'),
+    provenancePatient: Yup.string().required('Provenance requiq'),
+    modeArriver: Yup.string().required('champs requis'),
     typeMalnutrition: Yup.string().required('Type malnutriton requis'),
-    poids_naissance: Yup.number('un chiffre requis').required('poids naissance requis'),
+    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis'),
     traitementNutritionnel: Yup.string(),
     traitementNutritionnelAutre: Yup.string(),
-    adresse_patient: Yup.string().required('champs requis'),
+    adressePatient: Yup.string().required('champs requis'),
     ExplicationProvenance: Yup.string(),
     ageFinAllaitement: Yup.number('un chiffre requis')
   });
@@ -76,23 +76,23 @@ export default function PatientForm({
     initialValues: {
       taille: '',
       poidsActuel: '',
-      peri_cranien: '',
-      prenom_patient: '',
-      nom_patient: '',
-      postnom_patient: '',
+      perimetreCranien: '',
+      fistNamePatient: '',
+      NomPatient: '',
+      postNomPatient: '',
       telephone: '',
       diversification_aliment: '',
-      sexe_patient: '',
+      sexePatient: '',
       dataNaissancePatient: '',
       constitutionAliment: '',
-      provenance_patient: '',
-      adresse_patient: '',
-      mode_arrive: '',
+      provenancePatient: '',
+      adressePatient: '',
+      modeArriver: '',
       ageFinAllaitement: '',
       traitementNutritionnelAutre: '',
-      poids_naissance: '',
+      poidsNaissance: '',
       traitementNutritionnel: '',
-      peri_brachail: '',
+      perimetreBrachail: '',
       typeMalnutrition: '',
       ExplicationAutre: '',
       ExplicationProvenance: '',
@@ -100,11 +100,11 @@ export default function PatientForm({
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
-      const { prenom_patient, nom_patient } = indentity;
+      const { fistNamePatient, NomPatient } = indentity;
       SetDataPatient((current) => ({ ...current, indentity }));
-      setPrenomPatient(prenom_patient);
-      console.log(prenom_patient, nom_patient);
-      setNomPatient(nom_patient);
+      setPrenomPatient(fistNamePatient);
+      console.log(fistNamePatient, NomPatient);
+      setNomPatient(NomPatient);
       NextStep();
     }
   });
@@ -114,14 +114,16 @@ export default function PatientForm({
   const handleChangeAllaitement = (event) => {
     const { value } = event.target;
     setFieldValue('allaitementExclisifSixMois', value);
-    if (value) {
-      setAllaitement((prevState) => !prevState);
+    if (value === 'true') {
+      setAllaitement(true);
+    } else {
+      setAllaitement(false);
     }
   };
 
   const handleChangeProvenance = (event) => {
     const { value } = event.target;
-    setFieldValue('provenance_patient', value);
+    setFieldValue('provenancePatient', value);
     if (value === 'Autres') {
       setProvenance(false);
     } else {
@@ -130,7 +132,7 @@ export default function PatientForm({
   };
   const handleChangeModeArriver = (event) => {
     const { value } = event.target;
-    setFieldValue('mode_arrive', value);
+    setFieldValue('modeArriver', value);
     if (value === 'Autres') {
       setModeArriver(false);
     } else {
@@ -153,16 +155,16 @@ export default function PatientForm({
       <FormikProvider value={formik}>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={6}>
+            <Grid item xs={11} sm={6} md={6}>
               <Stack spacing={3}>
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Prénom"
-                  defaultValue={prenomPatient}
-                  {...getFieldProps('prenom_patient')}
-                  error={Boolean(touched.prenom_patient && errors.prenom_patient)}
-                  helperText={touched.prenom_patient && errors.prenom_patient}
+                  // defaultValue={prenomPatient}
+                  {...getFieldProps('fistNamePatient')}
+                  error={Boolean(touched.fistNamePatient && errors.fistNamePatient)}
+                  helperText={touched.fistNamePatient && errors.fistNamePatient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -170,9 +172,9 @@ export default function PatientForm({
                   fullWidth
                   label="Nom"
                   value={nomPatient}
-                  {...getFieldProps('nom_patient')}
-                  error={Boolean(touched.nom_patient && errors.nom_patient)}
-                  helperText={touched.nom_patient && errors.nom_patient}
+                  {...getFieldProps('NomPatient')}
+                  error={Boolean(touched.NomPatient && errors.NomPatient)}
+                  helperText={touched.NomPatient && errors.NomPatient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -182,9 +184,9 @@ export default function PatientForm({
                   label={prenomPatient}
                   defaultValue={prenomPatient}
                   // defaultValue={DataPatient.postnom_patient}
-                  {...getFieldProps('postnom_patient')}
-                  error={Boolean(touched.postnom_patient && errors.postnom_patient)}
-                  helperText={touched.postnom_patient && errors.postnom_patient}
+                  {...getFieldProps('postNomPatient')}
+                  error={Boolean(touched.postNomPatient && errors.postNomPatient)}
+                  helperText={touched.postNomPatient && errors.postNomPatient}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -201,19 +203,19 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Adresse patient"
-                  // defaultValue={DataPatient.adresse_patient}
-                  {...getFieldProps('adresse_patient')}
-                  helperText={touched.adresse_patient && errors.adresse_patient}
-                  error={Boolean(touched.adresse_patient && errors.adresse_patient)}
+                  // defaultValue={DataPatient.adressePatient}
+                  {...getFieldProps('adressePatient')}
+                  helperText={touched.adressePatient && errors.adressePatient}
+                  error={Boolean(touched.adressePatient && errors.adressePatient)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Poid naissance (gr)"
-                  //  defaultValue={DataPatient.poids_naissance}
-                  {...getFieldProps('poids_naissance')}
-                  helperText={touched.poids_naissance && errors.poids_naissance}
-                  error={Boolean(touched.poids_naissance && errors.poids_naissance)}
+                  //  defaultValue={DataPatient.poidsNaissance}
+                  {...getFieldProps('poidsNaissance')}
+                  helperText={touched.poidsNaissance && errors.poidsNaissance}
+                  error={Boolean(touched.poidsNaissance && errors.poidsNaissance)}
                 />
                 <TextField
                   fullWidth
@@ -225,9 +227,9 @@ export default function PatientForm({
                   error={Boolean(touched.poidsActuel && errors.poidsActuel)}
                 />
                 <RadioGroup
-                  {...getFieldProps('sexe_patient')}
-                  error={Boolean(touched.sexe_patient && errors.sexe_patient)}
-                  helperText={touched.sexe_patient && errors.sexe_patient}
+                  {...getFieldProps('sexePatient')}
+                  error={Boolean(touched.sexePatient && errors.sexePatient)}
+                  helperText={touched.sexePatient && errors.sexePatient}
                   // setValues={  DataPatient.Sexe}
                 >
                   <Stack
@@ -246,10 +248,10 @@ export default function PatientForm({
                 <Select
                   sx={{ padding: '2px' }}
                   native
-                  // {...getFieldProps('mode_arrive')}
+                  // {...getFieldProps('modeArriver')}
                   onChange={handleChangeModeArriver}
-                  error={Boolean(touched.mode_arrive && errors.mode_arrive)}
-                  helperText={touched.mode_arrive && errors.mode_arrive}
+                  error={Boolean(touched.modeArriver && errors.modeArriver)}
+                  helperText={touched.modeArriver && errors.modeArriver}
                 >
                   <option value="" selected disabled hidden>
                     Mode d'arriver
@@ -299,16 +301,16 @@ export default function PatientForm({
                 />
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={6} md={6}>
+            <Grid item xs={11} sm={6} md={6}>
               <Stack spacing={3}>
                 <Select
                   native
                   sx={{ padding: '2px' }}
-                  // {...getFieldProps('provenance_patient')}
+                  // {...getFieldProps('provenancePatient')}
                   onChange={handleChangeProvenance}
                   // value={DataPatient.Provenace}
-                  helperText={touched.provenance_patient && errors.provenance_patient}
-                  error={Boolean(touched.provenance_patient && errors.provenance_patient)}
+                  helperText={touched.provenancePatient && errors.provenancePatient}
+                  error={Boolean(touched.provenancePatient && errors.provenancePatient)}
                 >
                   <option defaultValue="" selected disabled hidden>
                     Provenance Patient
@@ -381,20 +383,20 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="périmètre crânien "
-                  {...getFieldProps('peri_cranien')}
-                  // defaultValue={DataPatient.peri_cranien}
-                  helperText={touched.peri_cranien && errors.peri_cranien}
-                  error={Boolean(touched.peri_cranien && errors.peri_cranien)}
+                  {...getFieldProps('perimetreCranien')}
+                  // defaultValue={DataPatient.perimetreCranien}
+                  helperText={touched.perimetreCranien && errors.perimetreCranien}
+                  error={Boolean(touched.perimetreCranien && errors.perimetreCranien)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
                   // required
                   fullWidth
                   label="périmètre branchial"
-                  // defaultValue={DataPatient.peri_brachail}
-                  {...getFieldProps('peri_brachail')}
-                  helperText={touched.peri_brachail && errors.peri_brachail}
-                  error={Boolean(touched.peri_brachail && errors.peri_brachail)}
+                  // defaultValue={DataPatient.perimetreBrachail}
+                  {...getFieldProps('perimetreBrachail')}
+                  helperText={touched.perimetreBrachail && errors.perimetreBrachail}
+                  error={Boolean(touched.perimetreBrachail && errors.perimetreBrachail)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -454,7 +456,6 @@ export default function PatientForm({
               </LoadingButton>
             </Stack>
           </Grid>
-          {/* </Div> */}
         </Form>
       </FormikProvider>
     </>
