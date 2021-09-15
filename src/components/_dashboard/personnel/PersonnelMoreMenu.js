@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Axios from 'axios';
+import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 // import { Link as RouterLink } from 'react-router-dom';
 // material  Typography
@@ -19,9 +20,13 @@ import { MenuItem, ListItemIcon } from '@material-ui/core';
 import { fakeAuth } from '../../../fakeAuth';
 // ----------------------------------------------------------------------
 
+PersonnelListToolbar.propTypes = {
+  value: PropTypes.string
+};
 export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
@@ -45,9 +50,6 @@ export default function PersonnelListToolbar({ value }) {
         console.log(err);
       });
   };
-
-  const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -55,17 +57,6 @@ export default function PersonnelListToolbar({ value }) {
   const handleClose = () => {
     setOpen(false);
   };
-  // const useStyles = makeStyles(() => ({
-  //   contained: {
-  //     color: 'red'
-  //   },
-  //   labelRoot: {
-  //     '&&': {
-  //       color: 'red'
-  //     }
-  //   }
-  // }));
-  // const classes = useStyles();
   return (
     <>
       <MenuItem>
@@ -88,13 +79,11 @@ export default function PersonnelListToolbar({ value }) {
               <Button onClick={handleClose} color="primary">
                 Annuler
               </Button>
-              {/* <Button onClick={handleDeleteClick} color="primary" autoFocus>
-                Accepter
-              </Button> */}
               <LoadingButton
                 onClick={handleDeleteClick}
                 size="medium"
                 type="submit"
+                color="error"
                 variant="contained"
                 loading={loader}
               >

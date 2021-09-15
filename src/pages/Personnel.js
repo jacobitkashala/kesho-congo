@@ -24,6 +24,12 @@ import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // material
 // components
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { LoadingButton } from '@material-ui/lab';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -78,6 +84,7 @@ function applySortFilter(array, comparator, query) {
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 
@@ -132,6 +139,15 @@ export default function Personnel() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleClickUpdateUser = (idUser) => {
+    console.log(idUser);
+    setOpen((prevState) => !prevState);
+    console.log(open);
+  };
   const handleRequestSort = (event, property) => {
     // console.log(property);
     const isAsc = orderBy === property && order === 'asc';
@@ -231,6 +247,35 @@ export default function Personnel() {
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
                   />
+                  <Dialog
+                    open={open}
+                    onClose={handleCloseModal}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">"Supprimer un utilisateur?"</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        Cette action est irreversible, si vous supprimez un utilisateur vous ne
+                        serrez plus en mésure de recuperer ses informations.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseModal} color="primary">
+                        Annuler
+                      </Button>
+                      <LoadingButton
+                        // onClick={handleDeleteClick}
+                        size="medium"
+                        type="submit"
+                        color="error"
+                        variant="contained"
+                        loading={loader}
+                      >
+                        Accepter
+                      </LoadingButton>
+                    </DialogActions>
+                  </Dialog>
                   <TableBody>
                     {filteredUsers
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -242,10 +287,13 @@ export default function Personnel() {
                           <TableRow
                             hover
                             key={id_user}
-                            // tabIndex={-1}
+                            sx={{ cursor: 'pointer' }}
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
+                            onClick={() => {
+                              handleClickUpdateUser(id_user);
+                            }}
                           >
                             <TableCell padding="checkbox">
                               <Checkbox
