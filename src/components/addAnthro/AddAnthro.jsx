@@ -159,9 +159,9 @@ export default function AddAnthro({ id }) {
                 <option value="" selected disabled hidden>
                   Type de malnutrition
                 </option>
-                <option value="Malnutrition aigue modérée">Malnutrition aigue modérée</option>
-                <option value="Malnutrition aigue sévère">Malnutrition aigue sévère</option>
-                <option value="Malnutrition aigue chronique">Malnutrition aigue chronique</option>
+                <option value="MAM">Malnutrition aigue modérée</option>
+                <option value="MAS">Malnutrition aigue sévère</option>
+                <option value="MAC">Malnutrition aigue chronique</option>
               </Select>
               <LoadingButton
                 type="submit"

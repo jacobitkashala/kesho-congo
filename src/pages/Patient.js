@@ -47,7 +47,7 @@ import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom', alignRight: true },
+  { id: 'NE', label: 'Nom', alignLeft: false },
   { id: 'PR', label: 'Prénom', alignRight: true },
   { id: 'DN', label: 'Naissance', alignRight: false },
   { id: 'SE', label: 'Sexe', alignRight: false },

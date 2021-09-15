@@ -18,6 +18,7 @@ export default function LoginForm() {
 
   const [registered, setRegistered] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
   const [errorWord, setErrorWord] = useState(false);
   Axios.defaults.withCredentials = true;
 
@@ -61,6 +62,7 @@ export default function LoginForm() {
       // });
       setLoader(true);
       setErrorWord(false);
+      setLoadingButton(true);
       Axios.post('https://kesho-congo-api.herokuapp.com/auth/login', {
         email,
         password
@@ -73,6 +75,7 @@ export default function LoginForm() {
           localStorage.setItem('id_user', id_user);
           localStorage.setItem('status', status);
           console.log({ message, token, name, isAdmin });
+          setLoadingButton(false);
           fakeAuth.login(() => {
             navigate(from);
             navigate('/dashboard/app', { replace: true });
@@ -83,6 +86,7 @@ export default function LoginForm() {
           setRegistered(false);
           setLoader(false);
           setErrorWord(true);
+          setLoadingButton(false);
         });
     }
   });
@@ -134,16 +138,6 @@ export default function LoginForm() {
             mot de passe oublié
           </Link>
         </Stack>
-        {loader ? (
-          <>
-            <div className={classes.root}>
-              <CircularProgress />
-            </div>
-            <br />
-          </>
-        ) : (
-          ''
-        )}
 
         {errorWord ? (
           <span className={classes.labelRoot}>Adresse mail ou mot de passe incorrecte</span>
@@ -153,7 +147,13 @@ export default function LoginForm() {
         <br />
         <br />
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained">
+        <LoadingButton
+          loading={loadingButton}
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+        >
           Connexion
         </LoadingButton>
       </Form>

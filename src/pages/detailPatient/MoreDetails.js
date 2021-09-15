@@ -83,14 +83,15 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function MoreDetails() {
+export default function MoreDetails({ id }) {
   const location = useLocation();
-  const myId = location.pathname.split('/')[5];
-  console.log(myId);
+  const myId = id;
 
   const [usersList, setUsersList] = useState([]);
 
-  const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
+  const getUsers = `https://kesho-congo-api.herokuapp.com/patient/detail?id_patient=${myId}`;
+
+  const [consultants, setConsultants] = useState([]);
 
   const options = {
     method: 'GET',
@@ -105,21 +106,17 @@ export default function MoreDetails() {
       .then((response) => response.json())
       .then((data) => {
         setLoader(false);
-        console.log('myData', data);
-        setUsersList(data);
-        // // formik.setValues(data);
-        // formik.setFieldValue('firstName', data.prenom_user);
-        // formik.setFieldValue('lastName', data.nom_user);
-        // formik.setFieldValue('middleName', data.postnom_user);
+        console.log('myData', data.consultants);
+        setConsultants([data.consultants]);
+        // for (const [oneUser] of Object.entries(data.consultants[0].user)) {
+        //   console.log('myData : ', oneUser);
+        // }
+        setUsersList(data.consultants);
       })
-      .catch((error) => {
-        console.error('Error:', error);
-        fakeAuth.login(() => {
-          navigate(from);
-          navigate('/dashboard/app', { replace: true });
-        });
-      });
+      .catch((error) => {});
   }, []);
+
+  console.log('consultants: ', consultants);
 
   const [loader, setLoader] = useState(true);
   const useStyles = makeStyles((theme) => ({
@@ -156,7 +153,7 @@ export default function MoreDetails() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = usersList.map((n) => n.nom_user); // ici*******************
+      const newSelecteds = consultants.map((n) => n.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -196,7 +193,7 @@ export default function MoreDetails() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
-  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(consultants, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
   const navigate = useNavigate();
@@ -206,133 +203,115 @@ export default function MoreDetails() {
     setIsAuth(isAuth);
   }, [isAuth]);
 
-  return isAuth ? (
+  return (
     <Page>
-      {loader ? (
-        <div className={classes.root}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <Container>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" gutterBottom>
-              Rapport patient
-            </Typography>
-            <Fab
-              color="primary"
-              component={RouterLink}
-              aria-label="edit"
-              to={`/dashboard/patient/detail_patient/${myId}`}
-            >
-              <CloseIcon />
-            </Fab>
-          </Stack>
-          <Card>
-            <PersonnelListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            />
+      <Container>
+        {/* <Typography variant="h4" gutterBottom>
+            Rapport patient
+          </Typography> */}
+        {/* <Fab
+            color="primary"
+            component={RouterLink}
+            aria-label="edit"
+            to={`/dashboard/patient/detail_patient/${myId}`}
+          >
+            <CloseIcon />
+          </Fab> */}
+        <Card>
+          <PersonnelListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <PersonnelListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={usersList.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredUsers
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((user) => {
-                        const {
-                          id_user,
-                          nom_user,
-                          prenom_user,
-                          email,
-                          sexe_user,
-                          is_admin,
-                          statut
-                        } = user;
-                        const isItemSelected = selected.indexOf(nom_user) !== -1;
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800 }}>
+              <Table>
+                <PersonnelListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={usersList.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredUsers
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((user) => {
+                      const { id_user, nom_user, prenom_user } = user;
+                      const isItemSelected = selected.indexOf(nom_user) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id_user}
-                            // tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_user)}
+                      return (
+                        <TableRow
+                          hover
+                          key={id_user}
+                          // tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, nom_user)}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar
+                                alt={nom_user}
+                                src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
                               />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_user}
-                                  src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
-                                />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_user}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell>{prenom_user}</TableCell>
-                            <TableCell> {email}</TableCell>
-                            <TableCell>{statut}</TableCell>
-                            <TableCell>{sexe_user}</TableCell>
-                            <TableCell>
-                              <PersonnelMoreMenu value={id_user} />
-                            </TableCell>
-                            <TableCell>
-                              <PersonnelMoreMenu value={id_user} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                  {isUserNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
+                              <Typography variant="subtitle2" noWrap>
+                                {`${nom_user} ${prenom_user}`}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          {/* <TableCell>{prenom_user}</TableCell> */}
+                          {/* <TableCell> {email}</TableCell>
+                          <TableCell>{statut}</TableCell>
+                          <TableCell>{sexe_user}</TableCell>
+                          <TableCell>
+                            <PersonnelMoreMenu value={id_user} />
+                          </TableCell>
+                          <TableCell>
+                            <PersonnelMoreMenu value={id_user} />
+                          </TableCell> */}
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
                   )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
+                </TableBody>
+                {isUserNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-            <TablePagination
-              rowsPerPageOptions={[10, 20, 30]}
-              component="div"
-              count={usersList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Card>
-        </Container>
-      )}
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30]}
+            component="div"
+            count={usersList.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
+      </Container>
     </Page>
-  ) : (
-    <Navigate to="/" state={{ from: location }} />
   );
 }

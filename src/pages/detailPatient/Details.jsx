@@ -14,6 +14,7 @@ import Chart from '../../components/charts/chart/Chart';
 import { productData } from '../../_mocks_/dummyData';
 import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
+import MoreDetails from './MoreDetails';
 
 // import { fakeAuth } from '../../fakeAuth';
 
@@ -103,7 +104,7 @@ export default function Details() {
         </div>
       ) : (
         <>
-          <Div>
+          {/* <Div>
             <Button
               variant="contained"
               component={RouterLink}
@@ -115,7 +116,7 @@ export default function Details() {
             </Button>
           </Div>
           <br />
-          <br />
+          <br /> */}
           <div className="product">
             <div className="productLeft">
               <PatientCard
@@ -171,6 +172,9 @@ export default function Details() {
               </div>
             </div>
           </div>
+          <br />
+          <br />
+          <MoreDetails id={myId} />
         </>
       )}
     </>

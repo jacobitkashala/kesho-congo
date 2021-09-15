@@ -21,7 +21,7 @@ export default function Router() {
   return useRoutes([
     {
       path: '/',
-      element: <Login />
+      element: localStorage.getItem('token') ? <Navigate to="/dashboard/app" replace /> : <Login />
     },
     {
       path: '/renitialiser_psw',
