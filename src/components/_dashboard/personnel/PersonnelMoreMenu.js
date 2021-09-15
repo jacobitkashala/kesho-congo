@@ -42,6 +42,7 @@ export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openChangeStatus, setOpenChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
@@ -70,7 +71,12 @@ export default function PersonnelListToolbar({ value }) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const handleClickOpenStatus = () => {
+    setOpenChangeStatus(true);
+  };
+  const handleCloseModaleChangeStatus = () => {
+    setOpenChangeStatus(false);
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -126,7 +132,7 @@ export default function PersonnelListToolbar({ value }) {
         <MenuItem>
           <ListItemIcon
             sx={{ textAlign: 'center', color: 'text.secondary' }}
-            onClick={handleClickOpen}
+            onClick={handleClickOpenStatus}
           >
             <div
               style={{
@@ -141,12 +147,12 @@ export default function PersonnelListToolbar({ value }) {
             </div>
           </ListItemIcon>
           <Dialog
-            open={open}
-            onClose={handleClose}
+            open={openChangeStatus}
+            onClose={handleCloseModaleChangeStatus}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">"Supprimer un patient?"</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Changer le status de {}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 <RadioGroup>
@@ -155,10 +161,19 @@ export default function PersonnelListToolbar({ value }) {
                     sx={{ display: 'flex', alignItems: 'center' }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Allaitement exclusif 6mois:</FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'column' }}>
-                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                      <FormControlLabel value="Docteur" control={<Radio />} label="Docteur" />
+                      <FormControlLabel value="Medécin" control={<Radio />} label="Medécin" />
+                      <FormControlLabel
+                        value="Nutritionniste"
+                        control={<Radio />}
+                        label="Nutritionniste"
+                      />
+                      <FormControlLabel
+                        value="Santé public"
+                        control={<Radio />}
+                        label="Santé public"
+                      />
                     </Stack>
                   </Stack>
                 </RadioGroup>
