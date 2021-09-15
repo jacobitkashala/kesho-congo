@@ -194,7 +194,7 @@ export default function PersonnelListToolbar({ value }) {
                 type="submit"
                 variant="contained"
                 loading={loader}
-                color="error"
+                color="primary"
               >
                 Changer de statut
               </LoadingButton>
