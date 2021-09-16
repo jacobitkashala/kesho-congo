@@ -43,7 +43,7 @@ PersonnelListToolbar.propTypes = {
 export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
   const [statutPersonnel, setStatutPersonnel] = useState('');
   const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -71,11 +71,11 @@ export default function PersonnelListToolbar({ value }) {
         console.log(err);
       });
   };
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpenModalDelete = () => {
+    setOpenModalDelete(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseModalDelete = () => {
+    setOpenModalDelete(false);
   };
 
   const handleClickOpenStatus = () => {
@@ -135,12 +135,12 @@ export default function PersonnelListToolbar({ value }) {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem>
-          <ListItemIcon sx={{ color: 'red' }}>
-            <Delete width={35} height={35} onClick={handleClickOpen} />
+          <ListItemIcon sx={{ color: 'red' }} onClick={handleClickOpenModalDelete}>
+            <Delete width={35} height={35} />
             <Typography>Delete</Typography>
             <Dialog
-              open={open}
-              onClose={handleClose}
+              open={openModalDelete}
+              onClose={handleCloseModalDelete}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -152,7 +152,7 @@ export default function PersonnelListToolbar({ value }) {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleCloseModalDelete} color="primary">
                   Annuler
                 </Button>
                 <LoadingButton

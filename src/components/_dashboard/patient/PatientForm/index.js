@@ -383,7 +383,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="périmètre crânien "
-                  {...getFieldProps('perimetreCranien')}
+                  {...getFieldProps('perimetreCranien (Cm)')}
                   // defaultValue={DataPatient.perimetreCranien}
                   helperText={touched.perimetreCranien && errors.perimetreCranien}
                   error={Boolean(touched.perimetreCranien && errors.perimetreCranien)}
@@ -392,7 +392,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   fullWidth
-                  label="périmètre branchial"
+                  label="périmètre branchial (Cm)"
                   // defaultValue={DataPatient.perimetreBrachail}
                   {...getFieldProps('perimetreBrachail')}
                   helperText={touched.perimetreBrachail && errors.perimetreBrachail}
@@ -402,7 +402,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   fullWidth
-                  label="Taille en Cm"
+                  label="Taille en (Cm)"
                   // defaultValue={DataPatient.taille}
                   {...getFieldProps('taille')}
                   error={Boolean(touched.taille && errors.taille)}
