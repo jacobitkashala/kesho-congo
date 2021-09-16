@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
+import Axios from 'axios';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 //
@@ -7,47 +9,73 @@ import { BaseOptionChart } from '../../charts';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  {
-    name: 'Nombre de patients',
-    type: 'column',
-    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 40]
-  },
-  {
-    name: 'MAS',
-    type: 'area',
-    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43, 40]
-  },
-  {
-    name: 'MAM',
-    type: 'line',
-    data: [50, 30, 30, 35, 41, 20, 50, 60, 59, 30, 33, 50]
-  },
-  {
-    name: 'MAC',
-    type: 'line',
-    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 40]
-  }
-];
-
 export default function AppWebsiteVisits() {
+  const [macData, setMacData] = useState([]);
+  const [mamData, setMamData] = useState([]);
+  const [masData, setMasData] = useState([]);
+  const [repData, setRepData] = useState([]);
+  const [reports, setReports] = useState([]);
+  useEffect(async () => {
+    try {
+      const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting/annuel`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const data = await response.data;
+      setReports(await data);
+      setRepData(await data.rapport_patient_year);
+      setMasData(await data.rapport_mas_year);
+      setMamData(await data.rapport_mam_year);
+      setMacData(await data.rapport_mac_year);
+      console.log('mes données:', data);
+
+      // setLoader(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+  const output = [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43, 40];
+  const CHART_DATA = [
+    {
+      name: 'Nombre de patients',
+      type: 'column',
+      data: repData.map((i) => i[0].nombre_patient)
+    },
+    {
+      name: 'MAS',
+      type: 'area',
+      data: masData.map((i) => i[0].sereve_nombre)
+    },
+    {
+      name: 'MAM',
+      type: 'line',
+      data: mamData.map((i) => i[0].moderee_nombre)
+    },
+    {
+      name: 'MAC',
+      type: 'line',
+      data: macData.map((i) => i[0].chronique_nombre)
+    }
+  ];
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { width: [0, 3, 3, 3] },
     plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
     fill: { type: ['solid', 'gradient', 'solid', 'solid'] },
     labels: [
-      '01/01/2003',
-      '02/01/2003',
-      '03/01/2003',
-      '04/01/2003',
-      '05/01/2003',
-      '06/01/2003',
-      '07/01/2003',
-      '08/01/2003',
-      '09/01/2003',
-      '10/01/2003',
-      '11/01/2003',
-      '12/01/2003'
+      'Janvier',
+      'Février',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Août',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Decembre'
     ],
     tooltip: {
       shared: true,

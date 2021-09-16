@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
+import Axios from 'axios';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import { Card, CardHeader } from '@material-ui/core';
@@ -29,11 +31,35 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-// ----------------------------------------------------------------------
-
-const CHART_DATA = [4344, 1443, 4443];
-
 export default function AppCurrentVisits() {
+  const [macData, setMacData] = useState([]);
+  const [mamData, setMamData] = useState([]);
+  const [masData, setMasData] = useState([]);
+  useEffect(async () => {
+    try {
+      const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting/annuel`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const data = await response.data;
+      setMasData(await data.rapport_mas_year);
+      setMamData(await data.rapport_mam_year);
+      setMacData(await data.rapport_mac_year);
+      console.log('mes données:', data);
+
+      // setLoader(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const CHART_DATA = [
+    macData.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b),
+    mamData.map((i) => i[0].moderee_nombre).reduce((a, b) => a + b),
+    masData.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
+  ];
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {

@@ -23,8 +23,10 @@ import {
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
+  const [yearData, setYearData] = useState([]);
   const [loader, setLoader] = useState(true);
   const [buttonLoader, setButtonLoader] = useState(false);
+  // const AnnualData = [];
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
@@ -35,16 +37,16 @@ export default function DashboardApp() {
       });
       const data = await response.data;
       setReports(await data);
+      // console.log('mes données:', rapport_mac_year);
       setLoader(false);
-      // const Patient = await data;
-      // const PatientBrachial = Patient.Anthropometrique;
-      // setAnthro(PatientBrachial);
-      // setOnePatient(Patient);
+
       // setLoader(false);
     } catch (err) {
       console.log(err);
     }
   }, []);
+
+  // console.log('macData', macData);
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
@@ -108,12 +110,6 @@ export default function DashboardApp() {
         const data = await response.data;
         setReports(await data);
         setButtonLoader(false);
-        console.log('submitted', data);
-        // const Patient = await data;
-        // const PatientBrachial = Patient.Anthropometrique;
-        // setAnthro(PatientBrachial);
-        // setOnePatient(Patient);
-        // setLoader(false);
       } catch (err) {
         console.log(err);
         setButtonLoader(false);

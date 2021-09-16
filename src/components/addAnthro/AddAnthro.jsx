@@ -15,7 +15,7 @@ const Div = styled('div')(() => ({
   boxShadow: '0px 0px 15px -10px rgb(0 0 0 / 75%)',
   width: '80%',
   position: 'relative',
-  borderRadius: '15px',
+  borderRadius: '5px',
   padding: '30px',
   paddingBottom: '90px',
   left: '50%',

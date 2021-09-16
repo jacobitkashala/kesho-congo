@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { filter } from 'lodash';
+import moment from 'moment';
 // import { Link as useLocation } from 'react-router-dom';
 
 // material
@@ -73,10 +74,9 @@ export default function MoreDetails({ id }) {
   const myId = id;
 
   const [usersList, setUsersList] = useState([]);
+  const [anthro, setAnthro] = useState([]);
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/patient/detail?id_patient=${myId}`;
-
-  const [consultants, setConsultants] = useState([]);
 
   const options = {
     method: 'GET',
@@ -90,8 +90,8 @@ export default function MoreDetails({ id }) {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log('myData', data.consultants);
-        setConsultants([data.consultants]);
+        console.log('myData', data.Anthropometrique[1]);
+        setAnthro(data.Anthropometrique);
         setUsersList(data.consultants);
       })
       .catch((error) => {
@@ -99,7 +99,7 @@ export default function MoreDetails({ id }) {
       });
   }, []);
 
-  console.log('consultants: ', consultants);
+  // console.log('consultants: ', consultants);
   // const useStyles = makeStyles(() => ({
   //   root: {
   //     position: 'absolute',
@@ -132,7 +132,7 @@ export default function MoreDetails({ id }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = consultants.map((n) => n.nom_user); // ici*******************
+      const newSelecteds = usersList.map((n) => n.user.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -172,7 +172,8 @@ export default function MoreDetails({ id }) {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
-  const filteredUsers = applySortFilter(consultants, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
+  console.log('filteredUsers', filteredUsers);
 
   const isUserNotFound = filteredUsers.length === 0;
   // const { from } = location.state || { from: { pathname: '/dashboard/app' } };
@@ -206,8 +207,9 @@ export default function MoreDetails({ id }) {
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((user) => {
-                      const { id_user, nom_user, prenom_user } = user;
+                    .map((consultant, i) => {
+                      const { id_user, nom_user, prenom_user } = consultant.user;
+
                       const isItemSelected = selected.indexOf(nom_user) !== -1;
 
                       return (
@@ -236,11 +238,13 @@ export default function MoreDetails({ id }) {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          {/* <TableCell>{prenom_user}</TableCell> */}
-                          {/* <TableCell> {email}</TableCell>
-                          <TableCell>{statut}</TableCell>
-                          <TableCell>{sexe_user}</TableCell>
-                          <TableCell>
+                          <TableCell>{moment(anthro[i].createdAt).format('DD/MM/YYYY')}</TableCell>
+                          <TableCell> {anthro[i].peri_brachial}</TableCell>
+                          <TableCell>{anthro[i].peri_cranien}</TableCell>
+                          <TableCell>{anthro[i].poids}</TableCell>
+                          <TableCell>{anthro[i].taille}</TableCell>
+                          <TableCell>{anthro[i].type_malnutrition}</TableCell>
+                          {/* <TableCell>
                             <PersonnelMoreMenu value={id_user} />
                           </TableCell>
                           <TableCell>
