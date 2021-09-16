@@ -130,7 +130,6 @@ export default function Patient() {
         // setUsersList(data);
       })
       .catch((error) => {
-        console.log(rowsPerPage);
         console.error('MyError:', error);
       });
   }, []);
@@ -169,17 +168,18 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = (event, newPage) => {
-    console.log(newPage);
+  const handleChangePage = () => {
+    // console.log(newPage);
     // setPage(newPage);
-    console.log('50');
+    setRowsPerPage((prevState) => prevState + 50);
+    console.log(rowsPerPage);
   };
 
-  // const handleChangeRowsPerPage = () => {
-  //   // setRowsPerPage(parseInt(event.target.value, 10));
-  //   console.log('+50');
-  //   // setPage(0);
-  // };
+  const handleChangeRowsPerPage = () => {
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    console.log('+50');
+    // setPage(0);
+  };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -333,12 +333,15 @@ export default function Patient() {
             <TablePagination
               rowsPerPageOptions={50}
               // component="div"
-              count={5}
+              showFirstButton
+              count={rowsPerPage}
               rowsPerPage={1}
-              page={1}
+              page={0}
               onPageChange={handleChangePage}
               // onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            >
+              <h1>hello</h1>
+            </TablePagination>
           </Card>
         </Container>
       )}
