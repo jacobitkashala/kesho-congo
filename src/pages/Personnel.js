@@ -18,12 +18,21 @@ import {
   Container,
   Typography,
   TableContainer,
+  // Radio,
+  // FormLabel,
+  // FormControlLabel,
   TablePagination
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // material
 // components
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import { LoadingButton } from '@material-ui/lab';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -242,7 +251,7 @@ export default function Personnel() {
                           <TableRow
                             hover
                             key={id_user}
-                            // tabIndex={-1}
+                            sx={{ cursor: 'pointer' }}
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}

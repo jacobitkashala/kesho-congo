@@ -11,6 +11,7 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
+import SidebarSpecifique from './SidebarSpecifique';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -38,7 +39,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
+  const sidebar = localStorage.getItem('isAdmin') ? sidebarConfig : SidebarSpecifique;
   const renderContent = (
     <Scrollbar
       sx={{
@@ -58,23 +59,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         Kesho Congo
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        {/* <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
-            <Avatar src={account.photoURL} alt={account.Name} />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link> */}
-      </Box>
-
-      <NavSection navConfig={sidebarConfig} />
+      <Box sx={{ mb: 5, mx: 2.5 }} />
+      <NavSection navConfig={sidebar} />
 
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
