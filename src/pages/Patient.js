@@ -170,11 +170,13 @@ export default function Patient() {
     setSelected(newSelected);
   };
   const handleChangePage = (event, newPage) => {
+    console.log(newPage);
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = () => {
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    console.log('+50');
     setPage(0);
   };
 
@@ -236,80 +238,78 @@ export default function Patient() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {filteredPatient
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row) => {
-                        const {
-                          id_patient,
-                          nom_patient,
-                          type_malnutrition,
-                          date_naissance,
-                          sexe_patient,
-                          date_Consultation,
-                          nom_consultant,
-                          postnom_consultant,
-                          prenom_patient
-                        } = row;
-                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                    {filteredPatient.map((row) => {
+                      const {
+                        id_patient,
+                        nom_patient,
+                        type_malnutrition,
+                        date_naissance,
+                        sexe_patient,
+                        date_Consultation,
+                        nom_consultant,
+                        postnom_consultant,
+                        prenom_patient
+                      } = row;
+                      const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id_patient}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_patient)}
+                      return (
+                        <TableRow
+                          hover
+                          key={id_patient}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, nom_patient)}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar
+                                alt={nom_patient}
+                                src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
                               />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_patient}
-                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
-                                />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_patient}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="center">{prenom_patient}</TableCell>
-                            <TableCell align="center">{date_naissance}</TableCell>
-                            <TableCell align="center">{sexe_patient}</TableCell>
-                            <TableCell align="center">{date_Consultation}</TableCell>
-                            <TableCell align="center">
-                              <Label
-                                variant="outlined"
-                                sx={{
-                                  color: `${
-                                    type_malnutrition === 'MAC'
-                                      ? 'red'
-                                      : type_malnutrition === 'MAM'
-                                      ? 'green'
-                                      : 'orange'
-                                  }`
-                                }}
-                                // variant="ghost"
-                                // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
-                              >
-                                {type_malnutrition}
-                              </Label>
-                            </TableCell>
-                            <TableCell align="left">
-                              {nom_consultant} {postnom_consultant}
-                            </TableCell>
+                              <Typography variant="subtitle2" noWrap>
+                                {nom_patient}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="center">{prenom_patient}</TableCell>
+                          <TableCell align="center">{date_naissance}</TableCell>
+                          <TableCell align="center">{sexe_patient}</TableCell>
+                          <TableCell align="center">{date_Consultation}</TableCell>
+                          <TableCell align="center">
+                            <Label
+                              variant="outlined"
+                              sx={{
+                                color: `${
+                                  type_malnutrition === 'MAC'
+                                    ? 'red'
+                                    : type_malnutrition === 'MAM'
+                                    ? 'green'
+                                    : 'orange'
+                                }`
+                              }}
+                              // variant="ghost"
+                              // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
+                            >
+                              {type_malnutrition}
+                            </Label>
+                          </TableCell>
+                          <TableCell align="left">
+                            {nom_consultant} {postnom_consultant}
+                          </TableCell>
 
-                            <TableCell align="right">
-                              <PatientMoreMenu id_patient={id_patient} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                          <TableCell align="right">
+                            <PatientMoreMenu id_patient={id_patient} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
@@ -330,11 +330,11 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              // rowsPerPageOptions={[50, 100, 150]}
+              rowsPerPageOptions={50}
               // component="div"
-              // count={patientsList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
+              count={5}
+              rowsPerPage={1}
+              page={1}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
