@@ -5,6 +5,8 @@ import Axios from 'axios';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import { Card, CardHeader } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -31,10 +33,21 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
   }
 }));
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
 export default function AppCurrentVisits() {
-  const [macData, setMacData] = useState([]);
-  const [mamData, setMamData] = useState([]);
-  const [masData, setMasData] = useState([]);
+  const classes = useStyles();
+  const [macData, setMacData] = useState(0);
+  const [mamData, setMamData] = useState(0);
+  const [masData, setMasData] = useState(0);
+  const [loader, setLoader] = useState(true);
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting/annuel`, {
@@ -43,24 +56,35 @@ export default function AppCurrentVisits() {
           Authorization: `bearer ${localStorage.getItem('token')}`
         }
       });
-      const data = await response.data;
-      setMasData(await data.rapport_mas_year);
-      setMamData(await data.rapport_mam_year);
-      setMacData(await data.rapport_mac_year);
-      console.log('mes données:', data);
+      const output = await response.data;
+      // console.log('mes données 2:', output);
+      setMasData(
+        await output.rapport_mas_year.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
+      );
+      setMamData(
+        await output.rapport_mam_year.map((i) => i[0].moderee_nombre).reduce((a, b) => a + b)
+      );
+      setMacData(
+        await output.rapport_mac_year.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b)
+      );
+      setLoader(false);
 
       // setLoader(false);
     } catch (err) {
       console.log(err);
+      setLoader(false);
     }
   }, []);
 
-  const CHART_DATA = [
-    macData.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b),
-    mamData.map((i) => i[0].moderee_nombre).reduce((a, b) => a + b),
-    masData.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
-  ];
+  console.log('mes données 2:', macData);
+
+  const CHART_DATA = [macData, mamData, masData];
   const theme = useTheme();
+  // const CHART_DATA = [
+  //   macData.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b),
+  //   mamData.map((i) => i[0].moderee_nombre).reduce((a, b) => a + b),
+  //   masData.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
+  // ];
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
@@ -90,9 +114,15 @@ export default function AppCurrentVisits() {
   return (
     <Card>
       <CardHeader title="Ratio Annuel Malnutrition" />
-      <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
-      </ChartWrapperStyle>
+      {loader ? (
+        <div className={classes.root}>
+          <LinearProgress />
+        </div>
+      ) : (
+        <ChartWrapperStyle dir="ltr">
+          <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+        </ChartWrapperStyle>
+      )}
     </Card>
   );
 }
