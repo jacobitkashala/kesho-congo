@@ -92,7 +92,7 @@ export default function PersonnelListToolbar({ value }) {
   };
   // changer le status d'une personne
   const handleClickChangeStatus = () => {
-    // setLoader(true);
+    setLoader(true);
     Axios.request({
       method: 'PUT',
       url: `https://kesho-congo-api.herokuapp.com/user/status?id_user=${value}`,
