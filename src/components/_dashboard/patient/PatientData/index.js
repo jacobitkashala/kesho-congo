@@ -80,24 +80,24 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.allaitement_6mois = indentity.allaitementExclisifSixMois;
   newPatient.cocktail_atb = CauseMalnutrition.cocktail_atb;
   newPatient.duree_prise_atb = '23'; // CauseMalnutrition.cocktail_atb_preci;
-  newPatient.peri_cranien = indentity.peri_cranien;
-  newPatient.peri_brachial = indentity.peri_brachail;
+  newPatient.peri_cranien = indentity.perimetreCranien;
+  newPatient.peri_brachial = indentity.perimetreBrachail;
   newPatient.poids = indentity.poidsActuel;
   newPatient.taille = indentity.taille;
   newPatient.type_malnutrition = indentity.typeMalnutrition;
   newPatient.date_examen = '2020-01-23';
-  newPatient.nom_patient = indentity.nom_patient;
+  newPatient.nom_patient = indentity.NomPatient;
   newPatient.postnom_patient = indentity.postnom_patient;
-  newPatient.prenom_patient = indentity.prenom_patient;
-  newPatient.sexe_patient = indentity.sexe_patient;
-  newPatient.adresse_patient = indentity.adresse_patient;
+  newPatient.prenom_patient = indentity.fistNamePatient;
+  newPatient.sexe_patient = indentity.sexePatient;
+  newPatient.adresse_patient = indentity.adressePatient;
   newPatient.date_naissance_patient = indentity.dataNaissancePatient;
   newPatient.provenance_patient =
     indentity.provenance_patient === 'Autres'
       ? indentity.ExplicationProvenance
       : indentity.provenance_patient;
   newPatient.mode_arrive =
-    indentity.mode_arrive === 'Autres' ? indentity.ExplicationAutre : indentity.mode_arrive;
+    indentity.modeArrive === 'Autres' ? indentity.ExplicationAutre : indentity.modeArriver;
   newPatient.poids_naissance = indentity.poids_naissance;
   newPatient.fin_allaitement = '4';
   newPatient.mois_fin_allaitement = '10';
@@ -184,10 +184,10 @@ export default function PatientData({ DataPatient, PrevStep }) {
                 width: '160px',
                 height: '180px'
               }}
-              alt={indentity.prenom_patient}
-              src={`/static/mock-images/avatars/avatar_${indentity.prenom_patient}.jpg`}
+              alt={indentity.fistNamePatient}
+              src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
             />
-            <Typography>{`${indentity.prenom_patient}  ${indentity.nom_patient}`}</Typography>
+            <Typography>{`${indentity.fistNamePatient}  ${indentity.NomPatient}`}</Typography>
             <Label
               variant="filled"
               color={`${
@@ -201,16 +201,18 @@ export default function PatientData({ DataPatient, PrevStep }) {
               {indentity.typeMalnutrition}
             </Label>
             <InputLabel>
-              Sex : <span style={{ color: 'black' }}>{indentity.sexe_patient}</span>
+              Sex : <span style={{ color: 'black' }}>{indentity.sexePatient}</span>
             </InputLabel>
             <InputLabel>
               Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
             </InputLabel>
             <InputLabel>
-              Périmètre brachial :<span style={{ color: 'black' }}> {indentity.peri_brachail}</span>
+              Périmètre brachial :
+              <span style={{ color: 'black' }}> {indentity.perimetreBrachail} Cm</span>
             </InputLabel>
             <InputLabel>
-              Périmètre Cranien :<span style={{ color: 'black' }}> {indentity.peri_cranien}</span>
+              Périmètre Cranien :
+              <span style={{ color: 'black' }}> {indentity.perimetreCranien} Cm</span>
             </InputLabel>
             <InputLabel>
               Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}Kg</span>
@@ -219,10 +221,10 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Poids naissance :<span style={{ color: 'black' }}> {indentity.poids_naissance}g</span>
             </InputLabel>
             <InputLabel>
-              Provenance :<span style={{ color: 'black' }}> {indentity.provenance_patient}</span>
+              Provenance :<span style={{ color: 'black' }}> {indentity.provenancePatient}</span>
             </InputLabel>
             <InputLabel>
-              Adresse :<span style={{ color: 'black' }}> {indentity.adresse_patient}</span>
+              Adresse :<span style={{ color: 'black' }}> {indentity.adressePatient}</span>
             </InputLabel>
             <InputLabel>
               Date de naissance :
@@ -230,7 +232,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Mode arriver:
-              <span style={{ color: 'black' }}> {indentity.mode_arrive}</span>
+              <span style={{ color: 'black' }}> {indentity.modeArriver}</span>
             </InputLabel>
           </Card>
         </Grid>
