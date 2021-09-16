@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
@@ -114,7 +114,7 @@ export default function Patient() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    console.log(rowsPerPage);
+    // console.log(rowsPerPage);
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
@@ -171,20 +171,21 @@ export default function Patient() {
   };
   const handleChangePage = (event, newPage) => {
     console.log(newPage);
-    setPage(newPage);
+    // setPage(newPage);
+    console.log('50');
   };
 
-  const handleChangeRowsPerPage = () => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    console.log('+50');
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = () => {
+  //   // setRowsPerPage(parseInt(event.target.value, 10));
+  //   console.log('+50');
+  //   // setPage(0);
+  // };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
 
   const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
 
@@ -310,11 +311,11 @@ export default function Patient() {
                         </TableRow>
                       );
                     })}
-                    {emptyRows > 0 && (
+                    {/* {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
-                    )}
+                    )} */}
                   </TableBody>
                   {isUserNotFound && (
                     <TableBody>
@@ -336,7 +337,7 @@ export default function Patient() {
               rowsPerPage={1}
               page={1}
               onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+              // onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Card>
         </Container>
