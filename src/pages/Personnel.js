@@ -8,7 +8,6 @@ import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-ro
 import {
   Card,
   Table,
-  RadioGroup,
   Stack,
   Avatar,
   Button,
@@ -19,21 +18,21 @@ import {
   Container,
   Typography,
   TableContainer,
-  Radio,
-  FormLabel,
-  FormControlLabel,
+  // Radio,
+  // FormLabel,
+  // FormControlLabel,
   TablePagination
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // material
 // components
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { LoadingButton } from '@material-ui/lab';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import { LoadingButton } from '@material-ui/lab';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -88,7 +87,6 @@ function applySortFilter(array, comparator, query) {
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
-  const [open, setOpen] = useState(false);
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 
@@ -143,15 +141,6 @@ export default function Personnel() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
-  const handleClickUpdateUser = (idUser) => {
-    console.log(idUser);
-    setOpen((prevState) => !prevState);
-    console.log(open);
-  };
   const handleRequestSort = (event, property) => {
     // console.log(property);
     const isAsc = orderBy === property && order === 'asc';
@@ -266,9 +255,6 @@ export default function Personnel() {
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
-                            onClick={() => {
-                              handleClickUpdateUser(id_user);
-                            }}
                           >
                             <TableCell padding="checkbox">
                               <Checkbox

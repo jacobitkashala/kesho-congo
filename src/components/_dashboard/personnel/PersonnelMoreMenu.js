@@ -2,12 +2,13 @@ import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
+// import { FiEdit } from 'react-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 // import { Link as RouterLink } from 'react-router-dom';
 // material  Typography
 // -------------------MODAL
 import Dialog from '@material-ui/core/Dialog';
-import deleteFill from '@iconify/icons-eva/person-delete-fill';
+// import deleteFill from '@iconify/icons-eva/person-delete-fill';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -31,6 +32,7 @@ import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 
 // ----------------------------------------------------------------------
 import Delete from '@material-ui/icons/Delete';
+import { Edit } from '@material-ui/icons';
 
 import { fakeAuth } from '../../../fakeAuth';
 // ----------------------------------------------------------------------
@@ -42,6 +44,7 @@ export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
+  const [statutPersonnel, setStatutPersonnel] = useState('');
   const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
@@ -81,8 +84,39 @@ export default function PersonnelListToolbar({ value }) {
   const handleCloseModaleChangeStatus = () => {
     setopenModalChangeStatus(false);
   };
+  const handleSelectChangeStatus = (event) => {
+    const { value } = event.target;
+    console.log(value);
+    const status = value && value;
+    setStatutPersonnel(status);
+  };
+  // changer le status d'une personne
   const handleClickChangeStatus = () => {
-    setopenModalChangeStatus(true);
+    // setLoader(true);
+    Axios.request({
+      method: 'PUT',
+      url: `https://kesho-congo-api.herokuapp.com/user/status?id_user=${value}`,
+      data: {
+        statut: statutPersonnel
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then((response) => {
+        const message = response.data;
+        console.log('Yves', message);
+        fakeAuth.login(() => {
+          navigate(from);
+          navigate('/dashboard/personnel', { replace: true });
+          setopenModalChangeStatus(false);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // setopenModalChangeStatus(true);
   };
 
   return (
@@ -103,6 +137,7 @@ export default function PersonnelListToolbar({ value }) {
         <MenuItem>
           <ListItemIcon sx={{ color: 'red' }}>
             <Delete width={35} height={35} onClick={handleClickOpen} />
+            <Typography>Delete</Typography>
             <Dialog
               open={open}
               onClose={handleClose}
@@ -147,8 +182,8 @@ export default function PersonnelListToolbar({ value }) {
                 paddingLeft: '8px'
               }}
             >
-              <Icon icon={deleteFill} width={40} height={25} />
-              <Typography variant="h6">statut</Typography>
+              <Edit />
+              <Typography>statut</Typography>
             </div>
           </ListItemIcon>
           <Dialog
@@ -157,10 +192,10 @@ export default function PersonnelListToolbar({ value }) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">Changer le status de {}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Changer le status de nom</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                <RadioGroup>
+                <RadioGroup onChange={handleSelectChangeStatus}>
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{ display: 'flex', alignItems: 'center' }}
@@ -185,7 +220,7 @@ export default function PersonnelListToolbar({ value }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleCloseModaleChangeStatus} color="primary">
                 Annuler
               </Button>
               <LoadingButton
