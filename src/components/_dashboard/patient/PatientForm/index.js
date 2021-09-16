@@ -382,8 +382,8 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
-                  label="périmètre crânien "
-                  {...getFieldProps('perimetreCranien (Cm)')}
+                  label="périmètre crânien (Cm)"
+                  {...getFieldProps('perimetreCranien')}
                   // defaultValue={DataPatient.perimetreCranien}
                   helperText={touched.perimetreCranien && errors.perimetreCranien}
                   error={Boolean(touched.perimetreCranien && errors.perimetreCranien)}

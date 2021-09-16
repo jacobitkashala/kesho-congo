@@ -88,13 +88,34 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+const useStyles = makeStyles(() => ({
+  root: {
+    position: 'absolute',
+    left: '60%',
+    top: '45%',
+    zIndex: '100'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    }
+  }
+}));
 
 export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState('nom_patient');
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all`, {
+    console.log(rowsPerPage);
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -109,40 +130,13 @@ export default function Patient() {
         // setUsersList(data);
       })
       .catch((error) => {
+        console.log(rowsPerPage);
         console.error('MyError:', error);
       });
   }, []);
-
-  const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles(() => ({
-    root: {
-      position: 'absolute',
-      left: '60%',
-      top: '45%',
-      zIndex: '100'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
   const classes = useStyles();
 
   // ----------------------------------------------------------------------
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('nom_patient');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(50);
-  // const dispatch = useDispatch();
-  // const { patients } = useSelector((state) => state);
-  // -----------------const patientList = patients;
-  // console.log(patients);
-  // useEffect(() => {
-  //   dispatch(getPatientsAsync());
-  // }, [dispatch]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -291,13 +285,6 @@ export default function Patient() {
                             <TableCell align="center">
                               <Label
                                 variant="outlined"
-                                // color={`${
-                                //   type_malnutrition === 'MAC'
-                                //     ? 'error'
-                                //     : type_malnutrition === 'MAM'
-                                //     ? 'orange'
-                                //     : 'primary'
-                                // }`}
                                 sx={{
                                   color: `${
                                     type_malnutrition === 'MAC'
@@ -343,9 +330,9 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              rowsPerPageOptions={[50, 100, 150]}
-              component="div"
-              count={patientsList.length}
+              // rowsPerPageOptions={[50, 100, 150]}
+              // component="div"
+              // count={patientsList.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
