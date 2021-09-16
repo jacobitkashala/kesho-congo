@@ -37,23 +37,17 @@ export default function PatientData({ DataPatient, PrevStep }) {
   console.log(DataPatient);
 
   const newPatient = {};
-  // FamalyData.Tribut: "Autre ethnie du sud-kivu"
-
-  // FamalyData.contraceptionNaturel: ""
-  // : ""
-  // dateNaissanceChefMenage
-  // FamalyData.nbrEnfant: "23"
-  // FamalyData.pereMariage: "Anormal"
 
   newPatient.atcd_mas = CauseMalnutrition.atcdMas;
-  newPatient.nbre_chute = CauseMalnutrition.NombreChute;
+  newPatient.nbre_chute = CauseMalnutrition.nombreChute;
   newPatient.mas_fratrie = CauseMalnutrition.MasFratrie;
   newPatient.terme_grossesse = CauseMalnutrition.termeGrossesse;
-  newPatient.sejour_neonat = CauseMalnutrition.SejourNeo;
-  newPatient.eig = CauseMalnutrition.Eig;
+  newPatient.sejour_neonat = CauseMalnutrition.sejourNeo;
+  newPatient.eig = CauseMalnutrition.eig;
   newPatient.lieu_accouchement = CauseMalnutrition.lieuAccouchement;
   newPatient.asphyxie_perinatal = CauseMalnutrition.asphyxiePrerinatale;
-  newPatient.cause_dpm = CauseMalnutrition.DpmAnormalPrecision;
+  newPatient.cause_dpm =
+    CauseMalnutrition.dpmAnormalPrecision === '' ? 'rien' : CauseMalnutrition.dpmAnormalPrecision;
   newPatient.dpm = CauseMalnutrition.dpm;
   newPatient.calendrier_vaccinal =
     CauseMalnutrition.CalendrierVaccin !== 'Calendrier vaccinal a jour'
@@ -62,9 +56,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.vaccin_non_recu = 'rougeole';
   newPatient.produit_plante = CauseMalnutrition.produitPlante;
   newPatient.duree_produit_plante = '24'; // CauseMalnutrition.dureeProduitPlante;
-  newPatient.rang_fratrie = CauseMalnutrition.RangFratrie;
-  newPatient.taille_fratrie = CauseMalnutrition.TailleFratrie;
-  newPatient.atcd_rougeole_fratrie = CauseMalnutrition.AtcdRougeole;
+  newPatient.rang_fratrie = CauseMalnutrition.rangFratrie;
+  newPatient.taille_fratrie = CauseMalnutrition.tailleFratrie;
+  newPatient.atcd_rougeole_fratrie = CauseMalnutrition.atcdRougeole;
   newPatient.vaccination_rougeole = CauseMalnutrition.VaccinatioRougeole;
   newPatient.terrain_vih = CauseMalnutrition.TerrainVih;
   newPatient.tbc = CauseMalnutrition.Tdc;
@@ -181,8 +175,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <Avatar
               variant="square"
               sx={{
-                width: '160px',
-                height: '180px'
+                width: '100px',
+                height: '120px'
               }}
               alt={indentity.fistNamePatient}
               src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
@@ -287,7 +281,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               ATC Rougeole:
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.AtcdRougeole ? 'Oui' : 'Nom'
+                CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'
               }`}</span>
             </InputLabel>
             <InputLabel>
@@ -306,13 +300,17 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Eig:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.Eig}</span>
+              <span style={{ color: 'black' }}> {CauseMalnutrition.eig}</span>
             </InputLabel>
             <InputLabel>
               MasFratrie:
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
               }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Rang fratrie:
+              <span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
             </InputLabel>
             <InputLabel>
               Réligion:
@@ -337,7 +335,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Taille Fratrie:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.TailleFratrie}</span>
+              <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
             </InputLabel>
             <InputLabel>
               Tbc Chez Parent :
@@ -407,6 +405,15 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
             </InputLabel>
             <InputLabel>
+              Dpm Anormal par ce que:
+              <span style={{ color: 'black' }}>
+                {' '}
+                {CauseMalnutrition.dpmAnormalPrecision === ''
+                  ? 'rien'
+                  : CauseMalnutrition.dpmAnormalPrecision}{' '}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Lieu d'accouchement :
               <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
             </InputLabel>
@@ -427,6 +434,13 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}>
                 {CauseMalnutrition.diagnostiqueHospitalisation}
               </span>
+            </InputLabel>
+            <InputLabel>
+              Sejour neo :<span style={{ color: 'black' }}>{CauseMalnutrition.sejourNeo}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
             </InputLabel>
           </Card>
         </Grid>
