@@ -193,11 +193,11 @@ export default function Patient() {
     console.log(rowsPerPage);
   };
 
-  const handleChangeRowsPerPage = () => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    console.log('+50');
-    // setPage(0);
-  };
+  // const handleChangeRowsPerPage = () => {
+  //   // setRowsPerPage(parseInt(event.target.value, 10));
+  //   console.log('+50');
+  //   // setPage(0);
+  // };
 
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
