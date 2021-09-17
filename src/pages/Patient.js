@@ -42,9 +42,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead } from '../components/_dashboard/personnel';
+import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
-// import { PatientListToolbar } from '../components/_dashboard/patient';
+import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
@@ -115,7 +115,7 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1, 0, 3)
 }));
 
-const SearchStyle = styled(OutlinedInput)(() => ({
+const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   width: 240
 }));
 
@@ -130,10 +130,9 @@ export default function Patient() {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
-    console.log(rowsPerPage);
+    // console.log(rowsPerPage);
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
@@ -145,13 +144,14 @@ export default function Patient() {
       .then((data) => {
         setPatientsList(data.Patients);
         setLoader(false);
-        // console.log('myData', data.Patients);
+        console.log('myData', data.Patients);
         // setUsersList(data);
       })
       .catch((error) => {
         console.error('MyError:', error);
       });
   }, []);
+  const classes = useStyles();
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -239,7 +239,7 @@ export default function Patient() {
       }
     }
   });
-  const { handleSubmit, values, setFieldValue } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
   const handleFilterByName = (event) => {
     setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);
@@ -289,7 +289,7 @@ export default function Patient() {
             >
               {selected.length > 0 ? (
                 <Typography component="div" variant="subtitle1">
-                  {selected.length} selected
+                  {selected.length} selectionés
                 </Typography>
               ) : (
                 <FormikProvider value={formik}>
@@ -313,20 +313,6 @@ export default function Patient() {
                     />
                   </Form>
                 </FormikProvider>
-              )}
-
-              {selected.length > 0 ? (
-                <Tooltip title="Delete">
-                  <IconButton>
-                    <Icon icon={trash2Fill} />
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Filter list">
-                  <IconButton>
-                    <Icon icon={roundFilterList} />
-                  </IconButton>
-                </Tooltip>
               )}
             </RootStyle>
             <Scrollbar>
@@ -434,10 +420,10 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              // rowsPerPageOptions={patientsList.length}
-              // // component="div"
-              // showFirstButton
-              count={patientsList.length}
+              rowsPerPageOptions={50}
+              // component="div"
+              showFirstButton
+              count={rowsPerPage}
               rowsPerPage={1}
               page={0}
               onPageChange={handleChangePage}

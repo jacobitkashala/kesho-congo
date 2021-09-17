@@ -62,7 +62,7 @@ export default function PersonnelListToolbar({ numSelected, filterName, onFilter
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {numSelected} selectionés
         </Typography>
       ) : (
         <>
@@ -82,7 +82,7 @@ export default function PersonnelListToolbar({ numSelected, filterName, onFilter
         </>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <Icon icon={trash2Fill} />
@@ -94,7 +94,7 @@ export default function PersonnelListToolbar({ numSelected, filterName, onFilter
             <Icon icon={roundFilterList} />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </RootStyle>
   );
 }
