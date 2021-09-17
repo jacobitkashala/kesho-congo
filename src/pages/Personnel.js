@@ -41,7 +41,7 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
-import { PatientListToolbar } from '../components/_dashboard/patient';
+// import { PatientListToolbar } from '../components/_dashboard/patient';
 import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
@@ -84,10 +84,29 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    zIndex: 10000,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    position: 'absolute',
+    margin: '0 auto'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    }
+  }
+}));
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
+  const classes = useStyles();
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 
@@ -117,21 +136,6 @@ export default function Personnel() {
   }, []);
 
   const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles(() => ({
-    root: {
-      position: 'absolute',
-      left: '60%',
-      top: '45%',
-      zIndex: '100'
-      // transform: 'translate(-50%)'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
-  const classes = useStyles();
 
   // ----------------------------------------------------------------------
 
