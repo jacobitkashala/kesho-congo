@@ -31,6 +31,8 @@ import { LoadingButton } from '@material-ui/lab';
 import { Icon } from '@iconify/react';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { fakeAuth } from '../../../fakeAuth';
 
 const Div = styled('div')(() => ({
@@ -53,7 +55,7 @@ const Border = styled('div')(() => ({
   transform: 'translate(-50%,0)'
 }));
 
-const Box = styled('div')(() => ({
+const Boxy = styled('div')(() => ({
   width: '70%',
   textAlign: 'center',
   position: 'relative',
@@ -67,9 +69,7 @@ export default function PersonnelAddFrom() {
   const [errorWord, setErrorWord] = useState(false);
   const useStyles = makeStyles(() => ({
     root: {
-      position: 'absolute',
-      left: '60%',
-      top: '40%'
+      position: 'relative'
       // transform: 'translate(-50%)'
     },
     labelRoot: {
@@ -202,16 +202,18 @@ export default function PersonnelAddFrom() {
     <>
       {loader ? (
         <div className={classes.root}>
-          <CircularProgress />
+          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
+            <LinearProgress />
+          </Box>
         </div>
       ) : (
         <Border>
           <Div>
             <FormikProvider value={formik}>
               <Form onSubmit={handleSubmit}>
-                <Box sx={{ pb: 5 }}>
+                <Boxy sx={{ pb: 5 }}>
                   <Typography variant="h4">Mes Informations</Typography>
-                </Box>
+                </Boxy>
                 <Stack spacing={3}>
                   <TextField
                     fullWidth

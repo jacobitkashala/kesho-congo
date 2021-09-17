@@ -25,6 +25,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 // material
 // components
 // import Dialog from '@material-ui/core/Dialog';
@@ -86,16 +88,7 @@ function applySortFilter(array, comparator, query) {
 }
 const useStyles = makeStyles(() => ({
   root: {
-    display: 'flex',
-    zIndex: 10000,
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    position: 'absolute',
-    margin: '0 auto'
+    position: 'relative'
   },
   labelRoot: {
     '&&': {
@@ -209,7 +202,9 @@ export default function Personnel() {
     <Page>
       {loader ? (
         <div className={classes.root}>
-          <CircularProgress />
+          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
+            <LinearProgress />
+          </Box>
         </div>
       ) : (
         <Container>

@@ -36,6 +36,8 @@ import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
+import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
@@ -91,10 +93,10 @@ function applySortFilter(array, comparator, query) {
 }
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'absolute',
-    left: '60%',
-    top: '45%',
-    zIndex: '100'
+    position: 'relative'
+    // left: '50%',
+    // top: '60%'
+    // zIndex: '100'
   },
   labelRoot: {
     '&&': {
@@ -260,7 +262,9 @@ export default function Patient() {
     <Page>
       {loader ? (
         <div className={classes.root}>
-          <CircularProgress />
+          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
+            <LinearProgress />
+          </Box>
         </div>
       ) : (
         <Container>
@@ -268,6 +272,10 @@ export default function Patient() {
             <Typography variant="h4" gutterBottom>
               Patients
             </Typography>
+            {/* <div className={classes.root}>
+            <CircularProgress />
+          </div> */}
+
             <Button
               variant="contained"
               component={RouterLink}
