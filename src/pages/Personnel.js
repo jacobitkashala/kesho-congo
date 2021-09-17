@@ -41,6 +41,7 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
+import { PatientListToolbar } from '../components/_dashboard/patient';
 import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [

@@ -1,12 +1,16 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* no-nested-ternary */
-
+import * as Yup from 'yup';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
+import trash2Fill from '@iconify/icons-eva/trash-2-fill';
+import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import Axios from 'axios';
+import { useFormik, Form, FormikProvider } from 'formik';
 // import { useSelector, useDispatch } from 'react-redux';
 
 // -------------------MODAL
@@ -32,10 +36,17 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  OutlinedInput,
+  Toolbar,
+  Tooltip,
+  IconButton
 } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { LoadingButton } from '@material-ui/lab';
+import SearchIcon from '@material-ui/icons/Search';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
@@ -44,6 +55,7 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
+import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
@@ -88,7 +100,7 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: 'absolute',
     left: '60%',
@@ -99,7 +111,31 @@ const useStyles = makeStyles(() => ({
     '&&': {
       color: 'red'
     }
+  },
+  button: {
+    margin: theme.spacing(1),
+    textAlign: 'center',
+    position: 'absolute',
+    left: '30%'
   }
+}));
+const RootStyle = styled(Toolbar)(({ theme }) => ({
+  height: 96,
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: theme.spacing(0, 1, 0, 3)
+}));
+
+// const useStyles = makeStyles((theme) => ({
+//   button: {
+//     margin: theme.spacing(1),
+//     textAlign: 'center',
+//     position: 'absolute',
+//     left: '30%'
+//   }
+// }));
+const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+  width: 240
 }));
 
 export default function Patient() {
@@ -180,7 +216,71 @@ export default function Patient() {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+    // console.log(filterName);
   };
+  // -------------------FOrmik----------------------------
+  const SearchSchema = Yup.object().shape({
+    searchValue: Yup.string().required('Entrez un nom')
+  });
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      searchValue: ''
+    },
+    validationSchema: SearchSchema,
+    onSubmit: async ({ startDate, endDate }) => {
+      // setButtonLoader(true);
+      // console.log('les dates', startDate + endDate);
+      // try {
+      //   const response = await Axios.post(
+      //     'https://kesho-congo-api.herokuapp.com/reporting',
+      //     {
+      //       starting_date: startDate,
+      //       ending_date: endDate
+      //     },
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         Authorization: `bearer ${localStorage.getItem('token')}`
+      //       }
+      //     }
+      //   );
+      //   const data = await response.data;
+      //   setReports(await data);
+      //   setButtonLoader(false);
+      // } catch (err) {
+      //   console.log(err);
+      //   setButtonLoader(false);
+      // }
+    }
+  });
+  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  // const handleSubmit = async (event) => {
+  //   console.log(filterName);
+  //   event.preventDefault();
+  //   // console.log(filterName);
+  //   try {
+  //     const response = await Axios.post(
+  //       'https://kesho-congo-api.herokuapp.com/patient/search',
+  //       {
+  //         nom_patient: filterName
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `bearer ${localStorage.getItem('token')}`
+  //         }
+  //       }
+  //     );
+  //     const output = await response.data;
+  //     console.log('Output', output);
+  //     // setReports(await data);
+  //     // setButtonLoader(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //     // setButtonLoader(false);
+  //   }
+  // };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
 
@@ -217,12 +317,60 @@ export default function Patient() {
           </Stack>
 
           <Card>
-            <PersonnelListToolbar
+            {/* <PatientListToolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
-            />
+            /> */}
 
+            <RootStyle
+              sx={{
+                ...(selected.length > 0 && {
+                  color: 'primary.main',
+                  bgcolor: 'primary.lighter'
+                })
+              }}
+            >
+              {selected.length > 0 ? (
+                <Typography component="div" variant="subtitle1">
+                  {selected.length} selected
+                </Typography>
+              ) : (
+                <Form onSubmit={handleSubmit}>
+                  <LoadingButton
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    loading={loader}
+                    className={classes.button}
+                    endIcon={
+                      <Icon>
+                        <SearchIcon />
+                      </Icon>
+                    }
+                  />
+                  <SearchStyle
+                    value={filterName}
+                    onChange={handleFilterByName}
+                    placeholder="Tapez un nom"
+                  />
+                </Form>
+              )}
+
+              {selected.length > 0 ? (
+                <Tooltip title="Delete">
+                  <IconButton>
+                    <Icon icon={trash2Fill} />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Filter list">
+                  <IconButton>
+                    <Icon icon={roundFilterList} />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </RootStyle>
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>

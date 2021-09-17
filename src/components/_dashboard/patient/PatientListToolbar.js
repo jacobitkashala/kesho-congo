@@ -3,6 +3,8 @@ import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
+import { makeStyles } from '@material-ui/styles';
+import { LoadingButton } from '@material-ui/lab';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
@@ -14,6 +16,8 @@ import {
   OutlinedInput,
   InputAdornment
 } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { textAlign } from '@material-ui/system';
 
 // ----------------------------------------------------------------------
 
@@ -24,28 +28,29 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1, 0, 3)
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
-  transition: theme.transitions.create(['box-shadow', 'width'], {
-    easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter
-  }),
-  '&.Mui-focused': { width: 320, boxShadow: theme.customShadows.z8 },
-  '& fieldset': {
-    borderWidth: `1px !important`,
-    borderColor: `${theme.palette.grey[500_32]} !important`
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    textAlign: 'center',
+    position: 'absolute',
+    left: '30%'
   }
+}));
+
+const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+  width: 240
 }));
 
 // ----------------------------------------------------------------------
 
-EnfantListToolbar.propTypes = {
+PersonnelListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func
 };
 
-export default function EnfantListToolbar({ numSelected, filterName, onFilterName }) {
+export default function PersonnelListToolbar({ numSelected, filterName, onFilterName, loading }) {
+  const classes = useStyles();
   return (
     <RootStyle
       sx={{
@@ -60,16 +65,21 @@ export default function EnfantListToolbar({ numSelected, filterName, onFilterNam
           {numSelected} selected
         </Typography>
       ) : (
-        <SearchStyle
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Recherchez..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          }
-        />
+        <>
+          <LoadingButton
+            variant="contained"
+            color="primary"
+            type="submit"
+            loading={loading}
+            className={classes.button}
+            endIcon={
+              <Icon>
+                <SearchIcon />
+              </Icon>
+            }
+          />
+          <SearchStyle value={filterName} onChange={onFilterName} placeholder="Tapez un nom" />
+        </>
       )}
 
       {numSelected > 0 ? (
