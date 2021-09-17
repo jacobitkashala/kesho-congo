@@ -11,17 +11,6 @@ import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
-// import { useSelector, useDispatch } from 'react-redux';
-
-// -------------------MODAL
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-
-// ----------------------------------------------------------------------
-
 // material
 import {
   Card,
@@ -126,14 +115,6 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1, 0, 3)
 }));
 
-// const useStyles = makeStyles((theme) => ({
-//   button: {
-//     margin: theme.spacing(1),
-//     textAlign: 'center',
-//     position: 'absolute',
-//     left: '30%'
-//   }
-// }));
 const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   width: 240
 }));
@@ -148,6 +129,7 @@ export default function Patient() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [loader, setLoader] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   useEffect(() => {
     // console.log(rowsPerPage);
@@ -162,7 +144,7 @@ export default function Patient() {
       .then((data) => {
         setPatientsList(data.Patients);
         setLoader(false);
-        console.log('myData', data);
+        console.log('myData', data.Patients);
         // setUsersList(data);
       })
       .catch((error) => {
@@ -217,10 +199,6 @@ export default function Patient() {
     // setPage(0);
   };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-    // console.log(filterName);
-  };
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
     searchValue: Yup.string().required('Entrez un nom')
@@ -231,61 +209,42 @@ export default function Patient() {
       searchValue: ''
     },
     validationSchema: SearchSchema,
-    onSubmit: async ({ startDate, endDate }) => {
+    onSubmit: async ({ searchValue }) => {
       // setButtonLoader(true);
-      // console.log('les dates', startDate + endDate);
-      // try {
-      //   const response = await Axios.post(
-      //     'https://kesho-congo-api.herokuapp.com/reporting',
-      //     {
-      //       starting_date: startDate,
-      //       ending_date: endDate
-      //     },
-      //     {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         Authorization: `bearer ${localStorage.getItem('token')}`
-      //       }
-      //     }
-      //   );
-      //   const data = await response.data;
-      //   setReports(await data);
-      //   setButtonLoader(false);
-      // } catch (err) {
-      //   console.log(err);
-      //   setButtonLoader(false);
-      // }
+      setLoadingButton(true);
+      console.log('la valeur recherchée', searchValue);
+      try {
+        const response = await Axios.post(
+          'https://kesho-congo-api.herokuapp.com/patient/search',
+          {
+            nom_patient: searchValue
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        const output = await response.data;
+        setLoadingButton(false);
+        setPatientsList(output);
+        console.log(output);
+        // setReports(await data);
+        // setButtonLoader(false);
+      } catch (err) {
+        console.log(err);
+        setLoadingButton(false);
+        // setButtonLoader(false);
+      }
     }
   });
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
-  // const handleSubmit = async (event) => {
-  //   console.log(filterName);
-  //   event.preventDefault();
-  //   // console.log(filterName);
-  //   try {
-  //     const response = await Axios.post(
-  //       'https://kesho-congo-api.herokuapp.com/patient/search',
-  //       {
-  //         nom_patient: filterName
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `bearer ${localStorage.getItem('token')}`
-  //         }
-  //       }
-  //     );
-  //     const output = await response.data;
-  //     console.log('Output', output);
-  //     // setReports(await data);
-  //     // setButtonLoader(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //     // setButtonLoader(false);
-  //   }
-  // };
-
-  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
+  const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
+  const handleFilterByName = (event) => {
+    setFieldValue('searchValue', event.target.value);
+    setFilterName(event.target.value);
+    console.log(filterName);
+  };
 
   const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
 
@@ -320,12 +279,6 @@ export default function Patient() {
           </Stack>
 
           <Card>
-            {/* <PatientListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            /> */}
-
             <RootStyle
               sx={{
                 ...(selected.length > 0 && {
@@ -339,25 +292,27 @@ export default function Patient() {
                   {selected.length} selected
                 </Typography>
               ) : (
-                <Form onSubmit={handleSubmit}>
-                  <LoadingButton
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    loading={loader}
-                    className={classes.button}
-                    endIcon={
-                      <Icon>
-                        <SearchIcon />
-                      </Icon>
-                    }
-                  />
-                  <SearchStyle
-                    value={filterName}
-                    onChange={handleFilterByName}
-                    placeholder="Tapez un nom"
-                  />
-                </Form>
+                <FormikProvider value={formik}>
+                  <Form onSubmit={handleSubmit}>
+                    <LoadingButton
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      loading={loadingButton}
+                      className={classes.button}
+                      endIcon={
+                        <Icon>
+                          <SearchIcon />
+                        </Icon>
+                      }
+                    />
+                    <SearchStyle
+                      value={values.searchValue}
+                      onChange={handleFilterByName}
+                      placeholder="Tapez un nom"
+                    />
+                  </Form>
+                </FormikProvider>
               )}
 
               {selected.length > 0 ? (
