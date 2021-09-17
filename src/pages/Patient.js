@@ -42,9 +42,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
+import { PersonnelListHead } from '../components/_dashboard/personnel';
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
-import { PatientListToolbar } from '../components/_dashboard/patient';
+// import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
@@ -115,7 +115,7 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1, 0, 3)
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+const SearchStyle = styled(OutlinedInput)(() => ({
   width: 240
 }));
 
@@ -130,9 +130,10 @@ export default function Patient() {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
-    // console.log(rowsPerPage);
+    console.log(rowsPerPage);
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
@@ -144,14 +145,13 @@ export default function Patient() {
       .then((data) => {
         setPatientsList(data.Patients);
         setLoader(false);
-        console.log('myData', data.Patients);
+        // console.log('myData', data.Patients);
         // setUsersList(data);
       })
       .catch((error) => {
         console.error('MyError:', error);
       });
   }, []);
-  const classes = useStyles();
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -193,11 +193,11 @@ export default function Patient() {
     console.log(rowsPerPage);
   };
 
-  const handleChangeRowsPerPage = () => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    console.log('+50');
-    // setPage(0);
-  };
+  // const handleChangeRowsPerPage = () => {
+  //   // setRowsPerPage(parseInt(event.target.value, 10));
+  //   console.log('+50');
+  //   // setPage(0);
+  // };
 
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
@@ -239,7 +239,7 @@ export default function Patient() {
       }
     }
   });
-  const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
+  const { handleSubmit, values, setFieldValue } = formik;
   const handleFilterByName = (event) => {
     setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);
@@ -434,10 +434,10 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              rowsPerPageOptions={50}
-              // component="div"
-              showFirstButton
-              count={rowsPerPage}
+              // rowsPerPageOptions={patientsList.length}
+              // // component="div"
+              // showFirstButton
+              count={patientsList.length}
               rowsPerPage={1}
               page={0}
               onPageChange={handleChangePage}
