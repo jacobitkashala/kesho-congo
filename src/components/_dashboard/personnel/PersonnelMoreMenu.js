@@ -202,7 +202,6 @@ export default function PersonnelListToolbar({ value }) {
                     spacing={1}
                   >
                     <Stack direction={{ xs: 'row', sm: 'column' }}>
-                      <FormControlLabel value="Docteur" control={<Radio />} label="Docteur" />
                       <FormControlLabel value="Medécin" control={<Radio />} label="Medécin" />
                       <FormControlLabel
                         value="Nutritionniste"
