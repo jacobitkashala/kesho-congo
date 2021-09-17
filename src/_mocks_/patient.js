@@ -45,6 +45,7 @@ const Patient = {
   poids_naissance: '4.5',
   fin_allaitement: '4',
   mois_fin_allaitement: '10',
+  // diversification
   diversification_aliment: '4',
   constitution_aliment: 'yhy',
   telephone: '2435555',

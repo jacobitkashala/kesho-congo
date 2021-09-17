@@ -141,7 +141,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
@@ -150,7 +150,7 @@ export default function Patient() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    console.log(rowsPerPage);
+    // console.log(rowsPerPage);
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
@@ -166,7 +166,6 @@ export default function Patient() {
         // setUsersList(data);
       })
       .catch((error) => {
-        console.log(rowsPerPage);
         console.error('MyError:', error);
       });
   }, []);
@@ -205,13 +204,17 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangePage = () => {
+    // console.log(newPage);
+    // setPage(newPage);
+    setRowsPerPage((prevState) => prevState + 50);
+    console.log(rowsPerPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleChangeRowsPerPage = () => {
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    console.log('+50');
+    // setPage(0);
   };
 
   const handleFilterByName = (event) => {
@@ -282,7 +285,7 @@ export default function Patient() {
   //   }
   // };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
 
   const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
 
@@ -384,85 +387,83 @@ export default function Patient() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {filteredPatient
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row) => {
-                        const {
-                          id_patient,
-                          nom_patient,
-                          type_malnutrition,
-                          date_naissance,
-                          sexe_patient,
-                          date_Consultation,
-                          nom_consultant,
-                          postnom_consultant,
-                          prenom_patient
-                        } = row;
-                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                    {filteredPatient.map((row) => {
+                      const {
+                        id_patient,
+                        nom_patient,
+                        type_malnutrition,
+                        date_naissance,
+                        sexe_patient,
+                        date_Consultation,
+                        nom_consultant,
+                        postnom_consultant,
+                        prenom_patient
+                      } = row;
+                      const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id_patient}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_patient)}
+                      return (
+                        <TableRow
+                          hover
+                          key={id_patient}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, nom_patient)}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar
+                                alt={nom_patient}
+                                src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
                               />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_patient}
-                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
-                                />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_patient}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="center">{prenom_patient}</TableCell>
-                            <TableCell align="center">{date_naissance}</TableCell>
-                            <TableCell align="center">{sexe_patient}</TableCell>
-                            <TableCell align="center">{date_Consultation}</TableCell>
-                            <TableCell align="center">
-                              <Label
-                                variant="outlined"
-                                sx={{
-                                  color: `${
-                                    type_malnutrition === 'MAC'
-                                      ? 'red'
-                                      : type_malnutrition === 'MAM'
-                                      ? 'green'
-                                      : 'orange'
-                                  }`
-                                }}
-                                // variant="ghost"
-                                // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
-                              >
-                                {type_malnutrition}
-                              </Label>
-                            </TableCell>
-                            <TableCell align="left">
-                              {nom_consultant} {postnom_consultant}
-                            </TableCell>
+                              <Typography variant="subtitle2" noWrap>
+                                {nom_patient}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="center">{prenom_patient}</TableCell>
+                          <TableCell align="center">{date_naissance}</TableCell>
+                          <TableCell align="center">{sexe_patient}</TableCell>
+                          <TableCell align="center">{date_Consultation}</TableCell>
+                          <TableCell align="center">
+                            <Label
+                              variant="outlined"
+                              sx={{
+                                color: `${
+                                  type_malnutrition === 'MAC'
+                                    ? 'red'
+                                    : type_malnutrition === 'MAM'
+                                    ? 'green'
+                                    : 'orange'
+                                }`
+                              }}
+                              // variant="ghost"
+                              // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
+                            >
+                              {type_malnutrition}
+                            </Label>
+                          </TableCell>
+                          <TableCell align="left">
+                            {nom_consultant} {postnom_consultant}
+                          </TableCell>
 
-                            <TableCell align="right">
-                              <PatientMoreMenu id_patient={id_patient} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    {emptyRows > 0 && (
+                          <TableCell align="right">
+                            <PatientMoreMenu id_patient={id_patient} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {/* {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
-                    )}
+                    )} */}
                   </TableBody>
                   {isUserNotFound && (
                     <TableBody>
@@ -478,14 +479,17 @@ export default function Patient() {
             </Scrollbar>
 
             <TablePagination
-              // rowsPerPageOptions={[50, 100, 150]}
+              rowsPerPageOptions={50}
               // component="div"
-              // count={patientsList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
+              showFirstButton
+              count={rowsPerPage}
+              rowsPerPage={1}
+              page={0}
               onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+              // onRowsPerPageChange={handleChangeRowsPerPage}
+            >
+              <h1>hello</h1>
+            </TablePagination>
           </Card>
         </Container>
       )}
