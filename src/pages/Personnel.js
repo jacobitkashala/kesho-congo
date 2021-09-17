@@ -201,11 +201,9 @@ export default function Personnel() {
   return isAuth ? (
     <Page>
       {loader ? (
-        <div className={classes.root}>
-          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
-            <LinearProgress />
-          </Box>
-        </div>
+        <Box sx={{ display: 'flex', position: 'absolute', left: '50%', top: 150 }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
