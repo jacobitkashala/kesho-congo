@@ -85,7 +85,7 @@ export default function NewPatient() {
       case 1:
         return (
           <PatientForm
-            patientFormDAte={patientFormData}
+            patientFormData={patientFormData}
             NextStep={NextStep}
             setadressePatient={setadressePatient}
             setSexePatient={setSexePatient}
