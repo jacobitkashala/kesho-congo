@@ -19,7 +19,6 @@ export default function NewPatient() {
   const [taille, setTaille] = useState('');
   const [poidsActuel, setPoidsActuel] = useState('');
   const [perimetreCranien, setPerimetreCranien] = useState('');
-  const [fistNamePatient, setFistNamePatient] = useState('');
   const [prenomPatient, setPrenomPatient] = useState('');
   const [nomPatient, setNomPatient] = useState('');
   const [postNomPatient, setPostNomPatient] = useState('');
@@ -59,7 +58,6 @@ export default function NewPatient() {
       taille,
       poidsActuel,
       perimetreCranien,
-      fistNamePatient,
       prenomPatient,
       nomPatient,
       postNomPatient,
@@ -99,7 +97,6 @@ export default function NewPatient() {
             setPerimetreCranien={setPerimetreCranien}
             setModeArriverPatient={setModeArriverPatient}
             setPoidsActuel={setPoidsActuel}
-            setFistNamePatient={setFistNamePatient}
             setTraitementNutritionnelAutre={setTraitementNutritionnelAutre}
             setAgeFinAllaitement={setAgeFinAllaitement}
             setProvenancePatient={setProvenancePatient}

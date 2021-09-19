@@ -27,9 +27,9 @@ PatientForm.propTypes = {
   SetDataPatient: propTypes.func,
   setPrenomPatient: propTypes.func,
   setNomPatient: propTypes.func,
-  DataPatient: propTypes.object,
+  // DataPatient: propTypes.object,
   patientFormData: propTypes.object,
-  prenomPatient: propTypes.string,
+  // prenomPatient: propTypes.string,
   nomPatient: propTypes.string,
   setadressePatient: propTypes.func,
   setSexePatient: propTypes.func,
@@ -40,7 +40,7 @@ PatientForm.propTypes = {
   setPerimetreCranien: propTypes.func,
   setModeArriverPatient: propTypes.func,
   setPoidsActuel: propTypes.func,
-  setFistNamePatient: propTypes.func,
+  // setFistNamePatient: propTypes.func,
   setTraitementNutritionnelAutre: propTypes.func,
   setAgeFinAllaitement: propTypes.func,
   setProvenancePatient: propTypes.func,
@@ -56,10 +56,8 @@ PatientForm.propTypes = {
 };
 
 export default function PatientForm({
-  prenomPatient,
   NextStep,
   SetDataPatient,
-  nomPatient,
   patientFormData,
   setadressePatient,
   setSexePatient,
@@ -72,7 +70,6 @@ export default function PatientForm({
   setPerimetreCranien,
   setModeArriverPatient,
   setPoidsActuel,
-  setFistNamePatient,
   setTraitementNutritionnelAutre,
   setAgeFinAllaitement,
   setProvenancePatient,
@@ -91,7 +88,6 @@ export default function PatientForm({
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
 
-  console.log(nomPatient, prenomPatient);
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').required('Taille requis'),
     ExplicationAutre: Yup.string(),
@@ -148,23 +144,20 @@ export default function PatientForm({
     onSubmit: (indentity) => {
       // const { fistNamePatient, NomPatient } = indentity;
       SetDataPatient((current) => ({ ...current, indentity }));
-      // setPrenomPatient(fistNamePatient);
-      // console.log(fistNamePatient, NomPatient);
-      // setNomPatient(NomPatient);
       NextStep();
     }
   });
 
-  const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, setFieldValue, touched, handleSubmit, isSubmitting } = formik;
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
-    setFistNamePatient(value);
+    setPrenomPatient(value);
   };
-  const handleChangeAllaitement = (event) => {
+  const handleAllaitementExclusifSixMoix = (event) => {
     const { value } = event.target;
     setFieldValue('allaitementExclisifSixMois', value);
-    setExplicationProvenance(value);
+    setAllaitementExclisifSixMois(value);
     if (value === 'true') {
       setAllaitement(true);
     } else {
@@ -214,7 +207,7 @@ export default function PatientForm({
   };
   const handleChangeDiversificationAliment = (event) => {
     const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
+    setFieldValue('diversification_aliment', value);
     setDiversificationAliment(value);
   };
   const handleChangePostNomPatient = (event) => {
@@ -227,11 +220,11 @@ export default function PatientForm({
     setFieldValue('perimetreCranien', value);
     setPerimetreBrachail(value);
   };
-  const handleChangePrenomPatient = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setPrenomPatient(value);
-  };
+  // const handleChangePrenomPatient = (event) => {
+  //   const { value } = event.target;
+  //   setFieldValue('fistNamePatient', value);
+  //   setPrenomPatient(value);
+  // };
   const handleChangeNom = (event) => {
     const { value } = event.target;
     setFieldValue('NomPatient', value);
@@ -254,7 +247,7 @@ export default function PatientForm({
   };
   const handleChangeNutritionnelAutre = (event) => {
     const { value } = event.target;
-    setFieldValue('poidsActuel', value);
+    setFieldValue('traitementNutritionnelAutre', value);
     setTraitementNutritionnelAutre(value);
   };
   const handleChangeAgeFinAllaitement = (event) => {
@@ -292,11 +285,12 @@ export default function PatientForm({
     setFieldValue('telephone', value);
     setTelephone(value);
   };
-  const handleAllaitementExclusifSixMoix = (event) => {
+  const handleChangeExplicationProvenance = (event) => {
     const { value } = event.target;
     setFieldValue('telephone', value);
-    setAllaitementExclisifSixMois(value);
+    setExplicationProvenance(value);
   };
+
   return (
     <>
       <FormikProvider value={formik}>
@@ -448,11 +442,13 @@ export default function PatientForm({
                   fullWidth
                   label="Si le traitement nutritionnel est autre veuillez préciser"
                   // defaultValue={DataPatient.traitementNutritionnelAutre}
+                  onChange={handleChangeNutritionnelAutre}
+                  value={patientFormData.fistNamePatient}
                   disabled={traitementNutri}
                   helperText={
                     touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
                   }
-                  {...getFieldProps('traitementNutritionnelAutre')}
+                  // {...getFieldProps('traitementNutritionnelAutre')}
                   error={Boolean(
                     touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
                   )}
@@ -483,7 +479,9 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Si la provenance est autre veuillez préciser"
-                  {...getFieldProps('ExplicationProvenance')}
+                  // {...getFieldProps('ExplicationProvenance')}
+                  value={patientFormData.ExplicationProvenance}
+                  onChange={handleChangeExplicationProvenance}
                   disabled={provenance}
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                   helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
@@ -507,7 +505,7 @@ export default function PatientForm({
                   error={Boolean(
                     touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
                   )}
-                  onChange={handleChangeAllaitement}
+                  onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -583,7 +581,9 @@ export default function PatientForm({
                   // required
                   fullWidth
                   label="Diversification aliment"
-                  {...getFieldProps('diversification_aliment')}
+                  value={patientFormData.diversificationAliment}
+                  onChange={handleChangeDiversificationAliment}
+                  // {...getFieldProps('diversification_aliment')}
                   // defaultValue={DataPatient.diversification_aliment}
                   helperText={touched.diversification_aliment && errors.diversification_aliment}
                   error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
@@ -591,7 +591,6 @@ export default function PatientForm({
                 <Select
                   native
                   sx={{ padding: '2px' }}
-                  // defaultValue={identite.typeMalnutrition}
                   // {...getFieldProps('typeMalnutrition')}
                   onChange={handleChangeTypeMalnutrition}
                   helperText={touched.typeMalnutrition && errors.typeMalnutrition}
