@@ -31,8 +31,7 @@ import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // import { makeStyles } from '@material-ui/styles';
 
 // ----------------------------------------------------------------------
-import Delete from '@material-ui/icons/Delete';
-import { Edit } from '@material-ui/icons';
+import { Delete, Edit } from '@material-ui/icons';
 
 import { fakeAuth } from '../../../fakeAuth';
 // ----------------------------------------------------------------------

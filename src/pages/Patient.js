@@ -6,8 +6,8 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import trash2Fill from '@iconify/icons-eva/trash-2-fill';
-import roundFilterList from '@iconify/icons-ic/round-filter-list';
+// import trash2Fill from '@iconify/icons-eva/trash-2-fill';
+// import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -25,19 +25,20 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination,
+  // TablePagination,
   OutlinedInput,
-  Toolbar,
-  Tooltip,
-  IconButton
+  Toolbar
+  // Tooltip,
+  // IconButton
 } from '@material-ui/core';
+// import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
@@ -93,10 +94,10 @@ function applySortFilter(array, comparator, query) {
 }
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'relative'
-    // left: '50%',
-    // top: '60%'
-    // zIndex: '100'
+    position: 'relative',
+    left: '50%',
+    top: '60%',
+    zIndex: '100'
   },
   labelRoot: {
     '&&': {
@@ -129,9 +130,10 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [rowsPerPage, setRowsPerPage] = useState(1);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     // console.log(rowsPerPage);
@@ -152,8 +154,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, []);
-  const classes = useStyles();
+  }, [rowsPerPage]);
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -188,18 +189,14 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = () => {
-    // console.log(newPage);
-    // setPage(newPage);
-    setRowsPerPage((prevState) => prevState + 50);
-    console.log(rowsPerPage);
+  const handleClickPrev = () => {
+    if (rowsPerPage > 1) {
+      setRowsPerPage((prevState) => prevState - 1);
+    }
   };
-
-  // const handleChangeRowsPerPage = () => {
-  //   // setRowsPerPage(parseInt(event.target.value, 10));
-  //   console.log('+50');
-  //   // setPage(0);
-  // };
+  const handleClickNext = () => {
+    setRowsPerPage((prevState) => prevState + 1);
+  };
 
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
@@ -390,8 +387,6 @@ export default function Patient() {
                                     : 'orange'
                                 }`
                               }}
-                              // variant="ghost"
-                              // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
                             >
                               {type_malnutrition}
                             </Label>
@@ -424,8 +419,20 @@ export default function Patient() {
                 </Table>
               </TableContainer>
             </Scrollbar>
+            <TableRow>
+              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
+                Prev
+              </TableCell>
+              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
+                Suivant
+              </TableCell>
+              <TableCell style={{ fontWeight: '900px' }}>
+                {rowsPerPage}/{patientsList.length}
+              </TableCell>
+              {/* <TableCell>{filteredPatient.length}</TableCell> */}
+            </TableRow>
 
-            <TablePagination
+            {/* <TablePagination
               rowsPerPageOptions={50}
               // component="div"
               showFirstButton
@@ -434,9 +441,7 @@ export default function Patient() {
               page={0}
               onPageChange={handleChangePage}
               // onRowsPerPageChange={handleChangeRowsPerPage}
-            >
-              <h1>hello</h1>
-            </TablePagination>
+            /> */}
           </Card>
         </Container>
       )}
