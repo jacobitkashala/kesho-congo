@@ -48,7 +48,7 @@ export default function PatientForm({
   setNomPatient,
   setTaille,
   setPerimetreCranien,
-  // setModeArriver,
+  setModeArriverPatient,
   setPoidsActuel,
   setFistNamePatient,
   setTraitementNutritionnelAutre,
@@ -134,20 +134,25 @@ export default function PatientForm({
   });
 
   const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-
+  const handleChangeFistName = (event) => {
+    const { value } = event.target;
+    setFieldValue('fistNamePatient', value);
+    setFistNamePatient(value);
+  };
   const handleChangeAllaitement = (event) => {
     const { value } = event.target;
     setFieldValue('allaitementExclisifSixMois', value);
+    setExplicationProvenance(value);
     if (value === 'true') {
       setAllaitement(true);
     } else {
       setAllaitement(false);
     }
   };
-
   const handleChangeProvenance = (event) => {
     const { value } = event.target;
     setFieldValue('provenancePatient', value);
+    setProvenancePatient(value);
     if (value === 'Autres') {
       setProvenance(false);
     } else {
@@ -157,6 +162,7 @@ export default function PatientForm({
   const handleChangeModeArriver = (event) => {
     const { value } = event.target;
     setFieldValue('modeArriver', value);
+    setModeArriverPatient(value);
     if (value === 'Autres') {
       setModeArriver(false);
     } else {
@@ -166,23 +172,14 @@ export default function PatientForm({
   const handleChangeTraitementNutri = (event) => {
     const { value } = event.target;
     setFieldValue('traitementNutritionnel', value);
-
+    setTraitementNutritionnel(value);
     if (value === 'Autres') {
       setTraitementNutri(false);
     } else {
       setTraitementNutri(true);
     }
   };
-  const handleChangeFistName = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
 
-    // if (value === 'Autres') {
-    //   setTraitementNutri(false);
-    // } else {
-    //   setTraitementNutri(true);
-    // }
-  };
   const handleChangeAdressePatient = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
@@ -200,7 +197,7 @@ export default function PatientForm({
   };
   const handleChangePostNomPatient = (event) => {
     const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
+    setFieldValue('postNomPatient', value);
     setPostNomPatient(value);
   };
   const handleChangePerimetreBrachail = (event) => {
@@ -215,7 +212,7 @@ export default function PatientForm({
   };
   const handleChangeNom = (event) => {
     const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
+    setFieldValue('NomPatient', value);
     setNomPatient(value);
   };
   const handleChangePerimetreCranien = (event) => {
@@ -228,26 +225,12 @@ export default function PatientForm({
     setFieldValue('fistNamePatient', value);
     setPoidsActuel(value);
   };
-  const handleChangeFistNamePatient = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setFistNamePatient(value);
-  };
   // setModeArriver,
-  const handleChangeTraitementNutritionnelAutre = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setTraitementNutritionnelAutre(value);
-  };
+
   const handleChangeAgeFinAllaitement = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
     setAgeFinAllaitement(value);
-  };
-  const handleChangeProvenace = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setProvenancePatient(value);
   };
   const handleChangeConstitutionAliment = (event) => {
     const { value } = event.target;
@@ -285,16 +268,11 @@ export default function PatientForm({
     setFieldValue('fistNamePatient', value);
     setTelephone(value);
   };
-  const handleChangeExplicationProvenance = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setExplicationProvenance(value);
-  };
-  const handleChangeAllaitementExclisifSixMois = (event) => {
-    const { value } = event.target;
-    setFieldValue('fistNamePatient', value);
-    setExplicationProvenance(value);
-  };
+  // const handleChangeExplicationProvenance = (event) => {
+  //   const { value } = event.target;
+  //   setFieldValue('fistNamePatient', value);
+  //   setExplicationProvenance(value);
+  // }
   return (
     <>
       <FormikProvider value={formik}>
@@ -317,8 +295,9 @@ export default function PatientForm({
                   autoComplete="name"
                   fullWidth
                   label="Nom"
-                  value={nomPatient}
-                  {...getFieldProps('NomPatient')}
+                  value={patientFormData.nomPatient}
+                  // {...getFieldProps('NomPatient')}
+                  onChange={handleChangeNom}
                   error={Boolean(touched.NomPatient && errors.NomPatient)}
                   helperText={touched.NomPatient && errors.NomPatient}
                 />
@@ -328,9 +307,9 @@ export default function PatientForm({
                   autoComplete="lastname"
                   type="text"
                   label="Postnom"
-                  defaultValue={prenomPatient}
-                  // defaultValue={DataPatient.postnom_patient}
-                  {...getFieldProps('postNomPatient')}
+                  defaultValue={patientFormData.postNomPatientt}
+                  // {...getFieldProps('postNomPatient')}
+                  onChange={handleChangePostNomPatient}
                   error={Boolean(touched.postNomPatient && errors.postNomPatient)}
                   helperText={touched.postNomPatient && errors.postNomPatient}
                 />
