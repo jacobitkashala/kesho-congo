@@ -113,12 +113,11 @@ export default function PatientForm({
     ExplicationProvenance: Yup.string(),
     ageFinAllaitement: Yup.number('requis')
   });
-
   const formik = useFormik({
     initialValues: {
-      taille: '',
-      poidsActuel: '',
-      perimetreCranien: '',
+      taille: patientFormData.taille ? patientFormData.taille : '',
+      poidsActuel: patientFormData.poidsActuel ? patientFormData.poidsActuel : '',
+      perimetreCranien: patientFormData.perimetreCranien ? patientFormData.perimetreCranien : '',
       fistNamePatient: patientFormData.prenomPatient ? patientFormData.prenomPatient : '',
       NomPatient: patientFormData.nomPatient ? patientFormData.nomPatient : '',
       postNomPatient: patientFormData.postNomPatient ? patientFormData.postNomPatient : '',
