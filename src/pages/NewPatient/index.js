@@ -87,11 +87,31 @@ export default function NewPatient() {
           <PatientForm
             patientFormDAte={patientFormData}
             NextStep={NextStep}
+            setadressePatient={setadressePatient}
+            setSexePatient={setSexePatient}
+            setDiversificationAliment={setDiversificationAliment}
+            setPostNomPatient={setPostNomPatient}
+            setPerimetreBrachail={setPerimetreBrachail}
             SetDataPatient={SetDataPatient}
             setPrenomPatient={setPrenomPatient}
-            prenomPatient={prenomPatient}
             setNomPatient={setNomPatient}
-            nomPatient={nomPatient}
+            setTaille={setTaille}
+            setPerimetreCranien={setPerimetreCranien}
+            setModeArriver={setModeArriver}
+            setPoidsActuel={setPoidsActuel}
+            setFistNamePatient={setFistNamePatient}
+            setTraitementNutritionnelAutre={setTraitementNutritionnelAutre}
+            setAgeFinAllaitement={setAgeFinAllaitement}
+            setProvenancePatient={setProvenancePatient}
+            setConstitutionAliment={setConstitutionAliment}
+            setPoidsNaissance={setPoidsNaissance}
+            setTraitementNutritionnel={setTraitementNutritionnel}
+            setDataNaissancePatient={setDataNaissancePatient}
+            setTypeMalnutrition={setTypeMalnutrition}
+            setExplicationAutre={setExplicationAutre}
+            setTelephone={setTelephone}
+            setExplicationProvenance={setExplicationProvenance}
+            setAllaitementExclisifSixMois={setAllaitementExclisifSixMois}
           />
         );
       case 2:
