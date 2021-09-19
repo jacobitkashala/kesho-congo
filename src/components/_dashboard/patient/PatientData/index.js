@@ -55,7 +55,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : CauseMalnutrition.preciserCalendrierVaccinNonjour;
   newPatient.vaccin_non_recu = 'rougeole';
   newPatient.produit_plante = CauseMalnutrition.produitPlante;
-  newPatient.duree_produit_plante = CauseMalnutrition.dureeProduitPlante;
+  newPatient.duree_produit_plante = '2'; // CauseMalnutrition.dureeProduitPlante;
   newPatient.rang_fratrie = CauseMalnutrition.rangFratrie;
   newPatient.taille_fratrie = CauseMalnutrition.tailleFratrie;
   newPatient.atcd_rougeole_fratrie = CauseMalnutrition.atcdRougeole;
@@ -94,8 +94,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.mode_arrive =
     indentity.modeArrive === 'Autres' ? indentity.ExplicationAutre : indentity.modeArriver;
   newPatient.poids_naissance = indentity.poidsNaissance;
-  // newPatient.fin_allaitement = '4';
-  // newPatient.mois_fin_allaitement = '10';
+  newPatient.fin_allaitement = '4'; // obliger
+  newPatient.mois_fin_allaitement = '10';
   newPatient.diversification_aliment = '4'; // indentity.diversification_aliment;// aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;

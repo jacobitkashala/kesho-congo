@@ -45,9 +45,9 @@ import Box from '@material-ui/core/Box';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
+import { PersonnelListHead } from '../components/_dashboard/personnel';
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
-import { PatientListToolbar } from '../components/_dashboard/patient';
+// import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
@@ -118,7 +118,7 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1, 0, 3)
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+const SearchStyle = styled(OutlinedInput)(() => ({
   width: 240
 }));
 
@@ -238,7 +238,7 @@ export default function Patient() {
       }
     }
   });
-  const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
+  const { handleSubmit, values, setFieldValue } = formik;
   const handleFilterByName = (event) => {
     setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);

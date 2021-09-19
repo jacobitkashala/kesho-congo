@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import searchFill from '@iconify/icons-eva/search-fill';
-import trash2Fill from '@iconify/icons-eva/trash-2-fill';
-import roundFilterList from '@iconify/icons-ic/round-filter-list';
+// import searchFill from '@iconify/icons-eva/search-fill';
+// import trash2Fill from '@iconify/icons-eva/trash-2-fill';
+// import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { makeStyles } from '@material-ui/styles';
 import { LoadingButton } from '@material-ui/lab';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
-  Box,
+  // Box,
   Toolbar,
-  Tooltip,
-  IconButton,
+  // Tooltip,
+  // IconButton,
   Typography,
-  OutlinedInput,
-  InputAdornment
+  OutlinedInput
+  // InputAdornment
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { textAlign } from '@material-ui/system';
+// import { textAlign } from '@material-ui/system';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+const SearchStyle = styled(OutlinedInput)(() => ({
   width: 240
 }));
 

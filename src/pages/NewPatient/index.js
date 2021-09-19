@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
   FamilleForm,
-  PatientForm,
   CauseForm,
-  ShowDAtaPatient
+  ShowDAtaPatient,
+  PatientForm
 } from '../../components/_dashboard/patient';
 import './styledNewPatient.css';
 

@@ -119,16 +119,16 @@ export default function PatientForm({
       taille: '',
       poidsActuel: '',
       perimetreCranien: '',
-      fistNamePatient: '',
-      NomPatient: '',
-      postNomPatient: '',
-      telephone: '',
+      fistNamePatient: patientFormData.prenomPatient ? patientFormData.prenomPatient : '',
+      NomPatient: patientFormData.nomPatient ? patientFormData.nomPatient : '',
+      postNomPatient: patientFormData.postNomPatient ? patientFormData.postNomPatient : '',
+      telephone: patientFormData.telephone ? patientFormData.telephone : '',
       diversification_aliment: '',
       sexePatient: '',
       dataNaissancePatient: '',
       constitutionAliment: '',
       provenancePatient: '',
-      adressePatient: '',
+      adressePatient: patientFormData.adressePatient ? patientFormData.adressePatient : '',
       modeArriver: '',
       ageFinAllaitement: '',
       traitementNutritionnelAutre: '',
@@ -217,7 +217,7 @@ export default function PatientForm({
   };
   const handleChangePerimetreBrachail = (event) => {
     const { value } = event.target;
-    setFieldValue('perimetreCranien', value);
+    setFieldValue('perimetreBrachail', value);
     setPerimetreBrachail(value);
   };
   // const handleChangePrenomPatient = (event) => {
@@ -232,7 +232,7 @@ export default function PatientForm({
   };
   const handleChangePerimetreCranien = (event) => {
     const { value } = event.target;
-    setFieldValue('ExplicationAutre', value);
+    setFieldValue('perimetreCranien', value);
     setPerimetreCranien(value);
   };
   const handleChangePoidsActuel = (event) => {
@@ -302,7 +302,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   fullWidth
                   label="Prénom"
-                  value={patientFormData.fistNamePatient}
+                  value={patientFormData.prenomPatient}
                   onChange={handleChangeFistName}
                   // {...getFieldProps('fistNamePatient')}
                   error={Boolean(touched.fistNamePatient && errors.fistNamePatient)}
@@ -534,7 +534,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   label="Constitution/type d’aliment"
-                  value={patientFormData.ExplicationAutre}
+                  value={patientFormData.constitutionAliment}
                   onChange={handleChangeConstitutionAliment}
                   // {...getFieldProps('constitutionAliment')}
                   // defaultValue={DataPatient.constitutionAliment}
