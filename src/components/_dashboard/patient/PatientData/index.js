@@ -55,7 +55,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : CauseMalnutrition.preciserCalendrierVaccinNonjour;
   newPatient.vaccin_non_recu = 'rougeole';
   newPatient.produit_plante = CauseMalnutrition.produitPlante;
-  newPatient.duree_produit_plante = '24'; // CauseMalnutrition.dureeProduitPlante;
+  newPatient.duree_produit_plante = CauseMalnutrition.dureeProduitPlante;
   newPatient.rang_fratrie = CauseMalnutrition.rangFratrie;
   newPatient.taille_fratrie = CauseMalnutrition.tailleFratrie;
   newPatient.atcd_rougeole_fratrie = CauseMalnutrition.atcdRougeole;
@@ -71,16 +71,16 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.traitement_nutri =
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
   newPatient.age_fin_allaitement =
-    indentity.ageFinAllaitement === '' ? 4 : indentity.ageFinAllaitement;
+    indentity.ageFinAllaitement === '' ? 6 : indentity.ageFinAllaitement;
   newPatient.allaitement_6mois = indentity.allaitementExclisifSixMois;
-  newPatient.cocktail_atb = '1'; // CauseMalnutrition.cocktailAtb;
-  newPatient.duree_prise_atb = '23'; // CauseMalnutrition.cocktail_atb_preci;
+  newPatient.cocktail_atb = '1'; // CauseMalnutrition.cocktailAtb;  // bool
+  newPatient.duree_prise_atb = '23'; // CauseMalnutrition.cocktail_atb_preci; // varchar
   newPatient.peri_cranien = indentity.perimetreCranien;
   newPatient.peri_brachial = indentity.perimetreBrachail;
   newPatient.poids = indentity.poidsActuel;
   newPatient.taille = indentity.taille;
   newPatient.type_malnutrition = indentity.typeMalnutrition;
-  newPatient.date_examen = '2020-01-23';
+  // newPatient.date_examen = '2020-01-23';
   newPatient.nom_patient = indentity.NomPatient;
   newPatient.postnom_patient = indentity.postNomPatient;
   newPatient.prenom_patient = indentity.fistNamePatient;
@@ -94,9 +94,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.mode_arrive =
     indentity.modeArrive === 'Autres' ? indentity.ExplicationAutre : indentity.modeArriver;
   newPatient.poids_naissance = indentity.poidsNaissance;
-  newPatient.fin_allaitement = '4';
-  newPatient.mois_fin_allaitement = '10';
-  newPatient.diversification_aliment = '4'; // indentity.diversification_aliment;
+  // newPatient.fin_allaitement = '4';
+  // newPatient.mois_fin_allaitement = '10';
+  newPatient.diversification_aliment = '4'; // indentity.diversification_aliment;// aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;
   newPatient.type_statut_marital =
@@ -110,14 +110,14 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.profession_chef_menage = FamalyData.ProffessionChefMenage;
   newPatient.age_mere = FamalyData.dateNaissanceMere;
   newPatient.scolarite_mere = FamalyData.scolariteMere;
+  newPatient.contraception_mere = FamalyData.contraceptionMere;
   newPatient.type_contraception =
     FamalyData.contraceptionType === '' ? 'pas de contraception' : FamalyData.contraceptionType;
-  newPatient.contraception_mere = FamalyData.contraceptionMere;
   newPatient.contraception_naturelle =
     FamalyData.typeContraceptionNaturel === ''
       ? 'pas de contraception'
       : FamalyData.typeContraceptionNaturel;
-  newPatient.contraception_moderne = 'null_';
+  newPatient.contraception_moderne = 'null_'; // var chart
   newPatient.niveau_socioeconomique = FamalyData.NiveauSocioEconomique;
   newPatient.statut_marital = FamalyData.statutMarital === '' ? 'rien' : FamalyData.statutMarital;
   newPatient.nbre_femme_pere = FamalyData.nbrFemme;
@@ -126,8 +126,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.posseder_radio_tele = FamalyData.PossederTeleRadio;
   newPatient.nbre_repas = FamalyData.NbrRepasJour;
   newPatient.consommation_poisson = FamalyData.consommationPoisson;
-  newPatient.atb = '1';
-  newPatient.liste_atb = 'oui';
+  newPatient.atb = '1'; // bool
+  newPatient.liste_atb = 'oui'; // parent text
   newPatient.tbc_parents =
     CauseMalnutrition.tbcChezParent === '' ? false : CauseMalnutrition.tbcChezParent;
   newPatient.tbc_chez =
@@ -139,7 +139,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.TbcGuerie === '' ? false : CauseMalnutrition.TbcGuerie;
   newPatient.nom_tuteur = FamalyData.nomTuteur;
   newPatient.date_naissance_tuteur = FamalyData.dateNaissanceChefMenage;
-  newPatient.image_patient = 'https://www.moimoi.monimage.cd';
+  // newPatient.image_patient = 'https://www.moimoi.monimage.cd';
   const handleSubmit = () => {
     setLoader((prevState) => !prevState);
     Axios.request({

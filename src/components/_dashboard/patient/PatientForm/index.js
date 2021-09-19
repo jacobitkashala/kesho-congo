@@ -67,9 +67,9 @@ export default function PatientForm({
     poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis'),
     traitementNutritionnel: Yup.string(),
     traitementNutritionnelAutre: Yup.string(),
-    adressePatient: Yup.string().required('champs requis'),
+    adressePatient: Yup.string().required('adresse requis'),
     ExplicationProvenance: Yup.string(),
-    ageFinAllaitement: Yup.number('un chiffre requis')
+    ageFinAllaitement: Yup.number('requis')
   });
 
   const formik = useFormik({
@@ -103,7 +103,6 @@ export default function PatientForm({
       const { fistNamePatient, NomPatient } = indentity;
       SetDataPatient((current) => ({ ...current, indentity }));
       setPrenomPatient(fistNamePatient);
-      console.log(fistNamePatient, NomPatient);
       setNomPatient(NomPatient);
       NextStep();
     }
@@ -149,7 +148,16 @@ export default function PatientForm({
       setTraitementNutri(true);
     }
   };
+  const handleChangeFistName = (event) => {
+    const { value } = event.target;
+    setFieldValue('fistNamePatient', value);
 
+    // if (value === 'Autres') {
+    //   setTraitementNutri(false);
+    // } else {
+    //   setTraitementNutri(true);
+    // }
+  };
   return (
     <>
       <FormikProvider value={formik}>
@@ -162,7 +170,8 @@ export default function PatientForm({
                   fullWidth
                   label="Prénom"
                   // defaultValue={prenomPatient}
-                  {...getFieldProps('fistNamePatient')}
+                  onChange={handleChangeFistName}
+                  // {...getFieldProps('fistNamePatient')}
                   error={Boolean(touched.fistNamePatient && errors.fistNamePatient)}
                   helperText={touched.fistNamePatient && errors.fistNamePatient}
                 />
@@ -181,7 +190,7 @@ export default function PatientForm({
                   fullWidth
                   autoComplete="lastname"
                   type="text"
-                  label={prenomPatient}
+                  label="Postnom"
                   defaultValue={prenomPatient}
                   // defaultValue={DataPatient.postnom_patient}
                   {...getFieldProps('postNomPatient')}

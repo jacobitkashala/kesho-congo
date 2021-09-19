@@ -1,6 +1,6 @@
 /* eslint no-nested-ternary: "error" */
 import { Navigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Stack } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
@@ -13,13 +13,36 @@ import './styledNewPatient.css';
 
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
+
+  const [DataPatient, SetDataPatient] = useState({});
+  // ___________ formIdentité
+  const [taille, setTaille] = useState('');
+  const [poidsActuel, setPoidsActuel] = useState('');
+  const [perimetreCranien, setPerimetreCranien] = useState('');
+  const [fistNamePatient, setFistNamePatient] = useState('');
   const [prenomPatient, setPrenomPatient] = useState('');
   const [nomPatient, setNomPatient] = useState('');
-  const [DataPatient, SetDataPatient] = useState({});
+  const [postNomPatient, setPostNomPatient] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [diversificationAliment, setDiversificationAliment] = useState('');
+  const [sexePatient, setSexePatient] = useState('');
+  const [dataNaissancePatient, setDataNaissancePatient] = useState('');
+  const [constitutionAliment, setConstitutionAliment] = useState('');
+  const [provenancePatient, setProvenancePatient] = useState('');
+  const [adressePatient, setadressePatient] = useState('');
+  const [modeArriver, setModeArriver] = useState('');
+  const [ageFinAllaitement, setAgeFinAllaitement] = useState('');
+  const [traitementNutritionnelAutre, setTraitementNutritionnelAutre] = useState('');
+  const [poidsNaissance, setPoidsNaissance] = useState('');
+  const [traitementNutritionnel, setTraitementNutritionnel] = useState('');
+  const [perimetreBrachail, setPerimetreBrachail] = useState('');
+  const [typeMalnutrition, setTypeMalnutrition] = useState('');
+  const [ExplicationAutre, setExplicationAutre] = useState('');
+  const [ExplicationProvenance, setExplicationProvenance] = useState('');
+  const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
@@ -32,10 +55,37 @@ export default function NewPatient() {
   };
 
   const FormPatientInfo = (key) => {
+    const patientFormData = {
+      taille,
+      poidsActuel,
+      perimetreCranien,
+      fistNamePatient,
+      prenomPatient,
+      nomPatient,
+      postNomPatient,
+      telephone,
+      diversificationAliment,
+      sexePatient,
+      dataNaissancePatient,
+      constitutionAliment,
+      provenancePatient,
+      adressePatient,
+      modeArriver,
+      ageFinAllaitement,
+      traitementNutritionnelAutre,
+      poidsNaissance,
+      traitementNutritionnel,
+      perimetreBrachail,
+      typeMalnutrition,
+      ExplicationAutre,
+      ExplicationProvenance,
+      AllaitementExclisifSixMois
+    };
     switch (key) {
       case 1:
         return (
           <PatientForm
+            patientFormDAte={patientFormData}
             NextStep={NextStep}
             SetDataPatient={SetDataPatient}
             setPrenomPatient={setPrenomPatient}
@@ -66,9 +116,9 @@ export default function NewPatient() {
 
   return isAuth ? (
     <Page>
-      <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
+      {/* <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
         <Typography variant="h4">Nouveau Patient</Typography>
-      </Box>
+      </Box> */}
       <div className="progress-bar-total">
         <div className="progress-step progress-step-active" data-title="Indentité" />
         <div
