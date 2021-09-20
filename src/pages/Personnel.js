@@ -26,7 +26,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 // material
 // components
 // import Dialog from '@material-ui/core/Dialog';
@@ -86,20 +86,20 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'relative'
-  },
-  labelRoot: {
-    '&&': {
-      color: 'red'
-    }
-  }
-}));
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     position: 'relative'
+//   },
+//   labelRoot: {
+//     '&&': {
+//       color: 'red'
+//     }
+//   }
+// }));
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 

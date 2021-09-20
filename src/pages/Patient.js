@@ -6,6 +6,7 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
+import { BsFillSkipBackwardFill, BsFillSkipForwardFill } from 'react-icons/bs';
 // import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 // import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
@@ -421,10 +422,14 @@ export default function Patient() {
             </Scrollbar>
             <TableRow>
               <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                Prec
+                <BsFillSkipBackwardFill
+                  style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                />
               </TableCell>
               <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                Suivant
+                <BsFillSkipForwardFill
+                  style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                />
               </TableCell>
               <TableCell style={{ fontWeight: '900px' }}>
                 {rowsPerPage}/{patientsList.length}
