@@ -421,7 +421,7 @@ export default function Patient() {
             </Scrollbar>
             <TableRow>
               <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                Prev
+                Prec
               </TableCell>
               <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
                 Suivant
