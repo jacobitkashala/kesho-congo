@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import { LoadingButton } from '@material-ui/lab';
 import { Menu, MenuItem, IconButton, ListItemIcon, Typography } from '@material-ui/core';
 import { fakeAuth } from '../../../fakeAuth';
@@ -129,9 +129,15 @@ export default function PatientMoreMenu({ id_patient }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <LoadingButton
+                size="medium"
+                type="button"
+                color="primary"
+                variant="contained"
+                onClick={handleClose}
+              >
                 Annuler
-              </Button>
+              </LoadingButton>
               <LoadingButton
                 onClick={handleDeleteClick}
                 size="medium"

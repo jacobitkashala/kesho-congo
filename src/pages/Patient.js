@@ -424,12 +424,12 @@ export default function Patient() {
               <TableRow>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
                   <BsFillSkipBackwardFill
-                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                    style={{ width: '33px', height: '33px', color: '#1f2b35' }}
                   />
                 </TableCell>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
                   <BsFillSkipForwardFill
-                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                    style={{ width: '33px', height: '33px', color: '#1f2b35' }}
                   />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>

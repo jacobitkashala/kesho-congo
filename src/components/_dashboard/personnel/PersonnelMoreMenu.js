@@ -42,7 +42,7 @@ PersonnelListToolbar.propTypes = {
 export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
-  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [modalDeletePersonnel, setModalDeletePersonnel] = useState(true);
   const [statutPersonnel, setStatutPersonnel] = useState('');
   const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +64,7 @@ export default function PersonnelListToolbar({ value }) {
         fakeAuth.login(() => {
           navigate(from);
           navigate('/dashboard/personnel', { replace: true });
+          setModalDeletePersonnel(false);
         });
       })
       .catch((err) => {
@@ -71,10 +72,12 @@ export default function PersonnelListToolbar({ value }) {
       });
   };
   const handleClickOpenModalDelete = () => {
-    setOpenModalDelete(true);
+    console.log(`Open ${modalDeletePersonnel}`);
+    setModalDeletePersonnel(true);
   };
   const handleCloseModalDelete = () => {
-    setOpenModalDelete(false);
+    setModalDeletePersonnel(false);
+    console.log(`closes ${modalDeletePersonnel}`);
   };
 
   const handleClickOpenStatus = () => {
@@ -137,36 +140,42 @@ export default function PersonnelListToolbar({ value }) {
           <ListItemIcon sx={{ color: 'red' }} onClick={handleClickOpenModalDelete}>
             <Delete width={35} height={35} />
             <Typography>Delete</Typography>
-            <Dialog
-              open={openModalDelete}
-              // onClose={handleCloseModalDelete}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">"Supprimer un utilisateur?"</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Cette action est irreversible, si vous supprimez un utilisateur vous ne serrez
-                  plus en mésure de recuperer ses informations.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseModalDelete} color="primary">
-                  Annuler
-                </Button>
-                <LoadingButton
-                  onClick={handleDeleteClick}
-                  size="medium"
-                  type="submit"
-                  color="error"
-                  variant="contained"
-                  loading={loader}
-                >
-                  Accepter
-                </LoadingButton>
-              </DialogActions>
-            </Dialog>
           </ListItemIcon>
+          <Dialog
+            open={modalDeletePersonnel}
+            onClose={handleCloseModalDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">"Supprimer un utilisateur?"</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Cette action est irreversible, si vous supprimez un utilisateur vous ne serrez plus
+                en mésure de recuperer ses informations.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <LoadingButton
+                size="medium"
+                type="button"
+                color="primary"
+                variant="contained"
+                onClick={handleCloseModalDelete}
+              >
+                Annuler
+              </LoadingButton>
+              <LoadingButton
+                onClick={handleDeleteClick}
+                size="medium"
+                type="submit"
+                color="error"
+                variant="contained"
+                loading={loader}
+              >
+                Accepter
+              </LoadingButton>
+            </DialogActions>
+          </Dialog>
         </MenuItem>
         <MenuItem>
           <ListItemIcon
