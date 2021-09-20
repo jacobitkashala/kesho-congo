@@ -1,47 +1,110 @@
 /* eslint no-nested-ternary: "error" */
 import { Navigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Stack } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
   FamilleForm,
-  PatientForm,
   CauseForm,
-  ShowDAtaPatient
+  ShowDAtaPatient,
+  PatientForm
 } from '../../components/_dashboard/patient';
 import './styledNewPatient.css';
 
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
+  const [DataPatient, SetDataPatient] = useState({});
+  // ___________ formIdentité
+  const [taille, setTaille] = useState('');
+  const [poidsActuel, setPoidsActuel] = useState('');
+  const [perimetreCranien, setPerimetreCranien] = useState('');
   const [prenomPatient, setPrenomPatient] = useState('');
   const [nomPatient, setNomPatient] = useState('');
-  const [DataPatient, SetDataPatient] = useState({});
-
+  const [postNomPatient, setPostNomPatient] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [diversificationAliment, setDiversificationAliment] = useState('');
+  const [sexePatient, setSexePatient] = useState('');
+  const [dataNaissancePatient, setDataNaissancePatient] = useState('');
+  const [constitutionAliment, setConstitutionAliment] = useState('');
+  const [provenancePatient, setProvenancePatient] = useState('');
+  const [adressePatient, setadressePatient] = useState('');
+  const [modeArriverPatient, setModeArriverPatient] = useState('');
+  const [ageFinAllaitement, setAgeFinAllaitement] = useState('');
+  const [traitementNutritionnelAutre, setTraitementNutritionnelAutre] = useState('');
+  const [poidsNaissance, setPoidsNaissance] = useState('');
+  const [traitementNutritionnel, setTraitementNutritionnel] = useState('');
+  const [perimetreBrachail, setPerimetreBrachail] = useState('');
+  const [typeMalnutrition, setTypeMalnutrition] = useState('');
+  const [ExplicationAutre, setExplicationAutre] = useState('');
+  const [ExplicationProvenance, setExplicationProvenance] = useState('');
+  const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
-
   const NextStep = () => {
     SetStep((CurrentState) => CurrentState + 1);
   };
   const PrevStep = () => {
     SetStep((CurrentState) => CurrentState - 1);
   };
-
   const FormPatientInfo = (key) => {
+    const patientFormData = {
+      taille,
+      poidsActuel,
+      perimetreCranien,
+      prenomPatient,
+      nomPatient,
+      postNomPatient,
+      telephone,
+      diversificationAliment,
+      sexePatient,
+      dataNaissancePatient,
+      constitutionAliment,
+      provenancePatient,
+      adressePatient,
+      modeArriverPatient,
+      ageFinAllaitement,
+      traitementNutritionnelAutre,
+      poidsNaissance,
+      traitementNutritionnel,
+      perimetreBrachail,
+      typeMalnutrition,
+      ExplicationAutre,
+      ExplicationProvenance,
+      AllaitementExclisifSixMois
+    };
     switch (key) {
       case 1:
         return (
           <PatientForm
+            patientFormData={patientFormData}
             NextStep={NextStep}
+            setadressePatient={setadressePatient}
+            setSexePatient={setSexePatient}
+            setDiversificationAliment={setDiversificationAliment}
+            setPostNomPatient={setPostNomPatient}
+            setPerimetreBrachail={setPerimetreBrachail}
             SetDataPatient={SetDataPatient}
             setPrenomPatient={setPrenomPatient}
-            prenomPatient={prenomPatient}
             setNomPatient={setNomPatient}
-            nomPatient={nomPatient}
+            setTaille={setTaille}
+            setPerimetreCranien={setPerimetreCranien}
+            setModeArriverPatient={setModeArriverPatient}
+            setPoidsActuel={setPoidsActuel}
+            setTraitementNutritionnelAutre={setTraitementNutritionnelAutre}
+            setAgeFinAllaitement={setAgeFinAllaitement}
+            setProvenancePatient={setProvenancePatient}
+            setConstitutionAliment={setConstitutionAliment}
+            setPoidsNaissance={setPoidsNaissance}
+            setTraitementNutritionnel={setTraitementNutritionnel}
+            setDataNaissancePatient={setDataNaissancePatient}
+            setTypeMalnutrition={setTypeMalnutrition}
+            setExplicationAutre={setExplicationAutre}
+            setTelephone={setTelephone}
+            setExplicationProvenance={setExplicationProvenance}
+            setAllaitementExclisifSixMois={setAllaitementExclisifSixMois}
           />
         );
       case 2:
@@ -63,12 +126,11 @@ export default function NewPatient() {
         return null;
     }
   };
-
   return isAuth ? (
     <Page>
-      <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
+      {/* <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
         <Typography variant="h4">Nouveau Patient</Typography>
-      </Box>
+      </Box> */}
       <div className="progress-bar-total">
         <div className="progress-step progress-step-active" data-title="Indentité" />
         <div

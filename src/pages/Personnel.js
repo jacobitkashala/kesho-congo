@@ -86,16 +86,33 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const useStyles = makeStyles(() => ({
+
+const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'relative'
+    display: 'flex',
+    position: 'relative',
+    // left: '50%',
+    // flexDirection: 'column',
+    justifyContent: 'center',
+    top: '50%'
   },
   labelRoot: {
     '&&': {
       color: 'red'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200
     }
   }
 }));
+
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
@@ -199,120 +216,122 @@ export default function Personnel() {
   }, [isAuth]);
 
   return isAuth ? (
-    <Page>
+    <>
       {loader ? (
         <Box sx={{ display: 'flex', position: 'absolute', left: '50%', top: 150 }}>
           <CircularProgress />
         </Box>
       ) : (
-        <Container>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" gutterBottom>
-              Personnels
-            </Typography>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to="add_Personnel"
-              startIcon={<Icon icon={plusFill} />}
-            >
-              personnel
-            </Button>
-          </Stack>
-          <Card>
-            <PersonnelListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            />
+        <Page>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                Personnels
+              </Typography>
+              <Button
+                variant="contained"
+                component={RouterLink}
+                to="add_Personnel"
+                startIcon={<Icon icon={plusFill} />}
+              >
+                personnel
+              </Button>
+            </Stack>
+            <Card>
+              <PersonnelListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <PersonnelListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={usersList.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredUsers
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((user) => {
-                        const { id_user, nom_user, prenom_user, email, sexe_user, statut } = user;
-                        const isItemSelected = selected.indexOf(nom_user) !== -1;
-
-                        return (
-                          <TableRow
-                            hover
-                            key={id_user}
-                            sx={{ cursor: 'pointer' }}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_user)}
-                              />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_user}
-                                  src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
-                                />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_user}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell>{prenom_user}</TableCell>
-                            <TableCell> {email}</TableCell>
-                            <TableCell>{statut}</TableCell>
-                            <TableCell>{sexe_user}</TableCell>
-                            <TableCell>
-                              <PersonnelMoreMenu value={id_user} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                  {isUserNotFound && (
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <PersonnelListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={usersList.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
                     <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
+                      {filteredUsers
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((user) => {
+                          const { id_user, nom_user, prenom_user, email, sexe_user, statut } = user;
+                          const isItemSelected = selected.indexOf(nom_user) !== -1;
 
-            <TablePagination
-              rowsPerPageOptions={[10, 20, 30]}
-              component="div"
-              count={usersList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Card>
-        </Container>
+                          return (
+                            <TableRow
+                              hover
+                              key={id_user}
+                              sx={{ cursor: 'pointer' }}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  checked={isItemSelected}
+                                  onChange={(event) => handleClick(event, nom_user)}
+                                />
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Avatar
+                                    alt={nom_user}
+                                    src={`/static/mock-images/avatars/avatar_${id_user}.jpg`}
+                                  />
+                                  <Typography variant="subtitle2" noWrap>
+                                    {nom_user}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
+                              <TableCell>{prenom_user}</TableCell>
+                              <TableCell> {email}</TableCell>
+                              <TableCell>{statut}</TableCell>
+                              <TableCell>{sexe_user}</TableCell>
+                              <TableCell>
+                                <PersonnelMoreMenu value={id_user} />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+
+              <TablePagination
+                rowsPerPageOptions={[10, 20, 30]}
+                component="div"
+                count={usersList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Container>
+        </Page>
       )}
-    </Page>
+    </>
   ) : (
     <Navigate to="/" state={{ from: location }} />
   );
