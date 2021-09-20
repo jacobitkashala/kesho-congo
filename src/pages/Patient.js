@@ -418,45 +418,23 @@ export default function Patient() {
                             <SearchNotFound searchQuery={filterName} />
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                    {/* {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )} */}
-                  </TableBody>
-                  {isUserNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-            <TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
               <TableRow>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                  <BsFillSkipBackwardFill
-                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
-                  />
+                  Prev
                 </TableCell>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                  <BsFillSkipForwardFill
-                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
-                  />
+                  Suivant
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
                   {rowsPerPage}/{patientsList.length}
                 </TableCell>
                 {/* <TableCell>{filteredPatient.length}</TableCell> */}
               </TableRow>
-              {/* <TableCell>{filteredPatient.length}</TableCell> */}
-            </TableRow>
 
               {/* <TablePagination
             rowsPerPageOptions={50}
