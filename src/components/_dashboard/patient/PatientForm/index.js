@@ -403,8 +403,8 @@ export default function PatientForm({
                   >
                     <FormLabel component="label">Sexe:</FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
-                      <FormControlLabel value="F" control={<Radio />} label="F" />
                       <FormControlLabel value="M" control={<Radio />} label="M" />
+                      <FormControlLabel value="F" control={<Radio />} label="F" />
                     </Stack>
                   </Stack>
                 </RadioGroup>

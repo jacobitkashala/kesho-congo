@@ -38,6 +38,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
+import { BsFillSkipBackwardFill, BsFillSkipForwardFill } from 'react-icons/bs';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
@@ -420,15 +421,22 @@ export default function Patient() {
               </TableContainer>
             </Scrollbar>
             <TableRow>
-              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                Prev
-              </TableCell>
-              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                Suivant
-              </TableCell>
-              <TableCell style={{ fontWeight: '900px' }}>
-                {rowsPerPage}/{patientsList.length}
-              </TableCell>
+              <TableRow>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
+                  <BsFillSkipBackwardFill
+                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                  />
+                </TableCell>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
+                  <BsFillSkipForwardFill
+                    style={{ width: '35px', height: '35px', color: '#1f2b35' }}
+                  />
+                </TableCell>
+                <TableCell style={{ fontWeight: '900px' }}>
+                  {rowsPerPage}/{patientsList.length}
+                </TableCell>
+                {/* <TableCell>{filteredPatient.length}</TableCell> */}
+              </TableRow>
               {/* <TableCell>{filteredPatient.length}</TableCell> */}
             </TableRow>
 
