@@ -139,7 +139,7 @@ export default function PersonnelListToolbar({ value }) {
             <Typography>Delete</Typography>
             <Dialog
               open={openModalDelete}
-              onClose={handleCloseModalDelete}
+              // onClose={handleCloseModalDelete}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >

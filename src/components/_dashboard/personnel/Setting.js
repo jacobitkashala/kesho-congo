@@ -67,10 +67,12 @@ export default function PersonnelAddFrom() {
   const [errorWord, setErrorWord] = useState(false);
   const useStyles = makeStyles(() => ({
     root: {
-      position: 'absolute',
-      left: '60%',
-      top: '40%'
-      // transform: 'translate(-50%)'
+      display: 'flex',
+      position: 'relative',
+      // left: '50%',
+      // flexDirection: 'column',
+      justifyContent: 'center',
+      top: '50%'
     },
     labelRoot: {
       '&&': {
