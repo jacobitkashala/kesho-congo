@@ -35,6 +35,30 @@ import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { fakeAuth } from '../../../fakeAuth';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    top: '50%'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200
+    }
+  }
+}));
+
 const Div = styled('div')(() => ({
   textAlign: 'center',
   width: '40%',
@@ -67,17 +91,7 @@ export default function PersonnelAddFrom() {
   const [loader, setLoader] = useState(true);
   const [loader2, setLoader2] = useState(false);
   const [errorWord, setErrorWord] = useState(false);
-  const useStyles = makeStyles(() => ({
-    root: {
-      position: 'relative'
-      // transform: 'translate(-50%)'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
+
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -202,9 +216,7 @@ export default function PersonnelAddFrom() {
     <>
       {loader ? (
         <div className={classes.root}>
-          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
-            <LinearProgress />
-          </Box>
+          <CircularProgress />
         </div>
       ) : (
         <Border>

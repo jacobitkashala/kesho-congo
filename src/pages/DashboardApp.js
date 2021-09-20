@@ -21,7 +21,31 @@ import {
 } from '../components/_dashboard/app';
 
 // ----------------------------------------------------------------------
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    position: 'relative',
+    // left: '50%',
+    // flexDirection: 'column',
+    justifyContent: 'center',
+    top: '50%'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200
+    }
+  }
+}));
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
   // const [yearData, setYearData] = useState([]);
@@ -54,31 +78,7 @@ export default function DashboardApp() {
     setIsAuth(isAuth);
   }, [isAuth]);
   const location = useLocation();
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      position: 'relative',
-      // left: '50%',
-      // flexDirection: 'column',
-      justifyContent: 'center',
-      top: '50%'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      },
-      container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between'
-      },
-      textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200
-      }
-    }
-  }));
+
   const classes = useStyles();
   const DateSchema = Yup.object().shape({
     startDate: Yup.date().required('selectionnez une date'),
