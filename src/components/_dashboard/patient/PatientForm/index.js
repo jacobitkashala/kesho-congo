@@ -122,22 +122,36 @@ export default function PatientForm({
       NomPatient: patientFormData.nomPatient ? patientFormData.nomPatient : '',
       postNomPatient: patientFormData.postNomPatient ? patientFormData.postNomPatient : '',
       telephone: patientFormData.telephone ? patientFormData.telephone : '',
-      diversification_aliment: '',
-      sexePatient: '',
-      dataNaissancePatient: '',
-      constitutionAliment: '',
-      provenancePatient: '',
+      diversification_aliment: patientFormData.diversificationAliment
+        ? patientFormData.diversificationAliment
+        : '',
+      sexePatient: patientFormData.sexePatient ? patientFormData.sexePatient : '',
+      dataNaissancePatient: patientFormData.dataNaissancePatient
+        ? patientFormData.dataNaissancePatient
+        : '',
+      constitutionAliment: patientFormData.constitutionAliment
+        ? patientFormData.constitutionAliment
+        : '',
+      provenancePatient: patientFormData.provenancePatient ? patientFormData.provenancePatient : '',
       adressePatient: patientFormData.adressePatient ? patientFormData.adressePatient : '',
-      modeArriver: '',
-      ageFinAllaitement: '',
-      traitementNutritionnelAutre: '',
-      poidsNaissance: '',
-      traitementNutritionnel: '',
-      perimetreBrachail: '',
-      typeMalnutrition: '',
-      ExplicationAutre: '',
-      ExplicationProvenance: '',
-      allaitementExclisifSixMois: ''
+      modeArriver: patientFormData.modeArriverPatient ? patientFormData.modeArriverPatient : '',
+      ageFinAllaitement: patientFormData.ageFinAllaitement ? patientFormData.ageFinAllaitement : '',
+      traitementNutritionnelAutre: patientFormData.traitementNutritionnelAutre
+        ? patientFormData.traitementNutritionnelAutre
+        : '',
+      poidsNaissance: patientFormData.poidsNaissance ? patientFormData.poidsNaissance : '',
+      traitementNutritionnel: patientFormData.traitementNutritionnel
+        ? patientFormData.traitementNutritionnel
+        : '',
+      perimetreBrachail: patientFormData.perimetreBrachail ? patientFormData.perimetreBrachail : '',
+      typeMalnutrition: patientFormData.typeMalnutrition ? patientFormData.typeMalnutrition : '',
+      ExplicationAutre: patientFormData.ExplicationAutre ? patientFormData.ExplicationAutre : '',
+      ExplicationProvenance: patientFormData.ExplicationProvenance
+        ? patientFormData.ExplicationProvenance
+        : '',
+      allaitementExclisifSixMois: patientFormData.AllaitementExclisifSixMois
+        ? patientFormData.AllaitementExclisifSixMois
+        : ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
