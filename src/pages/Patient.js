@@ -1,23 +1,16 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* no-nested-ternary */
-
+import * as Yup from 'yup';
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
+// import trash2Fill from '@iconify/icons-eva/trash-2-fill';
+// import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
-// import { useSelector, useDispatch } from 'react-redux';
-
-// -------------------MODAL
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-
-// ----------------------------------------------------------------------
-
+import Axios from 'axios';
+import { useFormik, Form, FormikProvider } from 'formik';
 // material
 import {
   Card,
@@ -32,18 +25,29 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  // TablePagination,
+  OutlinedInput,
+  Toolbar
+  // Tooltip,
+  // IconButton
 } from '@material-ui/core';
+// import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
+import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { LoadingButton } from '@material-ui/lab';
+import SearchIcon from '@material-ui/icons/Search';
+import Box from '@material-ui/core/Box';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
 // components
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead, PersonnelListToolbar } from '../components/_dashboard/personnel';
+import { PersonnelListHead } from '../components/_dashboard/personnel';
 import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
+// import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
@@ -88,13 +92,52 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'relative',
+    left: '50%',
+    top: '60%',
+    zIndex: '100'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    }
+  },
+  button: {
+    margin: theme.spacing(1),
+    textAlign: 'center',
+    position: 'absolute',
+    left: '30%'
+  }
+}));
+const RootStyle = styled(Toolbar)(({ theme }) => ({
+  height: 96,
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: theme.spacing(0, 1, 0, 3)
+}));
+
+const SearchStyle = styled(OutlinedInput)(() => ({
+  width: 240
+}));
 
 export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
+  // const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState('nom_patient');
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(1);
+  const [loader, setLoader] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all`, {
+    // console.log(rowsPerPage);
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -105,44 +148,15 @@ export default function Patient() {
       .then((data) => {
         setPatientsList(data.Patients);
         setLoader(false);
-        console.log('myData', data);
+        console.log('myData', data.Patients);
         // setUsersList(data);
       })
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, []);
-
-  const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles(() => ({
-    root: {
-      position: 'absolute',
-      left: '60%',
-      top: '45%',
-      zIndex: '100'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
-  const classes = useStyles();
+  }, [rowsPerPage]);
 
   // ----------------------------------------------------------------------
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('nom_patient');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(50);
-  // const dispatch = useDispatch();
-  // const { patients } = useSelector((state) => state);
-  // -----------------const patientList = patients;
-  // console.log(patients);
-  // useEffect(() => {
-  //   dispatch(getPatientsAsync());
-  // }, [dispatch]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -175,20 +189,61 @@ export default function Patient() {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleClickPrev = () => {
+    if (rowsPerPage > 1) {
+      setRowsPerPage((prevState) => prevState - 1);
+    }
+  };
+  const handleClickNext = () => {
+    setRowsPerPage((prevState) => prevState + 1);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
+  // -------------------FOrmik----------------------------
+  const SearchSchema = Yup.object().shape({
+    searchValue: Yup.string().required('Entrez un nom')
+  });
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      searchValue: ''
+    },
+    validationSchema: SearchSchema,
+    onSubmit: async ({ searchValue }) => {
+      // setButtonLoader(true);
+      setLoadingButton(true);
+      console.log('la valeur recherchée', searchValue);
+      try {
+        const response = await Axios.post(
+          'https://kesho-congo-api.herokuapp.com/patient/search',
+          {
+            nom_patient: searchValue
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        const output = await response.data;
+        setLoadingButton(false);
+        setPatientsList(output);
+        console.log(output);
+        // setReports(await data);
+        // setButtonLoader(false);
+      } catch (err) {
+        console.log(err);
+        setLoadingButton(false);
+        // setButtonLoader(false);
+      }
+    }
+  });
+  const { handleSubmit, values, setFieldValue } = formik;
   const handleFilterByName = (event) => {
+    setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);
+    console.log(filterName);
   };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientsList.length) : 0;
 
   const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
 
@@ -203,15 +258,19 @@ export default function Patient() {
   return isAuth ? (
     <Page>
       {loader ? (
-        <div className={classes.root}>
+        <Box sx={{ display: 'flex', position: 'relative', left: '50%', top: 150 }}>
           <CircularProgress />
-        </div>
+        </Box>
       ) : (
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
               Patients
             </Typography>
+            {/* <div className={classes.root}>
+            <CircularProgress />
+          </div> */}
+
             <Button
               variant="contained"
               component={RouterLink}
@@ -223,12 +282,42 @@ export default function Patient() {
           </Stack>
 
           <Card>
-            <PersonnelListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            />
-
+            <RootStyle
+              sx={{
+                ...(selected.length > 0 && {
+                  color: 'primary.main',
+                  bgcolor: 'primary.lighter'
+                })
+              }}
+            >
+              {selected.length > 0 ? (
+                <Typography component="div" variant="subtitle1">
+                  {selected.length} selectionés
+                </Typography>
+              ) : (
+                <FormikProvider value={formik}>
+                  <Form onSubmit={handleSubmit}>
+                    <LoadingButton
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      loading={loadingButton}
+                      className={classes.button}
+                      endIcon={
+                        <Icon>
+                          <SearchIcon />
+                        </Icon>
+                      }
+                    />
+                    <SearchStyle
+                      value={values.searchValue}
+                      onChange={handleFilterByName}
+                      placeholder="Tapez un nom"
+                    />
+                  </Form>
+                </FormikProvider>
+              )}
+            </RootStyle>
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -242,92 +331,81 @@ export default function Patient() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {filteredPatient
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row) => {
-                        const {
-                          id_patient,
-                          nom_patient,
-                          type_malnutrition,
-                          date_naissance,
-                          sexe_patient,
-                          date_Consultation,
-                          nom_consultant,
-                          postnom_consultant,
-                          prenom_patient
-                        } = row;
-                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                    {filteredPatient.map((row) => {
+                      const {
+                        id_patient,
+                        nom_patient,
+                        type_malnutrition,
+                        date_naissance,
+                        sexe_patient,
+                        date_Consultation,
+                        nom_consultant,
+                        postnom_consultant,
+                        prenom_patient
+                      } = row;
+                      const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id_patient}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_patient)}
+                      return (
+                        <TableRow
+                          hover
+                          key={id_patient}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, nom_patient)}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar
+                                alt={nom_patient}
+                                src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
                               />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_patient}
-                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
-                                />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_patient}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="center">{prenom_patient}</TableCell>
-                            <TableCell align="center">{date_naissance}</TableCell>
-                            <TableCell align="center">{sexe_patient}</TableCell>
-                            <TableCell align="center">{date_Consultation}</TableCell>
-                            <TableCell align="center">
-                              <Label
-                                variant="outlined"
-                                // color={`${
-                                //   type_malnutrition === 'MAC'
-                                //     ? 'error'
-                                //     : type_malnutrition === 'MAM'
-                                //     ? 'orange'
-                                //     : 'primary'
-                                // }`}
-                                sx={{
-                                  color: `${
-                                    type_malnutrition === 'MAC'
-                                      ? 'red'
-                                      : type_malnutrition === 'MAM'
-                                      ? 'green'
-                                      : 'orange'
-                                  }`
-                                }}
-                                // variant="ghost"
-                                // color={`${type_malnutrition === 'MAC' ? 'error' : 'warning'}`}
-                              >
-                                {type_malnutrition}
-                              </Label>
-                            </TableCell>
-                            <TableCell align="left">
-                              {nom_consultant} {postnom_consultant}
-                            </TableCell>
+                              <Typography variant="subtitle2" noWrap>
+                                {nom_patient}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="center">{prenom_patient}</TableCell>
+                          <TableCell align="center">{date_naissance}</TableCell>
+                          <TableCell align="center">{sexe_patient}</TableCell>
+                          <TableCell align="center">{date_Consultation}</TableCell>
+                          <TableCell align="center">
+                            <Label
+                              variant="outlined"
+                              sx={{
+                                color: `${
+                                  type_malnutrition === 'MAC'
+                                    ? 'red'
+                                    : type_malnutrition === 'MAM'
+                                    ? 'green'
+                                    : 'orange'
+                                }`
+                              }}
+                            >
+                              {type_malnutrition}
+                            </Label>
+                          </TableCell>
+                          <TableCell align="left">
+                            {nom_consultant} {postnom_consultant}
+                          </TableCell>
 
-                            <TableCell align="right">
-                              <PatientMoreMenu id_patient={id_patient} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    {emptyRows > 0 && (
+                          <TableCell align="right">
+                            <PatientMoreMenu id_patient={id_patient} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {/* {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
-                    )}
+                    )} */}
                   </TableBody>
                   {isUserNotFound && (
                     <TableBody>
@@ -341,16 +419,29 @@ export default function Patient() {
                 </Table>
               </TableContainer>
             </Scrollbar>
+            <TableRow>
+              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
+                Prev
+              </TableCell>
+              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
+                Suivant
+              </TableCell>
+              <TableCell style={{ fontWeight: '900px' }}>
+                {rowsPerPage}/{patientsList.length}
+              </TableCell>
+              {/* <TableCell>{filteredPatient.length}</TableCell> */}
+            </TableRow>
 
-            <TablePagination
-              rowsPerPageOptions={[50, 100, 150]}
-              component="div"
-              count={patientsList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
+            {/* <TablePagination
+              rowsPerPageOptions={50}
+              // component="div"
+              showFirstButton
+              count={rowsPerPage}
+              rowsPerPage={1}
+              page={0}
               onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+              // onRowsPerPageChange={handleChangeRowsPerPage}
+            /> */}
           </Card>
         </Container>
       )}

@@ -18,12 +18,23 @@ import {
   Container,
   Typography,
   TableContainer,
+  // Radio,
+  // FormLabel,
+  // FormControlLabel,
   TablePagination
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 // material
 // components
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import { LoadingButton } from '@material-ui/lab';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -32,6 +43,7 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
+// import { PatientListToolbar } from '../components/_dashboard/patient';
 import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
@@ -74,10 +86,20 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-
+const useStyles = makeStyles(() => ({
+  root: {
+    position: 'relative'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'red'
+    }
+  }
+}));
 export default function Personnel() {
   // ----------------------------------USERS--------------------
   const [usersList, setUsersList] = useState([]);
+  const classes = useStyles();
 
   const getUsers = `https://kesho-congo-api.herokuapp.com/user/all`;
 
@@ -107,21 +129,6 @@ export default function Personnel() {
   }, []);
 
   const [loader, setLoader] = useState(true);
-  const useStyles = makeStyles(() => ({
-    root: {
-      position: 'absolute',
-      left: '60%',
-      top: '45%',
-      zIndex: '100'
-      // transform: 'translate(-50%)'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'red'
-      }
-    }
-  }));
-  const classes = useStyles();
 
   // ----------------------------------------------------------------------
 
@@ -194,14 +201,14 @@ export default function Personnel() {
   return isAuth ? (
     <Page>
       {loader ? (
-        <div className={classes.root}>
+        <Box sx={{ display: 'flex', position: 'absolute', left: '50%', top: 150 }}>
           <CircularProgress />
-        </div>
+        </Box>
       ) : (
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              Personnel
+              Personnels
             </Typography>
             <Button
               variant="contained"
@@ -242,7 +249,7 @@ export default function Personnel() {
                           <TableRow
                             hover
                             key={id_user}
-                            // tabIndex={-1}
+                            sx={{ cursor: 'pointer' }}
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}

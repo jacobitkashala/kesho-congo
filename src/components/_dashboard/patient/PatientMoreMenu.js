@@ -63,26 +63,6 @@ export default function PatientMoreMenu({ id_patient }) {
   const handleClose = () => {
     setOpen(false);
   };
-  // const useStyles = makeStyles(() => ({
-  //   root: {
-  //     position: 'absolute',
-  //     left: '60%',
-  //     top: '45%',
-  //     zIndex: '100'
-  //   },
-  //   palette: {
-  //     primary: {
-  //       light: '#757ce8',
-  //       main: '#3f50b5',
-  //       dark: '#002884',
-  //       contrastText: '#fff'
-  //     },
-  //     secondary: {
-  //       main: red
-  //     }
-  //   }
-  // }));
-  // const classes = useStyles();
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -118,21 +98,6 @@ export default function PatientMoreMenu({ id_patient }) {
             </div>
           </ListItemIcon>
         </MenuItem>
-        {/* <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                paddingLeft: '8px'
-              }}
-            >
-              <Icon icon={editFill} width={40} height={25} />
-              <Typography variant="h6">éditer</Typography>
-            </div>
-          </ListItemIcon>
-        </MenuItem> */}
         <MenuItem>
           <ListItemIcon
             sx={{ textAlign: 'center', color: 'text.secondary' }}
@@ -167,15 +132,13 @@ export default function PatientMoreMenu({ id_patient }) {
               <Button onClick={handleClose} color="primary">
                 Annuler
               </Button>
-              {/* <Button onClick={handleDeleteClick} color="primary" autoFocus>
-                Accepter
-              </Button> */}
               <LoadingButton
                 onClick={handleDeleteClick}
                 size="medium"
                 type="submit"
                 variant="contained"
                 loading={loader}
+                color="error"
               >
                 Accepter
               </LoadingButton>

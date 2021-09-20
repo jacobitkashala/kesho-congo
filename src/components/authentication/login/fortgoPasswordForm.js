@@ -7,6 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import Axios from 'axios';
 import Dialog from '@material-ui/core/Dialog';
+import { makeStyles } from '@material-ui/styles';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -25,6 +26,7 @@ export default function FortgoPasswordForm() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [errorWord, setErrorWord] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     myEmail: Yup.string().email('Votre mail doit être valide').required('Email requis'),
@@ -40,7 +42,7 @@ export default function FortgoPasswordForm() {
     validationSchema: LoginSchema,
     onSubmit: ({ myEmail, firstName, lastName }) => {
       setLoading(true);
-
+      setErrorWord(false);
       console.log('clicked');
       Axios.post(
         `https://kesho-congo-api.herokuapp.com/user/reset`,
@@ -64,6 +66,7 @@ export default function FortgoPasswordForm() {
         })
         .catch((err) => {
           setLoading(false);
+          setErrorWord(true);
         });
     }
   });
@@ -71,6 +74,19 @@ export default function FortgoPasswordForm() {
   const handleClose = () => {
     setOpen(false);
   };
+  const useStyles = makeStyles(() => ({
+    root: {
+      position: 'absolute',
+      left: '73%'
+      // transform: 'translate(-50%,0)'
+    },
+    labelRoot: {
+      '&&': {
+        color: 'red'
+      }
+    }
+  }));
+  const classes = useStyles();
 
   return (
     <>
@@ -106,6 +122,15 @@ export default function FortgoPasswordForm() {
               helperText={touched.myEmail && errors.myEmail}
             />
           </Stack>
+          {errorWord ? (
+            <>
+              {/* <br /> */}
+              <span className={classes.labelRoot}>Adresse mail ou nom incorrecte</span>
+            </>
+          ) : (
+            ''
+          )}
+
           <Div>
             <LoadingButton size="large" component={RouterLink} to="/" sx={{ marginTop: 5 }}>
               Annuler
