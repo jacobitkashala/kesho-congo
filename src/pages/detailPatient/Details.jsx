@@ -69,9 +69,12 @@ export default function Details() {
   }, []);
   const useStyles = makeStyles(() => ({
     root: {
-      position: 'absolute',
-      left: '60%',
-      top: '40%'
+      display: 'flex',
+      position: 'relative',
+      // left: '50%',
+      // flexDirection: 'column',
+      justifyContent: 'center',
+      top: '50%'
     },
     labelRoot: {
       '&&': {

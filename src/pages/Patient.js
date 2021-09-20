@@ -94,10 +94,12 @@ function applySortFilter(array, comparator, query) {
 }
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
     position: 'relative',
-    left: '50%',
-    top: '60%',
-    zIndex: '100'
+    // left: '50%',
+    // flexDirection: 'column',
+    justifyContent: 'center',
+    top: '50%'
   },
   labelRoot: {
     '&&': {
@@ -256,196 +258,198 @@ export default function Patient() {
   }, [isAuth]);
 
   return isAuth ? (
-    <Page>
+    <>
       {loader ? (
-        <Box sx={{ display: 'flex', position: 'relative', left: '50%', top: 150 }}>
+        <div className={classes.root}>
           <CircularProgress />
-        </Box>
+        </div>
       ) : (
-        <Container>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" gutterBottom>
-              Patients
-            </Typography>
-            {/* <div className={classes.root}>
-            <CircularProgress />
-          </div> */}
+        <Page>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                Patients
+              </Typography>
+              {/* <div className={classes.root}>
+          <CircularProgress />
+        </div> */}
 
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to="add_Patient"
-              startIcon={<Icon icon={plusFill} />}
-            >
-              patient
-            </Button>
-          </Stack>
+              <Button
+                variant="contained"
+                component={RouterLink}
+                to="add_Patient"
+                startIcon={<Icon icon={plusFill} />}
+              >
+                patient
+              </Button>
+            </Stack>
 
-          <Card>
-            <RootStyle
-              sx={{
-                ...(selected.length > 0 && {
-                  color: 'primary.main',
-                  bgcolor: 'primary.lighter'
-                })
-              }}
-            >
-              {selected.length > 0 ? (
-                <Typography component="div" variant="subtitle1">
-                  {selected.length} selectionés
-                </Typography>
-              ) : (
-                <FormikProvider value={formik}>
-                  <Form onSubmit={handleSubmit}>
-                    <LoadingButton
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      loading={loadingButton}
-                      className={classes.button}
-                      endIcon={
-                        <Icon>
-                          <SearchIcon />
-                        </Icon>
-                      }
+            <Card>
+              <RootStyle
+                sx={{
+                  ...(selected.length > 0 && {
+                    color: 'primary.main',
+                    bgcolor: 'primary.lighter'
+                  })
+                }}
+              >
+                {selected.length > 0 ? (
+                  <Typography component="div" variant="subtitle1">
+                    {selected.length} selectionés
+                  </Typography>
+                ) : (
+                  <FormikProvider value={formik}>
+                    <Form onSubmit={handleSubmit}>
+                      <LoadingButton
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        loading={loadingButton}
+                        className={classes.button}
+                        endIcon={
+                          <Icon>
+                            <SearchIcon />
+                          </Icon>
+                        }
+                      />
+                      <SearchStyle
+                        value={values.searchValue}
+                        onChange={handleFilterByName}
+                        placeholder="Tapez un nom"
+                      />
+                    </Form>
+                  </FormikProvider>
+                )}
+              </RootStyle>
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <PersonnelListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={patientsList.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
                     />
-                    <SearchStyle
-                      value={values.searchValue}
-                      onChange={handleFilterByName}
-                      placeholder="Tapez un nom"
-                    />
-                  </Form>
-                </FormikProvider>
-              )}
-            </RootStyle>
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <PersonnelListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={patientsList.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredPatient.map((row) => {
-                      const {
-                        id_patient,
-                        nom_patient,
-                        type_malnutrition,
-                        date_naissance,
-                        sexe_patient,
-                        date_Consultation,
-                        nom_consultant,
-                        postnom_consultant,
-                        prenom_patient
-                      } = row;
-                      const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                    <TableBody>
+                      {filteredPatient.map((row) => {
+                        const {
+                          id_patient,
+                          nom_patient,
+                          type_malnutrition,
+                          date_naissance,
+                          sexe_patient,
+                          date_Consultation,
+                          nom_consultant,
+                          postnom_consultant,
+                          prenom_patient
+                        } = row;
+                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id_patient}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, nom_patient)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar
-                                alt={nom_patient}
-                                src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                        return (
+                          <TableRow
+                            hover
+                            key={id_patient}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onChange={(event) => handleClick(event, nom_patient)}
                               />
-                              <Typography variant="subtitle2" noWrap>
-                                {nom_patient}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="center">{prenom_patient}</TableCell>
-                          <TableCell align="center">{date_naissance}</TableCell>
-                          <TableCell align="center">{sexe_patient}</TableCell>
-                          <TableCell align="center">{date_Consultation}</TableCell>
-                          <TableCell align="center">
-                            <Label
-                              variant="outlined"
-                              sx={{
-                                color: `${
-                                  type_malnutrition === 'MAC'
-                                    ? 'red'
-                                    : type_malnutrition === 'MAM'
-                                    ? 'green'
-                                    : 'orange'
-                                }`
-                              }}
-                            >
-                              {type_malnutrition}
-                            </Label>
-                          </TableCell>
-                          <TableCell align="left">
-                            {nom_consultant} {postnom_consultant}
-                          </TableCell>
+                            </TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar
+                                  alt={nom_patient}
+                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                                />
+                                <Typography variant="subtitle2" noWrap>
+                                  {nom_patient}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="center">{prenom_patient}</TableCell>
+                            <TableCell align="center">{date_naissance}</TableCell>
+                            <TableCell align="center">{sexe_patient}</TableCell>
+                            <TableCell align="center">{date_Consultation}</TableCell>
+                            <TableCell align="center">
+                              <Label
+                                variant="outlined"
+                                sx={{
+                                  color: `${
+                                    type_malnutrition === 'MAC'
+                                      ? 'red'
+                                      : type_malnutrition === 'MAM'
+                                      ? 'green'
+                                      : 'orange'
+                                  }`
+                                }}
+                              >
+                                {type_malnutrition}
+                              </Label>
+                            </TableCell>
+                            <TableCell align="left">
+                              {nom_consultant} {postnom_consultant}
+                            </TableCell>
 
-                          <TableCell align="right">
-                            <PatientMoreMenu id_patient={id_patient} />
+                            <TableCell align="right">
+                              <PatientMoreMenu id_patient={id_patient} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {/* {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )} */}
+                    </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                    {/* {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )} */}
-                  </TableBody>
-                  {isUserNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-            <TableRow>
-              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                Prev
-              </TableCell>
-              <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                Suivant
-              </TableCell>
-              <TableCell style={{ fontWeight: '900px' }}>
-                {rowsPerPage}/{patientsList.length}
-              </TableCell>
-              {/* <TableCell>{filteredPatient.length}</TableCell> */}
-            </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+              <TableRow>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
+                  Prev
+                </TableCell>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
+                  Suivant
+                </TableCell>
+                <TableCell style={{ fontWeight: '900px' }}>
+                  {rowsPerPage}/{patientsList.length}
+                </TableCell>
+                {/* <TableCell>{filteredPatient.length}</TableCell> */}
+              </TableRow>
 
-            {/* <TablePagination
-              rowsPerPageOptions={50}
-              // component="div"
-              showFirstButton
-              count={rowsPerPage}
-              rowsPerPage={1}
-              page={0}
-              onPageChange={handleChangePage}
-              // onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
-          </Card>
-        </Container>
+              {/* <TablePagination
+            rowsPerPageOptions={50}
+            // component="div"
+            showFirstButton
+            count={rowsPerPage}
+            rowsPerPage={1}
+            page={0}
+            onPageChange={handleChangePage}
+            // onRowsPerPageChange={handleChangeRowsPerPage}
+          /> */}
+            </Card>
+          </Container>
+        </Page>
       )}
-    </Page>
+    </>
   ) : (
     <Navigate to="/" state={{ from: location }} />
   );

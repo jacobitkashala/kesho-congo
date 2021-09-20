@@ -56,11 +56,12 @@ export default function DashboardApp() {
   const location = useLocation();
   const useStyles = makeStyles((theme) => ({
     root: {
-      position: 'relative'
-      // left: '60%',
-      // top: '45%',
-      // zIndex: '100'
-      // transform: 'translate(-50%)'
+      display: 'flex',
+      position: 'relative',
+      // left: '50%',
+      // flexDirection: 'column',
+      justifyContent: 'center',
+      top: '50%'
     },
     labelRoot: {
       '&&': {
@@ -123,9 +124,7 @@ export default function DashboardApp() {
     <>
       {loader ? (
         <div className={classes.root}>
-          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
-            <LinearProgress />
-          </Box>
+          <CircularProgress />
         </div>
       ) : (
         <Page>
