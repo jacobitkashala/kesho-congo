@@ -201,7 +201,16 @@ export default function Personnel() {
   return isAuth ? (
     <Page>
       {loader ? (
-        <Box sx={{ display: 'flex', position: 'absolute', left: '50%', top: 150 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            position: 'relative',
+            // left: '50%',
+            // flexDirection: 'column',
+            justifyContent: 'center',
+            top: '50%'
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (

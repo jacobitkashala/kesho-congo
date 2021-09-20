@@ -5,7 +5,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // material
 import { Box, Grid, Container, Typography, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
 
@@ -24,7 +24,7 @@ import {
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
-  const [yearData, setYearData] = useState([]);
+  // const [yearData, setYearData] = useState([]);
   const [loader, setLoader] = useState(true);
   const [buttonLoader, setButtonLoader] = useState(false);
   // const AnnualData = [];
@@ -56,11 +56,12 @@ export default function DashboardApp() {
   const location = useLocation();
   const useStyles = makeStyles((theme) => ({
     root: {
-      position: 'relative'
-      // left: '60%',
-      // top: '45%',
-      // zIndex: '100'
-      // transform: 'translate(-50%)'
+      display: 'flex',
+      position: 'relative',
+      // left: '50%',
+      // flexDirection: 'column',
+      justifyContent: 'center',
+      top: '50%'
     },
     labelRoot: {
       '&&': {
@@ -123,9 +124,7 @@ export default function DashboardApp() {
     <>
       {loader ? (
         <div className={classes.root}>
-          <Box sx={{ width: '100%', position: 'absolute', top: 200 }}>
-            <LinearProgress />
-          </Box>
+          <CircularProgress />
         </div>
       ) : (
         <Page>
