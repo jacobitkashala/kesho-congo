@@ -133,7 +133,7 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
@@ -194,11 +194,11 @@ export default function Patient() {
   };
   const handleClickPrev = () => {
     if (rowsPerPage > 1) {
-      setRowsPerPage((prevState) => prevState - 1);
+      setRowsPerPage((prevState) => prevState - 5);
     }
   };
   const handleClickNext = () => {
-    setRowsPerPage((prevState) => prevState + 1);
+    setRowsPerPage((prevState) => prevState + 5);
   };
 
   // -------------------FOrmik----------------------------
@@ -424,22 +424,19 @@ export default function Patient() {
                 </TableContainer>
               </Scrollbar>
               <TableRow>
-                <TableRow>
-                  <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                    <BsFillSkipBackwardFill
-                      style={{ width: '33px', height: '33px', color: '#1f2b35' }}
-                    />
-                  </TableCell>
-                  <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                    <BsFillSkipForwardFill
-                      style={{ width: '33px', height: '33px', color: '#1f2b35' }}
-                    />
-                  </TableCell>
-                  <TableCell style={{ fontWeight: '900px' }}>
-                    {rowsPerPage}/{patientsList.length}
-                  </TableCell>
-                  {/* <TableCell>{filteredPatient.length}</TableCell> */}
-                </TableRow>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
+                  <BsFillSkipBackwardFill
+                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
+                  />
+                </TableCell>
+                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
+                  <BsFillSkipForwardFill
+                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
+                  />
+                </TableCell>
+                <TableCell style={{ fontWeight: '900px' }}>
+                  {rowsPerPage}/{patientsList.length}
+                </TableCell>
                 {/* <TableCell>{filteredPatient.length}</TableCell> */}
               </TableRow>
 
