@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from 'react';
 import propTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ PatientData.propTypes = {
   PrevStep: propTypes.func
 };
 export default function PatientData({ DataPatient, PrevStep }) {
-  const [loader, setLoader] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
@@ -141,7 +141,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.date_naissance_tuteur = FamalyData.dateNaissanceChefMenage;
   // newPatient.image_patient = 'https://www.moimoi.monimage.cd';
   const handleSubmit = () => {
-    setLoader((prevState) => !prevState);
+    // setLoader((prevState) => !prevState);
+    setBtnLoading(true);
     Axios.request({
       method: 'POST',
       url: `https://kesho-congo-api.herokuapp.com/patient`,
@@ -152,13 +153,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
       }
     })
       .then((response) => {
-        // setLoader(false);
+        setBtnLoading(false);
         const resp = response.data;
         if (resp.message === 'Enregistrement effectuer avec succès') {
-          setLoader((prevState) => !prevState);
           navigate('/dashboard/patient', { replace: true });
         } else {
-          setLoader((prevState) => !prevState);
+          setBtnLoading(true);
         }
       })
       .catch((Error) => {
@@ -168,11 +168,6 @@ export default function PatientData({ DataPatient, PrevStep }) {
 
   return (
     <Container>
-      {loader && (
-        <div className={classes.root}>
-          <CircularProgress />
-        </div>
-      )}
       <Grid container spacing={2}>
         <Grid item xs={11} sm={6} md={5}>
           <Card
@@ -408,7 +403,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               padding: 5
             }}
           >
-            <Typography>Synthome</Typography>
+            <Typography>Causes malnutrition</Typography>
             <InputLabel>
               Terme grossesse:
               <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
@@ -501,6 +496,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
+          loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer

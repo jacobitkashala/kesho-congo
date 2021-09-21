@@ -128,19 +128,21 @@ const SearchStyle = styled(OutlinedInput)(() => ({
 export default function Patient() {
   // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
-  // const [page, setPage] = useState(0);
+  const [lenghtData, setLenghtData] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [debut, setDebut] = useState(1);
+  const [fin, setFin] = useState(5);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     // console.log(rowsPerPage);
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit=${rowsPerPage}`, {
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit-start=${0}&limit-start=${fin}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -149,6 +151,9 @@ export default function Patient() {
     })
       .then((response) => response.json())
       .then((data) => {
+        const { Patient, nombre_patient } = data;
+        console.log(data);
+        setLenghtData(nombre_patient);
         setPatientsList(data.Patients);
         setLoader(false);
         console.log('myData', data.Patients);
@@ -157,7 +162,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, [rowsPerPage]);
+  }, [debut, fin]);
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -194,10 +199,14 @@ export default function Patient() {
   };
   const handleClickPrev = () => {
     if (rowsPerPage > 1) {
-      setRowsPerPage((prevState) => prevState - 5);
+      setDebut(fin);
+      setFin(fin - 5);
+      // setRowsPerPage((prevState) => prevState - 5);
     }
   };
   const handleClickNext = () => {
+    setDebut(fin);
+    setFin(fin + 5);
     setRowsPerPage((prevState) => prevState + 5);
   };
 
@@ -435,7 +444,7 @@ export default function Patient() {
                   />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {rowsPerPage}/{patientsList.length}
+                  {rowsPerPage}/{lenghtData - 1}
                 </TableCell>
                 {/* <TableCell>{filteredPatient.length}</TableCell> */}
               </TableRow>

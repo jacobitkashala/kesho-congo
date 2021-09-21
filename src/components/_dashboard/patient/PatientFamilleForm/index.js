@@ -378,7 +378,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </option>
                 <option value="Naturel">Naturel</option>
                 <option value="Moderne">Moderne</option>
-                <option value="Pas de contraception">Pas de contraception</option>
+                {/* <option value="Pas de contraception">Pas de contraception</option> */}
               </Select>
               <Select
                 sx={{ padding: '2px' }}
@@ -439,6 +439,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="" selected disabled hidden>
                   Tribu
                 </option>
+                <option value="Havu">Havu</option>
                 <option value="Shi">Shi</option>
                 <option value="Rega">Rega</option>
                 <option value="Autre ethnie du sud-kivu">Autre ethnie du sud-kivu</option>
@@ -488,12 +489,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="" selected disabled hidden>
                   Niveau socio-économique
                 </option>
-                <option value="Bas">Bas</option>
-                <option value="Moyen">Moyen</option>
-                <option value="Universitaire">Bon</option>
-                <option value="Inferieur à 1$">Inferieur a 1$ </option>
-                <option value="Supérieur a 5$ ">Supérieur a 5$ </option>
-                <option value="5 dollars">5 dollars</option>
+                <option value="Bas">Bas(Inferieur a 1$ )</option>
+                <option value="Moyen">Moyen(5 dollars )</option>
+                <option value="Universitaire">Bon(Supérieur a 5$ )</option>
               </Select>
               <TextField
                 sx={{ padding: '2px' }}
