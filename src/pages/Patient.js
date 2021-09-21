@@ -142,7 +142,7 @@ export default function Patient() {
 
   useEffect(() => {
     // console.log(rowsPerPage);
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit-start=${0}&limit-start=${fin}`, {
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${-1}&limit_start=${25}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
