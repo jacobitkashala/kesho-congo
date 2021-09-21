@@ -54,10 +54,10 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Mot de pass oublier ?
+              Mot de passe oublié ?
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Renseigner vos informations pour réinitialiser votre mot de passe.
+              Renseignez vos informations pour réinitialiser votre mot de passe.
             </Typography>
           </Stack>
           <FortgoPasswordForm />

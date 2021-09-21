@@ -56,7 +56,7 @@ export default function Login() {
             <Typography variant="h4" gutterBottom>
               Bienvenue
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Entrez vos details ci-bas.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Entrez vos details ci-bas</Typography>
           </Stack>
           <LoginForm />
         </ContentStyle>
