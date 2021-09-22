@@ -185,6 +185,10 @@ export default function PatientForm({
     const { value } = event.target;
     setFieldValue('provenancePatient', value);
     setProvenancePatient(value);
+    const chai = patientFormData.ExplicationProvenance
+      ? 'Proven patient'
+      : patientFormData.ExplicationProvenance;
+    console.log(chai);
     if (value === 'Autres') {
       setProvenance(false);
     } else {
@@ -410,7 +414,12 @@ export default function PatientForm({
                     }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Sexe:</FormLabel>
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.sexePatient && 'red'}` }}
+                    >
+                      Sexe:
+                    </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="M" control={<Radio />} label="M" />
                       <FormControlLabel value="F" control={<Radio />} label="F" />
@@ -489,7 +498,7 @@ export default function PatientForm({
                   error={Boolean(touched.provenancePatient && errors.provenancePatient)}
                 >
                   <option defaultValue="" selected disabled hidden>
-                    Provenance Patient
+                    {patientFormData.ExplicationProvenance || 'Provenance Patient'}
                   </option>
                   <option value="kadutu">Kadutu</option>
                   <option value="Bagira">Bagira</option>
@@ -540,7 +549,12 @@ export default function PatientForm({
                     }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Allaitement exclusif 6mois:</FormLabel>
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.allaitementExclisifSixMois && 'red'}` }}
+                    >
+                      Allaitement exclusif 6mois:
+                    </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="true" control={<Radio />} label="Oui" />
                       <FormControlLabel value="false" control={<Radio />} label="Non" />
