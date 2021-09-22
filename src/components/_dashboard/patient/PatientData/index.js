@@ -62,7 +62,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : CauseMalnutrition.preciserCalendrierVaccinNonjour;
   newPatient.vaccin_non_recu = 'rougeole';
   newPatient.produit_plante = CauseMalnutrition.produitPlante;
-  newPatient.duree_produit_plante = '2'; // CauseMalnutrition.dureeProduitPlante;
+  newPatient.duree_produit_plante = CauseMalnutrition.dureeProduitPlante
+    ? CauseMalnutrition.dureeProduitPlante
+    : 'non'; // mettre un ternaire
   newPatient.rang_fratrie = CauseMalnutrition.rangFratrie;
   newPatient.taille_fratrie = CauseMalnutrition.tailleFratrie;
   newPatient.atcd_rougeole_fratrie = CauseMalnutrition.atcdRougeole;
@@ -86,6 +88,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.peri_brachial = indentity.perimetreBrachail;
   newPatient.poids = indentity.poidsActuel;
   newPatient.taille = indentity.taille;
+  newPatient.transferer_unt = indentity.transfererUnt;
   newPatient.type_malnutrition = indentity.typeMalnutrition;
   // newPatient.date_examen = '2020-01-23';
   newPatient.nom_patient = indentity.NomPatient;
@@ -233,7 +236,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}Kg</span>
             </InputLabel>
             <InputLabel>
-              Poids naissance :<span style={{ color: 'black' }}> {indentity.poids_naissance}g</span>
+              Poids naissance :<span style={{ color: 'black' }}> {indentity.poidsNaissance} g</span>
             </InputLabel>
             <InputLabel>
               Provenance :<span style={{ color: 'black' }}> {indentity.provenancePatient}</span>
@@ -247,7 +250,14 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Mode arriver:
-              <span style={{ color: 'black' }}> {indentity.modeArriver}</span>
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  indentity.modeArrive === 'Autres'
+                    ? indentity.ExplicationAutre
+                    : indentity.modeArriver
+                }`}
+              </span>
             </InputLabel>
             <InputLabel>
               Allaitement Exclisif:
@@ -268,8 +278,22 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {indentity.diversificationAliment}</span>
             </InputLabel>
             <InputLabel>
+              Durée produit plante :
+              <span style={{ color: 'black' }}>
+                {`${
+                  CauseMalnutrition.dureeProduitPlante
+                    ? CauseMalnutrition.dureeProduitPlante
+                    : 'non'
+                }`}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Constitution aliment:
               <span style={{ color: 'black' }}> {indentity.constitutionAliment}</span>
+            </InputLabel>
+            <InputLabel>
+              Transfer Unt:
+              <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
           </Card>
         </Grid>
@@ -457,7 +481,7 @@ typeContraceptionNaturel: ""
           <Card
             sx={{
               margin: 2,
-              marginTop: '-121%',
+              marginTop: '-100%',
               padding: 5
             }}
           >
