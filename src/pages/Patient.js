@@ -38,7 +38,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
-import { FcNext, FcPrevious } from 'react-icons/fc';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
@@ -131,26 +131,29 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [debut, setDebut] = useState(1);
-  const [fin, setFin] = useState(5);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [debut, setDebut] = useState(0);
+  const [taille, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     // console.log(rowsPerPage);
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${-1}&limit_start=${25}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `bearer ${localStorage.getItem('token')}`
+    fetch(
+      `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${taille}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
       }
-    })
+    )
       .then((response) => response.json())
       .then((data) => {
         const { Patients, nombre_patient } = data;
-        console.log(data);
+        console.log(localStorage.getItem('token'));
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
@@ -160,7 +163,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, [debut, fin]);
+  }, [debut, taille]);
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -196,16 +199,19 @@ export default function Patient() {
     setSelected(newSelected);
   };
   const handleClickPrev = () => {
-    if (rowsPerPage > 1) {
-      setDebut(fin);
-      setFin(fin - 5);
+    if (debut > 1) {
+      setDebut(taille);
+      settaille(taille - 5);
       // setRowsPerPage((prevState) => prevState - 5);
     }
   };
   const handleClickNext = () => {
-    setDebut(fin);
-    setFin(fin + 5);
-    setRowsPerPage((prevState) => prevState + 5);
+    console.log(lenghtData);
+    if (debut <= lenghtData) {
+      setDebut(taille + debut);
+      // settaille(taille + 5);
+      // setRowsPerPage((prevState) => prevState + 5);
+    }
   };
 
   // -------------------FOrmik----------------------------
@@ -221,7 +227,7 @@ export default function Patient() {
     onSubmit: async ({ searchValue }) => {
       // setButtonLoader(true);
       setLoadingButton(true);
-      console.log('la valeur recherchée', searchValue);
+      // console.log('la valeur recherchée', searchValue);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/patient/search',
@@ -277,10 +283,6 @@ export default function Patient() {
             <Typography variant="h4" gutterBottom>
               Patients
             </Typography>
-            {/* <div className={classes.root}>
-            <CircularProgress />
-          </div> */}
-
             <Button
               variant="contained"
               component={RouterLink}
@@ -436,17 +438,15 @@ export default function Patient() {
             <TableRow>
               <TableRow>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                  <FcPrevious style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
+                  <GrFormPrevious style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
                 </TableCell>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                  <FcNext style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
+                  <GrFormNext style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {rowsPerPage}/{lenghtData - 1}
+                  {debut + taille}/{lenghtData - 1}
                 </TableCell>
-                {/* <TableCell>{filteredPatient.length}</TableCell> */}
               </TableRow>
-              {/* <TableCell>{filteredPatient.length}</TableCell> */}
             </TableRow>
 
             {/* <TablePagination
