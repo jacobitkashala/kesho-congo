@@ -59,7 +59,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     rangFratrie: Yup.string().required('Rang fratrie requis'),
     produitPlante: Yup.string().required('Produit plante requis'),
     terrainVih: Yup.string().required('Terrain vih requis'),
-    nombreChute: Yup.number().positive().required('Nombre de chute requis'),
+    nombreChute: Yup.number().required('Nombre de chute requis'),
     vaccinationRougeole: Yup.string().required('vaccination Rougeole requis'),
     eig: Yup.number().required('Eig requis').positive(),
     TbcGuerie: Yup.string(),
@@ -113,15 +113,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const { errors, touched, setFieldValue, handleSubmit, isSubmitting, getFieldProps, values } =
     formik;
   console.log(errors);
-  // const handleDesablebComponent = (event) => {
-  //   const { value } = event.target;
-  //   setFieldValue('tbc', value);
-  //   if (value === 'true') {
-  //     setTbcDesabled(false);
-  //   } else {
-  //     setTbcDesabled(true);
-  //   }
-  // };
+  const handleDesablebComponent = (event) => {
+    const { value } = event.target;
+    setFieldValue('tbcChezParent', value);
+    if (value === 'true') {
+      setTbcDesabled(false);
+    } else {
+      setTbcDesabled(true);
+    }
+  };
   const handleChangeHospitalisation = (event) => {
     const { value } = event.target;
     setFieldValue('hospitalisationRecente', value);
@@ -185,7 +185,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </Select>
               <RadioGroup
                 fullWidth
-                sx={{ visibility: 0 }}
                 error={Boolean(touched.sejourNeo && errors.sejourNeo)}
                 // helperText={touched.sejourNeo && errors.sejourNeo}
                 {...getFieldProps('sejourNeo')}
@@ -196,8 +195,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo)} && '1px solid red'}`,
-                    borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo)} && '10px'}`
+                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '10px'}`
                   }}
                   spacing={1}
                 >
@@ -235,8 +234,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
-                    borderRadius: `${errors.sejourNeo && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.masFratrie && errors.masFratrie) && '10px'}`
                   }}
                   spacing={1}
                 >
@@ -257,14 +259,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               />
               <RadioGroup
                 fullWidth
-                // onChange={handleDesablebComponent}
                 {...getFieldProps('tbc')}
                 helperText={touched.tbc && errors.tbc}
                 error={Boolean(touched.tbc && errors.tbc)}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${Boolean(touched.tbc && errors.tbc) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.tbc && errors.tbc) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">TBC:</FormLabel>
@@ -276,7 +283,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </RadioGroup>
               <RadioGroup
                 fullWidth
-                {...getFieldProps('tbcChezParent')}
+                onChange={handleDesablebComponent}
+                // {...getFieldProps('tbcChezParent')}
                 error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
                 // helperText={touched.tbcChezParent && errors.tbcChezParent}
               >
@@ -399,7 +407,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                      '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Hospitalisation récente:</FormLabel>
@@ -429,7 +449,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
@@ -552,11 +582,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     alignItems: 'center',
                     padding: '10px',
                     border: `${
-                      Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision) &&
-                      '1px solid red'
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
                     }`,
                     borderRadius: `${
-                      Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision) && '10px'
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'
                     }`
                   }}
                   spacing={1}
@@ -694,7 +723,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">ATCD de TBC dans la fratrie:</FormLabel>

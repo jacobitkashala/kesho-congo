@@ -649,7 +649,7 @@ export default function PatientForm({
                   error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
                 >
                   <option value="" selected disabled hidden>
-                    Form de malnutrition
+                    Forme de malnutrition
                   </option>
                   <option value="MAM">Malnutrition aigue modéré</option>
                   <option value="MAS-K">Malnutrition aigue kwashorcore</option>
