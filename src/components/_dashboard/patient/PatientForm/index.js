@@ -89,14 +89,18 @@ export default function PatientForm({
   const [traitementNutri, setTraitementNutri] = useState(true);
 
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre requis').required('Taille requis'),
+    taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
     ExplicationAutre: Yup.string(),
     allaitementExclisifSixMois: Yup.string().required('Radio requis'),
     NomPatient: Yup.string().required('Nom requis'),
-    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis'),
-    perimetreCranien: Yup.number('un chiffre requis').required('Perimetre cranien requis'),
+    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
+    perimetreCranien: Yup.number('un chiffre requis')
+      .required('Perimetre cranien requis')
+      .positive(),
     fistNamePatient: Yup.string().required('Prenom requis'),
-    perimetreBrachail: Yup.number('un chiffre requis').required('Perimetre brachial requis'),
+    perimetreBrachail: Yup.number('un chiffre requis')
+      .required('Perimetre brachial requis')
+      .positive(),
     postNomPatient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
     diversification_aliment: Yup.string().required('diversification requis'),
@@ -106,12 +110,12 @@ export default function PatientForm({
     provenancePatient: Yup.string().required('Provenance requiq'),
     modeArriver: Yup.string().required('champs requis'),
     typeMalnutrition: Yup.string().required('Type malnutriton requis'),
-    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis'),
-    traitementNutritionnel: Yup.string(),
+    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis').positive(),
+    traitementNutritionnel: Yup.string().required('traitement nutritionnel requis'),
     traitementNutritionnelAutre: Yup.string(),
     adressePatient: Yup.string().required('adresse requis'),
     ExplicationProvenance: Yup.string(),
-    ageFinAllaitement: Yup.number('requis')
+    ageFinAllaitement: Yup.number('requis').positive()
   });
   const formik = useFormik({
     initialValues: {
@@ -397,8 +401,13 @@ export default function PatientForm({
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
-                    style={{ borderColor: 'red' }}
-                    sx={{ display: 'flex', alignItems: 'center' }}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px',
+                      border: `${errors.sexePatient && '1px solid red'}`,
+                      borderRadius: `${errors.sexePatient && '10px'}`
+                    }}
                     spacing={1}
                   >
                     <FormLabel component="label">Sexe:</FormLabel>
@@ -522,7 +531,13 @@ export default function PatientForm({
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
-                    sx={{ display: 'flex', alignItems: 'center' }}
+                    sx={{
+                      display: 'flex',
+                      padding: '10px',
+                      alignItems: 'center',
+                      border: `${errors.allaitementExclisifSixMois && '1px solid red'}`,
+                      borderRadius: `${errors.allaitementExclisifSixMois && '10px'}`
+                    }}
                     spacing={1}
                   >
                     <FormLabel component="label">Allaitement exclusif 6mois:</FormLabel>
