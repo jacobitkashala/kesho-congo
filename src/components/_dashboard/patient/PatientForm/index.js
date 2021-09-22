@@ -412,7 +412,7 @@ export default function PatientForm({
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      padding: '10px',
+                      paddingLeft: '10px',
                       border: `${
                         Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
                       }`,
@@ -554,7 +554,7 @@ export default function PatientForm({
                     direction={{ xs: 'column', sm: 'row' }}
                     sx={{
                       display: 'flex',
-                      padding: '10px',
+                      paddingLeft: '10px',
                       alignItems: 'center',
                       border: `${
                         Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
@@ -571,7 +571,7 @@ export default function PatientForm({
                       component="label"
                       // style={{ color: `${errors.allaitementExclisifSixMois && 'red'}` }}
                     >
-                      Allaitement exclusif 6mois:
+                      Allaitement exclusif 6 mois:
                     </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="true" control={<Radio />} label="Oui" />

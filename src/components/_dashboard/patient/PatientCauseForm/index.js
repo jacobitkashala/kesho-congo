@@ -194,7 +194,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
                     borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '10px'}`
                   }}
@@ -234,7 +234,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
                     }`,
@@ -252,7 +252,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               <TextField
                 fullWidth
                 sx={{ padding: '2px' }}
-                label="eig moyen (année)"
+                label="Eig moyen (année)"
                 {...getFieldProps('eig')}
                 error={Boolean(touched.eig && errors.eig)}
                 helperText={touched.eig && errors.eig}
@@ -268,7 +268,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${Boolean(touched.tbc && errors.tbc) && '1px solid red'}`,
                     borderRadius: `${Boolean(touched.tbc && errors.tbc) && '10px'}`
                   }}
@@ -293,7 +293,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
                     }`,

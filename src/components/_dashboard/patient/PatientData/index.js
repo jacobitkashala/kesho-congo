@@ -208,13 +208,19 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </Stack>
             <Label
               variant="filled"
-              color={`${
-                indentity.typeMalnutrition === 'MAC'
-                  ? 'error'
-                  : indentity.typeMalnutrition === 'MAM'
-                  ? 'secondary'
-                  : 'primary'
-              }`}
+              sx={{
+                color: `${
+                  indentity.typeMalnutrition === 'MAC'
+                    ? '#d32f2f'
+                    : indentity.typeMalnutrition === 'MAM'
+                    ? '#1565c0'
+                    : indentity.typeMalnutrition === 'MAS-K'
+                    ? '#ED6C02'
+                    : indentity.typeMalnutrition === 'MAS-M'
+                    ? '#ef5350'
+                    : '#4caf50'
+                }`
+              }}
             >
               {indentity.typeMalnutrition}
             </Label>

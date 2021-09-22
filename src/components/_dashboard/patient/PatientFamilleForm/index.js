@@ -16,7 +16,7 @@ import {
   RadioGroup,
   FormLabel,
   Grid,
-  InputLabel,
+  // InputLabel,
   Select
   // styled
 } from '@material-ui/core';
@@ -32,6 +32,9 @@ FamilleForm.propTypes = {
 export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const [statutMarital, setStatutMarital] = useState(true);
   const [contraceptionMeredisable, setContraceptionMeredisable] = useState(true);
+  const [contraceptionNaturelDisable, setContraceptionNaturelDisable] = useState(true);
+  const [contraceptionModerneDisable, setContraceptionModerneDisable] = useState(true);
+  const [statutMaritalDisable, setStatutMaritalDisable] = useState(true);
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date().required('Date de naissance requis'),
@@ -95,7 +98,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
 
   const { errors, setFieldValue, touched, handleSubmit, getFieldProps, values, isSubmitting } =
     formik;
-  console.log(errors);
+  // console.log(errors);
   const handleStatutMarital = (event) => {
     const { value } = event.target;
     setFieldValue('statutMarital', value);
@@ -115,7 +118,23 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
       setContraceptionMeredisable(true);
     }
   };
-
+  const handleTypeContraceptionModerne = (event) => {
+    const { value } = event.target;
+    //
+    setFieldValue('contraceptionType', value);
+    if (value === 'Naturel') {
+      setContraceptionNaturelDisable(false);
+      setContraceptionModerneDisable(true);
+    }
+    if (value === 'Moderne') {
+      setContraceptionModerneDisable(false);
+      setContraceptionNaturelDisable(true);
+    }
+    if (value === 'Moderne et Nature') {
+      setContraceptionModerneDisable(false);
+      setContraceptionNaturelDisable(false);
+    }
+  };
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -142,7 +161,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.vivreAvecParent && errors.vivreAvecParent) && '1px solid red'
                     }`,
@@ -177,7 +196,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${Boolean(touched.mereEnVie && errors.mereEnVie) && '1px solid red'}`,
                     borderRadius: `${Boolean(touched.mereEnVie && errors.mereEnVie) && '10px'}`
                   }}
@@ -188,11 +207,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   <FormControlLabel value="false" control={<Radio />} label="Non" />
                 </Stack>
               </RadioGroup>
-              <InputLabel>Date de naissance mère</InputLabel>
               <TextField
                 sx={{ padding: '2px' }}
                 type="date"
-                required
+                // required
+                label="Date de naissance mère"
+                InputLabelProps={{
+                  shrink: true
+                }}
                 helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
                 {...getFieldProps('dateNaissanceMere')}
                 error={Boolean(touched.dateNaissanceMere && errors.dateNaissanceMere)}
@@ -209,7 +231,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.mereEnceinte && errors.mereEnceinte) && '1px solid red'
                     }`,
@@ -276,7 +298,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${Boolean(touched.pereEnvie && errors.pereEnvie) && '1px solid red'}`,
                     borderRadius: `${Boolean(touched.pereEnvie && errors.pereEnvie) && '10px'}`
                   }}
@@ -312,11 +334,15 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="Cultivatrice">Cultivatrice</option>
                 <option value="Autre">autre</option>
               </Select>
-              <InputLabel>Date de naissance Chef ménage</InputLabel>
+              {/* <InputLabel></InputLabel> */}
               <TextField
                 sx={{ padding: '2px' }}
+                label="Date de naissance Chef ménage"
                 type="date"
                 // required
+                InputLabelProps={{
+                  shrink: true
+                }}
                 {...getFieldProps('dateNaissanceChefMenage')}
                 helperText={touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage}
                 error={Boolean(touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage)}
@@ -331,7 +357,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio) &&
                       '1px solid red'
@@ -372,7 +398,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 sx={{ padding: '2px' }}
                 native
                 disabled={statutMarital}
-                {...getFieldProps('pereMariage')}
+                {...getFieldProps('pereMariage')} // créer une fonction
                 helperText={touched.pereMariage && errors.pereMariage}
                 error={Boolean(touched.pereMariage && errors.pereMariage)}
               >
@@ -381,12 +407,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </option>
                 <option value="Polygame">Polygame</option>
                 <option value="Monogame">Monogame</option>
-                <option value="Mariage libre">Mariage libre</option>
               </Select>
               <TextField
                 sx={{ padding: '2px' }}
                 label="Si Polygame nbre de femme"
                 value={values.nbrFemme}
+                disabled={statutMaritalDisable}
                 {...getFieldProps('nbrFemme')}
                 helperText={touched.nbrFemme && errors.nbrFemme}
                 error={Boolean(touched.nbrFemme && errors.nbrFemme)}
@@ -395,7 +421,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 // {...getFieldProps('contraceptionMere')}
                 onChange={handleContraceptionMere}
                 error={Boolean(touched.contraceptionMere && errors.contraceptionMere)}
-                required
+                // required
                 helperText={touched.contraceptionMere && errors.contraceptionMere}
               >
                 <Stack
@@ -403,7 +429,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.contraceptionMere && errors.contraceptionMere) &&
                       '1px solid red'
@@ -424,7 +450,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 native
                 disabled={contraceptionMeredisable}
                 selected={values.contraceptionType}
-                {...getFieldProps('contraceptionType')}
+                onChange={handleTypeContraceptionModerne}
+                // {...getFieldProps('contraceptionType')}
                 helperText={touched.contraceptiontionType && errors.contraceptionType}
                 error={Boolean(touched.contraceptionType && errors.contraceptionType)}
               >
@@ -438,7 +465,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               <Select
                 sx={{ padding: '2px' }}
                 native
-                disabled={contraceptionMeredisable}
+                disabled={contraceptionNaturelDisable}
                 // selected={values.typeContraceptionNaturel}
                 helperText={touched.typeContraceptionNaturel && errors.typeContraceptionNaturel}
                 {...getFieldProps('typeContraceptionNaturel')}
@@ -454,10 +481,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 <option value="Cervicale">Cervicale</option>
                 <option value="MAMA">MAMA</option>
               </Select>
+
               <Select
                 sx={{ padding: '2px' }}
                 native
-                disabled={contraceptionMeredisable}
+                disabled={contraceptionModerneDisable}
                 helperText={touched.typeContraceptionModerne && errors.typeContraceptionModerne}
                 {...getFieldProps('typeContraceptionModerne')}
                 error={Boolean(touched.typeContraceptionModerne && errors.typeContraceptionModerne)}
@@ -501,7 +529,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               </Select>
               <RadioGroup
                 {...getFieldProps('consommationPoisson')}
-                required
+                // required
                 helperText={touched.consommationPoisson && errors.consommationPoisson}
                 error={Boolean(touched.consommationPoisson && errors.consommationPoisson)}
               >
@@ -510,7 +538,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.consommationPoisson && errors.consommationPoisson) &&
                       '1px solid red'
@@ -528,7 +556,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               </RadioGroup>
               <Select
                 native
-                required
+                // required
                 sx={{ padding: '2px' }}
                 selected={values.Religion}
                 {...getFieldProps('Religion')}
@@ -546,7 +574,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
               <Select
                 sx={{ padding: '2px' }}
                 native
-                required
+                // required
                 helperText={touched.NiveauSocioEconomique && errors.NiveauSocioEconomique}
                 {...getFieldProps('NiveauSocioEconomique')}
                 error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
