@@ -3,27 +3,12 @@ import { useState } from 'react';
 import propTypes from 'prop-types';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+// import { makeStyles } from '@material-ui/styles';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
 import Label from '../../../Label';
-
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'absolute',
-    left: '60%',
-    top: '45%',
-    zIndex: '100'
-    // transform: 'translate(-50%)'
-  },
-  labelRoot: {
-    '&&': {
-      color: 'red'
-    }
-  }
-}));
 
 PatientData.propTypes = {
   DataPatient: propTypes.object,
@@ -32,10 +17,32 @@ PatientData.propTypes = {
 export default function PatientData({ DataPatient, PrevStep }) {
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
-  const classes = useStyles();
+  // const classes = useStyles();
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
-
+  // ExplicationAutre: ""
+  // ExplicationProvenance: ""
+  // NomPatient: "JacobitKashala"
+  // adressePatient: "Lemba bakole 30"
+  // ageFinAllaitement: ""
+  // allaitementExclisifSixMois: "true"
+  // : "AA"
+  // dataNaissancePatient: "2021-09-23"
+  // : "12"
+  // fistNamePatient: "12"
+  // modeArriver: "UNT"
+  // perimetreBrachail: "12"
+  // perimetreCranien: "12"
+  // poidsActuel: "12"
+  // poidsNaissance: "12"
+  // postNomPatient: "12"
+  // provenancePatient: "Bagira"
+  // sexePatient: "F"
+  // taille: "12"
+  // telephone: "0815824641"
+  // traitementNutritionnel: "Plumpy-nut"
+  // traitementNutritionnelAutre: ""
+  // typeMalnutrition: "MAM
   const newPatient = {};
 
   newPatient.atcd_mas = CauseMalnutrition.atcdMas;
@@ -176,16 +183,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
               padding: 5
             }}
           >
-            <Avatar
-              variant="square"
+            <Stack
               sx={{
-                width: '100px',
-                height: '120px'
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'nowrap',
+                gap: '14px'
               }}
-              alt={indentity.fistNamePatient}
-              src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
-            />
-            <Typography>{`${indentity.fistNamePatient}  ${indentity.NomPatient}`}</Typography>
+            >
+              <Avatar
+                variant="circle"
+                sizes="50"
+                alt={indentity.fistNamePatient}
+                src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
+              />
+              <Typography
+                sx={{ fontWeight: '900', fontSize: 'larger' }}
+              >{`${indentity.fistNamePatient}  ${indentity.NomPatient}`}</Typography>
+            </Stack>
             <Label
               variant="filled"
               color={`${
@@ -199,18 +215,18 @@ export default function PatientData({ DataPatient, PrevStep }) {
               {indentity.typeMalnutrition}
             </Label>
             <InputLabel>
-              Sex : <span style={{ color: 'black' }}>{indentity.sexePatient}</span>
-            </InputLabel>
-            <InputLabel>
-              Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
-            </InputLabel>
-            <InputLabel>
               Périmètre brachial :
               <span style={{ color: 'black' }}> {indentity.perimetreBrachail} Cm</span>
             </InputLabel>
             <InputLabel>
               Périmètre Cranien :
               <span style={{ color: 'black' }}> {indentity.perimetreCranien} Cm</span>
+            </InputLabel>
+            <InputLabel>
+              Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
+            </InputLabel>
+            <InputLabel>
+              Sexe : <span style={{ color: 'black' }}>{indentity.sexePatient}</span>
             </InputLabel>
             <InputLabel>
               Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}Kg</span>
@@ -234,7 +250,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Allaitement Exclisif:
-              <span style={{ color: 'black' }}> {indentity.allaitementExclisifSixMois}</span>
+              <span style={{ color: 'black' }}>
+                {`${indentity.allaitementExclisifSixMois ? '6 mois' : 'ien'}`}
+              </span>
             </InputLabel>
             <InputLabel>
               Téléphone:
@@ -245,8 +263,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {indentity.traitementNutritionnel}</span>
             </InputLabel>
             <InputLabel>
-              Consommer le poisson:
-              <span style={{ color: 'black' }}> {FamalyData.consommationPoisson}</span>
+              Diversification aliment:
+              <span style={{ color: 'black' }}>{indentity.diversificationAliment}</span>
             </InputLabel>
           </Card>
         </Grid>
@@ -277,7 +295,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
             </InputLabel>
             <InputLabel>
-              Posseder une radio ou télé :
+              constitutionAliment:
               <span style={{ color: 'black' }}>
                 {`${FamalyData.PossederTeleRadio ? 'Oui' : 'Non'}`}
               </span>

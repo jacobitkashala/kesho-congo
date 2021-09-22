@@ -149,10 +149,10 @@ export default function Patient() {
     })
       .then((response) => response.json())
       .then((data) => {
-        const { Patient, nombre_patient } = data;
+        const { Patients, nombre_patient } = data;
         console.log(data);
         setLenghtData(nombre_patient);
-        setPatientsList(data.Patients);
+        setPatientsList(Patients);
         setLoader(false);
         console.log('myData', data.Patients);
         // setUsersList(data);

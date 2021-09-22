@@ -103,7 +103,7 @@ export default function PatientForm({
       .positive(),
     postNomPatient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
-    diversification_aliment: Yup.string().required('diversification requis'),
+    diversificationAliment: Yup.string().required('diversification requis'),
     sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
     constitutionAliment: Yup.string().required('constitution aliment requis'),
@@ -126,7 +126,7 @@ export default function PatientForm({
       NomPatient: patientFormData.nomPatient ? patientFormData.nomPatient : '',
       postNomPatient: patientFormData.postNomPatient ? patientFormData.postNomPatient : '',
       telephone: patientFormData.telephone ? patientFormData.telephone : '',
-      diversification_aliment: patientFormData.diversificationAliment
+      diversificationAliment: patientFormData.diversificationAliment
         ? patientFormData.diversificationAliment
         : '',
       sexePatient: patientFormData.sexePatient ? patientFormData.sexePatient : '',
@@ -228,7 +228,7 @@ export default function PatientForm({
   };
   const handleChangeDiversificationAliment = (event) => {
     const { value } = event.target;
-    setFieldValue('diversification_aliment', value);
+    setFieldValue('diversificationAliment', value);
     setDiversificationAliment(value);
   };
   const handleChangePostNomPatient = (event) => {
@@ -635,10 +635,10 @@ export default function PatientForm({
                   label="Diversification aliment"
                   value={patientFormData.diversificationAliment}
                   onChange={handleChangeDiversificationAliment}
-                  // {...getFieldProps('diversification_aliment')}
-                  // defaultValue={DataPatient.diversification_aliment}
-                  helperText={touched.diversification_aliment && errors.diversification_aliment}
-                  error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
+                  // {...getFieldProps('diversificationAliment')}
+                  // defaultValue={DataPatient.diversificationAliment}
+                  helperText={touched.diversificationAliment && errors.diversificationAliment}
+                  error={Boolean(touched.diversificationAliment && errors.diversificationAliment)}
                 />
                 <Select
                   native
