@@ -378,7 +378,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 </option>
                 <option value="Naturel">Naturel</option>
                 <option value="Moderne">Moderne</option>
-                {/* <option value="Pas de contraception">Pas de contraception</option> */}
+                <option value="Moderne et Nature">Moderne et Nature</option>
               </Select>
               <Select
                 sx={{ padding: '2px' }}

@@ -420,7 +420,7 @@ export default function PatientForm({
                   <option value="" selected disabled hidden>
                     Mode d'arriver
                   </option>
-                  <option value="De la maison"> De la maison</option>
+                  <option value="De la maison">De la maison</option>
                   <option value="UNT">UNT</option>
                   <option value="Autres">Autres</option>
                 </Select>
@@ -613,7 +613,8 @@ export default function PatientForm({
                     Form de malnutrition
                   </option>
                   <option value="MAM">Malnutrition aigue modéré</option>
-                  <option value="MAS">Malnutrition aigue sévère</option>
+                  <option value="MAS-K">Malnutrition aigue kwashorcore</option>
+                  <option value="MAS-M">Malnutrition aigue sévère marasme</option>
                   <option value="MAC">Malnutrition aigue chronique</option>
                 </Select>
               </Stack>
