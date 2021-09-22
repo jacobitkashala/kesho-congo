@@ -104,7 +104,9 @@ export default function PatientForm({
       .positive(),
     postNomPatient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
-    diversificationAliment: Yup.string().required('diversification requis'),
+    diversificationAliment: Yup.number('un nombre')
+      .positive('nombre positif')
+      .required('diversification requis'),
     sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
     constitutionAliment: Yup.string().required('constitution aliment requis'),
@@ -591,16 +593,6 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  label="Constitution/type d’aliment"
-                  value={patientFormData.constitutionAliment}
-                  onChange={handleChangeConstitutionAliment}
-                  // {...getFieldProps('constitutionAliment')}
-                  // defaultValue={DataPatient.constitutionAliment}
-                  helperText={touched.constitutionAliment && errors.constitutionAliment}
-                  error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
-                />
-                <TextField
-                  sx={{ padding: '2px' }}
                   fullWidth
                   label="périmètre crânien (Cm)"
                   value={patientFormData.perimetreCranien}
@@ -638,13 +630,23 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   fullWidth
-                  label="Diversification aliment"
+                  label="Diversification à quel âge (en mois)"
                   value={patientFormData.diversificationAliment}
                   onChange={handleChangeDiversificationAliment}
                   // {...getFieldProps('diversificationAliment')}
                   // defaultValue={DataPatient.diversificationAliment}
                   helperText={touched.diversificationAliment && errors.diversificationAliment}
                   error={Boolean(touched.diversificationAliment && errors.diversificationAliment)}
+                />
+                <TextField
+                  sx={{ padding: '2px' }}
+                  label="Constitution/type d’aliment"
+                  value={patientFormData.constitutionAliment}
+                  onChange={handleChangeConstitutionAliment}
+                  // {...getFieldProps('constitutionAliment')}
+                  // defaultValue={DataPatient.constitutionAliment}
+                  helperText={touched.constitutionAliment && errors.constitutionAliment}
+                  error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <RadioGroup
                   {...getFieldProps('transfererUnt')}
