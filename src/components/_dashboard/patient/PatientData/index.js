@@ -106,7 +106,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.poids_naissance = indentity.poidsNaissance;
   newPatient.fin_allaitement = '4'; // obliger
   newPatient.mois_fin_allaitement = '10';
-  newPatient.diversification_aliment = indentity.diversificationAliment; // aquel age (mois)
+  newPatient.diversification_aliment = '2'; // indentity.diversificationAliment; // aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;
   newPatient.type_statut_marital =

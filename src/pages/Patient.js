@@ -38,7 +38,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
-import { BsFillSkipBackwardFill, BsFillSkipForwardFill } from 'react-icons/bs';
+import { FcNext, FcPrevious } from 'react-icons/fc';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
@@ -391,10 +391,14 @@ export default function Patient() {
                               sx={{
                                 color: `${
                                   type_malnutrition === 'MAC'
-                                    ? 'red'
+                                    ? '#d32f2f'
                                     : type_malnutrition === 'MAM'
-                                    ? 'green'
-                                    : 'orange'
+                                    ? '#1565c0'
+                                    : type_malnutrition === 'MAS-K'
+                                    ? '#ED6C02'
+                                    : type_malnutrition === 'MAS-M'
+                                    ? '#ef5350'
+                                    : '#4caf50'
                                 }`
                               }}
                             >
@@ -432,14 +436,10 @@ export default function Patient() {
             <TableRow>
               <TableRow>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                  <BsFillSkipBackwardFill
-                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
-                  />
+                  <FcPrevious style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
                 </TableCell>
                 <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                  <BsFillSkipForwardFill
-                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
-                  />
+                  <FcNext style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
                   {rowsPerPage}/{lenghtData - 1}
