@@ -29,35 +29,26 @@ export default function FortgoPasswordForm() {
   const [errorWord, setErrorWord] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    myEmail: Yup.string().email('Votre mail doit être valide').required('Email requis'),
-    firstName: Yup.string().required('Prénom requis'),
-    lastName: Yup.string().required('Nom requis')
+    myEmail: Yup.string().email('Votre mail doit être valide').required('Email requis')
+    // firstName: Yup.string().required('Prénom requis'),
+    // lastName: Yup.string().required('Nom requis')
   });
   const formik = useFormik({
     initialValues: {
-      myEmail: '',
-      firstName: '',
-      lastName: ''
+      myEmail: ''
+      // firstName: '',
+      // lastName: ''
     },
     validationSchema: LoginSchema,
-    onSubmit: ({ myEmail, firstName, lastName }) => {
+    onSubmit: ({ myEmail }) => {
       setLoading(true);
       setErrorWord(false);
       console.log('clicked');
-      Axios.post(
-        `https://kesho-congo-api.herokuapp.com/user/reset`,
-        {
-          nom_user: lastName,
-          prenom_user: firstName,
-          email: myEmail
-        }
-        // {
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: `bearer ${localStorage.getItem('token')}`
-        //   }
-        // }
-      )
+      Axios.post(`https://kesho-congo-api.herokuapp.com/user/reset`, {
+        // nom_user: lastName,
+        // prenom_user: firstName,
+        email: myEmail
+      })
         .then((response) => {
           setLoading(false);
           console.log('Ma reponse:', response.data.email);
@@ -84,6 +75,9 @@ export default function FortgoPasswordForm() {
       '&&': {
         color: 'red'
       }
+    },
+    label: {
+      fontWeight: 'bold'
     }
   }));
   const classes = useStyles();
@@ -93,7 +87,7 @@ export default function FortgoPasswordForm() {
       <FormikProvider value={formik}>
         <Form onSubmit={handleSubmit}>
           <Stack spacing={3}>
-            <TextField
+            {/* <TextField
               fullWidth
               label="Prénom"
               value={values.firstName}
@@ -110,7 +104,7 @@ export default function FortgoPasswordForm() {
               {...getFieldProps('lastName')}
               error={Boolean(touched.lastName && errors.lastName)}
               helperText={touched.lastName && errors.lastName}
-            />
+            /> */}
             <TextField
               fullWidth
               autoComplete="username"
@@ -125,7 +119,7 @@ export default function FortgoPasswordForm() {
           {errorWord ? (
             <>
               {/* <br /> */}
-              <span className={classes.labelRoot}>Adresse mail ou nom incorrecte</span>
+              <span className={classes.labelRoot}>Adresse mail incorrecte</span>
             </>
           ) : (
             ''
@@ -155,13 +149,14 @@ export default function FortgoPasswordForm() {
         <DialogTitle id="alert-dialog-title">Réinitialisation du mot de passe</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Un mail vous a été envoyé avec votre nouveau mot de passe à "{userEmail}".,
-            Connectez-vous avec votre nouveau mot de passe
+            Un mail vous a été envoyé avec votre nouveau mot de passe à{' '}
+            <span className={classes.label}>{userEmail}</span>. Connectez-vous avec votre nouveau
+            mot de passe
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary" component={RouterLink} to="/">
-            ok
+            OK
           </Button>
         </DialogActions>
       </Dialog>

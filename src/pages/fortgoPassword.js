@@ -57,7 +57,7 @@ export default function Login() {
               Mot de passe oublié ?
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Renseignez vos informations pour réinitialiser votre mot de passe.
+              Renseignez votre adresse mail pour réinitialiser votre mot de passe.
             </Typography>
           </Stack>
           <FortgoPasswordForm />
