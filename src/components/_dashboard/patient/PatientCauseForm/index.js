@@ -60,8 +60,8 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     produitPlante: Yup.string().required('Produit plante requis'),
     terrainVih: Yup.string().required('Terrain vih requis'),
     nombreChute: Yup.number().positive().required('Nombre de chute requis'),
-    vaccinationRougeole: Yup.string().required(),
-    eig: Yup.number().required('Eig requis'),
+    vaccinationRougeole: Yup.string().required('vaccination Rougeole requis'),
+    eig: Yup.number().required('Eig requis').positive(),
     TbcGuerie: Yup.string(),
     dpm: Yup.string().required('Dpm requis'),
     cocktailAtb: Yup.string().required('cocktailAtb requis'),
@@ -195,12 +195,52 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.sejourNeo && '1px solid red'}`,
-                    borderRadius: `${errors.sejourNeo && '10px'}`
+                    padding: '10px',
+                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo)} && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo)} && '10px'}`
                   }}
                   spacing={1}
                 >
                   <FormLabel component="label">Séjour en néonat:</FormLabel>
+                  <Stack direction={{ xs: 'row', sm: 'row' }}>
+                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                  </Stack>
+                </Stack>
+              </RadioGroup>
+              <TextField
+                sx={{ padding: '2px' }}
+                label="Rang dans la fratrie"
+                fullWidth
+                {...getFieldProps('rangFratrie')}
+                error={Boolean(touched.rangFratrie && errors.rangFratrie)}
+                helperText={touched.rangFratrie && errors.rangFratrie}
+              />
+              <TextField
+                sx={{ padding: '2px' }}
+                fullWidth
+                label="Taille de la fratrie"
+                helperText={touched.tailleFratrie && errors.tailleFratrie}
+                {...getFieldProps('tailleFratrie')}
+                error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
+              />
+              <RadioGroup
+                fullWidth
+                {...getFieldProps('masFratrie')}
+                error={Boolean(touched.masFratrie && errors.masFratrie)}
+                // helperText={touched.masFratrie && errors.masFratrie}
+              >
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
+                    borderRadius: `${errors.sejourNeo && '10px'}`
+                  }}
+                  spacing={1}
+                >
+                  <FormLabel component="label">MAS dans la fratrie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
                     <FormControlLabel value="true" control={<Radio />} label="Oui" />
                     <FormControlLabel value="false" control={<Radio />} label="Non" />
@@ -215,37 +255,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 error={Boolean(touched.eig && errors.eig)}
                 helperText={touched.eig && errors.eig}
               />
-              <TextField
-                sx={{ padding: '2px' }}
-                label="Rang dans la fratrie"
-                fullWidth
-                {...getFieldProps('rangFratrie')}
-                error={Boolean(touched.rangFratrie && errors.rangFratrie)}
-                helperText={touched.rangFratrie && errors.rangFratrie}
-              />
-              <RadioGroup
-                fullWidth
-                {...getFieldProps('masFratrie')}
-                error={Boolean(touched.masFratrie && errors.masFratrie)}
-                // helperText={touched.masFratrie && errors.masFratrie}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: `${errors.sejourNeo && '1px solid red'}`,
-                    borderRadius: `${errors.sejourNeo && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">MAS dans la fratrie:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
-                </Stack>
-              </RadioGroup>
               <RadioGroup
                 fullWidth
                 // onChange={handleDesablebComponent}
@@ -276,8 +285,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.tbcChezParent && '1px solid red'}`,
-                    borderRadius: `${errors.tbcChezParent && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -493,8 +507,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.atcdMas && '1px solid red'}`,
-                    borderRadius: `${errors.atcdMas && '10px'}`
+                    padding: '10px',
+                    border: `${Boolean(touched.atcdMas && errors.atcdMas) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.atcdMas && errors.atcdMas) && '10px'}`
                   }}
                   spacing={1}
                 >
@@ -535,8 +550,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.atcdRougeole && '1px solid red'}`,
-                    borderRadius: `${errors.atcdRougeole && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -547,14 +568,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </Stack>
               </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                label="Taille de la fratrie"
-                helperText={touched.tailleFratrie && errors.tailleFratrie}
-                {...getFieldProps('tailleFratrie')}
-                error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
-              />
               <RadioGroup
                 sx={{ padding: '2px' }}
                 fullWidth
@@ -567,8 +580,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.terrainVih && '1px solid red'}`,
-                    borderRadius: `${errors.terrainVih && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.terrainVih && errors.terrainVih) && '10px'}`
                   }}
                   spacing={1}
                 >
@@ -601,8 +617,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    border: `${errors.vaccinationRougeole && '1px solid red'}`,
-                    borderRadius: `${errors.vaccinationRougeole && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -640,9 +662,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '20px',
-                    border: `${errors.cocktailAtb && '1px solid red'}`,
-                    borderRadius: `${errors.cocktailAtb && '10px'}`
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '10px'}`
                   }}
                   spacing={1}
                 >

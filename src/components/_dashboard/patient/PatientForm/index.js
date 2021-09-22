@@ -409,8 +409,12 @@ export default function PatientForm({
                       display: 'flex',
                       alignItems: 'center',
                       padding: '10px',
-                      border: `${errors.sexePatient && '1px solid red'}`,
-                      borderRadius: `${errors.sexePatient && '10px'}`
+                      border: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
@@ -544,8 +548,14 @@ export default function PatientForm({
                       display: 'flex',
                       padding: '10px',
                       alignItems: 'center',
-                      border: `${errors.allaitementExclisifSixMois && '1px solid red'}`,
-                      borderRadius: `${errors.allaitementExclisifSixMois && '10px'}`
+                      border: `${
+                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
+                        '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
+                        '10px'
+                      }`
                     }}
                     spacing={1}
                   >
