@@ -14,7 +14,7 @@ import {
   RadioGroup,
   FormLabel,
   Grid,
-  InputLabel,
+  // InputLabel,
   Select
   // styled
   // getCheckboxUtilityClass
@@ -97,6 +97,7 @@ export default function PatientForm({
     perimetreCranien: Yup.number('un chiffre requis')
       .required('Perimetre cranien requis')
       .positive(),
+    transfererUnt: Yup.string().required(),
     fistNamePatient: Yup.string().required('Prenom requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .required('Perimetre brachial requis')
@@ -155,7 +156,8 @@ export default function PatientForm({
         : '',
       allaitementExclisifSixMois: patientFormData.AllaitementExclisifSixMois
         ? patientFormData.AllaitementExclisifSixMois
-        : ''
+        : '',
+      transfererUnt: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
@@ -165,7 +167,7 @@ export default function PatientForm({
     }
   });
 
-  const { errors, setFieldValue, touched, handleSubmit, isSubmitting } = formik;
+  const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
@@ -521,11 +523,15 @@ export default function PatientForm({
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                   helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
                 />
-                <InputLabel>Date de naissance</InputLabel>
+                {/* <InputLabel>Date de naissance</InputLabel> */}
                 <TextField
                   sx={{ padding: '2px' }}
                   type="date"
                   fullWidth
+                  label="Date de naissance"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
                   value={patientFormData.dataNaissancePatient}
                   onChange={handleChangeDateNaissance}
                   // {...getFieldProps('dataNaissancePatient')}
@@ -640,6 +646,39 @@ export default function PatientForm({
                   helperText={touched.diversificationAliment && errors.diversificationAliment}
                   error={Boolean(touched.diversificationAliment && errors.diversificationAliment)}
                 />
+                <RadioGroup
+                  {...getFieldProps('transfererUnt')}
+                  helperText={touched.transfererUnt && errors.transfererUnt}
+                  error={Boolean(touched.transfererUnt && errors.transfererUnt)}
+                  // onChange={handleAllaitementExclusifSixMoix}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{
+                      display: 'flex',
+                      padding: '10px',
+                      alignItems: 'center',
+                      border: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                      }`
+                    }}
+                    spacing={1}
+                  >
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.allaitementExclisifSixMois && 'red'}` }}
+                    >
+                      Transfer unt:
+                    </FormLabel>
+                    <Stack direction={{ xs: 'row', sm: 'row' }}>
+                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    </Stack>
+                  </Stack>
+                </RadioGroup>
                 <Select
                   native
                   sx={{ padding: '2px' }}
@@ -652,7 +691,7 @@ export default function PatientForm({
                     Forme de malnutrition
                   </option>
                   <option value="MAM">Malnutrition aigue modéré</option>
-                  <option value="MAS-K">Malnutrition aigue kwashorcore</option>
+                  <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
                   <option value="MAS-M">Malnutrition aigue sévère marasme</option>
                   <option value="MAC">Malnutrition aigue chronique</option>
                 </Select>

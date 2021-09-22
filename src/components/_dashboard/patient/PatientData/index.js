@@ -103,7 +103,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.poids_naissance = indentity.poidsNaissance;
   newPatient.fin_allaitement = '4'; // obliger
   newPatient.mois_fin_allaitement = '10';
-  newPatient.diversification_aliment = '4'; // indentity.diversification_aliment;// aquel age (mois)
+  newPatient.diversification_aliment = indentity.diversificationAliment; // aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;
   newPatient.type_statut_marital =
@@ -176,7 +176,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   return (
     <Container>
       <Grid container spacing={2}>
-        <Grid item xs={11} sm={6} md={5}>
+        <Grid item xs={11} sm={5} md={5}>
           <Card
             sx={{
               margin: 2,
@@ -198,9 +198,10 @@ export default function PatientData({ DataPatient, PrevStep }) {
                 alt={indentity.fistNamePatient}
                 src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
               />
-              <Typography
-                sx={{ fontWeight: '900', fontSize: 'larger' }}
-              >{`${indentity.fistNamePatient}  ${indentity.NomPatient}`}</Typography>
+              <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+                {' '}
+                {`${indentity.fistNamePatient}  ${indentity.NomPatient}`}
+              </Typography>
             </Stack>
             <Label
               variant="filled"
@@ -264,52 +265,95 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Diversification aliment:
-              <span style={{ color: 'black' }}>{indentity.diversificationAliment}</span>
+              <span style={{ color: 'black' }}> {indentity.diversificationAliment}</span>
+            </InputLabel>
+            <InputLabel>
+              Constitution aliment:
+              <span style={{ color: 'black' }}> {indentity.constitutionAliment}</span>
             </InputLabel>
           </Card>
         </Grid>
-        <Grid item xs={11} sm={6} md={5}>
+        {/* NbrRepasJour: "1"
+NiveauSocioEconomique: "Moyen"
+PossederTeleRadio: "false"
+ProffessionChefMenage: "Travail à temps partiel (maçon, menuisier)"
+Religion: "Musulman"
+: "Shi"
+consommationPoisson: "true"
+contraceptionMere: "false"
+contraceptionType: ""
+: "2021-09-17"
+dateNaissanceMere: "2021-09-23"
+mereEnVie: "true"
+mereEnceinte: "false"
+: "1"
+nomTuteur: "12"
+pereEnvie: "false"
+pereMariage: ""
+professionMere: "Salariée formelle,infirmier,Ong,enseignante"
+scolariteMere: "Primaire"
+statutMarital: "Prématuré "
+tailleMenage: "12"
+typeContraceptionModerne: ""
+typeContraceptionNaturel: ""
+: "true" */}
+
+        <Grid item xs={11} sm={7} md={7}>
           <Card
             sx={{
               margin: 2,
               padding: 5
             }}
           >
-            <Typography>Famille</Typography>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>Famille</Typography>
+            <Typography>Père</Typography>
             <InputLabel>
-              Pere en vie :<span style={{ color: 'black' }}> {FamalyData.pereEnvie}</span>
+              Parent en vie :
+              <span style={{ color: 'black' }}>
+                {`${FamalyData.vivreAvecParent ? 'Oui' : 'Non'}`}
+              </span>
             </InputLabel>
             <InputLabel>
-              Nombre de repas /jr :
-              <span style={{ color: 'black' }}> {FamalyData.NbrRepasJour}</span>
+              Nom chef Menage :<span style={{ color: 'black' }}> {FamalyData.nomTuteur}</span>
+            </InputLabel>
+            <InputLabel>
+              Pere en vie :
+              <span style={{ color: 'black' }}> {`${FamalyData.pereEnvie ? 'Oui' : 'Non'}`}</span>
+            </InputLabel>
+            <InputLabel>
+              Date de naissance :
+              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de femme :<span style={{ color: 'black' }}> {FamalyData.nbrFemme}</span>
+            </InputLabel>
+            <InputLabel>
+              Tribu :<span style={{ color: 'black' }}> {FamalyData.Tribut}</span>
             </InputLabel>
             <InputLabel>
               Niveau socio :
               <span style={{ color: 'black' }}> {FamalyData.NiveauSocioEconomique}</span>
             </InputLabel>
             <InputLabel>
-              Nom chef Menage :<span style={{ color: 'black' }}> {FamalyData.nomTuteur}</span>
-            </InputLabel>
-            <InputLabel>
-              Date de Père :
-              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
-            </InputLabel>
-            <InputLabel>
-              constitutionAliment:
+              constitutionAliment :
               <span style={{ color: 'black' }}>
                 {`${FamalyData.PossederTeleRadio ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
             <InputLabel>
-              ATC Rougeole:
-              <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'
-              }`}</span>
+              ATC Rougeole :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'}`}
+              </span>
             </InputLabel>
             <InputLabel>
-              Profession:
+              Profession :
               <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
             </InputLabel>
+            {/* <InputLabel>
+              Nombre de femme:
+              <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
+            </InputLabel> */}
             <InputLabel>
               Dpm :<span style={{ color: 'black' }}> {CauseMalnutrition.dpm}</span>
             </InputLabel>
@@ -325,25 +369,49 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.eig}</span>
             </InputLabel>
             <InputLabel>
-              MasFratrie:
+              Mas Fratrie:
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
               }`}</span>
             </InputLabel>
             <InputLabel>
-              Rang fratrie:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+            </InputLabel>
+            <Typography>Mère</Typography>
+            <InputLabel>
+              Mère en vie :
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
-              Réligion:
-              <span style={{ color: 'black' }}> {FamalyData.Religion}</span>
+              Date naisance mère :
+              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceMere}</span>
             </InputLabel>
             <InputLabel>
-              MatcdMasn:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
+              Mère enceint :<span style={{ color: 'black' }}> {FamalyData.mereEnceinte}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute:
+              Contraception mère :
+              <span style={{ color: 'black' }}> {FamalyData.contraceptionMere}</span>
+            </InputLabel>
+            <InputLabel>
+              Type contraception :
+              <span style={{ color: 'black' }}> {FamalyData.contraceptionType}</span>
+            </InputLabel>
+            <InputLabel>
+              Scolarité mère :<span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>
+            </InputLabel>
+            <InputLabel>
+              Profession:<span style={{ color: 'black' }}> {FamalyData.professionMere}</span>
+            </InputLabel>
+            <Typography>Autre</Typography>
+            <InputLabel>
+              Réligion :<span style={{ color: 'black' }}> {FamalyData.Religion}</span>
+            </InputLabel>
+            <InputLabel>
+              MatcdMasn :<span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
               <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
             </InputLabel>
             <InputLabel>
@@ -356,7 +424,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
-              Taille Fratrie:
+              Taille Fratrie :
               <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
             </InputLabel>
             <InputLabel>
@@ -383,51 +451,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
                 {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
-            <Typography>Mère</Typography>
-            <InputLabel>
-              Mère en vie :
-              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
-            </InputLabel>
-            <InputLabel>
-              Date naisance mère:
-              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Mère enceint:
-              <span style={{ color: 'black' }}> {FamalyData.mereEnceinte}</span>
-            </InputLabel>
-            <InputLabel>
-              Contraception mère:
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Type contraception:
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionType}</span>
-            </InputLabel>
-            <InputLabel>
-              Scolarité mère:
-              <span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Profession:<span style={{ color: 'black' }}> {FamalyData.professionMere}</span>
-            </InputLabel>
           </Card>
         </Grid>
         <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
               margin: 2,
-              marginTop: '-70%',
+              marginTop: '-121%',
               padding: 5
             }}
           >
-            <Typography>Causes malnutrition</Typography>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+              Causes malnutrition
+            </Typography>
             <InputLabel>
-              Terme grossesse:
+              Terme grossesse :
               <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
             </InputLabel>
             <InputLabel>
-              Dpm Anormal par ce que:
+              Dpm Anormal par ce que :
               <span style={{ color: 'black' }}>
                 {' '}
                 {CauseMalnutrition.dpmAnormalPrecision === ''
@@ -440,15 +482,15 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
             </InputLabel>
             <InputLabel>
-              ATC Rougeole:
+              ATC Rougeole :
               <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute:
+              Nombre de chute :
               <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
             </InputLabel>
             <InputLabel>
-              Asphyxie prerinatale:
+              Asphyxie prerinatale :
               <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
             </InputLabel>
             <InputLabel>
@@ -465,27 +507,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
             </InputLabel>
             <InputLabel>
-              Vaccination rougeole:
+              Vaccination rougeole :
               <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
             </InputLabel>
             <InputLabel>
-              Terrain vih:
-              <span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
+              Terrain vih :<span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
             </InputLabel>
             <InputLabel>
-              Tbc:
-              <span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
+              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
             </InputLabel>
             <InputLabel>
-              Atbc du tbc dans fratrie:
+              Atbc du tbc dans fratrie :
               <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
             </InputLabel>
             <InputLabel>
-              Hospitalisation recente:
+              Hospitalisation recente :
               <span style={{ color: 'black' }}>{CauseMalnutrition.hospitalisationRecente}</span>
             </InputLabel>
             <InputLabel>
-              Diagnostique hopital:
+              Diagnostique hopital :
               <span style={{ color: 'black' }}>
                 {CauseMalnutrition.diagnostiqueHospitalisation}
               </span>
@@ -514,7 +554,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
-          loading={btnLoading}
+          // loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer
