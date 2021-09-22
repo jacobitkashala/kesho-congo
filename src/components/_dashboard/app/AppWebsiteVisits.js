@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 import Axios from 'axios';
+import moment from 'moment';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -26,6 +27,7 @@ export default function AppWebsiteVisits() {
   const [masData, setMasData] = useState([]);
   const [repData, setRepData] = useState([]);
   const [loader, setLoader] = useState(true);
+  const currentYear = moment().format('YYYY');
 
   useEffect(async () => {
     try {
@@ -105,7 +107,7 @@ export default function AppWebsiteVisits() {
 
   return (
     <Card>
-      <CardHeader title="Visualisation annuelle" subheader="Kesho Congo" />
+      <CardHeader title="Visualisation annuelle" subheader={`Kesho Congo ${currentYear}`} />
       {loader ? (
         <div className={classes.root}>
           <LinearProgress />

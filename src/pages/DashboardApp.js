@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
+import moment from 'moment';
 // material
 import { Box, Grid, Container, Typography, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,6 +11,7 @@ import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
+import { spacing } from '@material-ui/system';
 import Page from '../components/Page';
 import {
   CardBleu,
@@ -19,15 +21,21 @@ import {
   AppCurrentVisits,
   AppWebsiteVisits
 } from '../components/_dashboard/app';
+import CardOrange from '../components/_dashboard/app/CardOrange';
+import CardPurple from '../components/_dashboard/app/CardPurple';
+import CardBlue2 from '../components/_dashboard/app/CardBlue2';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
-  const [yearData, setYearData] = useState([]);
+  const [startingDate, setStartingDate] = useState('');
+  const [endingDate, setEndingDate] = useState('');
   const [loader, setLoader] = useState(true);
   const [buttonLoader, setButtonLoader] = useState(false);
-  // const AnnualData = [];
+  const [displayDate, setDisplayDate] = useState(false);
+  const currentMonth = moment().format('MMMM');
+  console.log('la date', currentMonth);
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
@@ -65,7 +73,8 @@ export default function DashboardApp() {
     },
     labelRoot: {
       '&&': {
-        color: 'red'
+        color: 'green',
+        fontWeight: 'bold'
       },
       container: {
         display: 'flex',
@@ -76,6 +85,12 @@ export default function DashboardApp() {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         width: 200
+      },
+      label: {
+        '&&': {
+          color: 'green',
+          fontWeight: 'bold'
+        }
       }
     }
   }));
@@ -94,7 +109,8 @@ export default function DashboardApp() {
     validationSchema: DateSchema,
     onSubmit: async ({ startDate, endDate }) => {
       setButtonLoader(true);
-      console.log('les dates', startDate + endDate);
+      setDisplayDate(false);
+      // console.log('les dates', startDate + endDate);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/reporting',
@@ -112,9 +128,14 @@ export default function DashboardApp() {
         const data = await response.data;
         setReports(await data);
         setButtonLoader(false);
+        setStartingDate(startDate);
+        setEndingDate(endDate);
+        setDisplayDate(true);
+        // console.log('date de debut', startDate);
       } catch (err) {
         console.log(err);
         setButtonLoader(false);
+        setDisplayDate(false);
       }
     }
   });
@@ -130,7 +151,23 @@ export default function DashboardApp() {
         <Page>
           <Container maxWidth="xl">
             <Box sx={{ pb: 5 }}>
-              <Typography variant="h4">Kesho Congo Reporting</Typography>
+              <Typography variant="h4">
+                Reporting{' '}
+                {displayDate ? (
+                  <>
+                    du{' '}
+                    <span className={classes.labelRoot}>
+                      {moment(startingDate).format('DD MMM YYYY')}
+                    </span>{' '}
+                    au{' '}
+                    <span className={classes.labelRoot}>
+                      {moment(endingDate).format('DD MMM YYYY')}
+                    </span>
+                  </>
+                ) : (
+                  <span className={classes.labelRoot}>{currentMonth}</span>
+                )}
+              </Typography>
             </Box>
             <FormikProvider value={formik}>
               <Form className={classes.container} onSubmit={handleSubmit}>
@@ -174,7 +211,6 @@ export default function DashboardApp() {
                 </LoadingButton>
               </Form>
             </FormikProvider>
-            <br />
             <br />
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={3}>
@@ -220,14 +256,35 @@ export default function DashboardApp() {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
+                <CardOrange
+                  title="MAS-K"
+                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
+                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
                 <CardJaune
-                  title="MAS"
+                  title="MAS-M"
                   nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
                   nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardVert
+                  title="Guéris"
+                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
+                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardPurple
+                  title="En UNT"
+                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
+                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardBlue2
                   title="MAM"
                   nombreM={reports.moderee_nombre_garcon[0].moderee_nombre_garcon}
                   nombreF={reports.moderee_nombre_fille[0].moderee_nombre_fille}

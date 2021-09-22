@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 import Axios from 'axios';
+import moment from 'moment';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import { Card, CardHeader } from '@material-ui/core';
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     '& > * + *': {
       marginTop: theme.spacing(2)
     }
+  },
+  labelRoot: {
+    textAlign: 'center'
   }
 }));
 
@@ -48,6 +52,7 @@ export default function AppCurrentVisits() {
   const [mamData, setMamData] = useState(0);
   const [masData, setMasData] = useState(0);
   const [loader, setLoader] = useState(true);
+  const currentYear = moment().format('YYYY');
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting/annuel`, {
@@ -113,7 +118,7 @@ export default function AppCurrentVisits() {
 
   return (
     <Card>
-      <CardHeader title="Ratio Annuel Malnutrition" />
+      <CardHeader className={classes.labelRoot} title={`Ratio Annuel ${currentYear}`} />
       {loader ? (
         <div className={classes.root}>
           <LinearProgress />
