@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -35,6 +35,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
   const [contraceptionNaturelDisable, setContraceptionNaturelDisable] = useState(true);
   const [contraceptionModerneDisable, setContraceptionModerneDisable] = useState(true);
   const [statutMaritalDisable, setStatutMaritalDisable] = useState(true);
+  useEffect(() => {
+    window.scroll(100, 100);
+  });
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date().required('Date de naissance requis'),
@@ -171,7 +174,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                   }}
                   spacing={1}
                 >
-                  <FormLabel component="label">Les deux parents en vie:</FormLabel>
+                  <FormLabel component="label">Parent en vie:</FormLabel>
                   <FormControlLabel value="true" control={<Radio />} label="Oui" />
                   <FormControlLabel value="false" control={<Radio />} label="Non" />
                 </Stack>

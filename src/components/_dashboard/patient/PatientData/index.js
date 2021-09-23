@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
@@ -18,6 +18,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
   // const classes = useStyles();
+  useEffect(() => {
+    window.scroll(100, 100);
+  });
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
   // ExplicationAutre: ""
@@ -81,7 +84,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
   newPatient.age_fin_allaitement =
     indentity.ageFinAllaitement === '' ? 6 : indentity.ageFinAllaitement;
-  newPatient.allaitement_6mois = indentity.allaitementExclisifSixMois;
+  newPatient.allaitement_6mois = indentity.allaitementExclusifSixMois;
   newPatient.cocktail_atb = '1'; // CauseMalnutrition.cocktailAtb;  // bool
   newPatient.duree_prise_atb = '23'; // CauseMalnutrition.cocktail_atb_preci; // varchar
   newPatient.peri_cranien = indentity.perimetreCranien;
@@ -106,7 +109,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.poids_naissance = indentity.poidsNaissance;
   newPatient.fin_allaitement = '4'; // obliger
   newPatient.mois_fin_allaitement = '10';
-  newPatient.diversification_aliment = '2'; // indentity.diversificationAliment; // aquel age (mois)
+  newPatient.diversification_aliment = indentity.diversificationAliment; // aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;
   newPatient.type_statut_marital =
@@ -125,9 +128,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
     FamalyData.contraceptionType === '' ? 'pas de contraception' : FamalyData.contraceptionType;
   newPatient.contraception_naturelle =
     FamalyData.typeContraceptionNaturel === ''
-      ? 'pas de contraception'
+      ? 'pas de contraception naturel'
       : FamalyData.typeContraceptionNaturel;
-  newPatient.contraception_moderne = 'null_'; // var chart
+  newPatient.contraception_moderne =
+    FamalyData.typeContraceptionModerne === ''
+      ? 'pas de contraception moderne'
+      : FamalyData.typeContraceptionModerne;
   newPatient.niveau_socioeconomique = FamalyData.NiveauSocioEconomique;
   newPatient.statut_marital = FamalyData.statutMarital === '' ? 'rien' : FamalyData.statutMarital;
   newPatient.nbre_femme_pere = FamalyData.nbrFemme;
@@ -266,9 +272,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
-              Allaitement Exclisif:
+              Allaitement Exclusif:
               <span style={{ color: 'black' }}>
-                {`${indentity.allaitementExclisifSixMois ? '6 mois' : 'ien'}`}
+                {`${indentity.allaitementExclusifSixMois ? '6 mois' : 'ien'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -280,8 +286,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {indentity.traitementNutritionnel}</span>
             </InputLabel>
             <InputLabel>
-              Diversification aliment:
-              <span style={{ color: 'black' }}> {indentity.diversificationAliment}</span>
+              Age diversification aliment :
+              <span style={{ color: 'black' }}> {indentity.diversificationAliment} mois</span>
             </InputLabel>
             <InputLabel>
               Durée produit plante :
@@ -417,15 +423,41 @@ typeContraceptionNaturel: ""
               <span style={{ color: 'black' }}> {FamalyData.dateNaissanceMere}</span>
             </InputLabel>
             <InputLabel>
-              Mère enceint :<span style={{ color: 'black' }}> {FamalyData.mereEnceinte}</span>
+              Mère enceint :
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnceinte ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
               Contraception mère :
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionMere}</span>
+              <span style={{ color: 'black' }}>
+                {`${FamalyData.contraceptionMere ? 'Oui' : 'Non'}`}
+              </span>
             </InputLabel>
             <InputLabel>
               Type contraception :
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionType}</span>
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  FamalyData.contraceptionType === ''
+                    ? 'pas de type contraception'
+                    : FamalyData.contraceptionType
+                }`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Contraception moderne:
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionModerne === ''
+                  ? 'pas de contraception moderne'
+                  : FamalyData.typeContraceptionModerne
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Contraception naturel :
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionNaturel === ''
+                  ? 'pas de contraception'
+                  : FamalyData.typeContraceptionNaturel
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Scolarité mère :<span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>

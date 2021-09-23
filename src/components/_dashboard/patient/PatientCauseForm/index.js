@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -36,7 +36,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
-
+  useEffect(() => {
+    window.scroll(100, 100);
+  });
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),

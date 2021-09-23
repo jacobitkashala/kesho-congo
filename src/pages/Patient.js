@@ -131,9 +131,9 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [length, setLength] = useState(0);
   const [debut, setDebut] = useState(0);
-  const [taille, settaille] = useState(5);
+  //  const [taille, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
@@ -151,6 +151,8 @@ export default function Patient() {
       .then((data) => {
         const { Patients, nombre_patient } = data;
         // console.log(localStorage.getItem('token'));
+        // console.log(`la taille de patient : ${Patients.length}`);
+        setLength((current) => current + Patients.length);
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
@@ -160,7 +162,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, [debut, taille]);
+  }, [debut]);
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -196,25 +198,14 @@ export default function Patient() {
     setSelected(newSelected);
   };
   const handleClickPrev = () => {
-    setDebut((prevState) => prevState + 10);
-    console.log(`Prev ${debut}`);
-    // if (debut > 5) {
-
-    // } else {
-    //   setDebut(5);
-    // }
+    console.log(` prev ${length}`);
+    if (length > 5) setDebut((prevState) => prevState - 5);
   };
   const handleClickNext = () => {
-    setDebut((prevState) => prevState + 5);
-    console.log(`Next ${debut}`);
-    // console.log(lenghtData);
-    // if (taille + debut < lenghtData) {
-    //   setDebut(lenghtData);
-    //   // settaille(taille + 5);
-    //   // setRowsPerPage((prevState) => prevState + 5);
-    // } else {
-    //   setDebut(taille + debut);
-    // }
+    if (length <= lenghtData) {
+      setDebut((prevState) => prevState + 5);
+      console.log(`length= ${length}`);
+    }
   };
 
   // -------------------FOrmik----------------------------
@@ -454,7 +445,7 @@ export default function Patient() {
                   />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {debut === 0 ? 5 : debut}/{lenghtData - 1}
+                  {length}/{lenghtData}
                 </TableCell>
               </TableRow>
             </TableRow>

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -87,11 +87,16 @@ export default function PatientForm({
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
-
+  const btnFocus = useRef(null);
+  useEffect(() => {
+    window.scroll(100, 100);
+    // btnFocus.focus();
+    console.dir(btnFocus.current);
+  });
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
     ExplicationAutre: Yup.string(),
-    allaitementExclisifSixMois: Yup.string().required('Radio requis'),
+    allaitementExclusifSixMois: Yup.string().required('Radio requis'),
     NomPatient: Yup.string().required('Nom requis'),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
@@ -156,7 +161,7 @@ export default function PatientForm({
       ExplicationProvenance: patientFormData.ExplicationProvenance
         ? patientFormData.ExplicationProvenance
         : '',
-      allaitementExclisifSixMois: patientFormData.AllaitementExclisifSixMois
+      allaitementExclusifSixMois: patientFormData.AllaitementExclisifSixMois
         ? patientFormData.AllaitementExclisifSixMois
         : '',
       transfererUnt: ''
@@ -326,6 +331,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
+                  ref={btnFocus}
                   label="Prénom"
                   value={patientFormData.prenomPatient}
                   onChange={handleChangeFistName}
@@ -541,12 +547,12 @@ export default function PatientForm({
                   error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
-                  // {...getFieldProps('allaitementExclisifSixMois')}
+                  // {...getFieldProps('allaitementExclusifSixMois')}
                   helperText={
-                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                    touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
                   }
                   error={Boolean(
-                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                    touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
                   )}
                   onChange={handleAllaitementExclusifSixMoix}
                 >
@@ -569,7 +575,7 @@ export default function PatientForm({
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.allaitementExclisifSixMois && 'red'}` }}
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Allaitement exclusif 6 mois:
                     </FormLabel>
@@ -671,7 +677,7 @@ export default function PatientForm({
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.allaitementExclisifSixMois && 'red'}` }}
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Transfer unt:
                     </FormLabel>
