@@ -140,24 +140,21 @@ export default function Patient() {
 
   useEffect(() => {
     // console.log(rowsPerPage);
-    fetch(
-      `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${taille}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `bearer ${localStorage.getItem('token')}`
-        }
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${5}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
       }
-    )
+    })
       .then((response) => response.json())
       .then((data) => {
         const { Patients, nombre_patient } = data;
-        console.log(localStorage.getItem('token'));
+        // console.log(localStorage.getItem('token'));
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
-        console.log('myData', data.Patients);
+        // console.log('myData', data.Patients);
         // setUsersList(data);
       })
       .catch((error) => {
@@ -199,19 +196,25 @@ export default function Patient() {
     setSelected(newSelected);
   };
   const handleClickPrev = () => {
-    if (debut > 1) {
-      setDebut(taille);
-      settaille(taille - 5);
-      // setRowsPerPage((prevState) => prevState - 5);
-    }
+    setDebut((prevState) => prevState + 10);
+    console.log(`Prev ${debut}`);
+    // if (debut > 5) {
+
+    // } else {
+    //   setDebut(5);
+    // }
   };
   const handleClickNext = () => {
-    console.log(lenghtData);
-    if (debut <= lenghtData) {
-      setDebut(taille + debut);
-      // settaille(taille + 5);
-      // setRowsPerPage((prevState) => prevState + 5);
-    }
+    setDebut((prevState) => prevState + 5);
+    console.log(`Next ${debut}`);
+    // console.log(lenghtData);
+    // if (taille + debut < lenghtData) {
+    //   setDebut(lenghtData);
+    //   // settaille(taille + 5);
+    //   // setRowsPerPage((prevState) => prevState + 5);
+    // } else {
+    //   setDebut(taille + debut);
+    // }
   };
 
   // -------------------FOrmik----------------------------
@@ -244,7 +247,7 @@ export default function Patient() {
         const output = await response.data;
         setLoadingButton(false);
         setPatientsList(output);
-        console.log(output);
+        // console.log(output);
         // setReports(await data);
         // setButtonLoader(false);
       } catch (err) {
@@ -356,7 +359,6 @@ export default function Patient() {
                         prenom_patient
                       } = row;
                       const isItemSelected = selected.indexOf(nom_patient) !== -1;
-
                       return (
                         <TableRow
                           hover
@@ -437,14 +439,22 @@ export default function Patient() {
             </Scrollbar>
             <TableRow>
               <TableRow>
-                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                  <GrFormPrevious style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
+                <TableCell />
+
+                <TableCell>
+                  <GrFormPrevious
+                    style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
+                    onClick={handleClickPrev}
+                  />
                 </TableCell>
-                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                  <GrFormNext style={{ width: '30px', height: '30px', color: '#1f2b35' }} />
+                <TableCell>
+                  <GrFormNext
+                    style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
+                    onClick={handleClickNext}
+                  />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {debut + taille}/{lenghtData - 1}
+                  {debut === 0 ? 5 : debut}/{lenghtData - 1}
                 </TableCell>
               </TableRow>
             </TableRow>
