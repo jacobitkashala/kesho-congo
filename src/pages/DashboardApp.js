@@ -258,29 +258,33 @@ export default function DashboardApp() {
               <Grid item xs={12} sm={6} md={3}>
                 <CardOrange
                   title="MAS-K"
-                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
-                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                  nombreM={
+                    reports.sereve_kwashiorkor_nombre_garcon[0].sereve_kwashiorkor_nombre_garcon
+                  }
+                  nombreF={
+                    reports.sereve_kwashiorkor_nombre_fille[0].sereve_kwashiorkor_nombre_fille
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardJaune
                   title="MAS-M"
-                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
-                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                  nombreM={reports.sereve_marasme_nombre_garcon[0].sereve_marasme_nombre_garcon}
+                  nombreF={reports.sereve_marasme_nombre_fille[0].sereve_marasme_nombre_fille}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardVert
                   title="Guéris"
-                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
-                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                  nombreM={reports.sereve_marasme_nombre_garcon[0].sereve_marasme_nombre_garcon}
+                  nombreF={reports.sereve_marasme_nombre_fille[0].sereve_marasme_nombre_fille}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <CardPurple
                   title="En UNT"
-                  nombreM={reports.sereve_nombre_garcon[0].sereve_nombre_garcon}
-                  nombreF={reports.sereve_nombre_fille[0].sereve_nombre_fille}
+                  nombreM={reports.sereve_marasme_nombre_garcon[0].sereve_marasme_nombre_garcon}
+                  nombreF={reports.sereve_marasme_nombre_fille[0].sereve_marasme_nombre_fille}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>

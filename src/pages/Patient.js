@@ -37,8 +37,9 @@ import {
   // IconButton
 } from '@material-ui/core';
 // import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
-import { styled } from '@material-ui/core/styles';
+import { styled, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
+// import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
@@ -56,19 +57,19 @@ import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { PersonnelListHead } from '../components/_dashboard/personnel';
-import PatientMoreMenu from '../components/_dashboard/patient/PatientMoreMenu';
+import { PatientMoreMenu, PatientListHead } from '../components/_dashboard/patient';
+// import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 
 const TABLE_HEAD = [
-  { id: 'NE', label: 'Nom', alignLeft: false },
-  { id: 'PR', label: 'Prénom', alignRight: true },
+  { id: 'NE', label: 'Nom', alignLeft: true },
+  { id: 'PR', label: 'Prénom', alignRight: false },
   { id: 'DN', label: 'Naissance', alignRight: false },
   { id: 'SE', label: 'Sexe', alignRight: false },
   { id: 'DC', label: 'Consultation', alignRight: false },
   { id: 'MN', label: 'Malnutrition', alignRight: false },
-  { id: 'CS', label: 'Consulté(e) par', alignCenter: true },
-  { id: '' }
+  { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -121,6 +122,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     position: 'absolute',
     left: '30%'
+  },
+  patientRow: {
+    cursor: 'pointer',
+    textDecoration: 'none'
   }
 }));
 const RootStyle = styled(Toolbar)(({ theme }) => ({
@@ -410,7 +415,7 @@ export default function Patient() {
               <Scrollbar>
                 <TableContainer sx={{ minWidth: 800 }}>
                   <Table>
-                    <PersonnelListHead
+                    <PatientListHead
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
@@ -421,7 +426,7 @@ export default function Patient() {
                     />
                     {filteredPatient.length > 0 ? (
                       <TableBody>
-                        {filteredPatient.map((row) => {
+                        {filteredPatient.map((row, i) => {
                           const {
                             id_patient,
                             nom_patient,
@@ -437,18 +442,28 @@ export default function Patient() {
 
                           return (
                             <TableRow
+                              component={RouterLink}
+                              to={`detail_patient/${id_patient}`}
+                              className={classes.patientRow}
                               hover
                               key={id_patient}
                               tabIndex={-1}
                               role="checkbox"
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
+                              onClick={() => {
+                                console.log('id de mon patient', id_patient);
+                              }}
                             >
-                              <TableCell padding="checkbox">
-                                <Checkbox
+                              <TableCell padding="left">
+                                <TableCell padding="checkbox" variant="subtitle2" noWrap>
+                                  {i + 1}
+                                </TableCell>
+
+                                {/* <Checkbox
                                   checked={isItemSelected}
                                   onChange={(event) => handleClick(event, nom_patient)}
-                                />
+                                /> */}
                               </TableCell>
                               <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -485,9 +500,9 @@ export default function Patient() {
                                 {nom_consultant} {postnom_consultant}
                               </TableCell>
 
-                              <TableCell align="right">
+                              {/* <TableCell align="right">
                                 <PatientMoreMenu id_patient={id_patient} />
-                              </TableCell>
+                              </TableCell> */}
                             </TableRow>
                           );
                         })}

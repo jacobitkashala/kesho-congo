@@ -62,7 +62,7 @@ export default function AppCurrentVisits() {
         }
       });
       const output = await response.data;
-      // console.log('mes données 2:', output);
+      console.log('mes données Annuelles:', output);
       setMasData(
         await output.rapport_mas_year.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
       );
