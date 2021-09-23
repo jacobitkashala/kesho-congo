@@ -166,12 +166,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.vivreAvecParent && errors.vivreAvecParent) && '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.vivreAvecParent && errors.vivreAvecParent) && '10px'
-                    }`
+                    border: `${Boolean(touched.vivreAvecParent && errors.vivreAvecParent) && '1px solid red'
+                      }`,
+                    borderRadius: `${Boolean(touched.vivreAvecParent && errors.vivreAvecParent) && '10px'
+                      }`
                   }}
                   spacing={1}
                 >
@@ -222,7 +220,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
                 {...getFieldProps('dateNaissanceMere')}
                 error={Boolean(touched.dateNaissanceMere && errors.dateNaissanceMere)}
-                // helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
+              // helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
               />
               <RadioGroup
                 required
@@ -236,12 +234,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.mereEnceinte && errors.mereEnceinte) && '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.mereEnceinte && errors.mereEnceinte) && '10px'
-                    }`
+                    border: `${Boolean(touched.mereEnceinte && errors.mereEnceinte) && '1px solid red'
+                      }`,
+                    borderRadius: `${Boolean(touched.mereEnceinte && errors.mereEnceinte) && '10px'
+                      }`
                   }}
                   spacing={1}
                 >
@@ -362,13 +358,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio) &&
+                    border: `${Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio) &&
                       '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio) && '10px'
-                    }`
+                      }`,
+                    borderRadius: `${Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio) && '10px'
+                      }`
                   }}
                   spacing={1}
                 >
@@ -434,13 +428,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.contraceptionMere && errors.contraceptionMere) &&
+                    border: `${Boolean(touched.contraceptionMere && errors.contraceptionMere) &&
                       '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.contraceptionMere && errors.contraceptionMere) && '10px'
-                    }`
+                      }`,
+                    borderRadius: `${Boolean(touched.contraceptionMere && errors.contraceptionMere) && '10px'
+                      }`
                   }}
                   spacing={1}
                 >
@@ -543,13 +535,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.consommationPoisson && errors.consommationPoisson) &&
+                    border: `${Boolean(touched.consommationPoisson && errors.consommationPoisson) &&
                       '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.consommationPoisson && errors.consommationPoisson) && '10px'
-                    }`
+                      }`,
+                    borderRadius: `${Boolean(touched.consommationPoisson && errors.consommationPoisson) && '10px'
+                      }`
                   }}
                   spacing={1}
                 >
