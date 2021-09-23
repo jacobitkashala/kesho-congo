@@ -226,6 +226,10 @@ export default function DashboardApp() {
                 />
                 &nbsp;&nbsp;
                 <LoadingButton
+                  style={{
+                    width: '80px',
+                    height: '55px'
+                  }}
                   // onClick={handleClick}
                   type="submit"
                   variant="contained"
