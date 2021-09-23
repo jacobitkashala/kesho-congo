@@ -1,6 +1,7 @@
 /* eslint no-nested-ternary: "error" */
-import { Navigate, useLocation } from 'react-router-dom';
-import { Stack } from '@material-ui/core';
+import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { Stack, Button } from '@material-ui/core';
+import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import {
@@ -14,7 +15,7 @@ import './styledNewPatient.css';
 export default function NewPatient() {
   const [Step, SetStep] = useState(1);
   const [DataPatient, SetDataPatient] = useState({});
-  // ___________ formIdentité
+  // ___________ formIdentité__________________________
   const [taille, setTaille] = useState('');
   const [poidsActuel, setPoidsActuel] = useState('');
   const [perimetreCranien, setPerimetreCranien] = useState('');
@@ -38,6 +39,31 @@ export default function NewPatient() {
   const [ExplicationAutre, setExplicationAutre] = useState('');
   const [ExplicationProvenance, setExplicationProvenance] = useState('');
   const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
+  // _______________Form PatientCauseMalnutri_________________
+  const [vivreAvecParent, setVivreAvecParent] = useState('');
+  const [typeContraceptionModerne, setTypeContraceptionModerne] = useState('');
+  const [contraceptionMere, setContraceptionMere] = useState('');
+  const [professionMere, setProfessionMere] = useState('');
+  const [nomTuteur, setNomTuteur] = useState('');
+  const [dateNaissanceMere, setDateNaissanceMere] = useState('');
+  const [mereEnceinte, setMereEnceinte] = useState('');
+  const [possederTeleRadio, setPossederTeleRadio] = useState('');
+  const [proffessionChefMenage, setProffessionChefMenage] = useState('');
+  const [scolariteMere, setScolariteMere] = useState('');
+  const [pereMariage, SetPereMariage] = useState('');
+  const [mereEnVie, setMereEnVie] = useState('');
+  const [consommationPoisson, setConsommationPoisson] = useState('');
+  const [typeContraceptionNaturel, setTypeContraceptionNaturel] = useState('');
+  const [niveauSocioEconomique, setNiveauSocioEconomique] = useState('');
+  const [statutMarital] = useState('');
+  const [Tribut] = useState('');
+  const [dateNaissanceChefMenage, setDateNaissanceChefMenage] = useState('');
+  const [religion, setReligion] = useState('');
+  const [nbrRepasJour, SetNbrRepasJour] = useState('');
+  const [pereEnvie, SetPereEnvie] = useState('');
+  const [nbrFemme, SetNbrFemme] = useState('');
+  const [tailleMenage, setTailleMenage] = useState('');
+  const [contraceptionType, setContraceptionType] = useState('');
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
@@ -131,7 +157,17 @@ export default function NewPatient() {
       {/* <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
         <Typography variant="h4">Nouveau Patient</Typography>
       </Box> */}
+
       <div className="progress-bar-total">
+        <Button
+          variant="outlined"
+          component={RouterLink}
+          to="/dashboard/patient"
+          // onClick={(e) => exportToCSV(allData, exportedFileName)}
+          startIcon={<Icon icon="bx:bx-arrow-back" />}
+        >
+          Retour
+        </Button>
         <div className="progress-step progress-step-active" data-title="Indentité" />
         <div
           className={`progress-step  ${Step >= 2 && 'progress-step-active'}`}

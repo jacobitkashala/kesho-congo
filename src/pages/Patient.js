@@ -21,7 +21,7 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
+  // Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -35,7 +35,7 @@ import {
   // IconButton
 } from '@material-ui/core';
 // import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
-import { styled, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -45,7 +45,7 @@ import SearchIcon from '@material-ui/icons/Search';
 // import IconButton from '@material-ui/material/IconButton';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
@@ -452,12 +452,12 @@ export default function Patient() {
                               hover
                               key={id_patient}
                               tabIndex={-1}
-                              role="checkbox"
+                              // role="checkbox"
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
-                              onClick={() => {
-                                console.log('id de mon patient', id_patient);
-                              }}
+                              // onClick={() => {
+                              //   console.log('id de mon patient', id_patient);
+                              // }}
                             >
                               <TableCell padding="left">
                                 <TableCell padding="checkbox" variant="subtitle2" noWrap>
