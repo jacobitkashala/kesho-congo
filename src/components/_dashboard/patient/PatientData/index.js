@@ -1,29 +1,14 @@
 /* eslint-disable no-nested-ternary */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+// import { makeStyles } from '@material-ui/styles';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 import { LoadingButton } from '@material-ui/lab';
 import Label from '../../../Label';
-
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'absolute',
-    left: '60%',
-    top: '45%',
-    zIndex: '100'
-    // transform: 'translate(-50%)'
-  },
-  labelRoot: {
-    '&&': {
-      color: 'red'
-    }
-  }
-}));
 
 PatientData.propTypes = {
   DataPatient: propTypes.object,
@@ -32,10 +17,35 @@ PatientData.propTypes = {
 export default function PatientData({ DataPatient, PrevStep }) {
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
-  const classes = useStyles();
+  // const classes = useStyles();
+  useEffect(() => {
+    window.scroll(100, 100);
+  });
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
-
+  // ExplicationAutre: ""
+  // ExplicationProvenance: ""
+  // NomPatient: "JacobitKashala"
+  // adressePatient: "Lemba bakole 30"
+  // ageFinAllaitement: ""
+  // allaitementExclisifSixMois: "true"
+  // : "AA"
+  // dataNaissancePatient: "2021-09-23"
+  // : "12"
+  // fistNamePatient: "12"
+  // modeArriver: "UNT"
+  // perimetreBrachail: "12"
+  // perimetreCranien: "12"
+  // poidsActuel: "12"
+  // poidsNaissance: "12"
+  // postNomPatient: "12"
+  // provenancePatient: "Bagira"
+  // sexePatient: "F"
+  // taille: "12"
+  // telephone: "0815824641"
+  // traitementNutritionnel: "Plumpy-nut"
+  // traitementNutritionnelAutre: ""
+  // typeMalnutrition: "MAM
   const newPatient = {};
 
   newPatient.atcd_mas = CauseMalnutrition.atcdMas;
@@ -55,7 +65,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : CauseMalnutrition.preciserCalendrierVaccinNonjour;
   newPatient.vaccin_non_recu = 'rougeole';
   newPatient.produit_plante = CauseMalnutrition.produitPlante;
-  newPatient.duree_produit_plante = '2'; // CauseMalnutrition.dureeProduitPlante;
+  newPatient.duree_produit_plante = CauseMalnutrition.dureeProduitPlante
+    ? CauseMalnutrition.dureeProduitPlante
+    : 'non'; // mettre un ternaire
   newPatient.rang_fratrie = CauseMalnutrition.rangFratrie;
   newPatient.taille_fratrie = CauseMalnutrition.tailleFratrie;
   newPatient.atcd_rougeole_fratrie = CauseMalnutrition.atcdRougeole;
@@ -72,13 +84,14 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
   newPatient.age_fin_allaitement =
     indentity.ageFinAllaitement === '' ? 6 : indentity.ageFinAllaitement;
-  newPatient.allaitement_6mois = indentity.allaitementExclisifSixMois;
+  newPatient.allaitement_6mois = indentity.allaitementExclusifSixMois;
   newPatient.cocktail_atb = '1'; // CauseMalnutrition.cocktailAtb;  // bool
   newPatient.duree_prise_atb = '23'; // CauseMalnutrition.cocktail_atb_preci; // varchar
   newPatient.peri_cranien = indentity.perimetreCranien;
   newPatient.peri_brachial = indentity.perimetreBrachail;
   newPatient.poids = indentity.poidsActuel;
   newPatient.taille = indentity.taille;
+  newPatient.transferer_unt = indentity.transfererUnt;
   newPatient.type_malnutrition = indentity.typeMalnutrition;
   // newPatient.date_examen = '2020-01-23';
   newPatient.nom_patient = indentity.NomPatient;
@@ -96,7 +109,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   newPatient.poids_naissance = indentity.poidsNaissance;
   newPatient.fin_allaitement = '4'; // obliger
   newPatient.mois_fin_allaitement = '10';
-  newPatient.diversification_aliment = '4'; // indentity.diversification_aliment;// aquel age (mois)
+  newPatient.diversification_aliment = indentity.diversificationAliment; // aquel age (mois)
   newPatient.constitution_aliment = indentity.constitutionAliment;
   newPatient.telephone = indentity.telephone;
   newPatient.type_statut_marital =
@@ -115,9 +128,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
     FamalyData.contraceptionType === '' ? 'pas de contraception' : FamalyData.contraceptionType;
   newPatient.contraception_naturelle =
     FamalyData.typeContraceptionNaturel === ''
-      ? 'pas de contraception'
+      ? 'pas de contraception naturel'
       : FamalyData.typeContraceptionNaturel;
-  newPatient.contraception_moderne = 'null_'; // var chart
+  newPatient.contraception_moderne =
+    FamalyData.typeContraceptionModerne === ''
+      ? 'pas de contraception moderne'
+      : FamalyData.typeContraceptionModerne;
   newPatient.niveau_socioeconomique = FamalyData.NiveauSocioEconomique;
   newPatient.statut_marital = FamalyData.statutMarital === '' ? 'rien' : FamalyData.statutMarital;
   newPatient.nbre_femme_pere = FamalyData.nbrFemme;
@@ -169,41 +185,51 @@ export default function PatientData({ DataPatient, PrevStep }) {
   return (
     <Container>
       <Grid container spacing={2}>
-        <Grid item xs={11} sm={6} md={5}>
+        <Grid item xs={11} sm={5} md={5}>
           <Card
             sx={{
               margin: 2,
               padding: 5
             }}
           >
-            <Avatar
-              variant="square"
+            <Stack
               sx={{
-                width: '100px',
-                height: '120px'
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'nowrap',
+                gap: '14px'
               }}
-              alt={indentity.fistNamePatient}
-              src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
-            />
-            <Typography>{`${indentity.fistNamePatient}  ${indentity.NomPatient}`}</Typography>
+            >
+              <Avatar
+                variant="circle"
+                sizes="50"
+                alt={indentity.fistNamePatient}
+                src={`/static/mock-images/avatars/avatar_${indentity.fistNamePatient}.jpg`}
+              />
+              <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+                {' '}
+                {`${indentity.fistNamePatient}  ${indentity.NomPatient}`}
+              </Typography>
+            </Stack>
             <Label
               variant="filled"
-              color={`${
-                indentity.typeMalnutrition === 'MAC'
-                  ? 'error'
-                  : indentity.typeMalnutrition === 'MAM'
-                  ? 'secondary'
-                  : 'primary'
-              }`}
+              sx={{
+                color: `${
+                  indentity.typeMalnutrition === 'MAC'
+                    ? '#d32f2f'
+                    : indentity.typeMalnutrition === 'MAM'
+                    ? '#1565c0'
+                    : indentity.typeMalnutrition === 'MAS-K'
+                    ? '#ED6C02'
+                    : indentity.typeMalnutrition === 'MAS-M'
+                    ? '#ef5350'
+                    : '#4caf50'
+                }`
+              }}
             >
               {indentity.typeMalnutrition}
             </Label>
-            <InputLabel>
-              Sex : <span style={{ color: 'black' }}>{indentity.sexePatient}</span>
-            </InputLabel>
-            <InputLabel>
-              Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
-            </InputLabel>
             <InputLabel>
               Périmètre brachial :
               <span style={{ color: 'black' }}> {indentity.perimetreBrachail} Cm</span>
@@ -213,10 +239,16 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {indentity.perimetreCranien} Cm</span>
             </InputLabel>
             <InputLabel>
+              Taille :<span style={{ color: 'black' }}> {indentity.taille} Cm</span>
+            </InputLabel>
+            <InputLabel>
+              Sexe : <span style={{ color: 'black' }}>{indentity.sexePatient}</span>
+            </InputLabel>
+            <InputLabel>
               Poids Actuel :<span style={{ color: 'black' }}> {indentity.poidsActuel}Kg</span>
             </InputLabel>
             <InputLabel>
-              Poids naissance :<span style={{ color: 'black' }}> {indentity.poids_naissance}g</span>
+              Poids naissance :<span style={{ color: 'black' }}> {indentity.poidsNaissance} g</span>
             </InputLabel>
             <InputLabel>
               Provenance :<span style={{ color: 'black' }}> {indentity.provenancePatient}</span>
@@ -230,11 +262,20 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Mode arriver:
-              <span style={{ color: 'black' }}> {indentity.modeArriver}</span>
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  indentity.modeArrive === 'Autres'
+                    ? indentity.ExplicationAutre
+                    : indentity.modeArriver
+                }`}
+              </span>
             </InputLabel>
             <InputLabel>
-              Allaitement Exclisif:
-              <span style={{ color: 'black' }}> {indentity.allaitementExclisifSixMois}</span>
+              Allaitement Exclusif:
+              <span style={{ color: 'black' }}>
+                {`${indentity.allaitementExclusifSixMois ? '6 mois' : 'ien'}`}
+              </span>
             </InputLabel>
             <InputLabel>
               Téléphone:
@@ -245,53 +286,110 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {indentity.traitementNutritionnel}</span>
             </InputLabel>
             <InputLabel>
-              Consommer le poisson:
-              <span style={{ color: 'black' }}> {FamalyData.consommationPoisson}</span>
+              Age diversification aliment :
+              <span style={{ color: 'black' }}> {indentity.diversificationAliment} mois</span>
+            </InputLabel>
+            <InputLabel>
+              Durée produit plante :
+              <span style={{ color: 'black' }}>
+                {`${
+                  CauseMalnutrition.dureeProduitPlante
+                    ? CauseMalnutrition.dureeProduitPlante
+                    : 'non'
+                }`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Constitution aliment:
+              <span style={{ color: 'black' }}> {indentity.constitutionAliment}</span>
+            </InputLabel>
+            <InputLabel>
+              Transfer Unt:
+              <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
           </Card>
         </Grid>
-        <Grid item xs={11} sm={6} md={5}>
+        {/* NbrRepasJour: "1"
+NiveauSocioEconomique: "Moyen"
+PossederTeleRadio: "false"
+ProffessionChefMenage: "Travail à temps partiel (maçon, menuisier)"
+Religion: "Musulman"
+: "Shi"
+consommationPoisson: "true"
+contraceptionMere: "false"
+contraceptionType: ""
+: "2021-09-17"
+dateNaissanceMere: "2021-09-23"
+mereEnVie: "true"
+mereEnceinte: "false"
+: "1"
+nomTuteur: "12"
+pereEnvie: "false"
+pereMariage: ""
+professionMere: "Salariée formelle,infirmier,Ong,enseignante"
+scolariteMere: "Primaire"
+statutMarital: "Prématuré "
+tailleMenage: "12"
+typeContraceptionModerne: ""
+typeContraceptionNaturel: ""
+: "true" */}
+
+        <Grid item xs={11} sm={7} md={7}>
           <Card
             sx={{
               margin: 2,
               padding: 5
             }}
           >
-            <Typography>Famille</Typography>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>Famille</Typography>
+            <Typography>Père</Typography>
             <InputLabel>
-              Pere en vie :<span style={{ color: 'black' }}> {FamalyData.pereEnvie}</span>
+              Parent en vie :
+              <span style={{ color: 'black' }}>
+                {`${FamalyData.vivreAvecParent ? 'Oui' : 'Non'}`}
+              </span>
             </InputLabel>
             <InputLabel>
-              Nombre de repas /jr :
-              <span style={{ color: 'black' }}> {FamalyData.NbrRepasJour}</span>
+              Nom chef Menage :<span style={{ color: 'black' }}> {FamalyData.nomTuteur}</span>
+            </InputLabel>
+            <InputLabel>
+              Pere en vie :
+              <span style={{ color: 'black' }}> {`${FamalyData.pereEnvie ? 'Oui' : 'Non'}`}</span>
+            </InputLabel>
+            <InputLabel>
+              Date de naissance :
+              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de femme :<span style={{ color: 'black' }}> {FamalyData.nbrFemme}</span>
+            </InputLabel>
+            <InputLabel>
+              Tribu :<span style={{ color: 'black' }}> {FamalyData.Tribut}</span>
             </InputLabel>
             <InputLabel>
               Niveau socio :
               <span style={{ color: 'black' }}> {FamalyData.NiveauSocioEconomique}</span>
             </InputLabel>
             <InputLabel>
-              Nom chef Menage :<span style={{ color: 'black' }}> {FamalyData.nomTuteur}</span>
-            </InputLabel>
-            <InputLabel>
-              Date de Père :
-              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
-            </InputLabel>
-            <InputLabel>
-              Posseder une radio ou télé :
+              constitutionAliment :
               <span style={{ color: 'black' }}>
                 {`${FamalyData.PossederTeleRadio ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
             <InputLabel>
-              ATC Rougeole:
-              <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'
-              }`}</span>
+              ATC Rougeole :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'}`}
+              </span>
             </InputLabel>
             <InputLabel>
-              Profession:
+              Profession :
               <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
             </InputLabel>
+            {/* <InputLabel>
+              Nombre de femme:
+              <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
+            </InputLabel> */}
             <InputLabel>
               Dpm :<span style={{ color: 'black' }}> {CauseMalnutrition.dpm}</span>
             </InputLabel>
@@ -307,25 +405,75 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.eig}</span>
             </InputLabel>
             <InputLabel>
-              MasFratrie:
+              Mas Fratrie:
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
               }`}</span>
             </InputLabel>
             <InputLabel>
-              Rang fratrie:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+            </InputLabel>
+            <Typography>Mère</Typography>
+            <InputLabel>
+              Mère en vie :
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
-              Réligion:
-              <span style={{ color: 'black' }}> {FamalyData.Religion}</span>
+              Date naisance mère :
+              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceMere}</span>
             </InputLabel>
             <InputLabel>
-              MatcdMasn:
-              <span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
+              Mère enceint :
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnceinte ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute:
+              Contraception mère :
+              <span style={{ color: 'black' }}>
+                {`${FamalyData.contraceptionMere ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Type contraception :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  FamalyData.contraceptionType === ''
+                    ? 'pas de type contraception'
+                    : FamalyData.contraceptionType
+                }`}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Contraception moderne:
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionModerne === ''
+                  ? 'pas de contraception moderne'
+                  : FamalyData.typeContraceptionModerne
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Contraception naturel :
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionNaturel === ''
+                  ? 'pas de contraception'
+                  : FamalyData.typeContraceptionNaturel
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Scolarité mère :<span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>
+            </InputLabel>
+            <InputLabel>
+              Profession:<span style={{ color: 'black' }}> {FamalyData.professionMere}</span>
+            </InputLabel>
+            <Typography>Autre</Typography>
+            <InputLabel>
+              Réligion :<span style={{ color: 'black' }}> {FamalyData.Religion}</span>
+            </InputLabel>
+            <InputLabel>
+              MatcdMasn :<span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
               <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
             </InputLabel>
             <InputLabel>
@@ -338,7 +486,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
-              Taille Fratrie:
+              Taille Fratrie :
               <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
             </InputLabel>
             <InputLabel>
@@ -365,51 +513,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
                 {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
-            <Typography>Mère</Typography>
-            <InputLabel>
-              Mère en vie :
-              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
-            </InputLabel>
-            <InputLabel>
-              Date naisance mère:
-              <span style={{ color: 'black' }}> {FamalyData.dateNaissanceMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Mère enceint:
-              <span style={{ color: 'black' }}> {FamalyData.mereEnceinte}</span>
-            </InputLabel>
-            <InputLabel>
-              Contraception mère:
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Type contraception:
-              <span style={{ color: 'black' }}> {FamalyData.contraceptionType}</span>
-            </InputLabel>
-            <InputLabel>
-              Scolarité mère:
-              <span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>
-            </InputLabel>
-            <InputLabel>
-              Profession:<span style={{ color: 'black' }}> {FamalyData.professionMere}</span>
-            </InputLabel>
           </Card>
         </Grid>
         <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
               margin: 2,
-              marginTop: '-70%',
+              marginTop: '-100%',
               padding: 5
             }}
           >
-            <Typography>Causes malnutrition</Typography>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+              Causes malnutrition
+            </Typography>
             <InputLabel>
-              Terme grossesse:
+              Terme grossesse :
               <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
             </InputLabel>
             <InputLabel>
-              Dpm Anormal par ce que:
+              Dpm Anormal par ce que :
               <span style={{ color: 'black' }}>
                 {' '}
                 {CauseMalnutrition.dpmAnormalPrecision === ''
@@ -422,15 +544,15 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
             </InputLabel>
             <InputLabel>
-              ATC Rougeole:
+              ATC Rougeole :
               <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute:
+              Nombre de chute :
               <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
             </InputLabel>
             <InputLabel>
-              Asphyxie prerinatale:
+              Asphyxie prerinatale :
               <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
             </InputLabel>
             <InputLabel>
@@ -447,27 +569,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
             </InputLabel>
             <InputLabel>
-              Vaccination rougeole:
+              Vaccination rougeole :
               <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
             </InputLabel>
             <InputLabel>
-              Terrain vih:
-              <span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
+              Terrain vih :<span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
             </InputLabel>
             <InputLabel>
-              Tbc:
-              <span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
+              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
             </InputLabel>
             <InputLabel>
-              Atbc du tbc dans fratrie:
+              Atbc du tbc dans fratrie :
               <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
             </InputLabel>
             <InputLabel>
-              Hospitalisation recente:
+              Hospitalisation recente :
               <span style={{ color: 'black' }}>{CauseMalnutrition.hospitalisationRecente}</span>
             </InputLabel>
             <InputLabel>
-              Diagnostique hopital:
+              Diagnostique hopital :
               <span style={{ color: 'black' }}>
                 {CauseMalnutrition.diagnostiqueHospitalisation}
               </span>
@@ -496,7 +616,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
-          loading={btnLoading}
+          // loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer

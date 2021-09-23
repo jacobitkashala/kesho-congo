@@ -48,7 +48,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
-import { BsFillSkipBackwardFill, BsFillSkipForwardFill } from 'react-icons/bs';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
 // material
@@ -147,28 +147,33 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [debut, setDebut] = useState(1);
-  const [fin, setFin] = useState(5);
+  const [length, setLength] = useState(0);
+  const [debut, setDebut] = useState(0);
+  // const [le, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
   const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${-1}&limit_start=${25}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `bearer ${localStorage.getItem('token')}`
+    fetch(
+      `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${30}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
       }
-    })
+    )
       .then((response) => response.json())
       .then((data) => {
-        const { Patient, nombre_patient } = data;
-        console.log(data);
+        const { Patients, nombre_patient } = data;
+        // console.log(localStorage.getItem('token'));
+        // console.log(`la taille de patient : ${Patients.length}`);
+        setLength((current) => current + Patients.length);
         setLenghtData(nombre_patient);
-        setPatientsList(data.Patients);
+        setPatientsList(Patients);
         setLoader(false);
         // setLoader2();
         console.log('myData', data.Patients);
@@ -177,7 +182,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, [debut, fin]);
+  }, [debut]);
 
   useEffect(() => {
     fetch(`https://kesho-congo-api.herokuapp.com/patient/export`, {
@@ -254,16 +259,14 @@ export default function Patient() {
     setSelected(newSelected);
   };
   const handleClickPrev = () => {
-    if (rowsPerPage > 1) {
-      setDebut(fin);
-      setFin(fin - 5);
-      // setRowsPerPage((prevState) => prevState - 5);
-    }
+    console.log(` prev ${length}`);
+    if (length > 5) setDebut((prevState) => prevState - 5);
   };
   const handleClickNext = () => {
-    setDebut(fin);
-    setFin(fin + 5);
-    setRowsPerPage((prevState) => prevState + 5);
+    if (length <= lenghtData) {
+      setDebut((prevState) => prevState + 5);
+      console.log(`length= ${length}`);
+    }
   };
 
   // -------------------FOrmik----------------------------
@@ -279,7 +282,7 @@ export default function Patient() {
     onSubmit: async ({ searchValue }) => {
       // setButtonLoader(true);
       setLoadingButton(true);
-      console.log('la valeur recherchée', searchValue);
+      // console.log('la valeur recherchée', searchValue);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/patient/search',
@@ -486,10 +489,14 @@ export default function Patient() {
                                   sx={{
                                     color: `${
                                       type_malnutrition === 'MAC'
-                                        ? 'red'
+                                        ? '#D32F2F'
                                         : type_malnutrition === 'MAM'
-                                        ? 'green'
-                                        : 'orange'
+                                        ? '#1565C0'
+                                        : type_malnutrition === 'MAS-K'
+                                        ? '#EF5350'
+                                        : type_malnutrition === 'MAS-M'
+                                        ? '#ED6C02'
+                                        : '#4CAF50'
                                     }`
                                   }}
                                 >
@@ -520,18 +527,22 @@ export default function Patient() {
                 </TableContainer>
               </Scrollbar>
               <TableRow>
-                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickPrev}>
-                  <BsFillSkipBackwardFill
-                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
+                <TableCell />
+
+                <TableCell>
+                  <GrFormPrevious
+                    style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
+                    onClick={handleClickPrev}
                   />
                 </TableCell>
-                <TableCell style={{ cursor: 'pointer' }} onClick={handleClickNext}>
-                  <BsFillSkipForwardFill
-                    style={{ width: '30px', height: '30px', color: '#1f2b35' }}
+                <TableCell>
+                  <GrFormNext
+                    style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
+                    onClick={handleClickNext}
                   />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {rowsPerPage}/{lenghtData - 1}
+                  {length}/{lenghtData}
                 </TableCell>
               </TableRow>
             </Card>

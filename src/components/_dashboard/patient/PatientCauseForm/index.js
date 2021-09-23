@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -36,7 +36,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
-
+  useEffect(() => {
+    window.scroll(100, 100);
+  });
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),
@@ -44,7 +46,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     masFratrie: Yup.string().required('masfratien requis'),
     atcdMas: Yup.string().required('Aatcdmas requis'),
     atcdRougeole: Yup.string().required('atcd Rougeole requis'),
-    tbcChezParent: Yup.string(),
+    tbcChezParent: Yup.string().required('tbc chez le parent requis'),
     tbcLequel: Yup.string(),
     tbcTraiter: Yup.string(),
     tbc: Yup.string().required('Tbc requis'),
@@ -59,9 +61,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     rangFratrie: Yup.string().required('Rang fratrie requis'),
     produitPlante: Yup.string().required('Produit plante requis'),
     terrainVih: Yup.string().required('Terrain vih requis'),
-    nombreChute: Yup.number().positive().required('Nombre de chute requis'),
-    vaccinationRougeole: Yup.string().required(),
-    eig: Yup.number().required('Eig requis'),
+    nombreChute: Yup.number().required('Nombre de chute requis'),
+    vaccinationRougeole: Yup.string().required('vaccination Rougeole requis'),
+    eig: Yup.number().required('Eig requis').positive(),
     TbcGuerie: Yup.string(),
     dpm: Yup.string().required('Dpm requis'),
     cocktailAtb: Yup.string().required('cocktailAtb requis'),
@@ -115,7 +117,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   console.log(errors);
   const handleDesablebComponent = (event) => {
     const { value } = event.target;
-    setFieldValue('tbc', value);
+    setFieldValue('tbcChezParent', value);
     if (value === 'true') {
       setTbcDesabled(false);
     } else {
@@ -185,14 +187,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </Select>
               <RadioGroup
                 fullWidth
-                sx={{ visibility: 0 }}
                 error={Boolean(touched.sejourNeo && errors.sejourNeo)}
-                helperText={touched.sejourNeo && errors.sejourNeo}
+                // helperText={touched.sejourNeo && errors.sejourNeo}
                 {...getFieldProps('sejourNeo')}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Séjour en néonat:</FormLabel>
@@ -203,14 +210,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 </Stack>
               </RadioGroup>
               <TextField
-                fullWidth
-                sx={{ padding: '2px' }}
-                label="eig moyen (année)"
-                {...getFieldProps('eig')}
-                error={Boolean(touched.eig && errors.eig)}
-                helperText={touched.eig && errors.eig}
-              />
-              <TextField
                 sx={{ padding: '2px' }}
                 label="Rang dans la fratrie"
                 fullWidth
@@ -218,15 +217,31 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 error={Boolean(touched.rangFratrie && errors.rangFratrie)}
                 helperText={touched.rangFratrie && errors.rangFratrie}
               />
+              <TextField
+                sx={{ padding: '2px' }}
+                fullWidth
+                label="Taille de la fratrie"
+                helperText={touched.tailleFratrie && errors.tailleFratrie}
+                {...getFieldProps('tailleFratrie')}
+                error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
+              />
               <RadioGroup
                 fullWidth
                 {...getFieldProps('masFratrie')}
                 error={Boolean(touched.masFratrie && errors.masFratrie)}
-                helperText={touched.masFratrie && errors.masFratrie}
+                // helperText={touched.masFratrie && errors.masFratrie}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${
+                      Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.masFratrie && errors.masFratrie) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">MAS dans la fratrie:</FormLabel>
@@ -236,16 +251,29 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </Stack>
               </RadioGroup>
+              <TextField
+                fullWidth
+                sx={{ padding: '2px' }}
+                label="Eig moyen (année)"
+                {...getFieldProps('eig')}
+                error={Boolean(touched.eig && errors.eig)}
+                helperText={touched.eig && errors.eig}
+              />
               <RadioGroup
                 fullWidth
-                onChange={handleDesablebComponent}
-                // {...getFieldProps('tbc')}
+                {...getFieldProps('tbc')}
                 helperText={touched.tbc && errors.tbc}
                 error={Boolean(touched.tbc && errors.tbc)}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${Boolean(touched.tbc && errors.tbc) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.tbc && errors.tbc) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">TBC:</FormLabel>
@@ -257,26 +285,40 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               </RadioGroup>
               <RadioGroup
                 fullWidth
-                {...getFieldProps('tbcChezParent')}
+                onChange={handleDesablebComponent}
+                // {...getFieldProps('tbcChezParent')}
                 error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
-                helperText={touched.tbcChezParent && errors.tbcChezParent}
+                // helperText={touched.tbcChezParent && errors.tbcChezParent}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label"> TBC chez les parents:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <Stack
+                    direction={{ xs: 'row', sm: 'row' }}
+                    helperText={touched.tbcChezParent && errors.tbcChezParent}
+                  >
                     <FormControlLabel
                       value="true"
-                      disabled={tbcDesabled}
+                      // disabled={tbcDesabled}
                       control={<Radio />}
                       label="Oui"
                     />
                     <FormControlLabel
                       value="false"
-                      disabled={tbcDesabled}
+                      // disabled={tbcDesabled}
                       control={<Radio />}
                       label="Non"
                     />
@@ -367,7 +409,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                      '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Hospitalisation récente:</FormLabel>
@@ -397,7 +451,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
@@ -468,11 +532,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 required
                 {...getFieldProps('atcdMas')}
                 error={Boolean(touched.atcdMas && errors.atcdMas)}
-                helperText={touched.atcdMas && errors.atcdMas}
+                // helperText={touched.atcdMas && errors.atcdMas}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${Boolean(touched.atcdMas && errors.atcdMas) && '1px solid red'}`,
+                    borderRadius: `${Boolean(touched.atcdMas && errors.atcdMas) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">ATCD de MAS:</FormLabel>
@@ -509,7 +579,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">ATCD de Rougeole dans la fratrie:</FormLabel>
@@ -519,14 +599,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                   </Stack>
                 </Stack>
               </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                label="Taille de la fratrie"
-                helperText={touched.tailleFratrie && errors.tailleFratrie}
-                {...getFieldProps('tailleFratrie')}
-                error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
-              />
               <RadioGroup
                 sx={{ padding: '2px' }}
                 fullWidth
@@ -536,7 +608,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.terrainVih && errors.terrainVih) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Terrain VIH connu:</FormLabel>
@@ -565,7 +645,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Vaccination rougeole:</FormLabel>
@@ -599,7 +690,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
+                    }`,
+                    borderRadius: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '10px'}`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">Notion de prise de cocktail d’ATB</FormLabel>
@@ -626,7 +725,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    border: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">ATCD de TBC dans la fratrie:</FormLabel>

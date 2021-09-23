@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import {
   RadioGroup,
   FormLabel,
   Grid,
-  InputLabel,
+  // InputLabel,
   Select
   // styled
   // getCheckboxUtilityClass
@@ -87,31 +87,43 @@ export default function PatientForm({
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
-
+  const btnFocus = useRef(null);
+  useEffect(() => {
+    window.scroll(100, 100);
+    // btnFocus.focus();
+    console.dir(btnFocus.current);
+  });
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre requis').required('Taille requis'),
+    taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
     ExplicationAutre: Yup.string(),
-    allaitementExclisifSixMois: Yup.string().required('Radio requis'),
+    allaitementExclusifSixMois: Yup.string().required('Radio requis'),
     NomPatient: Yup.string().required('Nom requis'),
-    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis'),
-    perimetreCranien: Yup.number('un chiffre requis').required('Perimetre cranien requis'),
+    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
+    perimetreCranien: Yup.number('un chiffre requis')
+      .required('Perimetre cranien requis')
+      .positive(),
+    transfererUnt: Yup.string().required(),
     fistNamePatient: Yup.string().required('Prenom requis'),
-    perimetreBrachail: Yup.number('un chiffre requis').required('Perimetre brachial requis'),
+    perimetreBrachail: Yup.number('un chiffre requis')
+      .required('Perimetre brachial requis')
+      .positive(),
     postNomPatient: Yup.string().required('Postnom requis'),
     telephone: Yup.string().required('téléphone requis'),
-    diversification_aliment: Yup.string().required('diversification requis'),
+    diversificationAliment: Yup.number('un nombre')
+      .positive('nombre positif')
+      .required('diversification requis'),
     sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
     constitutionAliment: Yup.string().required('constitution aliment requis'),
     provenancePatient: Yup.string().required('Provenance requiq'),
     modeArriver: Yup.string().required('champs requis'),
     typeMalnutrition: Yup.string().required('Type malnutriton requis'),
-    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis'),
-    traitementNutritionnel: Yup.string(),
+    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis').positive(),
+    traitementNutritionnel: Yup.string().required('traitement nutritionnel requis'),
     traitementNutritionnelAutre: Yup.string(),
     adressePatient: Yup.string().required('adresse requis'),
     ExplicationProvenance: Yup.string(),
-    ageFinAllaitement: Yup.number('requis')
+    ageFinAllaitement: Yup.number('requis').positive()
   });
   const formik = useFormik({
     initialValues: {
@@ -122,7 +134,7 @@ export default function PatientForm({
       NomPatient: patientFormData.nomPatient ? patientFormData.nomPatient : '',
       postNomPatient: patientFormData.postNomPatient ? patientFormData.postNomPatient : '',
       telephone: patientFormData.telephone ? patientFormData.telephone : '',
-      diversification_aliment: patientFormData.diversificationAliment
+      diversificationAliment: patientFormData.diversificationAliment
         ? patientFormData.diversificationAliment
         : '',
       sexePatient: patientFormData.sexePatient ? patientFormData.sexePatient : '',
@@ -149,9 +161,10 @@ export default function PatientForm({
       ExplicationProvenance: patientFormData.ExplicationProvenance
         ? patientFormData.ExplicationProvenance
         : '',
-      allaitementExclisifSixMois: patientFormData.AllaitementExclisifSixMois
+      allaitementExclusifSixMois: patientFormData.AllaitementExclisifSixMois
         ? patientFormData.AllaitementExclisifSixMois
-        : ''
+        : '',
+      transfererUnt: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
@@ -161,7 +174,7 @@ export default function PatientForm({
     }
   });
 
-  const { errors, setFieldValue, touched, handleSubmit, isSubmitting } = formik;
+  const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
@@ -181,6 +194,10 @@ export default function PatientForm({
     const { value } = event.target;
     setFieldValue('provenancePatient', value);
     setProvenancePatient(value);
+    const chai = patientFormData.ExplicationProvenance
+      ? 'Proven patient'
+      : patientFormData.ExplicationProvenance;
+    console.log(chai);
     if (value === 'Autres') {
       setProvenance(false);
     } else {
@@ -220,7 +237,7 @@ export default function PatientForm({
   };
   const handleChangeDiversificationAliment = (event) => {
     const { value } = event.target;
-    setFieldValue('diversification_aliment', value);
+    setFieldValue('diversificationAliment', value);
     setDiversificationAliment(value);
   };
   const handleChangePostNomPatient = (event) => {
@@ -314,6 +331,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
+                  ref={btnFocus}
                   label="Prénom"
                   value={patientFormData.prenomPatient}
                   onChange={handleChangeFistName}
@@ -397,11 +415,25 @@ export default function PatientForm({
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
-                    style={{ borderColor: 'red' }}
-                    sx={{ display: 'flex', alignItems: 'center' }}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      paddingLeft: '10px',
+                      border: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                      }`
+                    }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Sexe:</FormLabel>
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.sexePatient && 'red'}` }}
+                    >
+                      Sexe:
+                    </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="M" control={<Radio />} label="M" />
                       <FormControlLabel value="F" control={<Radio />} label="F" />
@@ -420,7 +452,7 @@ export default function PatientForm({
                   <option value="" selected disabled hidden>
                     Mode d'arriver
                   </option>
-                  <option value="De la maison"> De la maison</option>
+                  <option value="De la maison">De la maison</option>
                   <option value="UNT">UNT</option>
                   <option value="Autres">Autres</option>
                 </Select>
@@ -480,7 +512,7 @@ export default function PatientForm({
                   error={Boolean(touched.provenancePatient && errors.provenancePatient)}
                 >
                   <option defaultValue="" selected disabled hidden>
-                    Provenance Patient
+                    {patientFormData.ExplicationProvenance || 'Provenance Patient'}
                   </option>
                   <option value="kadutu">Kadutu</option>
                   <option value="Bagira">Bagira</option>
@@ -499,11 +531,15 @@ export default function PatientForm({
                   error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
                   helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
                 />
-                <InputLabel>Date de naissance</InputLabel>
+                {/* <InputLabel>Date de naissance</InputLabel> */}
                 <TextField
                   sx={{ padding: '2px' }}
                   type="date"
                   fullWidth
+                  label="Date de naissance"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
                   value={patientFormData.dataNaissancePatient}
                   onChange={handleChangeDateNaissance}
                   // {...getFieldProps('dataNaissancePatient')}
@@ -511,21 +547,38 @@ export default function PatientForm({
                   error={Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient)}
                 />
                 <RadioGroup
-                  // {...getFieldProps('allaitementExclisifSixMois')}
+                  // {...getFieldProps('allaitementExclusifSixMois')}
                   helperText={
-                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                    touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
                   }
                   error={Boolean(
-                    touched.allaitementExclisifSixMois && errors.allaitementExclisifSixMois
+                    touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
                   )}
                   onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
-                    sx={{ display: 'flex', alignItems: 'center' }}
+                    sx={{
+                      display: 'flex',
+                      paddingLeft: '10px',
+                      alignItems: 'center',
+                      border: `${
+                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
+                        '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
+                        '10px'
+                      }`
+                    }}
                     spacing={1}
                   >
-                    <FormLabel component="label">Allaitement exclusif 6mois:</FormLabel>
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                    >
+                      Allaitement exclusif 6 mois:
+                    </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="true" control={<Radio />} label="Oui" />
                       <FormControlLabel value="false" control={<Radio />} label="Non" />
@@ -543,16 +596,6 @@ export default function PatientForm({
                   //  defaultValue={DataPatient.ageFinAllaitement}
                   helperText={touched.ageFinAllaitement && errors.ageFinAllaitement}
                   error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
-                />
-                <TextField
-                  sx={{ padding: '2px' }}
-                  label="Constitution/type d’aliment"
-                  value={patientFormData.constitutionAliment}
-                  onChange={handleChangeConstitutionAliment}
-                  // {...getFieldProps('constitutionAliment')}
-                  // defaultValue={DataPatient.constitutionAliment}
-                  helperText={touched.constitutionAliment && errors.constitutionAliment}
-                  error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -593,14 +636,57 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   fullWidth
-                  label="Diversification aliment"
+                  label="Diversification à quel âge (en mois)"
                   value={patientFormData.diversificationAliment}
                   onChange={handleChangeDiversificationAliment}
-                  // {...getFieldProps('diversification_aliment')}
-                  // defaultValue={DataPatient.diversification_aliment}
-                  helperText={touched.diversification_aliment && errors.diversification_aliment}
-                  error={Boolean(touched.diversification_aliment && errors.diversification_aliment)}
+                  // {...getFieldProps('diversificationAliment')}
+                  // defaultValue={DataPatient.diversificationAliment}
+                  helperText={touched.diversificationAliment && errors.diversificationAliment}
+                  error={Boolean(touched.diversificationAliment && errors.diversificationAliment)}
                 />
+                <TextField
+                  sx={{ padding: '2px' }}
+                  label="Constitution/type d’aliment"
+                  value={patientFormData.constitutionAliment}
+                  onChange={handleChangeConstitutionAliment}
+                  // {...getFieldProps('constitutionAliment')}
+                  // defaultValue={DataPatient.constitutionAliment}
+                  helperText={touched.constitutionAliment && errors.constitutionAliment}
+                  error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
+                />
+                <RadioGroup
+                  {...getFieldProps('transfererUnt')}
+                  helperText={touched.transfererUnt && errors.transfererUnt}
+                  error={Boolean(touched.transfererUnt && errors.transfererUnt)}
+                  // onChange={handleAllaitementExclusifSixMoix}
+                >
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    sx={{
+                      display: 'flex',
+                      padding: '10px',
+                      alignItems: 'center',
+                      border: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                      }`
+                    }}
+                    spacing={1}
+                  >
+                    <FormLabel
+                      component="label"
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                    >
+                      Transfer unt:
+                    </FormLabel>
+                    <Stack direction={{ xs: 'row', sm: 'row' }}>
+                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
+                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    </Stack>
+                  </Stack>
+                </RadioGroup>
                 <Select
                   native
                   sx={{ padding: '2px' }}
@@ -610,10 +696,11 @@ export default function PatientForm({
                   error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
                 >
                   <option value="" selected disabled hidden>
-                    Form de malnutrition
+                    Forme de malnutrition
                   </option>
                   <option value="MAM">Malnutrition aigue modéré</option>
-                  <option value="MAS">Malnutrition aigue sévère</option>
+                  <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
+                  <option value="MAS-M">Malnutrition aigue sévère marasme</option>
                   <option value="MAC">Malnutrition aigue chronique</option>
                 </Select>
               </Stack>
