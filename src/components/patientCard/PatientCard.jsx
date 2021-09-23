@@ -1,16 +1,21 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable camelcase */
+/* no-nested-ternary */
 import './PatientCard.css';
 import { CalendarToday, PhoneAndroid } from '@material-ui/icons';
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { Avatar } from '@material-ui/core';
+import { Avatar, TableCell } from '@material-ui/core';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+// import { TableRow, TableBody, TableCell } from '@material-ui/core';
 import moment from 'moment';
+import Label from '../Label';
 
 const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, malnutrition }) => (
   <div className="userShow">
     <div className="userShowTop">
-      <Avatar alt={name} src={`/static/mock-images/avatars/avatar_${id}.jpg`} />
+      {/* <Avatar alt={name} src={`/static/mock-images/avatars/avatar_${id}.jpg`} /> */}
       <div className="userShowTopTitle">
         <h2>
           <span className="userShowUsername">{name}</span>
@@ -41,7 +46,27 @@ const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, m
       </div>
       <div className="userShowInfo">
         <LocalHospitalIcon className="userShowIcon" />
-        <span className="userShowInfoTitle">{malnutrition}</span>
+        <TableCell align="left">
+          <Label
+            variant="contained"
+            sx={{
+              color: `${
+                malnutrition === 'MAC'
+                  ? '#D32F2F'
+                  : malnutrition === 'MAM'
+                  ? '#1565C0'
+                  : malnutrition === 'MAS-K'
+                  ? '#EF5350'
+                  : malnutrition === 'MAS-M'
+                  ? '#ED6C02'
+                  : '#4CAF50'
+              }`
+            }}
+          >
+            {malnutrition}
+          </Label>
+        </TableCell>
+        {/* <span className="userShowInfoTitle">{malnutrition}</span> */}
       </div>
     </div>
   </div>

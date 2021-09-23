@@ -6,8 +6,6 @@ import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-// import trash2Fill from '@iconify/icons-eva/trash-2-fill';
-// import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -153,9 +151,12 @@ export default function Patient() {
   const [loader, setLoader] = useState(true);
   const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [sendRequest, setSendRequest] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
+    // send the request
+    // setSendRequest(false);
     fetch(
       `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${30}`,
       {
@@ -175,8 +176,9 @@ export default function Patient() {
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
+        setSendRequest(false);
         // setLoader2();
-        console.log('myData', data.Patients);
+        console.log('myDatahobed', data);
         // setUsersList(data);
       })
       .catch((error) => {
@@ -194,12 +196,6 @@ export default function Patient() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // const { Patient, nombre_patient } = data;
-        // console.log(data);
-        // setLenghtData(nombre_patient);
-        // setPatientsList(data.Patients);
-        // setLoader(false);
-        // setLoader2();
         setAllData(data);
         console.log('AllmyData', data);
       })

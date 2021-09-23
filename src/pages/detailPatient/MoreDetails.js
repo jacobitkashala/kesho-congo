@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+/* eslint-disable no-nested-ternary */
+/* no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { filter } from 'lodash';
 import moment from 'moment';
@@ -27,6 +29,7 @@ import SearchNotFound from '../../components/SearchNotFound';
 import Scrollbar from '../../components/Scrollbar';
 
 import Page from '../../components/Page';
+import Label from '../../components/Label';
 import { PersonnelListHead, PersonnelListToolbar } from '../../components/_dashboard/personnel';
 
 const TABLE_HEAD = [
@@ -34,7 +37,7 @@ const TABLE_HEAD = [
   { id: 'DN', label: 'Date', alignRight: false },
   { id: 'SE', label: 'PB(cm)', alignRight: false },
   { id: 'DC', label: 'PC(cm)', alignRight: false },
-  { id: 'SxE', label: 'Poids(gr)', alignRight: false },
+  { id: 'SxE', label: 'Poids(kg)', alignRight: false },
   { id: 'SxE', label: 'Taille(cm)', alignRight: false },
   { id: 'SxE', label: 'Malnutrition', alignRight: false }
 ];
@@ -248,7 +251,27 @@ export default function MoreDetails({ id }) {
                             <TableCell>{anthro[i].peri_cranien}</TableCell>
                             <TableCell>{anthro[i].poids}</TableCell>
                             <TableCell>{anthro[i].taille}</TableCell>
-                            <TableCell>{anthro[i].type_malnutrition}</TableCell>
+                            <TableCell align="center">
+                              <Label
+                                variant="outlined"
+                                sx={{
+                                  color: `${
+                                    anthro[i].type_malnutrition === 'MAC'
+                                      ? '#D32F2F'
+                                      : anthro[i].type_malnutrition === 'MAM'
+                                      ? '#1565C0'
+                                      : anthro[i].type_malnutrition === 'MAS-K'
+                                      ? '#EF5350'
+                                      : anthro[i].type_malnutrition === 'MAS-M'
+                                      ? '#ED6C02'
+                                      : '#4CAF50'
+                                  }`
+                                }}
+                              >
+                                {anthro[i].type_malnutrition}
+                              </Label>
+                            </TableCell>
+                            {/* <TableCell>{anthro[i].type_malnutrition}</TableCell> */}
                           </TableRow>
                         );
                       })}

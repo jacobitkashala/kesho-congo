@@ -99,7 +99,7 @@ export default function AddAnthro({ id }) {
                 sx={{ width: '100%', padding: '2px' }}
                 fullWidth
                 value={values.weight}
-                label="Poids (gr)"
+                label="Poids (kg)"
                 {...getFieldProps('weight')}
                 helperText={touched.weight && errors.weight}
                 error={Boolean(touched.weight && errors.weight)}

@@ -146,7 +146,7 @@ export default function PersonnelListToolbar({ value }) {
         <MenuItem>
           <ListItemIcon sx={{ color: 'red' }} onClick={handleClickOpen}>
             <Delete width={35} height={35} />
-            <Typography>Delete</Typography>
+            <Typography>Supprimer</Typography>
           </ListItemIcon>
           <Dialog
             open={open}
