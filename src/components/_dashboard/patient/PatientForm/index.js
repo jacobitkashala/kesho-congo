@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { useNavigate } from 'react-router-dom';
 
@@ -87,28 +87,26 @@ export default function PatientForm({
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
-  const btnFocus = useRef(null);
+  const [position] = useState(100);
   useEffect(() => {
     window.scroll(100, 100);
-    // btnFocus.focus();
-    console.dir(btnFocus.current);
-  });
+  }, [position]);
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
-    ExplicationAutre: Yup.string(),
-    allaitementExclusifSixMois: Yup.string().required('Radio requis'),
-    NomPatient: Yup.string().required('Nom requis'),
+    ExplicationAutre: Yup.string().min(2),
+    allaitementExclusifSixMois: Yup.string().min(2).required('Radio requis'),
+    NomPatient: Yup.string().required('Nom requis').min(2),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
       .required('Perimetre cranien requis')
       .positive(),
-    transfererUnt: Yup.string().required(),
-    fistNamePatient: Yup.string().required('Prenom requis'),
+    transfererUnt: Yup.string().min(2).required(),
+    fistNamePatient: Yup.string().min(2).required('Prenom requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .required('Perimetre brachial requis')
       .positive(),
-    postNomPatient: Yup.string().required('Postnom requis'),
-    telephone: Yup.string().required('téléphone requis'),
+    postNomPatient: Yup.string().min(2).required('Postnom requis'),
+    telephone: Yup.string().min(2).required('téléphone requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
       .required('diversification requis'),
@@ -175,6 +173,7 @@ export default function PatientForm({
   });
 
   const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  console.log(errors);
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
@@ -182,7 +181,7 @@ export default function PatientForm({
   };
   const handleAllaitementExclusifSixMoix = (event) => {
     const { value } = event.target;
-    setFieldValue('allaitementExclisifSixMois', value);
+    setFieldValue('allaitementExclusifSixMois', value);
     setAllaitementExclisifSixMois(value);
     if (value === 'true') {
       setAllaitement(true);
@@ -331,7 +330,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   fullWidth
-                  ref={btnFocus}
+                  autoFocus
                   label="Prénom"
                   value={patientFormData.prenomPatient}
                   onChange={handleChangeFistName}
@@ -411,7 +410,7 @@ export default function PatientForm({
                   onChange={handleChangeSexePatient}
                   error={Boolean(touched.sexePatient && errors.sexePatient)}
                   helperText={touched.sexePatient && errors.sexePatient}
-                  // setValues={  DataPatient.Sexe}
+                // setValues={  DataPatient.Sexe}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -419,18 +418,16 @@ export default function PatientForm({
                       display: 'flex',
                       alignItems: 'center',
                       paddingLeft: '10px',
-                      border: `${
-                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
-                      }`
+                      border: `${Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.sexePatient && 'red'}` }}
+                    // style={{ color: `${errors.sexePatient && 'red'}` }}
                     >
                       Sexe:
                     </FormLabel>
@@ -562,23 +559,18 @@ export default function PatientForm({
                       display: 'flex',
                       paddingLeft: '10px',
                       alignItems: 'center',
-                      border: `${
-                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
-                        '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(touched.dataNaissancePatient && errors.dataNaissancePatient) &&
-                        '10px'
-                      }`
+                      border: `${Boolean(
+                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                      ) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(
+                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                      ) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
-                    <FormLabel
-                      component="label"
-                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
-                    >
-                      Allaitement exclusif 6 mois:
-                    </FormLabel>
+                    <FormLabel component="label">Allaitement exclusif 6 mois:</FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel value="true" control={<Radio />} label="Oui" />
                       <FormControlLabel value="false" control={<Radio />} label="Non" />
@@ -658,7 +650,7 @@ export default function PatientForm({
                   {...getFieldProps('transfererUnt')}
                   helperText={touched.transfererUnt && errors.transfererUnt}
                   error={Boolean(touched.transfererUnt && errors.transfererUnt)}
-                  // onChange={handleAllaitementExclusifSixMoix}
+                // onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -666,18 +658,16 @@ export default function PatientForm({
                       display: 'flex',
                       padding: '10px',
                       alignItems: 'center',
-                      border: `${
-                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
-                      }`
+                      border: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                    // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Transfer unt:
                     </FormLabel>

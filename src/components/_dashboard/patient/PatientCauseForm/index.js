@@ -36,9 +36,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
+  const [position] = useState(100);
   useEffect(() => {
     window.scroll(100, 100);
-  });
+  }, [position]);
+
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),
@@ -173,6 +175,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
               <Select
                 native
                 fullWidth
+                autoFocus
                 sx={{ padding: '2px' }}
                 value={values.lieuAccouchement}
                 error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
