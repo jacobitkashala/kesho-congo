@@ -112,15 +112,15 @@ export default function PatientForm({
       .required('diversification requis'),
     sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
-    constitutionAliment: Yup.string().required('constitution aliment requis'),
-    provenancePatient: Yup.string().required('Provenance requiq'),
-    modeArriver: Yup.string().required('champs requis'),
-    typeMalnutrition: Yup.string().required('Type malnutriton requis'),
+    constitutionAliment: Yup.string().min(2).required('constitution aliment requis'),
+    provenancePatient: Yup.string().min(2).required('Provenance requiq'),
+    modeArriver: Yup.string().min(2).required('champs requis'),
+    typeMalnutrition: Yup.string().min(2).required('Type malnutriton requis'),
     poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis').positive(),
-    traitementNutritionnel: Yup.string().required('traitement nutritionnel requis'),
-    traitementNutritionnelAutre: Yup.string(),
-    adressePatient: Yup.string().required('adresse requis'),
-    ExplicationProvenance: Yup.string(),
+    traitementNutritionnel: Yup.string().min(2).required('traitement nutritionnel requis'),
+    traitementNutritionnelAutre: Yup.string().min(2),
+    adressePatient: Yup.string().min(2).required('adresse requis'),
+    ExplicationProvenance: Yup.string().min(2),
     ageFinAllaitement: Yup.number('requis').positive()
   });
   const formik = useFormik({
@@ -410,7 +410,7 @@ export default function PatientForm({
                   onChange={handleChangeSexePatient}
                   error={Boolean(touched.sexePatient && errors.sexePatient)}
                   helperText={touched.sexePatient && errors.sexePatient}
-                // setValues={  DataPatient.Sexe}
+                  // setValues={  DataPatient.Sexe}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -418,16 +418,18 @@ export default function PatientForm({
                       display: 'flex',
                       alignItems: 'center',
                       paddingLeft: '10px',
-                      border: `${Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(touched.sexePatient && errors.sexePatient) && '10px'
-                        }`
+                      border: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                    // style={{ color: `${errors.sexePatient && 'red'}` }}
+                      // style={{ color: `${errors.sexePatient && 'red'}` }}
                     >
                       Sexe:
                     </FormLabel>
@@ -559,14 +561,16 @@ export default function PatientForm({
                       display: 'flex',
                       paddingLeft: '10px',
                       alignItems: 'center',
-                      border: `${Boolean(
-                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                      ) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(
-                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                      ) && '10px'
-                        }`
+                      border: `${
+                        Boolean(
+                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                        ) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(
+                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                        ) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
@@ -650,7 +654,7 @@ export default function PatientForm({
                   {...getFieldProps('transfererUnt')}
                   helperText={touched.transfererUnt && errors.transfererUnt}
                   error={Boolean(touched.transfererUnt && errors.transfererUnt)}
-                // onChange={handleAllaitementExclusifSixMoix}
+                  // onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -658,16 +662,18 @@ export default function PatientForm({
                       display: 'flex',
                       padding: '10px',
                       alignItems: 'center',
-                      border: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
-                        }`
+                      border: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                    // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Transfer unt:
                     </FormLabel>

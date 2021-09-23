@@ -161,7 +161,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
   };
 
   return (
-  <Container>
+    <Container>
       <Grid container spacing={2}>
         <Grid item xs={11} sm={5} md={5}>
           <Card
@@ -193,16 +193,17 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <Label
               variant="filled"
               sx={{
-                color: `${indentity.typeMalnutrition === 'MAC'
+                color: `${
+                  indentity.typeMalnutrition === 'MAC'
                     ? '#d32f2f'
                     : indentity.typeMalnutrition === 'MAM'
-                      ? '#1565c0'
-                      : indentity.typeMalnutrition === 'MAS-K'
-                        ? '#ED6C02'
-                        : indentity.typeMalnutrition === 'MAS-M'
-                          ? '#ef5350'
-                          : '#4caf50'
-                  }`
+                    ? '#1565c0'
+                    : indentity.typeMalnutrition === 'MAS-K'
+                    ? '#ED6C02'
+                    : indentity.typeMalnutrition === 'MAS-M'
+                    ? '#ef5350'
+                    : '#4caf50'
+                }`
               }}
             >
               {indentity.typeMalnutrition}
@@ -241,10 +242,11 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Mode arriver:
               <span style={{ color: 'black' }}>
                 {' '}
-                {`${indentity.modeArrive === 'Autres'
+                {`${
+                  indentity.modeArrive === 'Autres'
                     ? indentity.ExplicationAutre
                     : indentity.modeArriver
-                  }`}
+                }`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -268,10 +270,11 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               Durée produit plante :
               <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.dureeProduitPlante
+                {`${
+                  CauseMalnutrition.dureeProduitPlante
                     ? CauseMalnutrition.dureeProduitPlante
                     : 'non'
-                  }`}
+                }`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -389,8 +392,9 @@ typeContraceptionNaturel: ""
             </InputLabel>
             <InputLabel>
               Mas Fratrie:
-              <span style={{ color: 'black' }}>{`${CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
-                }`}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
@@ -418,25 +422,28 @@ typeContraceptionNaturel: ""
               Type contraception :
               <span style={{ color: 'black' }}>
                 {' '}
-                {`${FamalyData.contraceptionType === ''
+                {`${
+                  FamalyData.contraceptionType === ''
                     ? 'pas de type contraception'
                     : FamalyData.contraceptionType
-                  }`}
+                }`}
               </span>
             </InputLabel>
             <InputLabel>
               Contraception moderne:
-              <span style={{ color: 'black' }}>{`${FamalyData.typeContraceptionModerne === ''
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionModerne === ''
                   ? 'pas de contraception moderne'
                   : FamalyData.typeContraceptionModerne
-                }`}</span>
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Contraception naturel :
-              <span style={{ color: 'black' }}>{`${FamalyData.typeContraceptionNaturel === ''
+              <span style={{ color: 'black' }}>{`${
+                FamalyData.typeContraceptionNaturel === ''
                   ? 'pas de contraception'
                   : FamalyData.typeContraceptionNaturel
-                }`}</span>
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Scolarité mère :<span style={{ color: 'black' }}> {FamalyData.scolariteMere}</span>
@@ -470,13 +477,15 @@ typeContraceptionNaturel: ""
             </InputLabel>
             <InputLabel>
               Tbc Chez Parent :
-              <span style={{ color: 'black' }}>{`${CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
-                }`}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Tbc traiter :
-              <span style={{ color: 'black' }}>{`${CauseMalnutrition.TbcTraiter ? 'Oui' : 'Non'
-                }`}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.TbcTraiter ? 'Oui' : 'Non'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Tbc Chez TbcGuerie :

@@ -167,7 +167,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
     }
   };
   return (
-  <FormikProvider value={formik}>
+    <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={11} sm={6} md={6}>
@@ -232,7 +232,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 fullWidth
                 {...getFieldProps('masFratrie')}
                 error={Boolean(touched.masFratrie && errors.masFratrie)}
-              // helperText={touched.masFratrie && errors.masFratrie}
+                // helperText={touched.masFratrie && errors.masFratrie}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -240,8 +240,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
-                      }`,
+                    border: `${
+                      Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
+                    }`,
                     borderRadius: `${Boolean(touched.masFratrie && errors.masFratrie) && '10px'}`
                   }}
                   spacing={1}
@@ -290,7 +291,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 onChange={handleDesablebComponent}
                 // {...getFieldProps('tbcChezParent')}
                 error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
-              // helperText={touched.tbcChezParent && errors.tbcChezParent}
+                // helperText={touched.tbcChezParent && errors.tbcChezParent}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -298,10 +299,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     paddingLeft: '10px',
-                    border: `${Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
-                      }`
+                    border: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -413,12 +416,14 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                    border: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
                       '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
                       '10px'
-                      }`
+                    }`
                   }}
                   spacing={1}
                 >
@@ -453,10 +458,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.produitPlante && errors.produitPlante) && '10px'
-                      }`
+                    border: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.produitPlante && errors.produitPlante) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -528,7 +535,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                 required
                 {...getFieldProps('atcdMas')}
                 error={Boolean(touched.atcdMas && errors.atcdMas)}
-              // helperText={touched.atcdMas && errors.atcdMas}
+                // helperText={touched.atcdMas && errors.atcdMas}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -579,10 +586,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'
-                      }`
+                    border: `${
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -606,8 +615,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
-                      }`,
+                    border: `${
+                      Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
+                    }`,
                     borderRadius: `${Boolean(touched.terrainVih && errors.terrainVih) && '10px'}`
                   }}
                   spacing={1}
@@ -642,11 +652,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
+                    border: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
                       '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
-                      }`
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
@@ -685,8 +697,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
-                      }`,
+                    border: `${
+                      Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
+                    }`,
                     borderRadius: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '10px'}`
                   }}
                   spacing={1}
@@ -719,11 +732,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
-                    border: `${Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
+                    border: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
                       '1px solid red'
-                      }`,
-                    borderRadius: `${Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
-                      }`
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
+                    }`
                   }}
                   spacing={1}
                 >
