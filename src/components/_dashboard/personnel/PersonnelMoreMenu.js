@@ -46,6 +46,7 @@ export default function PersonnelListToolbar({ value }) {
   const [statutPersonnel, setStatutPersonnel] = useState('');
   const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   const location = useLocation();
@@ -92,6 +93,12 @@ export default function PersonnelListToolbar({ value }) {
     const status = value && value;
     setStatutPersonnel(status);
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   // changer le status d'une personne
   const handleClickChangeStatus = () => {
     setLoader(true);
@@ -137,17 +144,17 @@ export default function PersonnelListToolbar({ value }) {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem>
-          <ListItemIcon sx={{ color: 'red' }} onClick={handleClickOpenModalDelete}>
+          <ListItemIcon sx={{ color: 'red' }} onClick={handleClickOpen}>
             <Delete width={35} height={35} />
             <Typography>Delete</Typography>
           </ListItemIcon>
           <Dialog
-            open={modalDeletePersonnel}
-            onClose={handleCloseModalDelete}
+            open={open}
+            onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">"Supprimer un utilisateur?"</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Supprimer un utilisateur?</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 Cette action est irreversible, si vous supprimez un utilisateur vous ne serrez plus
@@ -160,7 +167,7 @@ export default function PersonnelListToolbar({ value }) {
                 type="button"
                 color="primary"
                 variant="contained"
-                onClick={handleCloseModalDelete}
+                onClick={handleClose}
               >
                 Annuler
               </LoadingButton>
@@ -200,7 +207,7 @@ export default function PersonnelListToolbar({ value }) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">Changer le status de nom</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Status du personnel</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 <RadioGroup onChange={handleSelectChangeStatus}>
@@ -238,7 +245,7 @@ export default function PersonnelListToolbar({ value }) {
                 loading={loader}
                 color="primary"
               >
-                Changer de statut
+                Changer
               </LoadingButton>
             </DialogActions>
           </Dialog>

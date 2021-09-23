@@ -11,6 +11,11 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
+import moment from 'moment';
+// ----------Excele Export-----------------------------
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import RefreshIcon from '@material-ui/icons/Refresh';
 // material
 import {
   Card,
@@ -37,6 +42,10 @@ import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
+// import DeleteIcon from '@material-ui/icons-material/Delete';
+// import IconButton from '@material-ui/material/IconButton';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
 import { BsFillSkipBackwardFill, BsFillSkipForwardFill } from 'react-icons/bs';
 // import LinearProgress from '@material-ui/core/LinearProgress';
@@ -126,8 +135,8 @@ const SearchStyle = styled(OutlinedInput)(() => ({
 }));
 
 export default function Patient() {
-  // ----------------------------------Patients--------------------
   const [patientsList, setPatientsList] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [lenghtData, setLenghtData] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -137,11 +146,11 @@ export default function Patient() {
   const [debut, setDebut] = useState(1);
   const [fin, setFin] = useState(5);
   const [loader, setLoader] = useState(true);
+  const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    // console.log(rowsPerPage);
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${-1}&limit_start=${25}`, {
       method: 'GET',
       headers: {
@@ -156,6 +165,7 @@ export default function Patient() {
         setLenghtData(nombre_patient);
         setPatientsList(data.Patients);
         setLoader(false);
+        // setLoader2();
         console.log('myData', data.Patients);
         // setUsersList(data);
       })
@@ -163,6 +173,47 @@ export default function Patient() {
         console.error('MyError:', error);
       });
   }, [debut, fin]);
+
+  useEffect(() => {
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/export`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // const { Patient, nombre_patient } = data;
+        // console.log(data);
+        // setLenghtData(nombre_patient);
+        // setPatientsList(data.Patients);
+        // setLoader(false);
+        // setLoader2();
+        setAllData(data);
+        console.log('AllmyData', data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  // ------Excel Export-----------------
+  const fileType =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  const fileExtension = '.xlsx';
+
+  const exportToCSV = (apiData, fileName) => {
+    const ws = XLSX.utils.json_to_sheet(apiData);
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+  };
+
+  const exportedFileName = `keshoCongoPatients${moment().format('DDMMMMYYYY')}`;
+  // console.log(exportedFileName);
+  // ----------------------------------Patients--------------------
 
   // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
@@ -240,26 +291,34 @@ export default function Patient() {
         const output = await response.data;
         setLoadingButton(false);
         setPatientsList(output);
-        console.log(output);
+        console.log('output data :', output);
+        console.log('valeur recherché', filterName);
         // setReports(await data);
         // setButtonLoader(false);
       } catch (err) {
-        console.log(err);
+        console.log('message error :', err.message);
         setLoadingButton(false);
         // setButtonLoader(false);
       }
     }
   });
   const { handleSubmit, values, setFieldValue } = formik;
+
   const handleFilterByName = (event) => {
     setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);
-    console.log(filterName);
   };
 
-  const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
+  // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
+  const filteredPatient = patientsList;
 
   const isUserNotFound = filteredPatient.length === 0;
+  // console.log( isUserNotFound);
+  console.log('liste filtrées', filterName);
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
@@ -280,18 +339,24 @@ export default function Patient() {
               <Typography variant="h4" gutterBottom>
                 Patients
               </Typography>
-              {/* <div className={classes.root}>
-          <CircularProgress />
-        </div> */}
-
-              <Button
-                variant="contained"
-                component={RouterLink}
-                to="add_Patient"
-                startIcon={<Icon icon={plusFill} />}
-              >
-                patient
-              </Button>
+              <div>
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to="add_Patient"
+                  startIcon={<Icon icon={plusFill} />}
+                >
+                  patient
+                </Button>
+                &nbsp; &nbsp;
+                <Button
+                  variant="outlined"
+                  onClick={(e) => exportToCSV(allData, exportedFileName)}
+                  startIcon={<Icon icon="bx:bx-export" />}
+                >
+                  Exporter
+                </Button>
+              </div>
             </Stack>
 
             <Card>
@@ -308,27 +373,38 @@ export default function Patient() {
                     {selected.length} selectionés
                   </Typography>
                 ) : (
-                  <FormikProvider value={formik}>
-                    <Form onSubmit={handleSubmit}>
-                      <LoadingButton
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        loading={loadingButton}
-                        className={classes.button}
-                        endIcon={
-                          <Icon>
-                            <SearchIcon />
-                          </Icon>
-                        }
-                      />
-                      <SearchStyle
-                        value={values.searchValue}
-                        onChange={handleFilterByName}
-                        placeholder="Tapez un nom"
-                      />
-                    </Form>
-                  </FormikProvider>
+                  <>
+                    <FormikProvider value={formik}>
+                      <Form onSubmit={handleSubmit}>
+                        <LoadingButton
+                          variant="contained"
+                          color="primary"
+                          type="submit"
+                          loading={loadingButton}
+                          className={classes.button}
+                          startIcon={
+                            <Icon>
+                              <SearchIcon />
+                            </Icon>
+                          }
+                        />
+                        <SearchStyle
+                          value={values.searchValue}
+                          onChange={handleFilterByName}
+                          placeholder="Tapez un nom"
+                        />
+                      </Form>
+                    </FormikProvider>
+                    {/* <Icon>
+                      <SearchIcon />
+                    </Icon> */}
+                    {/* <RefreshIcon /> */}
+                    <Tooltip title="Refresh" color="primary" onClick={refreshPage}>
+                      <IconButton>
+                        <RefreshIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </>
                 )}
               </RootStyle>
               <Scrollbar>
@@ -343,84 +419,80 @@ export default function Patient() {
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
                     />
-                    <TableBody>
-                      {filteredPatient.map((row) => {
-                        const {
-                          id_patient,
-                          nom_patient,
-                          type_malnutrition,
-                          date_naissance,
-                          sexe_patient,
-                          date_Consultation,
-                          nom_consultant,
-                          postnom_consultant,
-                          prenom_patient
-                        } = row;
-                        const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                    {filteredPatient.length > 0 ? (
+                      <TableBody>
+                        {filteredPatient.map((row) => {
+                          const {
+                            id_patient,
+                            nom_patient,
+                            type_malnutrition,
+                            date_naissance,
+                            sexe_patient,
+                            date_Consultation,
+                            nom_consultant,
+                            postnom_consultant,
+                            prenom_patient
+                          } = row;
+                          const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id_patient}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, nom_patient)}
-                              />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                  alt={nom_patient}
-                                  src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                          return (
+                            <TableRow
+                              hover
+                              key={id_patient}
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  checked={isItemSelected}
+                                  onChange={(event) => handleClick(event, nom_patient)}
                                 />
-                                <Typography variant="subtitle2" noWrap>
-                                  {nom_patient}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="center">{prenom_patient}</TableCell>
-                            <TableCell align="center">{date_naissance}</TableCell>
-                            <TableCell align="center">{sexe_patient}</TableCell>
-                            <TableCell align="center">{date_Consultation}</TableCell>
-                            <TableCell align="center">
-                              <Label
-                                variant="outlined"
-                                sx={{
-                                  color: `${
-                                    type_malnutrition === 'MAC'
-                                      ? 'red'
-                                      : type_malnutrition === 'MAM'
-                                      ? 'green'
-                                      : 'orange'
-                                  }`
-                                }}
-                              >
-                                {type_malnutrition}
-                              </Label>
-                            </TableCell>
-                            <TableCell align="left">
-                              {nom_consultant} {postnom_consultant}
-                            </TableCell>
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Avatar
+                                    alt={nom_patient}
+                                    src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                                  />
+                                  <Typography variant="subtitle2" noWrap>
+                                    {nom_patient}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="center">{prenom_patient}</TableCell>
+                              <TableCell align="center">{date_naissance}</TableCell>
+                              <TableCell align="center">{sexe_patient}</TableCell>
+                              <TableCell align="center">{date_Consultation}</TableCell>
+                              <TableCell align="center">
+                                <Label
+                                  variant="outlined"
+                                  sx={{
+                                    color: `${
+                                      type_malnutrition === 'MAC'
+                                        ? 'red'
+                                        : type_malnutrition === 'MAM'
+                                        ? 'green'
+                                        : 'orange'
+                                    }`
+                                  }}
+                                >
+                                  {type_malnutrition}
+                                </Label>
+                              </TableCell>
+                              <TableCell align="left">
+                                {nom_consultant} {postnom_consultant}
+                              </TableCell>
 
-                            <TableCell align="right">
-                              <PatientMoreMenu id_patient={id_patient} />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      {/* {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )} */}
-                    </TableBody>
-                    {isUserNotFound && (
+                              <TableCell align="right">
+                                <PatientMoreMenu id_patient={id_patient} />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    ) : (
                       <TableBody>
                         <TableRow>
                           <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -446,19 +518,7 @@ export default function Patient() {
                 <TableCell style={{ fontWeight: '900px' }}>
                   {rowsPerPage}/{lenghtData - 1}
                 </TableCell>
-                {/* <TableCell>{filteredPatient.length}</TableCell> */}
               </TableRow>
-
-              {/* <TablePagination
-            rowsPerPageOptions={50}
-            // component="div"
-            showFirstButton
-            count={rowsPerPage}
-            rowsPerPage={1}
-            page={0}
-            onPageChange={handleChangePage}
-            // onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
             </Card>
           </Container>
         </Page>

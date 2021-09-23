@@ -34,7 +34,7 @@ const TABLE_HEAD = [
   { id: 'DN', label: 'Date', alignRight: false },
   { id: 'SE', label: 'PB(cm)', alignRight: false },
   { id: 'DC', label: 'PC(cm)', alignRight: false },
-  { id: 'SxE', label: 'Poids(kg)', alignRight: false },
+  { id: 'SxE', label: 'Poids(gr)', alignRight: false },
   { id: 'SxE', label: 'Taille(cm)', alignRight: false },
   { id: 'SxE', label: 'Malnutrition', alignRight: false }
 ];
@@ -65,7 +65,7 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.nom_user.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user.user.nom_user.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -103,7 +103,7 @@ export default function MoreDetails({ id }) {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log('myData', data.Anthropometrique[1]);
+        console.log('myDataConsultant', data.consultants);
         setAnthro(data.Anthropometrique);
         setUsersList(data.consultants);
         setLoader(false);
@@ -130,7 +130,7 @@ export default function MoreDetails({ id }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = usersList.map((n) => n.user.nom_user); // ici*******************
+      const newSelecteds = usersList.map((n) => n.nom_user); // ici*******************
       setSelected(newSelecteds);
       return;
     }
@@ -166,6 +166,7 @@ export default function MoreDetails({ id }) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+    // console.log(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
@@ -219,7 +220,6 @@ export default function MoreDetails({ id }) {
                           <TableRow
                             hover
                             key={id_user}
-                            // tabIndex={-1}
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}

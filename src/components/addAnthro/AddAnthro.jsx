@@ -36,14 +36,6 @@ const SubDivContenaire = styled('div')(() => ({
 }));
 
 export default function AddAnthro({ id }) {
-  // const [IdentiteData, SetIdentiteData] = useState({});
-  // const RegisterSchema = Yup.object().shape({
-  //   weight: Yup.number('number').required('Poids requis'),
-  //   height: Yup.number('number').required('Taille requise'),
-  //   brachialPerim: Yup.number('number').required('Périmètre requis'),
-  //   cranianPerim: Yup.number('number').required('Périmètre requis'),
-  //   MalnutType: Yup.string().required()
-  // });
   const location = useLocation();
   const navigate = useNavigate();
   const { from } = location.state || { from: { pathname: '/dashboard/app' } };
@@ -91,16 +83,12 @@ export default function AddAnthro({ id }) {
           });
         })
         .catch((err) => {
-          // setError(true);
-          // setLoader(false);
           console.log(err);
         });
     }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
-  // console.log(errors);
-  // console.log(values);
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -153,8 +141,10 @@ export default function AddAnthro({ id }) {
                 <option value="" selected disabled hidden>
                   Type de malnutrition
                 </option>
+                <option value="Guéris">Declaré Guéris</option>
                 <option value="MAM">Malnutrition aigue modérée</option>
-                <option value="MAS">Malnutrition aigue sévère</option>
+                <option value="MAS-M">Malnutrition aigue sévère marasme</option>
+                <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
                 <option value="MAC">Malnutrition aigue chronique</option>
               </Select>
               <LoadingButton

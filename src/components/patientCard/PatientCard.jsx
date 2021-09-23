@@ -12,7 +12,9 @@ const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, m
     <div className="userShowTop">
       <Avatar alt={name} src={`/static/mock-images/avatars/avatar_${id}.jpg`} />
       <div className="userShowTopTitle">
-        <span className="userShowUsername">{name}</span>
+        <h2>
+          <span className="userShowUsername">{name}</span>
+        </h2>
         <span className="userShowUserTitle">{sex}</span>
       </div>
     </div>
