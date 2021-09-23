@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   button: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     textAlign: 'center',
     position: 'absolute',
     left: '30%'
@@ -381,6 +381,10 @@ export default function Patient() {
                     <FormikProvider value={formik}>
                       <Form onSubmit={handleSubmit}>
                         <LoadingButton
+                          style={{
+                            width: 'auto',
+                            height: '55px'
+                          }}
                           variant="contained"
                           color="primary"
                           type="submit"
@@ -389,6 +393,7 @@ export default function Patient() {
                           startIcon={
                             <Icon>
                               <SearchIcon />
+                              Rechercher
                             </Icon>
                           }
                         />
