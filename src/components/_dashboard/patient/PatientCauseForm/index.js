@@ -77,36 +77,54 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
 
   const formik = useFormik({
     initialValues: {
-      rangFratrie: '',
-      lieuAccouchement: '',
-      sejourNeo: '',
-      cocktailAtbDuree: '',
-      cocktailAtb: '',
-      atcdMas: '',
-      atcdRougeole: '',
-      tbcChezParent: '',
-      tbcLequel: '',
-      tbcTraiter: '',
-      dureeTraitementTbc: '0',
-      TbcGuerie: '',
-      termeGrossesse: '',
-      calendrierVaccin: '',
-      preciserCalendrierVaccinNonjour: '',
-      asphyxiePrerinatale: '',
-      tailleFratrie: '',
-      masFratrie: '',
-      terrainVih: '',
-      nombreChute: '',
-      vaccinationRougeole: '',
-      eig: '',
-      dpm: '',
-      tbc: '',
-      produitPlante: '',
-      hospitalisationRecente: '',
-      diagnostiqueHospitalisation: '',
-      atcdDuTbcDansFratrie: '',
-      dpmAnormalPrecision: '',
-      dureeTraitementProduitPlante: ''
+      rangFratrie: patientFormCause.rangFratrie ? patientFormCause.rangFratrie : '',
+      lieuAccouchement: patientFormCause.lieuAccouchement ? patientFormCause.lieuAccouchement : '',
+      sejourNeo: patientFormCause.sejourNeo ? patientFormCause.sejourNeo : '',
+      cocktailAtbDuree: patientFormCause.cocktailAtbDuree ? patientFormCause.cocktailAtbDuree : '',
+      cocktailAtb: patientFormCause.cocktailAtb ? patientFormCause.cocktailAtb : '',
+      atcdMas: patientFormCause.atcdMas ? patientFormCause.atcdMas : '',
+      atcdRougeole: patientFormCause.atcdRougeole ? patientFormCause.atcdRougeole : '',
+      tbcChezParent: patientFormCause.tbcChezParent ? patientFormCause.tbcChezParent : '',
+      tbcLequel: patientFormCause.tbcLequel ? patientFormCause.tbcLequel : '',
+      tbcTraiter: patientFormCause.tbcTraiter ? patientFormCause.tbcTraiter : '',
+      dureeTraitementTbc: patientFormCause.dureeTraitementTbc
+        ? patientFormCause.dureeTraitementTbc
+        : '0',
+      TbcGuerie: patientFormCause.TbcGuerie ? patientFormCause.TbcGuerie : '',
+      termeGrossesse: patientFormCause.termeGrossesse ? patientFormCause.termeGrossesse : '',
+      calendrierVaccin: patientFormCause.calendrierVaccin ? patientFormCause.calendrierVaccin : '',
+      preciserCalendrierVaccinNonjour: patientFormCause.preciserCalendrierVaccinNonjour
+        ? patientFormCause.preciserCalendrierVaccinNonjour
+        : '',
+      asphyxiePrerinatale: patientFormCause.asphyxiePrerinatale
+        ? patientFormCause.asphyxiePrerinatale
+        : '',
+      tailleFratrie: patientFormCause.tailleFratrie ? patientFormCause.tailleFratrie : '',
+      masFratrie: patientFormCause.masFratrie ? patientFormCause.masFratrie : '',
+      terrainVih: patientFormCause.terrainVih ? patientFormCause.terrainVih : '',
+      nombreChute: patientFormCause.nombreChute ? patientFormCause.nombreChute : '',
+      vaccinationRougeole: patientFormCause.vaccinationRougeole
+        ? patientFormCause.vaccinationRougeole
+        : '',
+      eig: patientFormCause.eig ? patientFormCause.eig : '',
+      dpm: patientFormCause.dpm ? patientFormCause.dpm : '',
+      tbc: patientFormCause.tbc ? patientFormCause.tbc : '',
+      produitPlante: patientFormCause.produitPlante ? patientFormCause.produitPlante : '',
+      hospitalisationRecente: patientFormCause.hospitalisationRecente
+        ? patientFormCause.hospitalisationRecente
+        : '',
+      diagnostiqueHospitalisation: patientFormCause.diagnostiqueHospitalisation
+        ? patientFormCause.diagnostiqueHospitalisation
+        : '',
+      atcdDuTbcDansFratrie: patientFormCause.atcdDuTbcDansFratrie
+        ? patientFormCause.atcdDuTbcDansFratrie
+        : '',
+      dpmAnormalPrecision: patientFormCause.dpmAnormalPrecision
+        ? patientFormCause.dpmAnormalPrecision
+        : '',
+      dureeTraitementProduitPlante: patientFormCause.dureeTraitementProduitPlante
+        ? patientFormCause.dureeTraitementProduitPlante
+        : ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
@@ -115,58 +133,35 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     }
   });
 
-  const { errors, touched, setFieldValue, handleSubmit, isSubmitting, getFieldProps, values } =
-    formik;
+  const { errors, touched, setFieldValue, handleSubmit, isSubmitting } = formik;
   console.log(errors);
 
-  // rangFratrie,
-  //     ,
-  //     lieuAccouchement,
   //     sejourNeo,
   //     cocktailAtbDuree,
-  //     ,
   //     cocktailAtb,
-  //     atcdMas,
-  //     atcdRougeole,
-  //     setAtcdRougeole,
-  //     tbcChezParent,
+  //     ,
+  //     ,
   //     ,
   //     tbcLequel,
-  //     ,
   //     tbcTraiter,
-  //     ,
   //     dureeTraitementTbc,
-
   //     tbcGuerie,
-  //     ,
   //     termeGrossesse,
-  //     ,
   //     calendrierVaccin,
   //     preciserCalendrierVaccinNonjour,
-  //     ,
   //     asphyxiePrerinatale,
-  //     ,
   //     tailleFratrie,
-  //     ,
   //     masFratrie,
-  //     ,
   //     terrainVih,
-  //     ,
   //     nombreChute,
-  //     ,
   //     vaccinationRougeole,
-  //     ,
   //     eig,
   //     dpm,
   //     tbc,
   //     produitPlante,
   //     hospitalisationRecente,
-  //     diagnostiqueHospitalisation,
-  //     ,
   //     atcdDuTbcDansFratrie,
-  //     setAtcdDuTbcDansFratrie,
   //     dpmAnormalPrecision,
-  //     ,
   //     dureeTraitementProduitPlante,
 
   const handleDesablebComponent = (event) => {
@@ -234,6 +229,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     setFieldValue('sejourNeo', value);
     patientFormCause.setSejourNeo(value);
   };
+
   const handleRangFratrie = (event) => {
     const { value } = event.target;
     setFieldValue('rangFratrie', value);
@@ -257,6 +253,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     setFieldValue('eig', value);
     patientFormCause.setEig(value);
   };
+
   const handleTbc = (event) => {
     const { value } = event.target;
     setFieldValue('tbc', value);
@@ -268,21 +265,25 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     setFieldValue('tbcLequel', value);
     patientFormCause.setTbcLequel(value);
   };
+
   const handleTbcTraiter = (event) => {
     const { value } = event.target;
     setFieldValue('tbcTraiter', value);
     patientFormCause.setTbcTraiter(value);
   };
+
   const handleTbcGuerie = (event) => {
     const { value } = event.target;
     setFieldValue('TbcGuerie', value);
     patientFormCause.setTbcGuerie(value);
   };
+
   const handleDureeTraitementTbc = (event) => {
     const { value } = event.target;
     setFieldValue('dureeTraitementTbc', value);
     patientFormCause.setDureeTraitementTbc(value);
   };
+
   const handleDiagnostiqueHospitalisation = (event) => {
     const { value } = event.target;
     setFieldValue('diagnostiqueHospitalisation', value);
@@ -316,7 +317,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   const handleAtcdRougeole = (event) => {
     const { value } = event.target;
     setFieldValue('atcdRougeole', value);
-    patientFormCause.handleAtcdRougeole(value);
+    patientFormCause.setAtcdRougeole(value);
   };
   const handleTerrainVih = (event) => {
     const { value } = event.target;
@@ -343,6 +344,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     setFieldValue('cocktailAtbDuree', value);
     patientFormCause.setCocktailAtbDuree(value);
   };
+  const handleAtcdDuTbcDansFratrie = (event) => {
+    const { value } = event.target;
+    setFieldValue('atcdDuTbcDansFratrie', value);
+    patientFormCause.setAtcdDuTbcDansFratrie(value);
+  };
+  // const handleAtcdDuTbcDansFratrie = (event) => {
+  //   const { value } = event.target;
+  //   setFieldValue('atcdDuTbcDansFratrie', value);
+  //   patientFormCause.setAtcdDuTbcDansFratrie(value);
+  // };
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -354,7 +365,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 fullWidth
                 autoFocus
                 sx={{ padding: '2px' }}
-                value={values.lieuAccouchement}
+                value={patientFormCause.lieuAccouchement}
                 error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
                 onChange={handleLieuAccouchement}
                 // {...getFieldProps('lieuAccouchement')}
@@ -395,6 +406,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 sx={{ padding: '2px' }}
                 label="Rang dans la fratrie"
                 fullWidth
+                value={patientFormCause.rangFratrie}
                 // {...getFieldProps('rangFratrie')}
                 onChange={handleRangFratrie}
                 error={Boolean(touched.rangFratrie && errors.rangFratrie)}
@@ -403,6 +415,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <TextField
                 sx={{ padding: '2px' }}
                 fullWidth
+                value={patientFormCause.tailleFratrie}
                 label="Taille de la fratrie"
                 helperText={touched.tailleFratrie && errors.tailleFratrie}
                 // {...getFieldProps('tailleFratrie')}
@@ -439,6 +452,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <TextField
                 fullWidth
                 sx={{ padding: '2px' }}
+                value={patientFormCause.eig}
                 label="Eig moyen (année)"
                 // {...getFieldProps('eig')}
                 onChange={handleEig}
@@ -586,6 +600,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <TextField
                 sx={{ padding: '2px' }}
                 fullWidth
+                value={patientFormCause.dureeTraitementTbc}
                 label="Durée de traitement TBC"
                 disabled={tbcDesabled}
                 onChange={handleDureeTraitementTbc}
@@ -626,6 +641,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 sx={{ padding: '2px' }}
                 fullWidth
                 label="Diagnostic hopital"
+                value={patientFormCause.diagnostiqueHospitalisation}
                 disabled={hospitalisationDesabled}
                 onChange={handleDiagnostiqueHospitalisation}
                 // {...getFieldProps('diagnostiqueHospitalisation')}
@@ -667,6 +683,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 sx={{ padding: '2px' }}
                 fullWidth
                 label="Si Oui veuillez précisez la durée"
+                value={patientFormCause.dureeTraitementProduitPlante}
                 disabled={priseProduitBasePlanteDesabled}
                 onChange={handleDureeTraitementProduitPlante}
                 // {...getFieldProps('dureeTraitementProduitPlante')}
@@ -712,9 +729,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Select>
               <TextField
                 sx={{ padding: '2px' }}
+                value={patientFormCause.preciserCalendrierVaccinNonjour}
                 label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
                 disabled={calendrierVaccinDesabled}
-                onChange ={handlePreciserCalendrierVaccinNonjour}
+                onChange={handlePreciserCalendrierVaccinNonjour}
                 // {...getFieldProps('preciserCalendrierVaccinNonjour')}
                 error={Boolean(
                   touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
@@ -762,6 +780,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <TextField
                 sx={{ padding: '2px' }}
                 disabled={dpmDesabled}
+                value={patientFormCause.dpmAnormalPrecision}
                 label="Si DPM est anormal veuillez préciser"
                 onChange={handleDpmAnormalPrecision}
                 // {...getFieldProps('dpmAnormalPrecision')}
@@ -830,6 +849,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 fullWidth
                 autoComplete="nbr"
                 type="text"
+                value={patientFormCause.nombreChute}
                 label="Nombre de chute"
                 onChange={handleNombreChute}
                 // {...getFieldProps('nombreChute')}
@@ -914,17 +934,19 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 sx={{ padding: '2px' }}
                 fullWidth
                 type="text"
+                value={patientFormCause.cocktailAtbDuree}
                 disabled={cocktailAtbDesabled}
                 label="Si notion de prise de cocktail est Oui, veuillez préciser la durée"
-                onChange={}
+                onChange={handleCocktailAtbDuree}
                 // {...getFieldProps('cocktailAtbDuree')}
                 helperText={touched.cocktailAtbDuree && errors.cocktailAtbDuree}
                 error={Boolean(touched.cocktailAtbDuree && errors.cocktailAtbDuree)}
               />
               <RadioGroup
-                {...getFieldProps('atcdDuTbcDansFratrie')}
-                helperText={touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie}
-                error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
+                onChange={handleAtcdDuTbcDansFratrie}
+                // {...getFieldProps('atcdDuTbcDansFratrie')}
+                // helperText={touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie}
+                // error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}

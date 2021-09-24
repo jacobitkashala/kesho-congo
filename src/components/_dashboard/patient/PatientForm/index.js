@@ -162,7 +162,7 @@ export default function PatientForm({
       allaitementExclusifSixMois: patientFormData.AllaitementExclisifSixMois
         ? patientFormData.AllaitementExclisifSixMois
         : '',
-      transfererUnt: ''
+      transfererUnt: patientFormData.transfererUnt ? patientFormData.transfererUnt : ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
@@ -171,7 +171,6 @@ export default function PatientForm({
       NextStep();
     }
   });
-
   const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
   console.log(errors);
   const handleChangeFistName = (event) => {
@@ -249,11 +248,6 @@ export default function PatientForm({
     setFieldValue('perimetreBrachail', value);
     setPerimetreBrachail(value);
   };
-  // const handleChangePrenomPatient = (event) => {
-  //   const { value } = event.target;
-  //   setFieldValue('fistNamePatient', value);
-  //   setPrenomPatient(value);
-  // };
   const handleChangeNom = (event) => {
     const { value } = event.target;
     setFieldValue('NomPatient', value);
@@ -319,7 +313,11 @@ export default function PatientForm({
     setFieldValue('telephone', value);
     setExplicationProvenance(value);
   };
-
+  const handleChangeTransfererUnt = (event) => {
+    const { value } = event.target;
+    setFieldValue('transfererUnt', value);
+    patientFormData.setTransfererUnt(value);
+  };
   return (
     <>
       <FormikProvider value={formik}>
@@ -434,8 +432,16 @@ export default function PatientForm({
                       Sexe:
                     </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
-                      <FormControlLabel value="M" control={<Radio />} label="M" />
-                      <FormControlLabel value="F" control={<Radio />} label="F" />
+                      <FormControlLabel
+                        value="M"
+                        control={<Radio checked={patientFormData.sexePatient === 'M'} />}
+                        label="M"
+                      />
+                      <FormControlLabel
+                        value="F"
+                        control={<Radio checked={patientFormData.sexePatient === 'F'} />}
+                        label="F"
+                      />
                     </Stack>
                   </Stack>
                 </RadioGroup>
@@ -576,8 +582,20 @@ export default function PatientForm({
                   >
                     <FormLabel component="label">Allaitement exclusif 6 mois:</FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
-                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                      <FormControlLabel
+                        value="true"
+                        control={
+                          <Radio checked={patientFormData.AllaitementExclisifSixMois === 'true'} />
+                        }
+                        label="Oui"
+                      />
+                      <FormControlLabel
+                        value="false"
+                        control={
+                          <Radio checked={patientFormData.AllaitementExclisifSixMois === 'false'} />
+                        }
+                        label="Non"
+                      />
                     </Stack>
                   </Stack>
                 </RadioGroup>
@@ -651,7 +669,8 @@ export default function PatientForm({
                   error={Boolean(touched.constitutionAliment && errors.constitutionAliment)}
                 />
                 <RadioGroup
-                  {...getFieldProps('transfererUnt')}
+                  // {...getFieldProps('transfererUnt')}
+                  onChange={handleChangeTransfererUnt}
                   helperText={touched.transfererUnt && errors.transfererUnt}
                   error={Boolean(touched.transfererUnt && errors.transfererUnt)}
                   // onChange={handleAllaitementExclusifSixMoix}
@@ -678,8 +697,16 @@ export default function PatientForm({
                       Transfer unt:
                     </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
-                      <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                      <FormControlLabel value="false" control={<Radio />} label="Non" />
+                      <FormControlLabel
+                        value="true"
+                        control={<Radio checked={patientFormData.transfererUnt === 'true'} />}
+                        label="Oui"
+                      />
+                      <FormControlLabel
+                        value="false"
+                        control={<Radio checked={patientFormData.transfererUnt === 'false'} />}
+                        label="Non"
+                      />
                     </Stack>
                   </Stack>
                 </RadioGroup>

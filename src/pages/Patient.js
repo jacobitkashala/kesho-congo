@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 /* no-nested-ternary */
 import * as Yup from 'yup';
-import { filter } from 'lodash';
+// import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
@@ -54,8 +54,8 @@ import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead } from '../components/_dashboard/personnel';
-import { PatientMoreMenu, PatientListHead } from '../components/_dashboard/patient';
+// import { PersonnelListHead } from '../components/_dashboard/personnel';
+import { PatientListHead } from '../components/_dashboard/patient';
 // import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
@@ -70,37 +70,37 @@ const TABLE_HEAD = [
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] > a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+// function descendingComparator(a, b, orderBy) {
+//   if (b[orderBy] > a[orderBy]) {
+//     return -1;
+//   }
+//   if (b[orderBy] > a[orderBy]) {
+//     return 1;
+//   }
+//   return 0;
+// }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+// function getComparator(order, orderBy) {
+//   return order === 'desc'
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => -descendingComparator(a, b, orderBy);
+// }
 
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(
-      array,
-      (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+// function applySortFilter(array, comparator, query) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   if (query) {
+//     return filter(
+//       array,
+//       (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
+//     );
+//   }
+//   return stabilizedThis.map((el) => el[0]);
+// }
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',

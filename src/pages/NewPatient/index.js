@@ -39,6 +39,7 @@ export default function NewPatient() {
   const [ExplicationAutre, setExplicationAutre] = useState('');
   const [ExplicationProvenance, setExplicationProvenance] = useState('');
   const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
+  const [transfererUnt, setTransfererUnt] = useState('');
 
   // _______________Form famille_________________
   const [vivreAvecParent, setVivreAvecParent] = useState('');
@@ -112,6 +113,8 @@ export default function NewPatient() {
   };
   const FormPatientInfo = (key) => {
     const patientFormData = {
+      transfererUnt,
+      setTransfererUnt,
       taille,
       poidsActuel,
       perimetreCranien,
@@ -323,17 +326,20 @@ export default function NewPatient() {
         >
           Retour
         </Button>
-        <div className="progress-step progress-step-active" data-title="Indentité" />
         <div
-          className={`progress-step  ${Step >= 2 && 'progress-step-active'}`}
+          className={`progress-step  ${Step === 1 && 'progress-step-active'}`}
+          data-title="Indentité"
+        />
+        <div
+          className={`progress-step  ${Step === 2 && 'progress-step-active'}`}
           data-title="Cause malnutrition"
         />
         <div
-          className={`progress-step  ${Step >= 3 && 'progress-step-active'}`}
+          className={`progress-step  ${Step === 3 && 'progress-step-active'}`}
           data-title="Famille"
         />
         <div
-          className={`progress-step  ${Step >= 4 && 'progress-step-active'}`}
+          className={`progress-step  ${Step === 4 && 'progress-step-active'}`}
           data-title="Valider"
         />
       </div>
