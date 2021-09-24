@@ -52,7 +52,7 @@ export default function NewPatient() {
   const [possederTeleRadio, setPossederTeleRadio] = useState('');
   const [proffessionChefMenage, setProffessionChefMenage] = useState('');
   const [scolariteMere, setScolariteMere] = useState('');
-  const [pereMariage, SetPereMariage] = useState('');
+  const [pereMariage, setPereMariage] = useState('');
   const [mereEnVie, setMereEnVie] = useState('');
   const [consommationPoisson, setConsommationPoisson] = useState('');
   const [typeContraceptionNaturel, setTypeContraceptionNaturel] = useState('');
@@ -61,9 +61,9 @@ export default function NewPatient() {
   const [tribut, setTribut] = useState('');
   const [dateNaissanceChefMenage, setDateNaissanceChefMenage] = useState('');
   const [religion, setReligion] = useState('');
-  const [nbrRepasJour, SetNbrRepasJour] = useState('');
-  const [pereEnvie, SetPereEnvie] = useState('');
-  const [nbrFemme, SetNbrFemme] = useState('');
+  const [nbrRepasJour, setNbrRepasJour] = useState('');
+  const [pereEnvie, setPereEnvie] = useState('');
+  const [nbrFemme, setNbrFemme] = useState('');
   const [tailleMenage, setTailleMenage] = useState('');
   const [contraceptionType, setContraceptionType] = useState('');
 
@@ -225,7 +225,7 @@ export default function NewPatient() {
       scolariteMere,
       setScolariteMere,
       pereMariage,
-      SetPereMariage,
+      setPereMariage,
       mereEnVie,
       setMereEnVie,
       consommationPoisson,
@@ -243,11 +243,11 @@ export default function NewPatient() {
       religion,
       setReligion,
       nbrRepasJour,
-      SetNbrRepasJour,
+      setNbrRepasJour,
       pereEnvie,
-      SetPereEnvie,
+      setPereEnvie,
       nbrFemme,
-      SetNbrFemme,
+      setNbrFemme,
       tailleMenage,
       setTailleMenage,
       contraceptionType,
@@ -312,10 +312,6 @@ export default function NewPatient() {
   };
   return isAuth ? (
     <Page>
-      {/* <Box sx={{ pb: 5, position: 'fixed', top: 50, zIndex: 9900 }}>
-        <Typography variant="h4">Nouveau Patient</Typography>
-      </Box> */}
-
       <div className="progress-bar-total">
         <Button
           variant="outlined"

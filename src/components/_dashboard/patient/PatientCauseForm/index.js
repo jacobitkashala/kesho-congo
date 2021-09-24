@@ -37,9 +37,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
-  const [position] = useState(100);
+
+  const [position] = useState(0);
   useEffect(() => {
-    window.scroll(100, 100);
+    window.scroll(position, position);
   }, [position]);
 
   const RegisterSchema = Yup.object().shape({
@@ -358,11 +359,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={11} sm={6} md={6}>
+          <Grid item xs={10} sm={6} md={6}>
             <Stack spacing={3}>
               <Select
                 native
-                fullWidth
+                // fullWidth
                 autoFocus
                 sx={{ padding: '2px' }}
                 value={patientFormCause.lieuAccouchement}
@@ -378,7 +379,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 <option value="Structure sanitaire oui">Structure sanitaire</option>
               </Select>
               <RadioGroup
-                fullWidth
+                // fullWidth
                 error={Boolean(touched.sejourNeo && errors.sejourNeo)}
                 // helperText={touched.sejourNeo && errors.sejourNeo}
                 // {...getFieldProps('sejourNeo')}
@@ -397,15 +398,23 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Séjour en néonat:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.sejourNeo === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.sejourNeo === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
                 label="Rang dans la fratrie"
-                fullWidth
+                // fullWidth
                 value={patientFormCause.rangFratrie}
                 // {...getFieldProps('rangFratrie')}
                 onChange={handleRangFratrie}
@@ -414,7 +423,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               />
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 value={patientFormCause.tailleFratrie}
                 label="Taille de la fratrie"
                 helperText={touched.tailleFratrie && errors.tailleFratrie}
@@ -423,7 +432,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
               />
               <RadioGroup
-                fullWidth
+                // fullWidth
                 onChange={handleMasFratrie}
                 // {...getFieldProps('masFratrie')}
                 error={Boolean(touched.masFratrie && errors.masFratrie)}
@@ -444,13 +453,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">MAS dans la fratrie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.masFratrie === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.masFratrie === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
-                fullWidth
+                // fullWidth
                 sx={{ padding: '2px' }}
                 value={patientFormCause.eig}
                 label="Eig moyen (année)"
@@ -460,7 +477,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 helperText={touched.eig && errors.eig}
               />
               <RadioGroup
-                fullWidth
+                // fullWidth
                 // {...getFieldProps('tbc')}
                 onChange={handleTbc}
                 helperText={touched.tbc && errors.tbc}
@@ -479,13 +496,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">TBC:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.tbc === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.tbc === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <RadioGroup
-                fullWidth
+                // fullWidth
                 onChange={handleDesablebComponent}
                 // {...getFieldProps('tbcChezParent')}
                 error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
@@ -514,13 +539,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                     <FormControlLabel
                       value="true"
                       // disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.tbcChezParent === 'true'} />}
                       label="Oui"
                     />
                     <FormControlLabel
                       value="false"
                       // disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.tbcChezParent === 'false'} />}
                       label="Non"
                     />
                   </Stack>
@@ -528,7 +553,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </RadioGroup>
               <Select
                 native
-                fullWidth
+                // fullWidth
                 // {...getFieldProps('tbcLequel')}
                 onChange={handleTbcLequel}
                 error={Boolean(touched.tbcLequel && errors.tbcLequel)}
@@ -542,7 +567,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 <option value="Les deux">Les deux</option>
               </Select>
               <RadioGroup
-                fullWidth
+                // fullWidth
                 // {...getFieldProps('tbcTraiter')}
                 onChange={handleTbcTraiter}
                 error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
@@ -557,20 +582,20 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                     <FormControlLabel
                       value="true"
                       disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.tbcTraiter === 'true'} />}
                       label="Oui"
                     />
                     <FormControlLabel
                       value="false"
                       disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.tbcTraiter === 'false'} />}
                       label="Non"
                     />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <RadioGroup
-                fullWidth
+                // fullWidth
                 // {...getFieldProps('TbcGuerie')}
                 onChange={handleTbcGuerie}
                 error={Boolean(touched.TbcGuerie && errors.TbcGuerie)}
@@ -585,13 +610,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                     <FormControlLabel
                       value="true"
                       disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.TbcGuerie === 'true'} />}
                       label="Oui"
                     />
                     <FormControlLabel
                       value="false"
                       disabled={tbcDesabled}
-                      control={<Radio />}
+                      control={<Radio checked={patientFormCause.TbcGuerie === 'false'} />}
                       label="Non"
                     />
                   </Stack>
@@ -599,7 +624,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 value={patientFormCause.dureeTraitementTbc}
                 label="Durée de traitement TBC"
                 disabled={tbcDesabled}
@@ -632,14 +657,26 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Hospitalisation récente:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={
+                        <Radio checked={patientFormCause.hospitalisationRecente === 'true'} />
+                      }
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={
+                        <Radio checked={patientFormCause.hospitalisationRecente === 'false'} />
+                      }
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 label="Diagnostic hopital"
                 value={patientFormCause.diagnostiqueHospitalisation}
                 disabled={hospitalisationDesabled}
@@ -674,14 +711,22 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.produitPlante === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.produitPlante === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 label="Si Oui veuillez précisez la durée"
                 value={patientFormCause.dureeTraitementProduitPlante}
                 disabled={priseProduitBasePlanteDesabled}
@@ -696,7 +741,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               />
             </Stack>
           </Grid>
-          <Grid item xs={11} sm={6} md={6}>
+          <Grid item xs={10} sm={6} md={6}>
             <Stack spacing={3}>
               <Select
                 native
@@ -760,8 +805,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                   spacing={1}
                 >
                   <FormLabel component="label">ATCD de MAS:</FormLabel>
-                  <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                  <FormControlLabel value="false" control={<Radio />} label="Non" />
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.atcdMas === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.atcdMas === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
               </RadioGroup>
               <Select
@@ -811,14 +864,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">ATCD de Rougeole dans la fratrie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.atcdRougeole === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.atcdRougeole === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <RadioGroup
                 sx={{ padding: '2px' }}
-                fullWidth
                 onChange={handleTerrainVih}
                 // {...getFieldProps('terrainVih')}
                 helperText={touched.terrainVih && errors.terrainVih}
@@ -839,14 +899,21 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Terrain VIH connu:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.terrainVih === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.terrainVih === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
                 autoComplete="nbr"
                 type="text"
                 value={patientFormCause.nombreChute}
@@ -882,14 +949,22 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Vaccination rougeole:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.vaccinationRougeole === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.vaccinationRougeole === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <Select
                 native
-                fullWidth
+                // fullWidth
                 onChange={handleAsphyxiePrerinatale}
                 helperText={touched.asphyxiePrerinatale && errors.asphyxiePrerinatale}
                 // {...getFieldProps('asphyxiePrerinatale')}
@@ -904,7 +979,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Select>
               <RadioGroup
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 // {...getFieldProps('cocktailAtb')}
                 onChange={handlecocktailAtb}
                 error={Boolean(touched.cocktailAtb && errors.cocktailAtb)}
@@ -925,14 +1000,22 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">Notion de prise de cocktail d’ATB</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.cocktailAtb === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio checked={patientFormCause.cocktailAtb === 'false'} />}
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>
               <TextField
                 sx={{ padding: '2px' }}
-                fullWidth
+                // fullWidth
                 type="text"
                 value={patientFormCause.cocktailAtbDuree}
                 disabled={cocktailAtbDesabled}
@@ -966,8 +1049,18 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 >
                   <FormLabel component="label">ATCD de TBC dans la fratrie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio checked={patientFormCause.atcdDuTbcDansFratrie === 'true'} />}
+                      label="Oui"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={
+                        <Radio checked={patientFormCause.atcdDuTbcDansFratrie === 'false'} />
+                      }
+                      label="Non"
+                    />
                   </Stack>
                 </Stack>
               </RadioGroup>

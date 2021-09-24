@@ -87,7 +87,7 @@ export default function PatientForm({
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
-  const [position] = useState(80);
+  const [position] = useState(0);
   useEffect(() => {
     window.scroll(position, position);
   }, [position]);
@@ -95,20 +95,21 @@ export default function PatientForm({
     taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
     ExplicationAutre: Yup.string().min(2),
     allaitementExclusifSixMois: Yup.string().min(2).required('Radio requis'),
-    NomPatient: Yup.string().required('Nom requis').min(2),
+    NomPatient: Yup.string().required('requis').min(2),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
       .required('Perimetre cranien requis')
       .positive(),
     transfererUnt: Yup.string().min(2).required(),
-    fistNamePatient: Yup.string().min(2).required('Prenom requis'),
+    fistNamePatient: Yup.string().min(2).required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .required('Perimetre brachial requis')
       .positive(),
-    postNomPatient: Yup.string().min(2).required('Postnom requis'),
-    telephone: Yup.string().min(2).required('téléphone requis'),
+    postNomPatient: Yup.string().min(2).required('requis'),
+    telephone: Yup.string().min(2).required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
+      .min(0)
       .required('diversification requis'),
     sexePatient: Yup.string().required('Sexe requis'),
     dataNaissancePatient: Yup.date().required('Data de naissance requis'),
@@ -171,7 +172,7 @@ export default function PatientForm({
       NextStep();
     }
   });
-  const { errors, setFieldValue, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, setFieldValue, touched, handleSubmit, isSubmitting } = formik;
   console.log(errors);
   const handleChangeFistName = (event) => {
     const { value } = event.target;
@@ -327,7 +328,7 @@ export default function PatientForm({
               <Stack spacing={3}>
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   autoFocus
                   label="Prénom"
                   value={patientFormData.prenomPatient}
@@ -339,7 +340,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   autoComplete="name"
-                  fullWidth
+                  // fullWidth
                   label="Nom"
                   value={patientFormData.nomPatient}
                   // {...getFieldProps('NomPatient')}
@@ -349,7 +350,7 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   autoComplete="lastname"
                   type="text"
                   label="Postnom"
@@ -361,7 +362,7 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   autoComplete="tel"
                   type="tel"
                   label="Téléphone"
@@ -373,7 +374,7 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="Adresse patient"
                   value={patientFormData.adressePatient}
                   // defaultValue={DataPatient.adressePatient}
@@ -384,7 +385,7 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="Poid naissance (gr)"
                   value={patientFormData.poidsNaissance}
                   onChange={handleChangePoidsnaissance}
@@ -393,7 +394,7 @@ export default function PatientForm({
                   error={Boolean(touched.poidsNaissance && errors.poidsNaissance)}
                 />
                 <TextField
-                  fullWidth
+                  // fullWidth
                   sx={{ padding: '2px' }}
                   //  defaultValue={DataPatient.poidsActuel}
                   value={patientFormData.poidsActuel}
@@ -408,7 +409,7 @@ export default function PatientForm({
                   onChange={handleChangeSexePatient}
                   error={Boolean(touched.sexePatient && errors.sexePatient)}
                   helperText={touched.sexePatient && errors.sexePatient}
-                // setValues={  DataPatient.Sexe}
+                  // setValues={  DataPatient.Sexe}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -416,16 +417,18 @@ export default function PatientForm({
                       display: 'flex',
                       alignItems: 'center',
                       paddingLeft: '10px',
-                      border: `${Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(touched.sexePatient && errors.sexePatient) && '10px'
-                        }`
+                      border: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                    // style={{ color: `${errors.sexePatient && 'red'}` }}
+                      // style={{ color: `${errors.sexePatient && 'red'}` }}
                     >
                       Sexe:
                     </FormLabel>
@@ -461,7 +464,7 @@ export default function PatientForm({
                 </Select>
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="Si le mode d'arriver est autre veuillez préciser"
                   // {...getFieldProps('ExplicationAutre')}
                   value={patientFormData.ExplicationAutre}
@@ -487,7 +490,7 @@ export default function PatientForm({
                 </Select>
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="Si le traitement nutritionnel est autre veuillez préciser"
                   // defaultValue={DataPatient.traitementNutritionnelAutre}
                   onChange={handleChangeNutritionnelAutre}
@@ -525,7 +528,7 @@ export default function PatientForm({
                 </Select>
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="Si la provenance est autre veuillez préciser"
                   // {...getFieldProps('ExplicationProvenance')}
                   value={patientFormData.ExplicationProvenance}
@@ -538,7 +541,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   type="date"
-                  fullWidth
+                  // fullWidth
                   label="Date de naissance"
                   InputLabelProps={{
                     shrink: true
@@ -565,14 +568,16 @@ export default function PatientForm({
                       display: 'flex',
                       paddingLeft: '10px',
                       alignItems: 'center',
-                      border: `${Boolean(
-                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                      ) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(
-                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                      ) && '10px'
-                        }`
+                      border: `${
+                        Boolean(
+                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                        ) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(
+                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                        ) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
@@ -597,7 +602,7 @@ export default function PatientForm({
                 </RadioGroup>
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   disabled={allaitement}
                   label="Si non à quel âge fin allaitement (mois)"
                   onChange={handleChangeAgeFinAllaitement}
@@ -609,7 +614,7 @@ export default function PatientForm({
                 />
                 <TextField
                   sx={{ padding: '2px' }}
-                  fullWidth
+                  // fullWidth
                   label="périmètre crânien (Cm)"
                   value={patientFormData.perimetreCranien}
                   onChange={handleChangePerimetreCranien}
@@ -621,7 +626,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // required
-                  fullWidth
+                  // fullWidth
                   label="périmètre branchial (Cm)"
                   value={patientFormData.perimetreBrachail}
                   onChange={handleChangePerimetreBrachail}
@@ -633,7 +638,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // required
-                  fullWidth
+                  // fullWidth
                   label="Taille en (Cm)"
                   value={patientFormData.taille}
                   onChange={handleChangeTaille}
@@ -645,7 +650,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // required
-                  fullWidth
+                  // fullWidth
                   label="Diversification à quel âge (en mois)"
                   value={patientFormData.diversificationAliment}
                   onChange={handleChangeDiversificationAliment}
@@ -669,7 +674,7 @@ export default function PatientForm({
                   onChange={handleChangeTransfererUnt}
                   helperText={touched.transfererUnt && errors.transfererUnt}
                   error={Boolean(touched.transfererUnt && errors.transfererUnt)}
-                // onChange={handleAllaitementExclusifSixMoix}
+                  // onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -677,16 +682,18 @@ export default function PatientForm({
                       display: 'flex',
                       padding: '10px',
                       alignItems: 'center',
-                      border: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
-                        }`,
-                      borderRadius: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
-                        }`
+                      border: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                      }`,
+                      borderRadius: `${
+                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                      }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                    // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Transfer unt:
                     </FormLabel>
