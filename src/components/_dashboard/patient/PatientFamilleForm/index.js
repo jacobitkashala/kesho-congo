@@ -39,7 +39,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     window.scroll(100, 100);
   });
   const RegisterSchema = Yup.object().shape({
-    nomTuteur: Yup.string().required('Nom tuteur requis'),
+    nomTuteur: Yup.string().min(2).required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date().required('Date de naissance requis'),
     mereEnceinte: Yup.string().required('Mere enceinte requis'),
     PossederTeleRadio: Yup.string().required('Posseder un télé requis'),
@@ -47,7 +47,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
     scolariteMere: Yup.string().required('Scolarité requis'),
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string().required('consomation poisson requis'),
-    nbrFemme: Yup.number().required('nombre de femme requis'),
+    nbrFemme: Yup.number().min(2).required('nombre de femme requis'),
     NiveauSocioEconomique: Yup.string().required('niveau socio-économique requis'),
     statutMarital: Yup.string().required('statut marital requis'),
     typeContraceptionNaturel: Yup.string(),
@@ -148,6 +148,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep }) {
                 // required
                 sx={{ padding: '2px' }}
                 label="Taille ménage"
+                autoFocus
                 value={values.tailleMenage}
                 {...getFieldProps('tailleMenage')}
                 helperText={touched.tailleMenage && errors.tailleMenage}

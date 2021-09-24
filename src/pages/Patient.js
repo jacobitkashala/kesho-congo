@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 /* no-nested-ternary */
 import * as Yup from 'yup';
-import { filter } from 'lodash';
+// import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
@@ -21,7 +21,7 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
+  // Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -36,7 +36,7 @@ import {
 } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 // import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
-import { styled, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -46,7 +46,7 @@ import SearchIcon from '@material-ui/icons/Search';
 // import IconButton from '@material-ui/material/IconButton';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
 // import { getUsersAsync } from '../redux/reducers/userSlice';
@@ -55,8 +55,8 @@ import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { PersonnelListHead } from '../components/_dashboard/personnel';
-import { PatientMoreMenu, PatientListHead } from '../components/_dashboard/patient';
+// import { PersonnelListHead } from '../components/_dashboard/personnel';
+import { PatientListHead } from '../components/_dashboard/patient';
 // import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
@@ -71,37 +71,37 @@ const TABLE_HEAD = [
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] > a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+// function descendingComparator(a, b, orderBy) {
+//   if (b[orderBy] > a[orderBy]) {
+//     return -1;
+//   }
+//   if (b[orderBy] > a[orderBy]) {
+//     return 1;
+//   }
+//   return 0;
+// }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+// function getComparator(order, orderBy) {
+//   return order === 'desc'
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => -descendingComparator(a, b, orderBy);
+// }
 
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(
-      array,
-      (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+// function applySortFilter(array, comparator, query) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   if (query) {
+//     return filter(
+//       array,
+//       (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
+//     );
+//   }
+//   return stabilizedThis.map((el) => el[0]);
+// }
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -455,12 +455,12 @@ export default function Patient() {
                               hover
                               key={id_patient}
                               tabIndex={-1}
-                              role="checkbox"
+                              // role="checkbox"
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
-                              onClick={() => {
-                                console.log('id de mon patient', id_patient);
-                              }}
+                              // onClick={() => {
+                              //   console.log('id de mon patient', id_patient);
+                              // }}
                             >
                               <TableCell padding="left">
                                 <TableCell padding="checkbox" variant="subtitle2" noWrap>
