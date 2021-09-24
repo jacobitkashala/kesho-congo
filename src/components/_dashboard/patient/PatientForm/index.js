@@ -87,9 +87,9 @@ export default function PatientForm({
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
-  const [position] = useState(100);
+  const [position] = useState(80);
   useEffect(() => {
-    window.scroll(100, 100);
+    window.scroll(position, position);
   }, [position]);
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
@@ -408,7 +408,7 @@ export default function PatientForm({
                   onChange={handleChangeSexePatient}
                   error={Boolean(touched.sexePatient && errors.sexePatient)}
                   helperText={touched.sexePatient && errors.sexePatient}
-                  // setValues={  DataPatient.Sexe}
+                // setValues={  DataPatient.Sexe}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -416,18 +416,16 @@ export default function PatientForm({
                       display: 'flex',
                       alignItems: 'center',
                       paddingLeft: '10px',
-                      border: `${
-                        Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(touched.sexePatient && errors.sexePatient) && '10px'
-                      }`
+                      border: `${Boolean(touched.sexePatient && errors.sexePatient) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(touched.sexePatient && errors.sexePatient) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.sexePatient && 'red'}` }}
+                    // style={{ color: `${errors.sexePatient && 'red'}` }}
                     >
                       Sexe:
                     </FormLabel>
@@ -567,16 +565,14 @@ export default function PatientForm({
                       display: 'flex',
                       paddingLeft: '10px',
                       alignItems: 'center',
-                      border: `${
-                        Boolean(
-                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                        ) && '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(
-                          touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
-                        ) && '10px'
-                      }`
+                      border: `${Boolean(
+                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                      ) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(
+                        touched.allaitementExclusifSixMois && errors.allaitementExclusifSixMois
+                      ) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
@@ -673,7 +669,7 @@ export default function PatientForm({
                   onChange={handleChangeTransfererUnt}
                   helperText={touched.transfererUnt && errors.transfererUnt}
                   error={Boolean(touched.transfererUnt && errors.transfererUnt)}
-                  // onChange={handleAllaitementExclusifSixMoix}
+                // onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -681,18 +677,16 @@ export default function PatientForm({
                       display: 'flex',
                       padding: '10px',
                       alignItems: 'center',
-                      border: `${
-                        Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
-                      }`,
-                      borderRadius: `${
-                        Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
-                      }`
+                      border: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '1px solid red'
+                        }`,
+                      borderRadius: `${Boolean(touched.transfererUnt && errors.transfererUnt) && '10px'
+                        }`
                     }}
                     spacing={1}
                   >
                     <FormLabel
                       component="label"
-                      // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
+                    // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
                       Transfer unt:
                     </FormLabel>
