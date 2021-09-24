@@ -39,7 +39,8 @@ export default function NewPatient() {
   const [ExplicationAutre, setExplicationAutre] = useState('');
   const [ExplicationProvenance, setExplicationProvenance] = useState('');
   const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
-  // _______________Form PatientCauseMalnutri_________________
+
+  // _______________Form famille_________________
   const [vivreAvecParent, setVivreAvecParent] = useState('');
   const [typeContraceptionModerne, setTypeContraceptionModerne] = useState('');
   const [contraceptionMere, setContraceptionMere] = useState('');
@@ -55,8 +56,8 @@ export default function NewPatient() {
   const [consommationPoisson, setConsommationPoisson] = useState('');
   const [typeContraceptionNaturel, setTypeContraceptionNaturel] = useState('');
   const [niveauSocioEconomique, setNiveauSocioEconomique] = useState('');
-  const [statutMarital] = useState('');
-  const [Tribut] = useState('');
+  const [statutMarital, setStatutMarital] = useState('');
+  const [tribut, setTribut] = useState('');
   const [dateNaissanceChefMenage, setDateNaissanceChefMenage] = useState('');
   const [religion, setReligion] = useState('');
   const [nbrRepasJour, SetNbrRepasJour] = useState('');
@@ -64,8 +65,42 @@ export default function NewPatient() {
   const [nbrFemme, SetNbrFemme] = useState('');
   const [tailleMenage, setTailleMenage] = useState('');
   const [contraceptionType, setContraceptionType] = useState('');
+
+  // ________form PatientCauseMalnutri
+  const [rangFratrie, setRangFratrie] = useState('');
+  const [lieuAccouchement, setLieuAccouchement] = useState('');
+  const [sejourNeo, setSejourNeo] = useState('');
+  const [cocktailAtbDuree, setCocktailAtbDuree] = useState('');
+  const [cocktailAtb, setCocktailAtb] = useState('');
+  const [atcdMas, setAtcdMas] = useState('');
+  const [atcdRougeole, setAtcdRougeole] = useState('');
+  const [tbcChezParent, setTbcChezParent] = useState('');
+  const [tbcLequel, setTbcLequel] = useState('');
+  const [tbcTraiter, setTbcTraiter] = useState('');
+  const [dureeTraitementTbc, setDureeTraitementTbc] = useState('');
+  const [tbcGuerie, setTbcGuerie] = useState('');
+  const [termeGrossesse, setTermeGrossesse] = useState('');
+  const [calendrierVaccin, setCalendrierVaccin] = useState('');
+  const [preciserCalendrierVaccinNonjour, setPreciserCalendrierVaccinNonjour] = useState('');
+  const [asphyxiePrerinatale, setAsphyxiePrerinatale] = useState('');
+  const [tailleFratrie, setTailleFratrie] = useState('');
+  const [masFratrie, setMasFratrie] = useState('');
+  const [terrainVih, setTerrainVih] = useState('');
+  const [nombreChute, setNombreChute] = useState('');
+  const [vaccinationRougeole, setVaccinationRougeole] = useState('');
+  const [eig, setEig] = useState('');
+  const [dpm, setDpm] = useState('');
+  const [tbc, setTbc] = useState('');
+  const [produitPlante, setProduitPlante] = useState('');
+  const [hospitalisationRecente, sethospitalisationRecente] = useState('');
+  const [diagnostiqueHospitalisation, setDiagnostiqueHospitalisation] = useState('');
+  const [atcdDuTbcDansFratrie, setAtcdDuTbcDansFratrie] = useState('');
+  const [dpmAnormalPrecision, setDpmAnormalPrecision] = useState('');
+  const [dureeTraitementProduitPlante, setDureeTraitementProduitPlante] = useState('');
+
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
@@ -100,6 +135,120 @@ export default function NewPatient() {
       ExplicationAutre,
       ExplicationProvenance,
       AllaitementExclisifSixMois
+    };
+
+    const patientFormCause = {
+      rangFratrie,
+      setRangFratrie,
+      lieuAccouchement,
+      setLieuAccouchement,
+      sejourNeo,
+      setSejourNeo,
+      cocktailAtbDuree,
+      setCocktailAtbDuree,
+      cocktailAtb,
+      setCocktailAtb,
+      atcdMas,
+      setAtcdMas,
+      atcdRougeole,
+      setAtcdRougeole,
+      tbcChezParent,
+      setTbcChezParent,
+      tbcLequel,
+      setTbcLequel,
+      tbcTraiter,
+      setTbcTraiter,
+      dureeTraitementTbc,
+      setDureeTraitementTbc,
+      tbcGuerie,
+      setTbcGuerie,
+      termeGrossesse,
+      setTermeGrossesse,
+      calendrierVaccin,
+      setCalendrierVaccin,
+      preciserCalendrierVaccinNonjour,
+      setPreciserCalendrierVaccinNonjour,
+      asphyxiePrerinatale,
+      setAsphyxiePrerinatale,
+      tailleFratrie,
+      setTailleFratrie,
+      masFratrie,
+      setMasFratrie,
+      terrainVih,
+      setTerrainVih,
+      nombreChute,
+      setNombreChute,
+      vaccinationRougeole,
+      setVaccinationRougeole,
+      eig,
+      setEig,
+      dpm,
+      setDpm,
+      tbc,
+      setTbc,
+      produitPlante,
+      setProduitPlante,
+      hospitalisationRecente,
+      sethospitalisationRecente,
+      diagnostiqueHospitalisation,
+      setDiagnostiqueHospitalisation,
+      atcdDuTbcDansFratrie,
+      setAtcdDuTbcDansFratrie,
+      dpmAnormalPrecision,
+      setDpmAnormalPrecision,
+      dureeTraitementProduitPlante,
+      setDureeTraitementProduitPlante
+    };
+
+    const patientFormFamille = {
+      vivreAvecParent,
+      setVivreAvecParent,
+      typeContraceptionModerne,
+      setTypeContraceptionModerne,
+      contraceptionMere,
+      setContraceptionMere,
+      professionMere,
+      setProfessionMere,
+      nomTuteur,
+      setNomTuteur,
+      dateNaissanceMere,
+      setDateNaissanceMere,
+      mereEnceinte,
+      setMereEnceinte,
+      possederTeleRadio,
+      setPossederTeleRadio,
+      proffessionChefMenage,
+      setProffessionChefMenage,
+      scolariteMere,
+      setScolariteMere,
+      pereMariage,
+      SetPereMariage,
+      mereEnVie,
+      setMereEnVie,
+      consommationPoisson,
+      setConsommationPoisson,
+      typeContraceptionNaturel,
+      setTypeContraceptionNaturel,
+      niveauSocioEconomique,
+      setNiveauSocioEconomique,
+      statutMarital,
+      setStatutMarital,
+      tribut,
+      setTribut,
+      dateNaissanceChefMenage,
+      setDateNaissanceChefMenage,
+      religion,
+      setReligion,
+      nbrRepasJour,
+      SetNbrRepasJour,
+      pereEnvie,
+      SetPereEnvie,
+      nbrFemme,
+      SetNbrFemme,
+      tailleMenage,
+      setTailleMenage,
+      contraceptionType,
+      setContraceptionType
     };
     switch (key) {
       case 1:
@@ -136,15 +285,21 @@ export default function NewPatient() {
       case 2:
         return (
           <CauseForm
-            DataPatient={DataPatient}
-            SetDataPatient={SetDataPatient}
             PrevStep={PrevStep}
             NextStep={NextStep}
+            DataPatient={DataPatient}
+            SetDataPatient={SetDataPatient}
+            patientFormCause={patientFormCause}
           />
         );
       case 3:
         return (
-          <FamilleForm PrevStep={PrevStep} NextStep={NextStep} SetDataPatient={SetDataPatient} />
+          <FamilleForm
+            PrevStep={PrevStep}
+            NextStep={NextStep}
+            SetDataPatient={SetDataPatient}
+            patientFormFamille={patientFormFamille}
+          />
         );
       case 4:
         return <ShowDAtaPatient PrevStep={PrevStep} DataPatient={DataPatient} />;

@@ -26,10 +26,11 @@ import { LoadingButton } from '@material-ui/lab';
 CauseForm.propTypes = {
   NextStep: propTypes.func,
   PrevStep: propTypes.func,
-  SetDataPatient: propTypes.func
+  SetDataPatient: propTypes.func,
+  patientFormCause: propTypes.any
 };
 
-export default function CauseForm({ NextStep, SetDataPatient, PrevStep }) {
+export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientFormCause }) {
   const [tbcDesabled, setTbcDesabled] = useState(true);
   const [hospitalisationDesabled, setHospitalisationDesabled] = useState(true);
   const [priseProduitBasePlanteDesabled, setpriseProduitBasePlanteDesabled] = useState(true);
