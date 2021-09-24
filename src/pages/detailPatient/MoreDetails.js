@@ -175,10 +175,8 @@ export default function MoreDetails({ id }) {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
   const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
-  console.log('filteredUsers', filteredUsers);
 
   const isUserNotFound = filteredUsers.length === 0;
-  // const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
@@ -271,7 +269,6 @@ export default function MoreDetails({ id }) {
                                 {anthro[i].type_malnutrition}
                               </Label>
                             </TableCell>
-                            {/* <TableCell>{anthro[i].type_malnutrition}</TableCell> */}
                           </TableRow>
                         );
                       })}

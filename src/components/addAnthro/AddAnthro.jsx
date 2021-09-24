@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 // material
 import { Stack, TextField, Select, styled } from '@material-ui/core';
+import Switch from '@material-ui/core/Switch';
 import { LoadingButton } from '@material-ui/lab';
 import Axios from 'axios';
 import { fakeAuth } from '../../fakeAuth';
@@ -34,6 +35,7 @@ const SubDivContenaire = styled('div')(() => ({
   flexDirection: 'column',
   justifyContent: 'center'
 }));
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function AddAnthro({ id }) {
   const location = useLocation();
@@ -53,10 +55,11 @@ export default function AddAnthro({ id }) {
       height: '',
       brachial: '',
       cranian: '',
-      malnutrition: ''
+      malnutrition: '',
+      checked: false
     },
     validationSchema: RegisterSchema,
-    onSubmit: ({ weight, height, brachial, cranian, malnutrition }) => {
+    onSubmit: ({ weight, height, brachial, cranian, malnutrition, checked }) => {
       Axios.post(
         `https://kesho-congo-api.herokuapp.com/anthropometrique?id_patient=${id}`,
         {
@@ -65,7 +68,7 @@ export default function AddAnthro({ id }) {
           poids: weight,
           taille: height,
           type_malnutrition: malnutrition,
-          date_examen: '2020-01-25'
+          declarer_gueri: checked
         },
         {
           headers: {
@@ -88,7 +91,8 @@ export default function AddAnthro({ id }) {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
+    formik;
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -141,12 +145,20 @@ export default function AddAnthro({ id }) {
                 <option value="" selected disabled hidden>
                   Type de malnutrition
                 </option>
-                <option value="Guéris">Declaré Guéris</option>
                 <option value="MAM">Malnutrition aigue modérée</option>
                 <option value="MAS-M">Malnutrition aigue sévère marasme</option>
                 <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
                 <option value="MAC">Malnutrition aigue chronique</option>
               </Select>
+              <span>
+                Declaré guéris?{' '}
+                <Switch
+                  {...getFieldProps('checked')}
+                  onChange={handleChange}
+                  checked={values.checked}
+                />
+                Oui
+              </span>
               <LoadingButton
                 type="submit"
                 variant="contained"

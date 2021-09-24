@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import moment from 'moment';
@@ -60,6 +60,8 @@ import { PatientListHead } from '../components/_dashboard/patient';
 // import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
+import { fakeAuth } from '../fakeAuth';
+import RefreshButton from '../components/RefreshButton';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignLeft: true },
@@ -70,38 +72,6 @@ const TABLE_HEAD = [
   { id: 'MN', label: 'Malnutrition', alignRight: false },
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
-
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] > a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy);
-// }
-
-// function applySortFilter(array, comparator, query) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   if (query) {
-//     return filter(
-//       array,
-//       (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
-//     );
-//   }
-//   return stabilizedThis.map((el) => el[0]);
-// }
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -238,23 +208,6 @@ export default function Patient() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
   const handleClickPrev = () => {
     console.log(` prev ${length}`);
     if (length > 5) setDebut((prevState) => prevState - 5);
@@ -321,12 +274,18 @@ export default function Patient() {
   // console.log( isUserNotFound);
   console.log('liste filtrées', filterName);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+
   function refreshPage() {
-    window.location.reload(false);
+    fakeAuth.login(() => {
+      navigate(from);
+      navigate(`/dashboard/patient`, { replace: true });
+    });
   }
 
-  const location = useLocation();
-  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
@@ -406,15 +365,7 @@ export default function Patient() {
                         />
                       </Form>
                     </FormikProvider>
-                    {/* <Icon>
-                      <SearchIcon />
-                    </Icon> */}
-                    {/* <RefreshIcon /> */}
-                    <Tooltip title="Refresh" color="primary" onClick={refreshPage}>
-                      <IconButton>
-                        <RefreshIcon />
-                      </IconButton>
-                    </Tooltip>
+                    <RefreshButton />
                   </>
                 )}
               </RootStyle>
