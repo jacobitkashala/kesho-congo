@@ -92,7 +92,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
 
   newPatient.atb = FamalyData.atb; // bool prise d'at
-  newPatient.liste_atb = FamalyData.listAtb; //  lesquels
+  newPatient.liste_atb = FamalyData.atb ? 'pas de tbc' : FamalyData.listAtb; //  lesquels
   newPatient.type_statut_marital =
     FamalyData.pereMariage === '' ? 'non marié' : FamalyData.pereMariage;
   newPatient.taille_menage = FamalyData.tailleMenage;
@@ -602,7 +602,7 @@ typeContraceptionNaturel: ""
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
-          // loading={btnLoading}
+          loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer

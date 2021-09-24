@@ -102,7 +102,7 @@ const TABLE_HEAD = [
 //   }
 //   return stabilizedThis.map((el) => el[0]);
 // }
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     position: 'relative',
@@ -150,7 +150,7 @@ export default function Patient() {
   const [debut, setDebut] = useState(0);
   // const [le, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
-  const [loader2, setLoader2] = useState(false);
+  // const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [sendRequest, setSendRequest] = useState(true);
   const classes = useStyles();
@@ -237,24 +237,6 @@ export default function Patient() {
     }
     setSelected([]);
   };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
   const handleClickPrev = () => {
     console.log(` prev ${length}`);
     if (length > 5) setDebut((prevState) => prevState - 5);
@@ -317,7 +299,7 @@ export default function Patient() {
   // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
   const filteredPatient = patientsList;
 
-  const isUserNotFound = filteredPatient.length === 0;
+  // const isUserNotFound = filteredPatient.length === 0;
   // console.log( isUserNotFound);
   console.log('liste filtrées', filterName);
 

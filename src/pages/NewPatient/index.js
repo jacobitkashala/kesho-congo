@@ -66,7 +66,8 @@ export default function NewPatient() {
   const [nbrFemme, setNbrFemme] = useState('');
   const [tailleMenage, setTailleMenage] = useState('');
   const [contraceptionType, setContraceptionType] = useState('');
-
+  const [listAtb, setListAtb] = useState('');
+  const [atb, setAtb] = useState('');
   // ________form PatientCauseMalnutri_______
   const [rangFratrie, setRangFratrie] = useState('');
   const [lieuAccouchement, setLieuAccouchement] = useState('');
@@ -204,6 +205,10 @@ export default function NewPatient() {
     };
 
     const patientFormFamille = {
+      listAtb,
+      setListAtb,
+      atb,
+      setAtb,
       vivreAvecParent,
       setVivreAvecParent,
       typeContraceptionModerne,
