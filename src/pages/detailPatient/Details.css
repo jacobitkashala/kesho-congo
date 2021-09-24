@@ -4,9 +4,6 @@
   justify-content: space-around;
   height: auto;
   width: 100%;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 
 .productRight {
@@ -15,11 +12,12 @@
 }
 .productLeft {
   height: auto;
-  width: 35%;
+  width: 60%;
   padding-top: 20px;
 }
 .productRightCard {
   position: relative;
+  width: 100%;
   left: 50%;
   transform: translate(-50%, 0);
 }
@@ -31,17 +29,14 @@
     justify-content: space-evenly;
     height: auto;
     width: 100%;
-    margin-left: 5%;
   }
   .productRight {
     height: auto;
     width: 90%;
-    border: 1px solid lightgray;
   }
   .productLeft {
     height: auto;
     width: 90%;
-    border: 1px solid lightgray;
     padding-top: 20px;
   }
 }

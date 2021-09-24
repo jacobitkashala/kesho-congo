@@ -8,11 +8,25 @@ import ChildCareIcon from '@material-ui/icons/ChildCare';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Avatar, TableCell } from '@material-ui/core';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import Box from '@material-ui/core/Box';
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
 // import { TableRow, TableBody, TableCell } from '@material-ui/core';
 import moment from 'moment';
 import Label from '../Label';
 
-const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, malnutrition }) => (
+const PatientCard = ({
+  name,
+  sex,
+  age,
+  birthdate,
+  number,
+  tutor,
+  location,
+  id,
+  malnutrition,
+  transfer
+}) => (
   <div className="userShow">
     <div className="userShowTop">
       {/* <Avatar alt={name} src={`/static/mock-images/avatars/avatar_${id}.jpg`} /> */}
@@ -46,7 +60,17 @@ const PatientCard = ({ name, sex, age, birthdate, number, tutor, location, id, m
       </div>
       <div className="userShowInfo">
         <LocalHospitalIcon className="userShowIcon" />
+
         <TableCell align="left">
+          {transfer ? (
+            <>
+              <Badge color="error" variant="dot" />
+              &nbsp;{' '}
+            </>
+          ) : (
+            ''
+          )}
+
           <Label
             variant="contained"
             sx={{
