@@ -66,7 +66,7 @@ export default function NewPatient() {
   const [tailleMenage, setTailleMenage] = useState('');
   const [contraceptionType, setContraceptionType] = useState('');
 
-  // ________form PatientCauseMalnutri
+  // ________form PatientCauseMalnutri_______
   const [rangFratrie, setRangFratrie] = useState('');
   const [lieuAccouchement, setLieuAccouchement] = useState('');
   const [sejourNeo, setSejourNeo] = useState('');
