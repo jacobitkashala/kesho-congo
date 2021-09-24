@@ -34,6 +34,7 @@ import {
   // Tooltip,
   // IconButton
 } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
 // import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
@@ -393,10 +394,11 @@ export default function Patient() {
                           startIcon={
                             <Icon>
                               <SearchIcon />
-                              Rechercher
                             </Icon>
                           }
-                        />
+                        >
+                          Rechercher
+                        </LoadingButton>
                         <SearchStyle
                           value={values.searchValue}
                           onChange={handleFilterByName}
@@ -440,7 +442,8 @@ export default function Patient() {
                             date_Consultation,
                             nom_consultant,
                             postnom_consultant,
-                            prenom_patient
+                            prenom_patient,
+                            transferer_unt
                           } = row;
                           const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
@@ -463,11 +466,6 @@ export default function Patient() {
                                 <TableCell padding="checkbox" variant="subtitle2" noWrap>
                                   {i + 1}
                                 </TableCell>
-
-                                {/* <Checkbox
-                                  checked={isItemSelected}
-                                  onChange={(event) => handleClick(event, nom_patient)}
-                                /> */}
                               </TableCell>
                               <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -485,6 +483,15 @@ export default function Patient() {
                               <TableCell align="center">{sexe_patient}</TableCell>
                               <TableCell align="center">{date_Consultation}</TableCell>
                               <TableCell align="center">
+                                {transferer_unt ? (
+                                  <>
+                                    <Badge color="error" variant="dot" />
+                                    &nbsp;&nbsp;
+                                  </>
+                                ) : (
+                                  ''
+                                )}
+
                                 <Label
                                   variant="outlined"
                                   sx={{
@@ -507,10 +514,6 @@ export default function Patient() {
                               <TableCell align="left">
                                 {nom_consultant} {postnom_consultant}
                               </TableCell>
-
-                              {/* <TableCell align="right">
-                                <PatientMoreMenu id_patient={id_patient} />
-                              </TableCell> */}
                             </TableRow>
                           );
                         })}
@@ -528,8 +531,6 @@ export default function Patient() {
                 </TableContainer>
               </Scrollbar>
               <TableRow>
-                <TableCell />
-
                 <TableCell>
                   <GrFormPrevious
                     style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
@@ -544,6 +545,11 @@ export default function Patient() {
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
                   {length}/{lenghtData}
+                </TableCell>
+                <TableCell style={{ fontWeight: '900px', position: 'absolute', left: '87%' }}>
+                  <Badge color="error" variant="dot" />
+                  &nbsp;&nbsp;
+                  <span>Transféré</span>
                 </TableCell>
               </TableRow>
             </Card>
