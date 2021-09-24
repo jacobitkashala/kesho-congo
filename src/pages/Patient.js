@@ -394,10 +394,11 @@ export default function Patient() {
                           startIcon={
                             <Icon>
                               <SearchIcon />
-                              Rechercher
                             </Icon>
                           }
-                        />
+                        >
+                          Rechercher
+                        </LoadingButton>
                         <SearchStyle
                           value={values.searchValue}
                           onChange={handleFilterByName}
