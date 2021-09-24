@@ -71,30 +71,50 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
 
   const formik = useFormik({
     initialValues: {
-      vivreAvecParent: '',
-      typeContraceptionModerne: '',
-      contraceptionMere: '',
-      professionMere: '',
-      nomTuteur: '',
-      dateNaissanceMere: '',
-      mereEnceinte: '',
-      PossederTeleRadio: '',
-      ProffessionChefMenage: '',
-      scolariteMere: '',
-      pereMariage: '',
-      mereEnVie: '',
-      consommationPoisson: '',
-      typeContraceptionNaturel: '',
-      NiveauSocioEconomique: '',
-      statutMarital: '',
-      Tribut: '',
-      dateNaissanceChefMenage: '',
-      Religion: '',
-      NbrRepasJour: '',
-      pereEnvie: '',
-      nbrFemme: '1',
-      tailleMenage: '',
-      contraceptionType: ''
+      vivreAvecParent: patientFormFamille.vivreAvecParent ? patientFormFamille.vivreAvecParent : '',
+      typeContraceptionModerne: patientFormFamille.typeContraceptionModerne
+        ? patientFormFamille.contraceptionMere
+        : '',
+      contraceptionMere: patientFormFamille.contraceptionMere
+        ? patientFormFamille.contraceptionMere
+        : '',
+      professionMere: patientFormFamille.professionMere ? patientFormFamille.professionMere : '',
+      nomTuteur: patientFormFamille.nomTuteur ? patientFormFamille.nomTuteur : '',
+      dateNaissanceMere: patientFormFamille.dateNaissanceMere
+        ? patientFormFamille.dateNaissanceMere
+        : '',
+      mereEnceinte: patientFormFamille.mereEnceinte ? patientFormFamille.mereEnceinte : '',
+      PossederTeleRadio: patientFormFamille.PossederTeleRadio
+        ? patientFormFamille.PossederTeleRadio
+        : '',
+      ProffessionChefMenage: patientFormFamille.ProffessionChefMenage
+        ? patientFormFamille.ProffessionChefMenage
+        : '',
+      scolariteMere: patientFormFamille.scolariteMere ? patientFormFamille.scolariteMere : '',
+      pereMariage: patientFormFamille.pereMariage ? patientFormFamille.pereMariage : '',
+      mereEnVie: patientFormFamille.mereEnVie ? patientFormFamille.mereEnVie : '',
+      consommationPoisson: patientFormFamille.consommationPoisson
+        ? patientFormFamille.consommationPoisson
+        : '',
+      typeContraceptionNaturel: patientFormFamille.typeContraceptionNaturel
+        ? patientFormFamille.typeContraceptionNaturel
+        : '',
+      NiveauSocioEconomique: patientFormFamille.NiveauSocioEconomique
+        ? patientFormFamille.NiveauSocioEconomique
+        : '',
+      statutMarital: patientFormFamille.statutMarital ? patientFormFamille.statutMarital : '',
+      Tribut: patientFormFamille.Tribut ? patientFormFamille.Tribut : '',
+      dateNaissanceChefMenage: patientFormFamille.dateNaissanceChefMenage
+        ? patientFormFamille.dateNaissanceChefMenage
+        : '',
+      Religion: patientFormFamille.Religion ? patientFormFamille.Religion : '',
+      NbrRepasJour: patientFormFamille.NbrRepasJour ? patientFormFamille.NbrRepasJour : '',
+      pereEnvie: patientFormFamille.pereEnvie ? patientFormFamille.pereEnvie : '',
+      nbrFemme: patientFormFamille.nbrFemme ? patientFormFamille.nbrFemme : '1',
+      tailleMenage: patientFormFamille.tailleMenage ? patientFormFamille.tailleMenage : '',
+      contraceptionType: patientFormFamille.contraceptionType
+        ? patientFormFamille.contraceptionType
+        : ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
@@ -103,8 +123,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     }
   });
 
-  const { errors, setFieldValue, touched, handleSubmit, getFieldProps, values, isSubmitting } =
-    formik;
+  const { errors, setFieldValue, touched, handleSubmit, values, isSubmitting } = formik;
   // console.log(errors);
   // vivreAvecParent,
   // ,
@@ -113,7 +132,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
   // contraceptionMere,
   // ,
   // professionMere,
-  // setProfessionMere,
+  // ,
   // nomTuteur,
   // ,
   // dateNaissanceMere,
@@ -121,11 +140,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
   // mereEnceinte,
   // ,
   // possederTeleRadio,
-  // setPossederTeleRadio,
+  // ,
   // proffessionChefMenage,
-  // setProffessionChefMenage,
+  // ,
   // scolariteMere,
-  // setScolariteMere,
+  // ,
   // pereMariage,
   // ,
   // mereEnVie,
@@ -141,13 +160,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
   // tribut,
   // ,
   // dateNaissanceChefMenage,
-  // setDateNaissanceChefMenage,
+  // ,
   // religion,
   // ,
   // nbrRepasJour,
   // ,
   // pereEnvie,
-  // SetPereEnvie,
+  // ,
   // nbrFemme,
   // ,
   // tailleMenage,
@@ -282,6 +301,41 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     patientFormFamille.setMereEnceinte(value);
   };
 
+  const handleScolariteMere = (event) => {
+    const { value } = event.target;
+    setFieldValue('scolariteMere', value);
+    patientFormFamille.setScolariteMere(value);
+  };
+
+  const handleProfessionMere = (event) => {
+    const { value } = event.target;
+    setFieldValue('professionMere', value);
+    patientFormFamille.setProfessionMere(value);
+  };
+
+  const handlePereEnvie = (event) => {
+    const { value } = event.target;
+    setFieldValue('pereEnvie', value);
+    patientFormFamille.SetPereEnvie(value);
+  };
+
+  const handleProffessionChefMenage = (event) => {
+    const { value } = event.target;
+    setFieldValue('ProffessionChefMenage', value);
+    patientFormFamille.setProffessionChefMenage(value);
+  };
+
+  const handleDateNaissanceChefMenage = (event) => {
+    const { value } = event.target;
+    setFieldValue('dateNaissanceChefMenage', value);
+    patientFormFamille.setDateNaissanceChefMenage(value);
+  };
+
+  const handlePossederTeleRadio = (event) => {
+    const { value } = event.target;
+    setFieldValue('PossederTeleRadio', value);
+    patientFormFamille.setPossederTeleRadio(value);
+  };
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -404,7 +458,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 native
                 required
                 selected={values.scolariteMere}
-                {...getFieldProps('scolariteMere')}
+                onChange={handleScolariteMere}
+                // {...getFieldProps('scolariteMere')}
                 error={Boolean(touched.scolariteMere && errors.scolariteMere)}
                 helperText={touched.scolariteMere && errors.scolariteMere}
               >
@@ -419,8 +474,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
               <Select
                 sx={{ padding: '2px' }}
                 native
-                required
-                {...getFieldProps('professionMere')}
+                // required
+                onchange={handleProfessionMere}
+                // {...getFieldProps('professionMere')}
                 error={Boolean(touched.professionMere && errors.professionMere)}
                 helperText={touched.professionMere && errors.professionMere}
               >
@@ -442,7 +498,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 <option value="Autre">Autre</option>
               </Select>
               <RadioGroup
-                {...getFieldProps('pereEnvie')}
+                // {...getFieldProps('pereEnvie')}
+                onchange={handlePereEnvie}
                 error={Boolean(touched.pereEnvie && errors.pereEnvie)}
                 helperText={touched.pereEnvie && errors.pereEnvie}
               >
@@ -466,7 +523,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 native
                 // required
                 sx={{ padding: '2px' }}
-                {...getFieldProps('ProffessionChefMenage')}
+                onchange={handleProffessionChefMenage}
+                // {...getFieldProps('ProffessionChefMenage')}
                 helperText={touched.ProffessionChefMenage && errors.ProffessionChefMenage}
                 error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
               >
@@ -487,7 +545,6 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 <option value="Cultivatrice">Cultivatrice</option>
                 <option value="Autre">autre</option>
               </Select>
-              {/* <InputLabel></InputLabel> */}
               <TextField
                 sx={{ padding: '2px' }}
                 label="Date de naissance Chef ménage"
@@ -496,12 +553,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 InputLabelProps={{
                   shrink: true
                 }}
-                {...getFieldProps('dateNaissanceChefMenage')}
+                // {...getFieldProps('dateNaissanceChefMenage')}
+                onchange={handleDateNaissanceChefMenage}
                 helperText={touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage}
                 error={Boolean(touched.dateNaissanceChefMenage && errors.dateNaissanceChefMenage)}
               />
               <RadioGroup
-                {...getFieldProps('PossederTeleRadio')}
+                // {...getFieldProps('PossederTeleRadio')}
+                onchange={handlePossederTeleRadio}
                 error={Boolean(touched.PossederTeleRadio && errors.PossederTeleRadio)}
                 helperText={touched.PossederTeleRadio && errors.PossederTeleRadio}
               >
@@ -573,10 +632,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 error={Boolean(touched.nbrFemme && errors.nbrFemme)}
               />
               <RadioGroup
-                // {...getFieldProps('contraceptionMere')}
                 onChange={handleContraceptionMere}
                 error={Boolean(touched.contraceptionMere && errors.contraceptionMere)}
-                // required
                 helperText={touched.contraceptionMere && errors.contraceptionMere}
               >
                 <Stack
