@@ -137,34 +137,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   const { errors, touched, setFieldValue, handleSubmit, isSubmitting } = formik;
   console.log(errors);
 
-  //     sejourNeo,
-  //     cocktailAtbDuree,
-  //     cocktailAtb,
-  //     ,
-  //     ,
-  //     ,
-  //     tbcLequel,
-  //     tbcTraiter,
-  //     dureeTraitementTbc,
-  //     tbcGuerie,
-  //     termeGrossesse,
-  //     calendrierVaccin,
-  //     preciserCalendrierVaccinNonjour,
-  //     asphyxiePrerinatale,
-  //     tailleFratrie,
-  //     masFratrie,
-  //     terrainVih,
-  //     nombreChute,
-  //     vaccinationRougeole,
-  //     eig,
-  //     dpm,
-  //     tbc,
-  //     produitPlante,
-  //     hospitalisationRecente,
-  //     atcdDuTbcDansFratrie,
-  //     dpmAnormalPrecision,
-  //     dureeTraitementProduitPlante,
-
   const handleDesablebComponent = (event) => {
     const { value } = event.target;
     setFieldValue('tbcChezParent', value);

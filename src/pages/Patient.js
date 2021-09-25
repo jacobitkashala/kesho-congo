@@ -156,8 +156,6 @@ export default function Patient() {
   const classes = useStyles();
 
   useEffect(() => {
-    // send the request
-    // setSendRequest(false);
     fetch(
       `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${30}`,
       {
@@ -179,7 +177,7 @@ export default function Patient() {
         setLoader(false);
         setSendRequest(false);
         // setLoader2();
-        console.log('myDatahobed', data);
+        // console.log('myDatahobed', data);
         // setUsersList(data);
       })
       .catch((error) => {
@@ -338,7 +336,7 @@ export default function Patient() {
                 &nbsp; &nbsp;
                 <Button
                   variant="outlined"
-                  onClick={(e) => exportToCSV(allData, exportedFileName)}
+                  onClick={() => exportToCSV(allData, exportedFileName)}
                   startIcon={<Icon icon="bx:bx-export" />}
                 >
                   Exporter

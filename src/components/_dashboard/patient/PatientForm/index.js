@@ -25,64 +25,10 @@ import { LoadingButton } from '@material-ui/lab';
 PatientForm.propTypes = {
   NextStep: propTypes.func,
   SetDataPatient: propTypes.func,
-  setPrenomPatient: propTypes.func,
-  setNomPatient: propTypes.func,
-  // DataPatient: propTypes.object,
-  patientFormData: propTypes.object,
-  // prenomPatient: propTypes.string,
-  nomPatient: propTypes.string,
-  setadressePatient: propTypes.func,
-  setSexePatient: propTypes.func,
-  setDiversificationAliment: propTypes.func,
-  setPostNomPatient: propTypes.func,
-  setPerimetreBrachail: propTypes.func,
-  setTaille: propTypes.func,
-  setPerimetreCranien: propTypes.func,
-  setModeArriverPatient: propTypes.func,
-  setPoidsActuel: propTypes.func,
-  // setFistNamePatient: propTypes.func,
-  setTraitementNutritionnelAutre: propTypes.func,
-  setAgeFinAllaitement: propTypes.func,
-  setProvenancePatient: propTypes.func,
-  setConstitutionAliment: propTypes.func,
-  setPoidsNaissance: propTypes.func,
-  setTraitementNutritionnel: propTypes.func,
-  setDataNaissancePatient: propTypes.func,
-  setTypeMalnutrition: propTypes.func,
-  setExplicationAutre: propTypes.func,
-  setTelephone: propTypes.func,
-  setExplicationProvenance: propTypes.func,
-  setAllaitementExclisifSixMois: propTypes.func
+  patientFormData: propTypes.object
 };
 
-export default function PatientForm({
-  NextStep,
-  SetDataPatient,
-  patientFormData,
-  setadressePatient,
-  setSexePatient,
-  setDiversificationAliment,
-  setPostNomPatient,
-  setPerimetreBrachail,
-  setPrenomPatient,
-  setNomPatient,
-  setTaille,
-  setPerimetreCranien,
-  setModeArriverPatient,
-  setPoidsActuel,
-  setTraitementNutritionnelAutre,
-  setAgeFinAllaitement,
-  setProvenancePatient,
-  setConstitutionAliment,
-  setPoidsNaissance,
-  setTraitementNutritionnel,
-  setDataNaissancePatient,
-  setTypeMalnutrition,
-  setExplicationAutre,
-  setTelephone,
-  setExplicationProvenance,
-  setAllaitementExclisifSixMois
-}) {
+export default function PatientForm({ NextStep, SetDataPatient, patientFormData }) {
   const [allaitement, setAllaitement] = useState(true);
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
@@ -92,33 +38,37 @@ export default function PatientForm({
     window.scroll(position, position);
   }, [position]);
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre requis').positive().required('Taille requis'),
+    taille: Yup.number('un chiffre requis').positive().min(80).required('Taille requis'),
     ExplicationAutre: Yup.string().min(2),
     allaitementExclusifSixMois: Yup.string().min(2).required('Radio requis'),
     NomPatient: Yup.string().required('requis').min(2),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
+      .min(40)
       .required('Perimetre cranien requis')
       .positive(),
     transfererUnt: Yup.string().min(2).required(),
     fistNamePatient: Yup.string().min(2).required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
+      .min(40)
       .required('Perimetre brachial requis')
       .positive(),
     postNomPatient: Yup.string().min(2).required('requis'),
-    telephone: Yup.string().min(2).required('requis'),
+    telephone: Yup.string()
+      .matches(/^(\+243|0)[0-9]{9}$/g)
+      .required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
       .min(0)
-      .required('diversification requis'),
-    sexePatient: Yup.string().required('Sexe requis'),
-    dataNaissancePatient: Yup.date().required('Data de naissance requis'),
-    constitutionAliment: Yup.string().min(2).required('constitution aliment requis'),
-    provenancePatient: Yup.string().min(2).required('Provenance requiq'),
-    modeArriver: Yup.string().min(2).required('champs requis'),
-    typeMalnutrition: Yup.string().min(2).required('Type malnutriton requis'),
-    poidsNaissance: Yup.number('un chiffre requis').required('poids naissance requis').positive(),
-    traitementNutritionnel: Yup.string().min(2).required('traitement nutritionnel requis'),
+      .required('requis'),
+    sexePatient: Yup.string().required('requis'),
+    dataNaissancePatient: Yup.date().required('requis'),
+    constitutionAliment: Yup.string().min(2).required('requis'),
+    provenancePatient: Yup.string().min(2).required('requiq'),
+    modeArriver: Yup.string().min(2).required('requis'),
+    typeMalnutrition: Yup.string().min(2).required('requis'),
+    poidsNaissance: Yup.number().positive().min(1500).required('requis'),
+    traitementNutritionnel: Yup.string().min(2).required('requis'),
     traitementNutritionnelAutre: Yup.string().min(2),
     adressePatient: Yup.string().min(2).required('adresse requis'),
     ExplicationProvenance: Yup.string().min(2),
@@ -177,12 +127,12 @@ export default function PatientForm({
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
-    setPrenomPatient(value);
+    patientFormData.setPrenomPatient(value);
   };
   const handleAllaitementExclusifSixMoix = (event) => {
     const { value } = event.target;
     setFieldValue('allaitementExclusifSixMois', value);
-    setAllaitementExclisifSixMois(value);
+    patientFormData.setAllaitementExclisifSixMois(value);
     if (value === 'true') {
       setAllaitement(true);
     } else {
@@ -192,11 +142,11 @@ export default function PatientForm({
   const handleChangeProvenance = (event) => {
     const { value } = event.target;
     setFieldValue('provenancePatient', value);
-    setProvenancePatient(value);
-    const chai = patientFormData.ExplicationProvenance
-      ? 'Proven patient'
-      : patientFormData.ExplicationProvenance;
-    console.log(chai);
+    patientFormData.setProvenancePatient(value);
+    // const chai = patientFormData.ExplicationProvenance
+    //   ? 'Proven patient'
+    //   : patientFormData.ExplicationProvenance;
+    // console.log(chai);
     if (value === 'Autres') {
       setProvenance(false);
     } else {
@@ -206,7 +156,7 @@ export default function PatientForm({
   const handleChangeModeArriver = (event) => {
     const { value } = event.target;
     setFieldValue('modeArriver', value);
-    setModeArriverPatient(value);
+    patientFormData.setModeArriverPatient(value);
     if (value === 'Autres') {
       setModeArriver(false);
     } else {
@@ -216,7 +166,7 @@ export default function PatientForm({
   const handleChangeTraitementNutritionnel = (event) => {
     const { value } = event.target;
     setFieldValue('traitementNutritionnel', value);
-    setTraitementNutritionnel(value);
+    patientFormData.setTraitementNutritionnel(value);
     if (value === 'Autres') {
       setTraitementNutri(false);
     } else {
@@ -227,92 +177,92 @@ export default function PatientForm({
   const handleChangeAdressePatient = (event) => {
     const { value } = event.target;
     setFieldValue('adressePatient', value);
-    setadressePatient(value);
+    patientFormData.setadressePatient(value);
   };
   const handleChangeSexePatient = (event) => {
     const { value } = event.target;
     setFieldValue('sexePatient', value);
-    setSexePatient(value);
+    patientFormData.setSexePatient(value);
   };
   const handleChangeDiversificationAliment = (event) => {
     const { value } = event.target;
     setFieldValue('diversificationAliment', value);
-    setDiversificationAliment(value);
+    patientFormData.setDiversificationAliment(value);
   };
   const handleChangePostNomPatient = (event) => {
     const { value } = event.target;
     setFieldValue('postNomPatient', value);
-    setPostNomPatient(value);
+    patientFormData.setPostNomPatient(value);
   };
   const handleChangePerimetreBrachail = (event) => {
     const { value } = event.target;
     setFieldValue('perimetreBrachail', value);
-    setPerimetreBrachail(value);
+    patientFormData.setPerimetreBrachail(value);
   };
   const handleChangeNom = (event) => {
     const { value } = event.target;
     setFieldValue('NomPatient', value);
-    setNomPatient(value);
+    patientFormData.setNomPatient(value);
   };
   const handleChangePerimetreCranien = (event) => {
     const { value } = event.target;
     setFieldValue('perimetreCranien', value);
-    setPerimetreCranien(value);
+    patientFormData.setPerimetreCranien(value);
   };
   const handleChangePoidsActuel = (event) => {
     const { value } = event.target;
     setFieldValue('poidsActuel', value);
-    setPoidsActuel(value);
+    patientFormData.setPoidsActuel(value);
   };
   const handleChangeTaille = (event) => {
     const { value } = event.target;
     setFieldValue('taille', value);
-    setTaille(value);
+    patientFormData.setTaille(value);
   };
   const handleChangeNutritionnelAutre = (event) => {
     const { value } = event.target;
     setFieldValue('traitementNutritionnelAutre', value);
-    setTraitementNutritionnelAutre(value);
+    patientFormData.setTraitementNutritionnelAutre(value);
   };
   const handleChangeAgeFinAllaitement = (event) => {
     const { value } = event.target;
     setFieldValue('ageFinAllaitement', value);
-    setAgeFinAllaitement(value);
+    patientFormData.setAgeFinAllaitement(value);
   };
   const handleChangeConstitutionAliment = (event) => {
     const { value } = event.target;
     setFieldValue('constitutionAliment', value);
-    setConstitutionAliment(value);
+    patientFormData.setConstitutionAliment(value);
   };
   const handleChangePoidsnaissance = (event) => {
     const { value } = event.target;
     setFieldValue('poidsNaissance', value);
-    setPoidsNaissance(value);
+    patientFormData.setPoidsNaissance(value);
   };
   const handleChangeDateNaissance = (event) => {
     const { value } = event.target;
     setFieldValue('dataNaissancePatient', value);
-    setDataNaissancePatient(value);
+    patientFormData.setDataNaissancePatient(value);
   };
   const handleChangeTypeMalnutrition = (event) => {
     const { value } = event.target;
     setFieldValue('typeMalnutrition', value);
-    setTypeMalnutrition(value);
+    patientFormData.setTypeMalnutrition(value);
   };
   const handleChangeExplicationAutre = (event) => {
     const { value } = event.target;
     setFieldValue('ExplicationAutre', value);
-    setExplicationAutre(value);
+    patientFormData.setExplicationAutre(value);
   };
   const handleChangeTelephone = (event) => {
     const { value } = event.target;
     setFieldValue('telephone', value);
-    setTelephone(value);
+    patientFormData.setTelephone(value);
   };
   const handleChangeExplicationProvenance = (event) => {
     const { value } = event.target;
     setFieldValue('telephone', value);
-    setExplicationProvenance(value);
+    patientFormData.setExplicationProvenance(value);
   };
   const handleChangeTransfererUnt = (event) => {
     const { value } = event.target;
@@ -330,7 +280,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // fullWidth
                   autoFocus
-                  label="Prénom"
+                  label="Prénom ex: job"
                   value={patientFormData.prenomPatient}
                   onChange={handleChangeFistName}
                   // {...getFieldProps('fistNamePatient')}
@@ -341,7 +291,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   autoComplete="name"
                   // fullWidth
-                  label="Nom"
+                  label="Nom ex: kalala"
                   value={patientFormData.nomPatient}
                   // {...getFieldProps('NomPatient')}
                   onChange={handleChangeNom}
@@ -353,7 +303,7 @@ export default function PatientForm({
                   // fullWidth
                   autoComplete="lastname"
                   type="text"
-                  label="Postnom"
+                  label="Postnom ex: Kalala"
                   defaultValue={patientFormData.postNomPatient}
                   // {...getFieldProps('postNomPatient')}
                   onChange={handleChangePostNomPatient}
@@ -365,7 +315,7 @@ export default function PatientForm({
                   // fullWidth
                   autoComplete="tel"
                   type="tel"
-                  label="Téléphone"
+                  label="Téléphone ex:+243801212643"
                   value={patientFormData.telephone}
                   onChange={handleChangeTelephone}
                   // {...getFieldProps('telephone')}
@@ -375,7 +325,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // fullWidth
-                  label="Adresse patient"
+                  label="Adresse "
                   value={patientFormData.adressePatient}
                   // defaultValue={DataPatient.adressePatient}
                   onChange={handleChangeAdressePatient}
@@ -386,7 +336,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // fullWidth
-                  label="Poid naissance (gr)"
+                  label="Poid naissance (gr) ex:1500"
                   value={patientFormData.poidsNaissance}
                   onChange={handleChangePoidsnaissance}
                   // {...getFieldProps('poidsNaissance')}
@@ -399,7 +349,7 @@ export default function PatientForm({
                   //  defaultValue={DataPatient.poidsActuel}
                   value={patientFormData.poidsActuel}
                   onChange={handleChangePoidsActuel}
-                  label="Poids actuelle (kg)"
+                  label="Poids actuelle (kg) ex:20"
                   // {...getFieldProps('poidsActuel')}
                   helperText={touched.poidsActuel && errors.poidsActuel}
                   error={Boolean(touched.poidsActuel && errors.poidsActuel)}
@@ -456,7 +406,11 @@ export default function PatientForm({
                   helperText={touched.modeArriver && errors.modeArriver}
                 >
                   <option value="" selected disabled hidden>
-                    Mode d'arriver
+                    {`${
+                      patientFormData.modeArriverPatient
+                        ? patientFormData.modeArriverPatient
+                        : "Mode d'arriver"
+                    }`}
                   </option>
                   <option value="De la maison">De la maison</option>
                   <option value="UNT">UNT</option>
@@ -518,7 +472,9 @@ export default function PatientForm({
                   error={Boolean(touched.provenancePatient && errors.provenancePatient)}
                 >
                   <option defaultValue="" selected disabled hidden>
-                    {patientFormData.ExplicationProvenance || 'Provenance Patient'}
+                    {patientFormData.provenancePatient
+                      ? patientFormData.provenancePatient
+                      : 'Provenance'}
                   </option>
                   <option value="kadutu">Kadutu</option>
                   <option value="Bagira">Bagira</option>
@@ -604,7 +560,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // fullWidth
                   disabled={allaitement}
-                  label="Si non à quel âge fin allaitement (mois)"
+                  label="Si non à quel âge fin allaitement (mois) ex:14"
                   onChange={handleChangeAgeFinAllaitement}
                   value={patientFormData.ageFinAllaitement}
                   // {...getFieldProps('ageFinAllaitement')}
@@ -615,7 +571,7 @@ export default function PatientForm({
                 <TextField
                   sx={{ padding: '2px' }}
                   // fullWidth
-                  label="périmètre crânien (Cm)"
+                  label="Périmètre crânien (Cm) ex:40"
                   value={patientFormData.perimetreCranien}
                   onChange={handleChangePerimetreCranien}
                   // {...getFieldProps('perimetreCranien')}
@@ -627,7 +583,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   // fullWidth
-                  label="périmètre branchial (Cm)"
+                  label="Périmètre branchial (Cm) ex:40"
                   value={patientFormData.perimetreBrachail}
                   onChange={handleChangePerimetreBrachail}
                   // defaultValue={DataPatient.perimetreBrachail}
@@ -639,7 +595,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   // fullWidth
-                  label="Taille en (Cm)"
+                  label="Taille en (Cm) ex: 80"
                   value={patientFormData.taille}
                   onChange={handleChangeTaille}
                   // defaultValue={DataPatient.taille}
@@ -651,7 +607,7 @@ export default function PatientForm({
                   sx={{ padding: '2px' }}
                   // required
                   // fullWidth
-                  label="Diversification à quel âge (en mois)"
+                  label="Diversification à quel âge (en mois) ex:20"
                   value={patientFormData.diversificationAliment}
                   onChange={handleChangeDiversificationAliment}
                   // {...getFieldProps('diversificationAliment')}
@@ -720,7 +676,9 @@ export default function PatientForm({
                   error={Boolean(touched.typeMalnutrition && errors.typeMalnutrition)}
                 >
                   <option value="" selected disabled hidden>
-                    Forme de malnutrition
+                    {patientFormData.typeMalnutrition
+                      ? patientFormData.typeMalnutrition
+                      : 'Forme de malnutrition'}
                   </option>
                   <option value="MAM">Malnutrition aigue modéré</option>
                   <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>

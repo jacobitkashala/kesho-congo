@@ -117,8 +117,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       contraceptionType: patientFormFamille.contraceptionType
         ? patientFormFamille.contraceptionType
         : '',
-      listAtb: '',
-      atb: ''
+      listAtb: patientFormFamille.listAtb ? patientFormFamille.listAtb : '',
+      atb: patientFormFamille.atb ? patientFormFamille.atb : ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
@@ -863,17 +863,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
               <TextField
                 value={patientFormFamille.listAtb}
                 sx={{ padding: '2px' }}
-                // type="date"
-                // required
                 label="List atb"
-                // InputLabelProps={{
-                //   shrink: true
-                // }}
                 helperText={touched.listAtb && errors.listAtb}
-                // {...getFieldProps('dateNaissanceMere')}
                 onChange={handleListAtb}
                 error={Boolean(touched.listAtb && errors.listAtb)}
-                // helperText={touched.dateNaissanceMere && errors.dateNaissanceMere}
               />
             </Stack>
           </Grid>

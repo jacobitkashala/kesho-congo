@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import propTypes from 'prop-types';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
@@ -17,10 +17,6 @@ PatientData.propTypes = {
 export default function PatientData({ DataPatient, PrevStep }) {
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
-  // const classes = useStyles();
-  useEffect(() => {
-    window.scroll(100, 100);
-  });
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
 
@@ -602,7 +598,7 @@ typeContraceptionNaturel: ""
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
-          loading={btnLoading}
+          // loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer
