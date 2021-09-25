@@ -33,7 +33,9 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
   const [provenance, setProvenance] = useState(true);
   const [modeArriver, setModeArriver] = useState(true);
   const [traitementNutri, setTraitementNutri] = useState(true);
+
   const [position] = useState(0);
+
   useEffect(() => {
     window.scroll(position, position);
   }, [position]);
@@ -151,7 +153,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
           indentity.traitementNutritionnel === 'Autres' &&
           indentity.traitementNutritionnelAutre === ''
         ) {
-          throw alert('Veuillez presiciser le traitement nutritionnel reçus');
+          throw alert('Veuillez preciser le traitement nutritionnel reçus');
         }
         SetDataPatient((current) => ({ ...current, indentity }));
         NextStep();

@@ -37,6 +37,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
+  const [tbcGueriEtDuréTraitementDesabled, setTbcGueriEtDuréTraitementDesabled] = useState(true);
 
   const [position] = useState(0);
   useEffect(() => {
@@ -129,13 +130,26 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     },
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
+      if (CauseMalnutrition.tbcChezParent === 'true' && CauseMalnutrition.tbcLequel === '') {
+        throw alert('Veuillez preciser TBC chez parent');
+      }
+      if (CauseMalnutrition.tbcTraiter === '' && CauseMalnutrition.tbcLequel !== '') {
+        throw alert('Veuillez preciser la  TBC chez parent si traiter ');
+      }
+      if (
+        CauseMalnutrition.tbcTraiter === 'true' &&
+        CauseMalnutrition.dureeTraitementTbc === '0' &&
+        CauseMalnutrition.TbcGuerie === ''
+      ) {
+        throw alert('Veuillez preciser la durée du traitement de tbc et si elle a été gueri ');
+      }
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       NextStep();
     }
   });
 
-  const { errors, touched, setFieldValue, handleSubmit, isSubmitting } = formik;
-  // console.log(errors);
+  const { errors, touched, setFieldValue, handleSubmit, values, isSubmitting } = formik;
+  // console.log(values.dureeTraitementTbc === '0');
 
   const handleDesablebComponent = (event) => {
     const { value } = event.target;
@@ -243,6 +257,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     const { value } = event.target;
     setFieldValue('tbcTraiter', value);
     patientFormCause.setTbcTraiter(value);
+    if (value === 'true') {
+      setTbcGueriEtDuréTraitementDesabled(false);
+    } else if (value === 'false') setTbcGueriEtDuréTraitementDesabled(true);
   };
 
   const handleTbcGuerie = (event) => {
@@ -528,11 +545,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // fullWidth
                 // {...getFieldProps('tbcLequel')}
                 onChange={handleTbcLequel}
-                error={Boolean(touched.tbcLequel && errors.tbcLequel)}
+                error={
+                  Boolean(touched.tbcLequel && errors.tbcLequel) ||
+                  Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '')
+                }
                 disabled={tbcDesabled}
               >
                 <option value="" selected disabled hidden>
-                  Si TBC oui lequel
+                  {`${
+                    patientFormCause.tbcLequel ? patientFormCause.tbcLequel : 'Si TBC oui lequel'
+                  }`}
                 </option>
                 <option value="Père">Père</option>
                 <option value="Mère">Mère</option>
@@ -546,7 +568,22 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  // sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${
+                      (Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '') ||
+                        Boolean(touched.tbcTraiter && errors.tbcTraiter)) &&
+                      '1px solid red'
+                    }`,
+                    borderRadius: `${
+                      (Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '') ||
+                        Boolean(touched.tbcTraiter && errors.tbcTraiter)) &&
+                      '10px'
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">TBC traitée :</FormLabel>
@@ -570,25 +607,42 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // fullWidth
                 // {...getFieldProps('TbcGuerie')}
                 onChange={handleTbcGuerie}
-                error={Boolean(touched.TbcGuerie && errors.TbcGuerie)}
+                // error={
+                //   Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+                //   Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '')
+                // }
               >
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  // sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '10px',
+                    border: `${
+                      Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+                      (Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '') &&
+                        '1px solid red')
+                    }`,
+                    borderRadius: `${
+                      Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+                      (Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '') && '10px')
+                    }`
+                  }}
                   spacing={1}
                 >
                   <FormLabel component="label">TBC déclarée guérie:</FormLabel>
                   <Stack direction={{ xs: 'row', sm: 'row' }}>
                     <FormControlLabel
                       value="true"
-                      disabled={tbcDesabled}
-                      control={<Radio checked={patientFormCause.TbcGuerie === 'true'} />}
+                      disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
+                      control={<Radio checked={patientFormCause.tbcGuerie === 'true'} />}
                       label="Oui"
                     />
                     <FormControlLabel
                       value="false"
-                      disabled={tbcDesabled}
-                      control={<Radio checked={patientFormCause.TbcGuerie === 'false'} />}
+                      disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
+                      control={<Radio checked={patientFormCause.tbcGuerie === 'false'} />}
                       label="Non"
                     />
                   </Stack>
@@ -599,10 +653,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // fullWidth
                 value={patientFormCause.dureeTraitementTbc}
                 label="Durée de traitement TBC"
-                disabled={tbcDesabled}
+                disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
                 onChange={handleDureeTraitementTbc}
                 // {...getFieldProps('dureeTraitementTbc')}
-                error={Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc)}
+                error={
+                  Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc) ||
+                  Boolean(values.tbcTraiter === 'true' && values.dureeTraitementTbc === '0')
+                }
               />
               <RadioGroup
                 onChange={handleChangeHospitalisation}
