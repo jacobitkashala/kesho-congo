@@ -47,12 +47,12 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
     tailleFratrie: Yup.number().required('Taille fratrie requis'),
     sejourNeo: Yup.string().required('sejour requis'),
-    masFratrie: Yup.string().required('masfratien requis'),
+    masFratrie: Yup.string().trim().required('masfratien requis'),
     atcdMas: Yup.string().required('Aatcdmas requis'),
-    atcdRougeole: Yup.string().required('atcd Rougeole requis'),
-    tbcChezParent: Yup.string().required('tbc chez le parent requis'),
-    tbcLequel: Yup.string(),
-    tbcTraiter: Yup.string(),
+    atcdRougeole: Yup.string().trim().required('atcd Rougeole requis'),
+    tbcChezParent: Yup.string().trim().required('tbc chez le parent requis'),
+    tbcLequel: Yup.string().trim(),
+    tbcTraiter: Yup.string().trim(),
     tbc: Yup.string().required('Tbc requis'),
     hospitalisationRecente: Yup.string().required('hospitalisation requis'),
     diagnostiqueHospitalisation: Yup.string(),
@@ -135,7 +135,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   });
 
   const { errors, touched, setFieldValue, handleSubmit, isSubmitting } = formik;
-  console.log(errors);
+  // console.log(errors);
 
   const handleDesablebComponent = (event) => {
     const { value } = event.target;

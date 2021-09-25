@@ -37,42 +37,58 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
   useEffect(() => {
     window.scroll(position, position);
   }, [position]);
+  const dateNow = new Date();
+  // console.log(dateNow.getFullYear());
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre requis').positive().min(80).required('Taille requis'),
-    ExplicationAutre: Yup.string().min(2),
-    allaitementExclusifSixMois: Yup.string().min(2).required('Radio requis'),
-    NomPatient: Yup.string().required('requis').min(2),
+    taille: Yup.number('un chiffre requis').positive().min(100).max(400).required('Taille requis'),
+    ExplicationAutre: Yup.string().trim().min(2),
+    allaitementExclusifSixMois: Yup.string().trim().min(2).required('Radio requis'),
+    NomPatient: Yup.string()
+      .trim()
+      .min(2)
+      .matches(/[A-Za-z]/)
+      .required('requis'),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
+      .positive()
       .min(40)
-      .required('Perimetre cranien requis')
-      .positive(),
-    transfererUnt: Yup.string().min(2).required(),
-    fistNamePatient: Yup.string().min(2).required('requis'),
+      .max(100)
+      .required('Perimetre cranien requis'),
+    transfererUnt: Yup.string().trim().min(2).required(),
+    fistNamePatient: Yup.string()
+      .trim()
+      .min(2)
+      .matches(/[A-Za-z]/)
+      .required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
+      .positive()
       .min(40)
-      .required('Perimetre brachial requis')
-      .positive(),
-    postNomPatient: Yup.string().min(2).required('requis'),
+      .max(100)
+      .required('Perimetre brachial requis'),
+    postNomPatient: Yup.string()
+      .min(2)
+      .matches(/[A-Za-z]/)
+      .trim()
+      .required('requis'),
     telephone: Yup.string()
       .matches(/^(\+243|0)[0-9]{9}$/g)
       .required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
-      .min(0)
+      .min(4)
       .required('requis'),
-    sexePatient: Yup.string().required('requis'),
-    dataNaissancePatient: Yup.date().required('requis'),
-    constitutionAliment: Yup.string().min(2).required('requis'),
-    provenancePatient: Yup.string().min(2).required('requiq'),
-    modeArriver: Yup.string().min(2).required('requis'),
-    typeMalnutrition: Yup.string().min(2).required('requis'),
+    sexePatient: Yup.string().trim().required('requis'),
+    dataNaissancePatient: Yup.date().min(1950).max(dateNow.getFullYear()).required('requis'),
+    constitutionAliment: Yup.string().trim().min(2).required('requis'),
+    provenancePatient: Yup.string().trim().min(2).required('requiq'),
+    modeArriver: Yup.string().trim().min(2).required('requis'),
+    typeMalnutrition: Yup.string().trim().min(2).required('requis'),
     poidsNaissance: Yup.number().positive().min(1500).required('requis'),
-    traitementNutritionnel: Yup.string().min(2).required('requis'),
-    traitementNutritionnelAutre: Yup.string().min(2),
-    adressePatient: Yup.string().min(2).required('adresse requis'),
-    ExplicationProvenance: Yup.string().min(2),
-    ageFinAllaitement: Yup.number('requis').positive()
+    traitementNutritionnel: Yup.string().trim().min(2).required('requis'),
+    traitementNutritionnelAutre: Yup.string().min(5).trim(),
+    adressePatient: Yup.string().trim().min(2).required('adresse requis'),
+    ExplicationProvenance: Yup.string().min(2).trim(),
+    ageFinAllaitement: Yup.number().min(2).positive()
   });
   const formik = useFormik({
     initialValues: {
@@ -117,13 +133,35 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
     },
     validationSchema: RegisterSchema,
     onSubmit: (indentity) => {
-      // const { fistNamePatient, NomPatient } = indentity;
-      SetDataPatient((current) => ({ ...current, indentity }));
-      NextStep();
+      // const { fistNamePatient, NomPatient } = indentity;  indentity.allaitementExclusifSixMois === false && indentity.ageFinAllaitement === ''
+      try {
+        if (indentity.provenancePatient === 'Autres' && indentity.ExplicationProvenance === '') {
+          throw alert('Veuillez preciser la provenance du patient');
+        }
+        if (
+          indentity.allaitementExclusifSixMois === 'false' &&
+          indentity.ageFinAllaitement === ''
+        ) {
+          throw alert("Veuillez preciser le nombre l'age fin allaitment en (mois) ");
+        }
+        if (indentity.modeArriver === 'Autres' && indentity.ExplicationAutre === '') {
+          throw alert("Veuillez expliquer le mode d'arriver du patient ");
+        }
+        if (
+          indentity.traitementNutritionnel === 'Autres' &&
+          indentity.traitementNutritionnelAutre === ''
+        ) {
+          throw alert('Veuillez presiciser le traitement nutritionnel reçus');
+        }
+        SetDataPatient((current) => ({ ...current, indentity }));
+        NextStep();
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
-  const { errors, setFieldValue, touched, handleSubmit, isSubmitting } = formik;
-  console.log(errors);
+  const { errors, setFieldValue, touched, values, handleSubmit } = formik;
+  // console.log(errors);
   const handleChangeFistName = (event) => {
     const { value } = event.target;
     setFieldValue('fistNamePatient', value);
@@ -261,7 +299,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
   };
   const handleChangeExplicationProvenance = (event) => {
     const { value } = event.target;
-    setFieldValue('telephone', value);
+    setFieldValue('ExplicationProvenance', value);
     patientFormData.setExplicationProvenance(value);
   };
   const handleChangeTransfererUnt = (event) => {
@@ -425,7 +463,10 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   onChange={handleChangeExplicationAutre}
                   disabled={modeArriver}
                   helperText={touched.ExplicationAutre && errors.ExplicationAutre}
-                  error={Boolean(touched.ExplicationAutre && errors.ExplicationAutre)}
+                  error={
+                    Boolean(touched.ExplicationAutre && errors.ExplicationAutre) ||
+                    Boolean(values.modeArriver === 'Autres' && values.ExplicationAutre === '')
+                  }
                 />
                 <Select
                   sx={{ padding: '2px' }}
@@ -454,9 +495,15 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                     touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
                   }
                   // {...getFieldProps('traitementNutritionnelAutre')}
-                  error={Boolean(
-                    touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
-                  )}
+                  error={
+                    Boolean(
+                      touched.traitementNutritionnelAutre && errors.traitementNutritionnelAutre
+                    ) ||
+                    Boolean(
+                      values.traitementNutritionnel === 'Autres' &&
+                        values.traitementNutritionnelAutre === ''
+                    )
+                  }
                 />
               </Stack>
             </Grid>
@@ -490,7 +537,12 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   value={patientFormData.ExplicationProvenance}
                   onChange={handleChangeExplicationProvenance}
                   disabled={provenance}
-                  error={Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance)}
+                  error={
+                    Boolean(touched.ExplicationProvenance && errors.ExplicationProvenance) ||
+                    Boolean(
+                      values.provenancePatient === 'Autres' && values.ExplicationProvenance === ''
+                    )
+                  }
                   helperText={touched.ExplicationProvenance && errors.ExplicationProvenance}
                 />
                 {/* <InputLabel>Date de naissance</InputLabel> */}
@@ -560,13 +612,20 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   sx={{ padding: '2px' }}
                   // fullWidth
                   disabled={allaitement}
+                  // disabled={patientFormData.AllaitementExclisifSixMois}
                   label="Si non à quel âge fin allaitement (mois) ex:14"
                   onChange={handleChangeAgeFinAllaitement}
                   value={patientFormData.ageFinAllaitement}
                   // {...getFieldProps('ageFinAllaitement')}
                   //  defaultValue={DataPatient.ageFinAllaitement}
                   helperText={touched.ageFinAllaitement && errors.ageFinAllaitement}
-                  error={Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement)}
+                  error={
+                    Boolean(touched.ageFinAllaitement && errors.ageFinAllaitement) ||
+                    Boolean(
+                      values.allaitementExclusifSixMois === 'false' &&
+                        values.ageFinAllaitement === ''
+                    )
+                  }
                 />
                 <TextField
                   sx={{ padding: '2px' }}
@@ -595,7 +654,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   sx={{ padding: '2px' }}
                   // required
                   // fullWidth
-                  label="Taille en (Cm) ex: 80"
+                  label="Taille en (Cm) ex: 100"
                   value={patientFormData.taille}
                   onChange={handleChangeTaille}
                   // defaultValue={DataPatient.taille}
@@ -695,7 +754,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                 type="submit"
                 variant="contained"
                 size="large"
-                loading={isSubmitting}
+                // loading={isSubmitting}
                 sx={{
                   justifyContent: 'center',
                   width: 200,

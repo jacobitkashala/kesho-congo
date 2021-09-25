@@ -38,7 +38,7 @@ export default function NewPatient() {
   const [typeMalnutrition, setTypeMalnutrition] = useState('');
   const [ExplicationAutre, setExplicationAutre] = useState('');
   const [ExplicationProvenance, setExplicationProvenance] = useState('');
-  const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState('');
+  const [AllaitementExclisifSixMois, setAllaitementExclisifSixMois] = useState(false);
   const [transfererUnt, setTransfererUnt] = useState('');
 
   // _______________Form famille_________________
