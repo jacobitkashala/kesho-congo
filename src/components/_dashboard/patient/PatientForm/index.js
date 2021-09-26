@@ -80,7 +80,10 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .min(4)
       .required('requis'),
     sexePatient: Yup.string().trim().required('requis'),
-    dataNaissancePatient: Yup.date().min(1950).max(dateNow.getFullYear()).required('requis'),
+    dataNaissancePatient: Yup.date()
+      .min(dateNow.getFullYear() - 90)
+      .max(dateNow.getFullYear())
+      .required('requis'),
     constitutionAliment: Yup.string().trim().min(2).required('requis'),
     provenancePatient: Yup.string().trim().min(2).required('requiq'),
     modeArriver: Yup.string().trim().min(2).required('requis'),

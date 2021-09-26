@@ -46,9 +46,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
 
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
-    tailleFratrie: Yup.number().required('Taille fratrie requis'),
+    tailleFratrie: Yup.number().min(1).max(99).required('Taille fratrie requis'),
     sejourNeo: Yup.string().required('sejour requis'),
-    masFratrie: Yup.string().trim().required('masfratien requis'),
+    masFratrie: Yup.string().trim().min(4).max(6).required('masfratien requis'),
     atcdMas: Yup.string().required('Aatcdmas requis'),
     atcdRougeole: Yup.string().trim().required('atcd Rougeole requis'),
     tbcChezParent: Yup.string().trim().required('tbc chez le parent requis'),
@@ -91,7 +91,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
       tbcTraiter: patientFormCause.tbcTraiter ? patientFormCause.tbcTraiter : '',
       dureeTraitementTbc: patientFormCause.dureeTraitementTbc
         ? patientFormCause.dureeTraitementTbc
-        : '0',
+        : '',
       TbcGuerie: patientFormCause.TbcGuerie ? patientFormCause.TbcGuerie : '',
       termeGrossesse: patientFormCause.termeGrossesse ? patientFormCause.termeGrossesse : '',
       calendrierVaccin: patientFormCause.calendrierVaccin ? patientFormCause.calendrierVaccin : '',
@@ -138,7 +138,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
       }
       if (
         CauseMalnutrition.tbcTraiter === 'true' &&
-        CauseMalnutrition.dureeTraitementTbc === '0' &&
+        CauseMalnutrition.dureeTraitementTbc === '' &&
         CauseMalnutrition.TbcGuerie === ''
       ) {
         throw alert('Veuillez preciser la durée du traitement de tbc et si elle a été gueri ');
@@ -173,7 +173,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   });
 
   const { errors, touched, setFieldValue, handleSubmit, values } = formik;
-  // console.log(values.dureeTraitementTbc === '0');
+  // console.log(values.tbcTraiter === 'true' && values.TbcGuerie === '');
 
   const handleDesablebComponent = (event) => {
     const { value } = event.target;
@@ -379,13 +379,17 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               fullWidth
               autoFocus
               sx={{ padding: '2px', marginTop: '24px' }}
-              value={patientFormCause.lieuAccouchement}
+              // value={}
               error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
               onChange={handleLieuAccouchement}
               // {...getFieldProps('lieuAccouchement')}
             >
               <option value="" selected disabled hidden>
-                Lieu d'accouchement
+                {`${
+                  patientFormCause.lieuAccouchement
+                    ? patientFormCause.lieuAccouchement
+                    : "Lieu d'accouchement"
+                }`}
               </option>
               <option value="Voiture">Voiture</option>
               <option value="domicile">domicile</option>
@@ -676,7 +680,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               // {...getFieldProps('dureeTraitementTbc')}
               error={
                 Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc) ||
-                Boolean(values.tbcTraiter === 'true' && values.dureeTraitementTbc === '0')
+                Boolean(values.tbcTraiter === 'true' && values.dureeTraitementTbc === '')
               }
             />
             <RadioGroup
@@ -807,7 +811,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               helperText={touched.termeGrossesse && errors.termeGrossesse}
             >
               <option value="" selected disabled hidden>
-                Terme de la grossesse
+                {`${
+                  patientFormCause.termeGrossesse
+                    ? patientFormCause.termeGrossesse
+                    : 'Terme de la grossesse'
+                }`}
               </option>
               <option value="Prématuré ">Prématuré</option>
               <option value="A terme">A terme</option>
@@ -857,7 +865,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               helperText={touched.calendrierVaccin && errors.calendrierVaccin}
             >
               <option value="" selected disabled hidden>
-                Calendrier vaccinal
+                {`${
+                  patientFormCause.calendrierVaccin
+                    ? patientFormCause.calendrierVaccin
+                    : 'Calendrier vaccinal'
+                }`}
               </option>
               <option value="Calendrier vaccinal à jour">Calendrier vaccinal à jour</option>
               <option value="Calendrier vaccinal non à jour">Calendrier vaccinal non à jour</option>
@@ -893,7 +905,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               error={Boolean(touched.dpm && errors.dpm)}
             >
               <option value="" selected disabled hidden>
-                DPM
+                {`${patientFormCause.dpm ? patientFormCause.dpm : 'DPM'}`}
               </option>
               <option value="Normal">Normal</option>
               <option value="Anormal">Anormal</option>
@@ -1051,7 +1063,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               error={Boolean(touched.asphyxiePrerinatale && errors.asphyxiePrerinatale)}
             >
               <option value="" selected disabled hidden>
-                Asphyxie périnatale
+                {`${
+                  patientFormCause.asphyxiePrerinatale
+                    ? patientFormCause.asphyxiePrerinatale
+                    : 'Asphyxie périnatale'
+                }`}
               </option>
               <option value="pas de cri">pas de cri</option>
               <option value="a crié spontanément oui">a crié spontanément</option>

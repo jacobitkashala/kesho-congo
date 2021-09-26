@@ -42,9 +42,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     window.scroll(position, position);
   }, [position]);
 
+  const dateNow = new Date();
+
+  console.log(dateNow.getFullYear() - 90);
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string().min(2).required('Nom tuteur requis'),
-    dateNaissanceMere: Yup.date().required('Date de naissance requis'),
+    dateNaissanceMere: Yup.date()
+      .min(dateNow.getFullYear() - 13)
+      .required('Date de naissance requis'),
     mereEnceinte: Yup.string().required('Mere enceinte requis'),
     PossederTeleRadio: Yup.string().required('Posseder un télé requis'),
     ProffessionChefMenage: Yup.string().required('Profession requis'),
