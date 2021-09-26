@@ -35,6 +35,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
   const [contraceptionMeredisable, setContraceptionMeredisable] = useState(true);
   const [contraceptionNaturelDisable, setContraceptionNaturelDisable] = useState(true);
   const [contraceptionModerneDisable, setContraceptionModerneDisable] = useState(true);
+  const [mereEnceinteDisable, setMereEnceinteDisable] = useState(true);
   const [statutMaritalDisable, setStatutMaritalDisable] = useState(true);
 
   const [position] = useState(0);
@@ -44,11 +45,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
 
   const dateNow = new Date();
 
-  console.log(dateNow.getFullYear() - 90);
+  // console.log(dateNow.getFullYear() - 90);
   const RegisterSchema = Yup.object().shape({
-    nomTuteur: Yup.string().min(2).required('Nom tuteur requis'),
+    nomTuteur: Yup.string().min(2).trim().required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date()
       .min(dateNow.getFullYear() - 13)
+      .max(dateNow.getFullYear() - 90)
       .required('Date de naissance requis'),
     mereEnceinte: Yup.string().required('Mere enceinte requis'),
     PossederTeleRadio: Yup.string().required('Posseder un télé requis'),
@@ -61,7 +63,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     statutMarital: Yup.string().required('statut marital requis'),
     typeContraceptionNaturel: Yup.string(),
     mereEnVie: Yup.string().required('champs requis'),
-    dateNaissanceChefMenage: Yup.date().required('Date de naissance requis'),
+    dateNaissanceChefMenage: Yup.date()
+      .min(dateNow.getFullYear() - 13)
+      .max(dateNow.getFullYear() - 90)
+      .required('Date de naissance requis'),
     vivreAvecParent: Yup.string().required('champs requis'),
     Tribut: Yup.string().required('tribut requis'),
     Religion: Yup.string().required('Réligion requis'),
@@ -69,10 +74,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     typeContraceptionModerne: Yup.string(),
     NbrRepasJour: Yup.number().required('Nbr repas par jour requis'),
     pereEnvie: Yup.string().required(' champs requis'),
-    tailleMenage: Yup.number().required('taille de menage requis'),
+    tailleMenage: Yup.number().min(2).max(99).required('taille de menage requis'),
     contraceptionMere: Yup.string().required('champs requis'),
     professionMere: Yup.string().required('Profession mere requis'),
-    listAtb: Yup.string('list a mere requis'),
+    listAtb: Yup.string('list a mere requis').min(4),
     atb: Yup.string().required('Profession mere requis')
   });
 
@@ -128,6 +133,9 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
       SetDataPatient((current) => ({ ...current, FamalyData }));
+      if (FamalyData.mereEnVie === 'true' && FamalyData.mereEnceinte === '') {
+        throw alert('Veuillez preciser si la mère est enceinte ou pas');
+      }
       NextStep();
     }
   });
@@ -250,6 +258,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     const { value } = event.target;
     setFieldValue('mereEnVie', value);
     patientFormFamille.setMereEnVie(value);
+    if (value === 'true') setMereEnceinteDisable(false);
+    else setMereEnceinteDisable(true);
   };
 
   const handleDateNaissanceMere = (event) => {
@@ -327,7 +337,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 helperText={touched.tailleMenage && errors.tailleMenage}
                 error={Boolean(touched.tailleMenage && errors.tailleMenage)}
               />
-              <RadioGroup
+              {/* <RadioGroup
                 // required
                 // {...getFieldProps('vivreAvecParent')}
                 onChange={handleVivreAvecParent}
@@ -361,7 +371,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                     label="Non"
                   />
                 </Stack>
-              </RadioGroup>
+              </RadioGroup> */}
               <TextField
                 value={patientFormFamille.nomTuteur}
                 sx={{ padding: '2px' }}
@@ -393,11 +403,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                   <FormLabel component="label">Mère en vie:</FormLabel>
                   <FormControlLabel
                     value="true"
+                    // disabled={parentEnvieDisable}
                     control={<Radio checked={patientFormFamille.mereEnVie === 'true'} />}
                     label="Oui"
                   />
                   <FormControlLabel
                     value="false"
+                    // disabled={parentEnvieDisable}
                     control={<Radio checked={patientFormFamille.mereEnVie === 'false'} />}
                     label="Non"
                   />
@@ -432,10 +444,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                     alignItems: 'center',
                     paddingLeft: '10px',
                     border: `${
-                      Boolean(touched.mereEnceinte && errors.mereEnceinte) && '1px solid red'
+                      (Boolean(touched.mereEnceinte && errors.mereEnceinte) ||
+                        Boolean(values.mereEnVie === 'true' && values.mereEnceinte === '')) &&
+                      '1px solid red'
                     }`,
                     borderRadius: `${
-                      Boolean(touched.mereEnceinte && errors.mereEnceinte) && '10px'
+                      (Boolean(touched.mereEnceinte && errors.mereEnceinte) ||
+                        Boolean(values.mereEnVie === 'true' && values.mereEnceinte === '')) &&
+                      '10px'
                     }`
                   }}
                   spacing={1}
@@ -443,11 +459,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                   <FormLabel component="label">Mère enceinte :</FormLabel>
                   <FormControlLabel
                     value="true"
+                    disabled={mereEnceinteDisable}
                     control={<Radio checked={patientFormFamille.mereEnceinte === 'true'} />}
                     label="Oui"
                   />
                   <FormControlLabel
                     value="false"
+                    disabled={mereEnceinteDisable}
                     control={<Radio checked={patientFormFamille.mereEnceinte === 'false'} />}
                     label="Non"
                   />
@@ -515,11 +533,13 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                   <FormLabel component="label">Père en vie:</FormLabel>
                   <FormControlLabel
                     value="true"
+                    // disabled={parentEnvieDisable}
                     control={<Radio checked={patientFormFamille.pereEnvie === 'true'} />}
                     label="Oui"
                   />
                   <FormControlLabel
                     value="false"
+                    // disabled={parentEnvieDisable}
                     control={<Radio checked={patientFormFamille.pereEnvie === 'false'} />}
                     label="Non"
                   />
