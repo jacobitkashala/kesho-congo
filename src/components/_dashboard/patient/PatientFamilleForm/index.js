@@ -37,6 +37,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
   const [contraceptionModerneDisable, setContraceptionModerneDisable] = useState(true);
   const [mereEnceinteDisable, setMereEnceinteDisable] = useState(true);
   const [statutMaritalDisable, setStatutMaritalDisable] = useState(true);
+  const [listAtbDisable, setListAtbDisable] = useState(true);
 
   const [position] = useState(0);
   useEffect(() => {
@@ -47,7 +48,12 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
 
   // console.log(dateNow.getFullYear() - 90);
   const RegisterSchema = Yup.object().shape({
-    nomTuteur: Yup.string().min(2).trim().required('Nom tuteur requis'),
+    nomTuteur: Yup.string()
+      .min(2)
+      .max(25)
+      .matches(/[A-Za-z]/)
+      .trim()
+      .required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date()
       .min(dateNow.getFullYear() - 13)
       .max(dateNow.getFullYear() - 90)
@@ -58,7 +64,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     scolariteMere: Yup.string().required('Scolarité requis'),
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string().required('requis'),
-    nbrFemme: Yup.number().min(0).required('nombre de femme requis'),
+    nbrFemme: Yup.number().min(0).max(99).required('nombre de femme requis'),
     NiveauSocioEconomique: Yup.string().required('niveau socio-économique requis'),
     statutMarital: Yup.string().required('statut marital requis'),
     typeContraceptionNaturel: Yup.string(),
@@ -67,7 +73,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       .min(dateNow.getFullYear() - 13)
       .max(dateNow.getFullYear() - 90)
       .required('Date de naissance requis'),
-    vivreAvecParent: Yup.string().required('champs requis'),
+    // vivreAvecParent: Yup.string().required('champs requis'),
     Tribut: Yup.string().required('tribut requis'),
     Religion: Yup.string().required('Réligion requis'),
     contraceptionType: Yup.string(),
@@ -83,7 +89,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
 
   const formik = useFormik({
     initialValues: {
-      vivreAvecParent: patientFormFamille.vivreAvecParent ? patientFormFamille.vivreAvecParent : '',
+      // vivreAvecParent: patientFormFamille.vivreAvecParent ? patientFormFamille.vivreAvecParent : '',
       typeContraceptionModerne: patientFormFamille.typeContraceptionModerne
         ? patientFormFamille.contraceptionMere
         : '',
@@ -122,7 +128,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       Religion: patientFormFamille.Religion ? patientFormFamille.Religion : '',
       NbrRepasJour: patientFormFamille.NbrRepasJour ? patientFormFamille.NbrRepasJour : '',
       pereEnvie: patientFormFamille.pereEnvie ? patientFormFamille.pereEnvie : '',
-      nbrFemme: patientFormFamille.nbrFemme ? patientFormFamille.nbrFemme : '1',
+      nbrFemme: patientFormFamille.nbrFemme ? patientFormFamille.nbrFemme : '',
       tailleMenage: patientFormFamille.tailleMenage ? patientFormFamille.tailleMenage : '',
       contraceptionType: patientFormFamille.contraceptionType
         ? patientFormFamille.contraceptionType
@@ -132,16 +138,47 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     },
     validationSchema: RegisterSchema,
     onSubmit: (FamalyData) => {
-      SetDataPatient((current) => ({ ...current, FamalyData }));
       if (FamalyData.mereEnVie === 'true' && FamalyData.mereEnceinte === '') {
         throw alert('Veuillez preciser si la mère est enceinte ou pas');
       }
+      if (FamalyData.statutMarital === 'Mariée' && FamalyData.pereMariage === '') {
+        throw alert('Veuillez preciser père est polygame ou monogame');
+      }
+      if (FamalyData.pereMariage === 'Polygame' && FamalyData.nbrFemme === '') {
+        throw alert('Veuillez preciser le nombre de femme');
+      }
+      if (FamalyData.contraceptionMere === 'true' && FamalyData.contraceptionType === '') {
+        throw alert('Veuillez preciser le type de contraception de la mère');
+      }
+      if (
+        FamalyData.contraceptionType === 'Naturel' &&
+        FamalyData.typeContraceptionNaturel === ''
+      ) {
+        throw alert('Veuillez preciser le type de contraception naturel');
+      }
+      if (
+        FamalyData.contraceptionType === 'Moderne' &&
+        FamalyData.typeContraceptionModerne === ''
+      ) {
+        throw alert('Veuillez preciser le type de contraception moderne');
+      }
+      if (
+        FamalyData.contraceptionType === 'Moderne et Nature' &&
+        (FamalyData.typeContraceptionModerne === '' || FamalyData.typeContraceptionNaturel === '')
+      ) {
+        throw alert('Veuillez preciser le type de contraception moderne et moderne');
+      }
+      if (FamalyData.atb === 'true' && FamalyData.listAtb === '') {
+        throw alert('Veuillez preciser la liste de ATB');
+      }
+
       NextStep();
+      SetDataPatient((current) => ({ ...current, FamalyData }));
     }
   });
 
   const { errors, setFieldValue, touched, handleSubmit, values, isSubmitting } = formik;
-
+  // console.log(values.pereMariage === 'Polygame' && values.nbrFemme === '');
   const handleStatutMarital = (event) => {
     const { value } = event.target;
     setFieldValue('statutMarital', value);
@@ -186,7 +223,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     const { value } = event.target;
     setFieldValue('pereMariage', value);
     patientFormFamille.setPereMariage(value);
+    if (value === 'Polygame') setStatutMaritalDisable(false);
+    else setStatutMaritalDisable(true);
   };
+
   const handleNbrFemme = (event) => {
     const { value } = event.target;
     setFieldValue('nbrFemme', value);
@@ -242,11 +282,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     patientFormFamille.setTailleMenage(value);
   };
 
-  const handleVivreAvecParent = (event) => {
-    const { value } = event.target;
-    setFieldValue('vivreAvecParent', value);
-    patientFormFamille.setVivreAvecParent(value);
-  };
+  // const handleVivreAvecParent = (event) => {
+  //   const { value } = event.target;
+  //   setFieldValue('vivreAvecParent', value);
+  //   patientFormFamille.setVivreAvecParent(value);
+  // };
 
   const handleNomTuteur = (event) => {
     const { value } = event.target;
@@ -314,6 +354,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     const { value } = event.target;
     setFieldValue('atb', value);
     patientFormFamille.setAtb(value);
+    if (value === 'true') setListAtbDisable(false);
+    else setListAtbDisable(true);
   };
 
   const handleListAtb = (event) => {
@@ -475,14 +517,17 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 sx={{ padding: '2px' }}
                 native
                 required
-                selected={values.scolariteMere}
                 onChange={handleScolariteMere}
                 // {...getFieldProps('scolariteMere')}
                 error={Boolean(touched.scolariteMere && errors.scolariteMere)}
                 helperText={touched.scolariteMere && errors.scolariteMere}
               >
                 <option value="" selected disabled hidden>
-                  Scolarité mère
+                  {`${
+                    patientFormFamille.scolariteMere
+                      ? patientFormFamille.scolariteMer
+                      : 'Scolarité mère'
+                  }`}
                 </option>
                 <option value="Analphabète">Analphabète</option>
                 <option value="Primaire">Primaire</option>
@@ -498,7 +543,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 helperText={touched.professionMere && errors.professionMere}
               >
                 <option value="" selected disabled hidden>
-                  Profession mère
+                  {`${
+                    patientFormFamille.professionMere
+                      ? patientFormFamille.professionMere
+                      : 'Profession mère'
+                  }`}
                 </option>
                 <option value="Salariée formelle,infirmier,Ong,enseignante">
                   Salariée formelle (infirmière, enseignante, ONG.)
@@ -555,7 +604,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 error={Boolean(touched.ProffessionChefMenage && errors.ProffessionChefMenage)}
               >
                 <option value="" selected disabled hidden>
-                  Profession chef ménage
+                  {`${
+                    patientFormFamille.proffessionChefMenage
+                      ? patientFormFamille.proffessionChefMenage
+                      : 'Profession chef ménage'
+                  }`}
                 </option>
                 <option value="Salariée formelle,infirmier,Ong,enseignante">
                   Salariée formelle (infirmière, enseignante, ONG.)
@@ -639,7 +692,11 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 helperText={touched.statutMarital && errors.statutMarital}
               >
                 <option value="" selected disabled hidden>
-                  Statut marital
+                  {`${
+                    patientFormFamille.statutMarital
+                      ? patientFormFamille.statutMarital
+                      : 'Statut marital'
+                  }`}
                 </option>
                 <option value="Prématuré ">Jamais mariée</option>
                 <option value="Mariée">Mariée</option>
@@ -654,10 +711,17 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 onChange={handlePereMariage}
                 // créer une fonction
                 helperText={touched.pereMariage && errors.pereMariage}
-                error={Boolean(touched.pereMariage && errors.pereMariage)}
+                error={
+                  Boolean(touched.pereMariage && errors.pereMariage) ||
+                  Boolean(values.statutMarital === 'Mariée' && values.pereMariage === '')
+                }
               >
                 <option value="" selected disabled hidden>
-                  Si statut marital est marié
+                  {`${
+                    patientFormFamille.pereMariage
+                      ? patientFormFamille.pereMariage
+                      : 'Si statut marital est marié'
+                  }`}
                 </option>
                 <option value="Polygame">Polygame</option>
                 <option value="Monogame">Monogame</option>
@@ -669,7 +733,10 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 onChange={handleNbrFemme}
                 disabled={statutMaritalDisable}
                 helperText={touched.nbrFemme && errors.nbrFemme}
-                error={Boolean(touched.nbrFemme && errors.nbrFemme)}
+                error={
+                  Boolean(touched.nbrFemme && errors.nbrFemme) ||
+                  Boolean(values.pereMariage === 'Polygame' && values.nbrFemme === '')
+                }
               />
               <RadioGroup
                 onChange={handleContraceptionMere}
@@ -709,14 +776,21 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 sx={{ padding: '2px' }}
                 native
                 disabled={contraceptionMeredisable}
-                selected={values.contraceptionType}
+                // selected={values.contraceptionType}
                 onChange={handleContraceptionType}
                 // {...getFieldProps('contraceptionType')}
                 helperText={touched.contraceptiontionType && errors.contraceptionType}
-                error={Boolean(touched.contraceptionType && errors.contraceptionType)}
+                error={
+                  Boolean(touched.contraceptionType && errors.contraceptionType) ||
+                  Boolean(values.contraceptionMere === 'true' && values.contraceptionType === '')
+                }
               >
                 <option value="" selected disabled hidden>
-                  Si contraception est OUI précisez le moyen
+                  {`${
+                    patientFormFamille.contraceptionType
+                      ? patientFormFamille.contraceptionType
+                      : 'Si contraception est OUI précisez le moyen'
+                  }`}
                 </option>
                 <option value="Naturel">Naturel</option>
                 <option value="Moderne">Moderne</option>
@@ -728,10 +802,24 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 disabled={contraceptionNaturelDisable}
                 onChange={handleTypeContraceptionNaturel}
                 helperText={touched.typeContraceptionNaturel && errors.typeContraceptionNaturel}
-                error={Boolean(touched.typeContraceptionNaturel && errors.typeContraceptionNaturel)}
+                error={
+                  Boolean(touched.typeContraceptionNaturel && errors.typeContraceptionNaturel) ||
+                  Boolean(
+                    values.contraceptionType === 'Naturel' && values.typeContraceptionNaturel === ''
+                  ) ||
+                  Boolean(
+                    values.contraceptionType === 'Moderne et Nature' &&
+                      (values.typeContraceptionModerne === '' ||
+                        values.typeContraceptionNaturel === '')
+                  )
+                }
               >
                 <option value="" selected disabled hidden>
-                  Si la contraception naturel veuillez preciser
+                  {`${
+                    patientFormFamille.typeContraceptionNaturel
+                      ? patientFormFamille.typeContraceptionNaturel
+                      : 'Si la contraception naturel veuillez preciser'
+                  }`}
                 </option>
                 <option value="Abstinence">Abstinence</option>
                 <option value="périodique">Périodique</option>
@@ -747,10 +835,24 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 helperText={touched.typeContraceptionModerne && errors.typeContraceptionModerne}
                 onChange={handleTypeContraceptionModerne}
                 // {...getFieldProps('typeContraceptionModerne')}
-                error={Boolean(touched.typeContraceptionModerne && errors.typeContraceptionModerne)}
+                error={
+                  Boolean(touched.typeContraceptionModerne && errors.typeContraceptionModerne) ||
+                  Boolean(
+                    values.contraceptionType === 'Moderne' && values.typeContraceptionModerne === ''
+                  ) ||
+                  Boolean(
+                    values.contraceptionType === 'Moderne et Nature' &&
+                      (values.typeContraceptionModerne === '' ||
+                        values.typeContraceptionNaturel === '')
+                  )
+                }
               >
                 <option value="" selected disabled hidden>
-                  Si la contraception Moderne veuillez preciser
+                  {`${
+                    patientFormFamille.typeContraceptionModerne
+                      ? patientFormFamille.typeContraceptionModerne
+                      : 'Si la contraception Moderne veuillez preciser'
+                  }`}
                 </option>
                 <option value="contraceptifs oraux et combiné ou pilule">
                   contraceptifs oraux et combiné ou pilule
@@ -779,7 +881,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 error={Boolean(touched.Tribut && errors.Tribut)}
               >
                 <option value="" selected disabled hidden>
-                  Tribu
+                  {`${patientFormFamille.tribut ? patientFormFamille.tribut : 'Tribu'}`}
                 </option>
                 <option value="Havu">Havu</option>
                 <option value="Shi">Shi</option>
@@ -834,7 +936,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 error={Boolean(touched.Religion && errors.Religion)}
               >
                 <option value="" selected disabled hidden>
-                  Réligion
+                  {`${patientFormFamille.religion ? patientFormFamille.religion : 'Réligion'}`}
                 </option>
                 <option value="Catholique">Catholique</option>
                 <option value="Protestant">Protestant</option>
@@ -846,12 +948,15 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 native
                 // required
                 helperText={touched.NiveauSocioEconomique && errors.NiveauSocioEconomique}
-                // {...getFieldProps('NiveauSocioEconomique')}
                 onChange={handleNiveauSocioEconomique}
                 error={Boolean(touched.NiveauSocioEconomique && errors.NiveauSocioEconomique)}
               >
                 <option value="" selected disabled hidden>
-                  Niveau socio-économique
+                  {`${
+                    patientFormFamille.niveauSocioEconomique
+                      ? patientFormFamille.niveauSocioEconomique
+                      : 'Niveau socio-économique'
+                  }`}
                 </option>
                 <option value="Bas">Bas(Inferieur a 1$ )</option>
                 <option value="Moyen">Moyen(5 dollars )</option>
@@ -888,10 +993,14 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
               <TextField
                 value={patientFormFamille.listAtb}
                 sx={{ padding: '2px' }}
+                disabled={listAtbDisable}
                 label="List atb"
                 helperText={touched.listAtb && errors.listAtb}
                 onChange={handleListAtb}
-                error={Boolean(touched.listAtb && errors.listAtb)}
+                error={
+                  Boolean(touched.listAtb && errors.listAtb) ||
+                  Boolean(values.atb === 'true' && values.listAtb === '')
+                }
               />
             </Stack>
           </Grid>

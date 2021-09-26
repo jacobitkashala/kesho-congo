@@ -46,9 +46,10 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
     ExplicationAutre: Yup.string().trim().min(2),
     allaitementExclusifSixMois: Yup.string().trim().min(2).required('Radio requis'),
     NomPatient: Yup.string()
-      .trim()
       .min(2)
+      .max(25)
       .matches(/[A-Za-z]/)
+      .trim()
       .required('requis'),
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
@@ -58,9 +59,10 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .required('Perimetre cranien requis'),
     transfererUnt: Yup.string().trim().min(2).required(),
     fistNamePatient: Yup.string()
-      .trim()
       .min(2)
+      .max(25)
       .matches(/[A-Za-z]/)
+      .trim()
       .required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .positive()
@@ -69,6 +71,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .required('Perimetre brachial requis'),
     postNomPatient: Yup.string()
       .min(2)
+      .max(25)
       .matches(/[A-Za-z]/)
       .trim()
       .required('requis'),
