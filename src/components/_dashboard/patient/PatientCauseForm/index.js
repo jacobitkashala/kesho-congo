@@ -164,6 +164,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
       if (CauseMalnutrition.dpm === 'Anormal' && CauseMalnutrition.dpmAnormalPrecision === '') {
         throw alert('Veuillez expliquer pour quoi le DPM est anormal');
       }
+      if (CauseMalnutrition.cocktailAtb === 'true' && CauseMalnutrition.cocktailAtbDuree === '') {
+        throw alert('Veuillez préciser la durée du cocktail Atb');
+      }
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       NextStep();
     }
@@ -375,7 +378,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               native
               fullWidth
               autoFocus
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               value={patientFormCause.lieuAccouchement}
               error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
               onChange={handleLieuAccouchement}
@@ -390,6 +393,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             </Select>
             <RadioGroup
               // fullWidth
+              sx={{ marginTop: '24px' }}
               error={Boolean(touched.sejourNeo && errors.sejourNeo)}
               // helperText={touched.sejourNeo && errors.sejourNeo}
               // {...getFieldProps('sejourNeo')}
@@ -423,7 +427,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               label="Rang dans la fratrie"
               fullWidth
               value={patientFormCause.rangFratrie}
@@ -433,7 +437,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               helperText={touched.rangFratrie && errors.rangFratrie}
             />
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               value={patientFormCause.tailleFratrie}
               label="Taille de la fratrie"
@@ -445,6 +449,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               // fullWidth
               onChange={handleMasFratrie}
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('masFratrie')}
               error={Boolean(touched.masFratrie && errors.masFratrie)}
               // helperText={touched.masFratrie && errors.masFratrie}
@@ -478,6 +483,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               // fullWidth
               // {...getFieldProps('tbc')}
+              sx={{ marginTop: '24px' }}
               onChange={handleTbc}
               helperText={touched.tbc && errors.tbc}
               error={Boolean(touched.tbc && errors.tbc)}
@@ -511,6 +517,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               // fullWidth
               onChange={handleDesablebComponent}
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('tbcChezParent')}
               error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
               // helperText={touched.tbcChezParent && errors.tbcChezParent}
@@ -554,6 +561,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               native
               fullWidth
               // {...getFieldProps('tbcLequel')}
+              sx={{ marginTop: '24px' }}
               onChange={handleTbcLequel}
               error={
                 Boolean(touched.tbcLequel && errors.tbcLequel) ||
@@ -571,6 +579,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               // fullWidth
               // {...getFieldProps('tbcTraiter')}
+              sx={{ marginTop: '24px' }}
               onChange={handleTbcTraiter}
               error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
             >
@@ -614,6 +623,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               // fullWidth
               // {...getFieldProps('TbcGuerie')}
+              sx={{ marginTop: '24px' }}
               onChange={handleTbcGuerie}
               // error={
               //   Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
@@ -657,7 +667,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               value={patientFormCause.dureeTraitementTbc}
               label="Durée de traitement TBC ex:6 mois"
@@ -671,6 +681,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             />
             <RadioGroup
               onChange={handleChangeHospitalisation}
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('hospitalisationRecente')}
               // helperText={touched.hospitalisationRecente && errors.hospitalisationRecente}
               // error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
@@ -710,7 +721,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               label="Diagnostic hopital"
               value={patientFormCause.diagnostiqueHospitalisation}
@@ -729,12 +740,13 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               helperText={touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation}
             />
             <RadioGroup
+              sx={{ marginTop: '24px' }}
               onChange={handleChangePriseProduitBasePlante}
               error={Boolean(touched.produitPlante && errors.produitPlante)}
               helperText={touched.produitPlante && errors.produitPlante}
             >
               <Stack
-                direction={{ xs: 'column', md: 'row', sm: 'row' }}
+                direction={{ xs: 'column', md: 'column', sm: 'column' }}
                 sx={{
                   display: 'flex',
                   // alignItems: 'center',
@@ -764,7 +776,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               label="Si Oui veuillez précisez la durée ex: 3mois"
               value={patientFormCause.dureeTraitementProduitPlante}
@@ -789,6 +801,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               native
               fullWidth
               // {...getFieldProps('termeGrossesse')}
+              sx={{ marginTop: '24px' }}
               onChange={handleDureeTermeGrossesse}
               error={Boolean(touched.termeGrossesse && errors.termeGrossesse)}
               helperText={touched.termeGrossesse && errors.termeGrossesse}
@@ -802,6 +815,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <RadioGroup
               required
               // {...getFieldProps('atcdMas')}
+              sx={{ marginTop: '24px' }}
               onChange={handleAtcdMas}
               error={Boolean(touched.atcdMas && errors.atcdMas)}
               // helperText={touched.atcdMas && errors.atcdMas}
@@ -835,6 +849,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <Select
               native
               fullWidth
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('calendrierVaccin')}
               // required
               onChange={handleCalendrierVaccin}
@@ -848,7 +863,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <option value="Calendrier vaccinal non à jour">Calendrier vaccinal non à jour</option>
             </Select>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               value={patientFormCause.preciserCalendrierVaccinNonjour}
               label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
@@ -871,6 +886,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <Select
               native
               fullWidth
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('dpm')}
               onChange={handleDpm}
               helperText={touched.dpm && errors.dpm}
@@ -883,7 +899,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <option value="Anormal">Anormal</option>
             </Select>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               disabled={dpmDesabled}
               value={patientFormCause.dpmAnormalPrecision}
@@ -897,7 +913,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               }
             />
             <RadioGroup
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               // {...getFieldProps('atcdRougeole')}
               onChange={handleAtcdRougeole}
               helperText={touched.atcdRougeole && errors.atcdRougeole}
@@ -933,7 +949,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             </RadioGroup>
             <TextField
               fullWidth
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               value={patientFormCause.eig}
               label="Eig moyen (année)"
               // {...getFieldProps('eig')}
@@ -942,7 +958,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               helperText={touched.eig && errors.eig}
             />
             <RadioGroup
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               onChange={handleTerrainVih}
               // {...getFieldProps('terrainVih')}
               helperText={touched.terrainVih && errors.terrainVih}
@@ -975,7 +991,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               autoComplete="nbr"
               fullWidth
               type="text"
@@ -987,7 +1003,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               error={Boolean(touched.nombreChute && errors.nombreChute)}
             />
             <RadioGroup
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               // fullWidth
               onChange={handleVaccinationRougeole}
               helperText={touched.vaccinationRougeole && errors.vaccinationRougeole}
@@ -1028,6 +1044,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             <Select
               native
               fullWidth
+              sx={{ marginTop: '24px' }}
               onChange={handleAsphyxiePrerinatale}
               helperText={touched.asphyxiePrerinatale && errors.asphyxiePrerinatale}
               // {...getFieldProps('asphyxiePrerinatale')}
@@ -1041,7 +1058,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <option value="cri après réanimation">cri après réanimation</option>
             </Select>
             <RadioGroup
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               // fullWidth
               // {...getFieldProps('cocktailAtb')}
               onChange={handlecocktailAtb}
@@ -1061,7 +1078,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 }}
                 spacing={1}
               >
-                <FormLabel component="label">Prise de cocktail d’ATB</FormLabel>
+                <FormLabel component="label">Prise de cocktail d’ATB : </FormLabel>
                 <Stack direction={{ xs: 'row', sm: 'row' }}>
                   <FormControlLabel
                     value="true"
@@ -1077,7 +1094,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               </Stack>
             </RadioGroup>
             <TextField
-              sx={{ padding: '2px' }}
+              sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               type="text"
               value={patientFormCause.cocktailAtbDuree}
@@ -1086,16 +1103,20 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               onChange={handleCocktailAtbDuree}
               // {...getFieldProps('cocktailAtbDuree')}
               helperText={touched.cocktailAtbDuree && errors.cocktailAtbDuree}
-              error={Boolean(touched.cocktailAtbDuree && errors.cocktailAtbDuree)}
+              error={
+                Boolean(touched.cocktailAtbDuree && errors.cocktailAtbDuree) ||
+                Boolean(values.cocktailAtb === 'true' && values.cocktailAtbDuree === '')
+              }
             />
             <RadioGroup
               onChange={handleAtcdDuTbcDansFratrie}
+              sx={{ marginTop: '24px' }}
               // {...getFieldProps('atcdDuTbcDansFratrie')}
               // helperText={touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie}
               // error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
             >
               <Stack
-                direction={{ xs: 'column', md: 'column', sm: 'conlumn' }}
+                direction={{ xs: 'column', md: 'column', sm: 'column' }}
                 sx={{
                   display: 'flex',
                   // alignItems: 'center',
@@ -1108,7 +1129,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                     Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
                   }`
                 }}
-                spacing={0}
+                spacing={1}
               >
                 <FormLabel component="label">ATCD de TBC dans la fratrie :</FormLabel>
                 <Stack direction={{ xs: 'row', sm: 'row' }}>
