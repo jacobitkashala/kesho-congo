@@ -46,6 +46,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
 
   const dateNow = new Date();
 
+  // console.log(dateNow.getFullYear() - 13);
+
   // console.log(dateNow.getFullYear() - 90);
   const RegisterSchema = Yup.object().shape({
     nomTuteur: Yup.string()
@@ -55,26 +57,26 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       .trim()
       .required('Nom tuteur requis'),
     dateNaissanceMere: Yup.date()
-      .min(dateNow.getFullYear() - 13)
-      .max(dateNow.getFullYear() - 90)
+      .max(dateNow.getFullYear() - 13)
+      .min(dateNow.getFullYear() - 90)
       .required('Date de naissance requis'),
-    mereEnceinte: Yup.string().required('Mere enceinte requis'),
+    mereEnceinte: Yup.string(),
     PossederTeleRadio: Yup.string().required('Posseder un télé requis'),
     ProffessionChefMenage: Yup.string().required('Profession requis'),
     scolariteMere: Yup.string().required('Scolarité requis'),
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string().required('requis'),
-    nbrFemme: Yup.number().min(0).max(99).required('nombre de femme requis'),
+    nbrFemme: Yup.number().min(0).max(99),
     NiveauSocioEconomique: Yup.string().required('niveau socio-économique requis'),
     statutMarital: Yup.string().required('statut marital requis'),
     typeContraceptionNaturel: Yup.string(),
     mereEnVie: Yup.string().required('champs requis'),
     dateNaissanceChefMenage: Yup.date()
-      .min(dateNow.getFullYear() - 13)
-      .max(dateNow.getFullYear() - 90)
+      .max(dateNow.getFullYear() - 13)
+      .min(dateNow.getFullYear() - 90)
       .required('Date de naissance requis'),
     // vivreAvecParent: Yup.string().required('champs requis'),
-    Tribut: Yup.string().required('tribut requis'),
+    Tribut: Yup.string().required('tribu requis'),
     Religion: Yup.string().required('Réligion requis'),
     contraceptionType: Yup.string(),
     typeContraceptionModerne: Yup.string(),
@@ -171,9 +173,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       if (FamalyData.atb === 'true' && FamalyData.listAtb === '') {
         throw alert('Veuillez preciser la liste de ATB');
       }
-
-      NextStep();
       SetDataPatient((current) => ({ ...current, FamalyData }));
+      NextStep();
     }
   });
 

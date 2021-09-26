@@ -39,7 +39,12 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
   useEffect(() => {
     window.scroll(position, position);
   }, [position]);
+
   const dateNow = new Date();
+
+  // console.log(dateNow.getFullYear() - 13);
+
+  // console.log(dateNow.getFullYear() - 90);
   // console.log(dateNow.getFullYear());
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').positive().min(100).max(400).required('Taille requis'),

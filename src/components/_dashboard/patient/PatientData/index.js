@@ -88,12 +88,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
 
   newPatient.atb = FamalyData.atb; // bool prise d'at
-  newPatient.liste_atb = FamalyData.atb ? 'pas de tbc' : FamalyData.listAtb; //  lesquels
+  newPatient.liste_atb = FamalyData.atb ? 'pas de atb' : FamalyData.listAtb; //  lesquels
   newPatient.type_statut_marital =
     FamalyData.pereMariage === '' ? 'non marié' : FamalyData.pereMariage;
   newPatient.taille_menage = FamalyData.tailleMenage;
-  newPatient.vivre_deux_parents = FamalyData.vivreAvecParent;
-  newPatient.mere_enceinte = FamalyData.mereEnceinte;
+  newPatient.vivre_deux_parents = FamalyData.mereEnVie && FamalyData.pereEnvie; // FamalyData.vivreAvecParent;//
+  newPatient.mere_enceinte = FamalyData.mereEnVie ? FamalyData.mereEnceinte : false;
   newPatient.mere_en_vie = FamalyData.mereEnVie;
   newPatient.pere_en_vie = FamalyData.pereEnvie;
   newPatient.profession_mere = FamalyData.professionMere;
@@ -162,8 +162,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
         <Grid item xs={11} sm={5} md={5}>
           <Card
             sx={{
-              margin: 2,
-              padding: 5
+              margin: 1,
+              padding: 2
             }}
           >
             <Stack
@@ -231,6 +231,13 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Adresse :<span style={{ color: 'black' }}> {indentity.adressePatient}</span>
             </InputLabel>
             <InputLabel>
+              Consommation poisson :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${FamalyData.consommationPoisson ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Date de naissance :
               <span style={{ color: 'black' }}> {indentity.dataNaissancePatient}</span>
             </InputLabel>
@@ -274,6 +281,23 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
+              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Taille Fratrie :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
+            </InputLabel>
+            <InputLabel>
+              Se jour Neo :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Constitution aliment:
               <span style={{ color: 'black' }}> {indentity.constitutionAliment}</span>
             </InputLabel>
@@ -286,41 +310,20 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {`${FamalyData.listAtb ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
+              Tbc:
+              <span style={{ color: 'black' }}> {`${CauseMalnutrition.tbc ? 'Oui' : 'Non'}`}</span>
+            </InputLabel>
+            <InputLabel>
               Transfer Unt:
               <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
           </Card>
         </Grid>
-        {/* NbrRepasJour: "1"
-NiveauSocioEconomique: "Moyen"
-PossederTeleRadio: "false"
-ProffessionChefMenage: "Travail à temps partiel (maçon, menuisier)"
-Religion: "Musulman"
-: "Shi"
-consommationPoisson: "true"
-contraceptionMere: "false"
-contraceptionType: ""
-: "2021-09-17"
-dateNaissanceMere: "2021-09-23"
-mereEnVie: "true"
-mereEnceinte: "false"
-: "1"
-nomTuteur: "12"
-pereEnvie: "false"
-pereMariage: ""
-professionMere: "Salariée formelle,infirmier,Ong,enseignante"
-scolariteMere: "Primaire"
-statutMarital: "Prématuré "
-tailleMenage: "12"
-typeContraceptionModerne: ""
-typeContraceptionNaturel: ""
-: "true" */}
-
         <Grid item xs={11} sm={7} md={7}>
           <Card
             sx={{
-              margin: 2,
-              padding: 5
+              margin: 1,
+              padding: 2
             }}
           >
             <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>Famille</Typography>
@@ -328,7 +331,7 @@ typeContraceptionNaturel: ""
             <InputLabel>
               Parent en vie :
               <span style={{ color: 'black' }}>
-                {`${FamalyData.vivreAvecParent ? 'Oui' : 'Non'}`}
+                {`${FamalyData.mereEnVie && FamalyData.pereEnvie ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -368,16 +371,16 @@ typeContraceptionNaturel: ""
               Profession :
               <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
             </InputLabel>
-            {/* <InputLabel>
-              Nombre de femme:
-              <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
-            </InputLabel> */}
             <InputLabel>
-              Dpm :<span style={{ color: 'black' }}> {CauseMalnutrition.dpm}</span>
-            </InputLabel>
-            <InputLabel>
-              Dpm AnormalPrecision :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.DpmAnormalPrecision}</span>
+              Dpm :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  CauseMalnutrition.dpm === 'Normal'
+                    ? 'Nomrmal'
+                    : CauseMalnutrition.DpmAnormalPrecision
+                }`}
+              </span>
             </InputLabel>
             <InputLabel>
               Taille ménage :<span style={{ color: 'black' }}> {FamalyData.tailleMenage}</span>
@@ -391,9 +394,6 @@ typeContraceptionNaturel: ""
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
               }`}</span>
-            </InputLabel>
-            <InputLabel>
-              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
             </InputLabel>
             <Typography>Mère</Typography>
             <InputLabel>
@@ -455,23 +455,6 @@ typeContraceptionNaturel: ""
               MatcdMasn :<span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
-            </InputLabel>
-            <InputLabel>
-              Rang Fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.RangFratrie}</span>
-            </InputLabel>
-            <InputLabel>
-              Se jour Neo :
-              <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Taille Fratrie :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
-            </InputLabel>
-            <InputLabel>
               Tbc Chez Parent :
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
@@ -500,9 +483,9 @@ typeContraceptionNaturel: ""
         <Grid item xs={11} sm={6} md={5}>
           <Card
             sx={{
-              margin: 2,
-              marginTop: '-100%',
-              padding: 5
+              margin: 1,
+              padding: 2,
+              marginTop: '-100%'
             }}
           >
             <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
