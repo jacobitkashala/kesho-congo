@@ -402,7 +402,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   // setValues={  DataPatient.Sexe}
                 >
                   <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
+                    direction={{ xs: 'column', md: 'column', sm: 'row' }}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
@@ -573,7 +573,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
+                    direction={{ xs: 'column', sm: 'column', md: 'row' }}
                     sx={{
                       display: 'flex',
                       paddingLeft: '10px',
@@ -694,7 +694,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   // onChange={handleAllaitementExclusifSixMoix}
                 >
                   <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
+                    direction={{ xs: 'column', sm: 'column', md: 'row' }}
                     sx={{
                       display: 'flex',
                       padding: '10px',

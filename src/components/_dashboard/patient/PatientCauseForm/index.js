@@ -56,24 +56,24 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     tbcTraiter: Yup.string().trim(),
     tbc: Yup.string().required('Tbc requis'),
     hospitalisationRecente: Yup.string().required('hospitalisation requis'),
-    diagnostiqueHospitalisation: Yup.string(),
-    dureeTraitementTbc: Yup.string(),
-    termeGrossesse: Yup.string().required('Terme grossesse requis'),
+    diagnostiqueHospitalisation: Yup.string().min(5).trim(),
+    dureeTraitementTbc: Yup.string().min(3).trim(),
+    termeGrossesse: Yup.string().trim().required('Terme grossesse requis'),
     calendrierVaccin: Yup.string().required('Calendrier vaccin requis'),
-    atcdDuTbcDansFratrie: Yup.string().required('champ tbc requis'),
+    atcdDuTbcDansFratrie: Yup.string().trim().required('champ tbc requis'),
     preciserCalendrierVaccinNonjour: Yup.string(),
-    asphyxiePrerinatale: Yup.string().required(),
+    asphyxiePrerinatale: Yup.string().trim().required(),
     rangFratrie: Yup.string().required('Rang fratrie requis'),
     produitPlante: Yup.string().required('Produit plante requis'),
-    terrainVih: Yup.string().required('Terrain vih requis'),
+    terrainVih: Yup.string().trim().required('Terrain vih requis'),
     nombreChute: Yup.number().required('Nombre de chute requis'),
-    vaccinationRougeole: Yup.string().required('vaccination Rougeole requis'),
+    vaccinationRougeole: Yup.string().trim().required('vaccination Rougeole requis'),
     eig: Yup.number().required('Eig requis').positive(),
-    TbcGuerie: Yup.string(),
+    TbcGuerie: Yup.string().trim(),
     dpm: Yup.string().required('Dpm requis'),
     cocktailAtb: Yup.string().required('cocktailAtb requis'),
-    cocktailAtbDuree: Yup.string(),
-    dureeTraitementProduitPlante: Yup.string(),
+    cocktailAtbDuree: Yup.string().trim().min(3),
+    dureeTraitementProduitPlante: Yup.string().min(3),
     dpmAnormalPrecision: Yup.string()
   });
 
@@ -143,12 +143,30 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
       ) {
         throw alert('Veuillez preciser la durée du traitement de tbc et si elle a été gueri ');
       }
+      if (
+        CauseMalnutrition.hospitalisationRecente === 'true' &&
+        CauseMalnutrition.diagnostiqueHospitalisation === ''
+      ) {
+        throw alert("Veuillez preciser le diagnostique de l'hoptal");
+      }
+      if (
+        CauseMalnutrition.produitPlante === 'true' &&
+        CauseMalnutrition.dureeTraitementProduitPlante === ''
+      ) {
+        throw alert('Veuillez preciser la durée de Prise des produits à base des plantes');
+      }
+      if (
+        CauseMalnutrition.calendrierVaccin === 'Calendrier vaccinal non à jour' &&
+        CauseMalnutrition.preciserCalendrierVaccinNonjour === ''
+      ) {
+        throw alert('Veuillez preciser le vaccin non jour');
+      }
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       NextStep();
     }
   });
 
-  const { errors, touched, setFieldValue, handleSubmit, values, isSubmitting } = formik;
+  const { errors, touched, setFieldValue, handleSubmit, values } = formik;
   // console.log(values.dureeTraitementTbc === '0');
 
   const handleDesablebComponent = (event) => {
@@ -428,10 +446,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // helperText={touched.masFratrie && errors.masFratrie}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     paddingLeft: '10px',
                     border: `${
                       Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
@@ -455,16 +473,6 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                   </Stack>
                 </Stack>
               </RadioGroup>
-              <TextField
-                // fullWidth
-                sx={{ padding: '2px' }}
-                value={patientFormCause.eig}
-                label="Eig moyen (année)"
-                // {...getFieldProps('eig')}
-                onChange={handleEig}
-                error={Boolean(touched.eig && errors.eig)}
-                helperText={touched.eig && errors.eig}
-              />
               <RadioGroup
                 // fullWidth
                 // {...getFieldProps('tbc')}
@@ -473,7 +481,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.tbc && errors.tbc)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'row' }}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -506,10 +514,10 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // helperText={touched.tbcChezParent && errors.tbcChezParent}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     paddingLeft: '10px',
                     border: `${
                       Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
@@ -567,7 +575,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'row' }}
                   // sx={{ display: 'flex', alignItems: 'center' }}
                   sx={{
                     display: 'flex',
@@ -613,11 +621,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // }
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   // sx={{ display: 'flex', alignItems: 'center' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     paddingLeft: '10px',
                     border: `${
                       Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
@@ -652,7 +660,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 sx={{ padding: '2px' }}
                 // fullWidth
                 value={patientFormCause.dureeTraitementTbc}
-                label="Durée de traitement TBC"
+                label="Durée de traitement TBC ex:6 mois"
                 disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
                 onChange={handleDureeTraitementTbc}
                 // {...getFieldProps('dureeTraitementTbc')}
@@ -664,15 +672,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <RadioGroup
                 onChange={handleChangeHospitalisation}
                 // {...getFieldProps('hospitalisationRecente')}
-                helperText={touched.hospitalisationRecente && errors.hospitalisationRecente}
-                error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
+                // helperText={touched.hospitalisationRecente && errors.hospitalisationRecente}
+                // error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
                       '1px solid red'
@@ -711,9 +719,15 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 disabled={hospitalisationDesabled}
                 onChange={handleDiagnostiqueHospitalisation}
                 // {...getFieldProps('diagnostiqueHospitalisation')}
-                error={Boolean(
-                  touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
-                )}
+                error={
+                  Boolean(
+                    touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
+                  ) ||
+                  Boolean(
+                    values.hospitalisationRecente === 'true' &&
+                      values.diagnostiqueHospitalisation === ''
+                  )
+                }
                 helperText={
                   touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
                 }
@@ -724,11 +738,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 helperText={touched.produitPlante && errors.produitPlante}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
                     }`,
@@ -756,13 +770,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               <TextField
                 sx={{ padding: '2px' }}
                 // fullWidth
-                label="Si Oui veuillez précisez la durée"
+                label="Si Oui veuillez précisez la durée ex: 3mois"
                 value={patientFormCause.dureeTraitementProduitPlante}
                 disabled={priseProduitBasePlanteDesabled}
                 onChange={handleDureeTraitementProduitPlante}
                 // {...getFieldProps('dureeTraitementProduitPlante')}
                 error={Boolean(
-                  touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante
+                  (touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante) ||
+                    Boolean(
+                      values.produitPlante === 'true' && values.dureeTraitementProduitPlante === ''
+                    )
                 )}
                 helperText={
                   touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante
@@ -808,9 +825,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 disabled={calendrierVaccinDesabled}
                 onChange={handlePreciserCalendrierVaccinNonjour}
                 // {...getFieldProps('preciserCalendrierVaccinNonjour')}
-                error={Boolean(
-                  touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
-                )}
+                error={
+                  Boolean(
+                    touched.preciserCalendrierVaccinNonjour &&
+                      errors.preciserCalendrierVaccinNonjour
+                  ) ||
+                  Boolean(
+                    values.calendrierVaccin === 'Calendrier vaccinal non à jour' &&
+                      values.preciserCalendrierVaccinNonjour === ''
+                  )
+                }
                 helperText={
                   touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
                 }
@@ -823,11 +847,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // helperText={touched.atcdMas && errors.atcdMas}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'row' }}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${Boolean(touched.atcdMas && errors.atcdMas) && '1px solid red'}`,
                     borderRadius: `${Boolean(touched.atcdMas && errors.atcdMas) && '10px'}`
                   }}
@@ -877,11 +901,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.atcdRougeole && errors.atcdRougeole)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
                     }`,
@@ -906,6 +930,16 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                   </Stack>
                 </Stack>
               </RadioGroup>
+              <TextField
+                // fullWidth
+                sx={{ padding: '2px' }}
+                value={patientFormCause.eig}
+                label="Eig moyen (année)"
+                // {...getFieldProps('eig')}
+                onChange={handleEig}
+                error={Boolean(touched.eig && errors.eig)}
+                helperText={touched.eig && errors.eig}
+              />
               <RadioGroup
                 sx={{ padding: '2px' }}
                 onChange={handleTerrainVih}
@@ -914,11 +948,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.terrainVih && errors.terrainVih)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'row' }}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '10px',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
                     }`,
@@ -961,11 +995,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 error={Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
                       '1px solid red'
@@ -1015,11 +1049,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 helperText={touched.cocktailAtb && errors.cocktailAtb}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
                     }`,
@@ -1061,11 +1095,11 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
                 // error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
               >
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
+                  direction={{ xs: 'column', md: 'column', sm: 'column' }}
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
+                    // alignItems: 'center',
+                    paddingLeft: '10px',
                     border: `${
                       Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
                       '1px solid red'
@@ -1115,7 +1149,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             type="submit"
             size="large"
             variant="contained"
-            loading={isSubmitting}
+            // loading={isSubmitting}
             sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >
             Suivant
