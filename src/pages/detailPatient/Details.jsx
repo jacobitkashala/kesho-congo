@@ -197,7 +197,7 @@ export default function Details() {
             <div className="product">
               <div className="productLeft">
                 <PatientCard
-                  name={`${onePatient.Patient.nom_patient} ${onePatient.Patient.postnom_patient}`}
+                  name={`${onePatient.Patient.nom_patient} ${onePatient.Patient.prenom_patient}`}
                   sex={onePatient.Patient.sexe_patient}
                   age={
                     onePatient.PatientAge[0].ageEnMois <= 59

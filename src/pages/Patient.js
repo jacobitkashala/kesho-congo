@@ -137,7 +137,7 @@ export default function Patient() {
       .then((data) => {
         const { Patients, nombre_patient } = data;
         // console.log(localStorage.getItem('token'));
-        // console.log(`la taille de patient : ${Patients.numberOfElement}`);
+        console.log(`la taille de patient :`, data);
         // let initialLegth= numberOfElement==0?'0'
         setNumberOfElement(numberOfElement === 0 ? Patients.length : numberOfElement);
         setLenghtData(nombre_patient);
