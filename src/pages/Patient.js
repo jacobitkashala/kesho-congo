@@ -44,8 +44,8 @@ import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 // import DeleteIcon from '@material-ui/icons-material/Delete';
 // import IconButton from '@material-ui/material/IconButton';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+// import IconButton from '@material-ui/core/IconButton';
+// import Tooltip from '@material-ui/core/Tooltip';
 // import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
@@ -72,43 +72,7 @@ const TABLE_HEAD = [
   { id: 'MN', label: 'Malnutrition', alignRight: false },
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
-<<<<<<< HEAD
-
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] > a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy);
-// }
-
-// function applySortFilter(array, comparator, query) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   if (query) {
-//     return filter(
-//       array,
-//       (_user) => _user.nom_patient.toLowerCase().indexOf(query.toLowerCase()) !== -1
-//     );
-//   }
-//   return stabilizedThis.map((el) => el[0]);
-// }
 const useStyles = makeStyles(() => ({
-=======
-const useStyles = makeStyles((theme) => ({
->>>>>>> 546b62054d16cc624e6e386e22669e795401bb4f
   root: {
     display: 'flex',
     position: 'relative',
@@ -241,10 +205,6 @@ export default function Patient() {
     }
     setSelected([]);
   };
-<<<<<<< HEAD
-=======
-
->>>>>>> 546b62054d16cc624e6e386e22669e795401bb4f
   const handleClickPrev = () => {
     console.log(` prev ${length}`);
     if (length > 5) setDebut((prevState) => prevState - 5);

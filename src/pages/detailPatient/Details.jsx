@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
-import { Toggle } from 'rsuite';
+// import { Toggle } from 'rsuite';
 // import ChildCareIcon from '@material-ui/icons/ChildCare';
 // import { styled } from '@material-ui/core/styles';
 import Axios from 'axios';
@@ -40,7 +40,7 @@ export default function Details() {
   const [anthro, setAnthro] = useState([]);
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   const myId = location.pathname.split('/')[4];
-  console.log('bayekula', myId);
+  // console.log('bayekula', myId);
   useEffect(async () => {
     try {
       const response = await Axios.get(

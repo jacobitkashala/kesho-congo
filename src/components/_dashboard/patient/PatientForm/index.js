@@ -38,13 +38,13 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
 
   useEffect(() => {
     window.scroll(position, position);
+    // console.log(dateNow.);
   }, [position]);
 
   const dateNow = new Date();
 
   // console.log(dateNow.getFullYear() - 13);
 
-  // console.log(dateNow.getFullYear() - 90);
   // console.log(dateNow.getFullYear());
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('un chiffre requis').positive().min(100).max(400).required('Taille requis'),
@@ -59,7 +59,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
     poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
     perimetreCranien: Yup.number('un chiffre requis')
       .positive()
-      .min(40)
+      .min(10)
       .max(100)
       .required('Perimetre cranien requis'),
     transfererUnt: Yup.string().trim().min(2).required(),
@@ -71,7 +71,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .positive()
-      .min(40)
+      .min(5)
       .max(100)
       .required('Perimetre brachial requis'),
     postNomPatient: Yup.string()
@@ -85,12 +85,12 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
-      .min(4)
+      .min(2)
       .required('requis'),
     sexePatient: Yup.string().trim().required('requis'),
-    dataNaissancePatient: Yup.date()
-      .min(dateNow.getFullYear() - 90)
-      .max(dateNow.getFullYear())
+    dataNaissancePatient: Yup.date('intervalle entre')
+      .min(dateNow.getFullYear() - 90, 'data non valide')
+      .max(dateNow.getFullYear(), 'date non valide')
       .required('requis'),
     constitutionAliment: Yup.string().trim().min(2).required('requis'),
     provenancePatient: Yup.string().trim().min(2).required('requiq'),

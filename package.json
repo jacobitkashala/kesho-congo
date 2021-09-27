@@ -79,7 +79,6 @@
     "react-scripts": "4.0.0",
     "recharts": "^2.1.0",
     "redux": "^4.1.1",
-    "rsuite": "^4.10.3",
     "sass": "^1.39.0",
     "secure-random-password": "^0.2.3",
     "simplebar": "^5.3.5",

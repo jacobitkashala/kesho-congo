@@ -93,7 +93,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
     FamalyData.pereMariage === '' ? 'non marié' : FamalyData.pereMariage;
   newPatient.taille_menage = FamalyData.tailleMenage;
   newPatient.vivre_deux_parents = FamalyData.mereEnVie && FamalyData.pereEnvie; // FamalyData.vivreAvecParent;//
-  newPatient.mere_enceinte = FamalyData.mereEnVie ? FamalyData.mereEnceinte : false;
+  newPatient.mere_enceinte = FamalyData.mereEnceinte ? FamalyData.mereEnceinte : false;
   newPatient.mere_en_vie = FamalyData.mereEnVie;
   newPatient.pere_en_vie = FamalyData.pereEnvie;
   newPatient.profession_mere = FamalyData.professionMere;
@@ -317,6 +317,81 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Transfer Unt:
               <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+              Causes malnutrition
+            </Typography>
+            <InputLabel>
+              Terme grossesse :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
+            </InputLabel>
+            <InputLabel>
+              Dpm Anormal par ce que :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {CauseMalnutrition.dpmAnormalPrecision === ''
+                  ? 'rien'
+                  : CauseMalnutrition.dpmAnormalPrecision}{' '}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Lieu d'accouchement :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
+            </InputLabel>
+            <InputLabel>
+              ATC Rougeole :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
+            </InputLabel>
+            <InputLabel>
+              Asphyxie prerinatale :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
+            </InputLabel>
+            <InputLabel>
+              Hospitalisation :
+              <span style={{ color: 'black' }}>
+                {CauseMalnutrition.diagnostiqueHospitalisation}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Sejour neo :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.sejourNeo ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
+            </InputLabel>
+            <InputLabel>
+              Vaccination rougeole :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
+            </InputLabel>
+            <InputLabel>
+              Terrain vih :
+              <span style={{ color: 'black' }}>{`{CauseMalnutrition.terrainVih}`}</span>
+            </InputLabel>
+            <InputLabel>
+              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
+            </InputLabel>
+            <InputLabel>
+              Atbc du tbc dans fratrie :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Hospitalisation recente :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.hospitalisationRecente ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Diagnostique hopital :
+              <span style={{ color: 'black' }}>
+                {CauseMalnutrition.diagnostiqueHospitalisation}
+              </span>
+            </InputLabel>
           </Card>
         </Grid>
         <Grid item xs={11} sm={7} md={7}>
@@ -476,91 +551,6 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Terrain Vih :
               <span style={{ color: 'black' }}>
                 {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
-              </span>
-            </InputLabel>
-          </Card>
-        </Grid>
-        <Grid item xs={11} sm={6} md={5}>
-          <Card
-            sx={{
-              margin: 1,
-              padding: 2,
-              marginTop: '-100%'
-            }}
-          >
-            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
-              Causes malnutrition
-            </Typography>
-            <InputLabel>
-              Terme grossesse :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
-            </InputLabel>
-            <InputLabel>
-              Dpm Anormal par ce que :
-              <span style={{ color: 'black' }}>
-                {' '}
-                {CauseMalnutrition.dpmAnormalPrecision === ''
-                  ? 'rien'
-                  : CauseMalnutrition.dpmAnormalPrecision}{' '}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Lieu d'accouchement :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
-            </InputLabel>
-            <InputLabel>
-              ATC Rougeole :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
-            </InputLabel>
-            <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
-            </InputLabel>
-            <InputLabel>
-              Asphyxie prerinatale :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
-            </InputLabel>
-            <InputLabel>
-              Hospitalisation :
-              <span style={{ color: 'black' }}>
-                {CauseMalnutrition.diagnostiqueHospitalisation}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Sejour neo :
-              <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.sejourNeo ? 'Oui' : 'Non'
-              }`}</span>
-            </InputLabel>
-            <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
-            </InputLabel>
-            <InputLabel>
-              Vaccination rougeole :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
-            </InputLabel>
-            <InputLabel>
-              Terrain vih :
-              <span style={{ color: 'black' }}>{`{CauseMalnutrition.terrainVih}`}</span>
-            </InputLabel>
-            <InputLabel>
-              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
-            </InputLabel>
-            <InputLabel>
-              Atbc du tbc dans fratrie :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
-            </InputLabel>
-            <InputLabel>
-              Hospitalisation recente :
-              <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.hospitalisationRecente ? 'Oui' : 'Non'
-              }`}</span>
-            </InputLabel>
-            <InputLabel>
-              Diagnostique hopital :
-              <span style={{ color: 'black' }}>
-                {CauseMalnutrition.diagnostiqueHospitalisation}
               </span>
             </InputLabel>
           </Card>
