@@ -43,8 +43,9 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
   }, [position]);
 
   const date = new Date();
-
-  // console.log(dateNow.getFullYear());
+  // const dateNow = date.parse(`${date.getFullYear}-${date.getMonth()}-${date.getDate()}`);
+  // console.log(Date.now());
+  // console.log(Date.now());
   const RegisterSchema = Yup.object().shape({
     taille: Yup.number('Un chiffre requis')
       .positive('La valeur doit être positive')
@@ -94,18 +95,14 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
       .required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
-      .min(2, 'Minimum 2 caractère')
+      .min(2, 'Minimum 2')
       .required('requis'),
     sexePatient: Yup.string().trim().required('requis'),
     dataNaissancePatient: Yup.date('intervalle entre')
       .min(date.getFullYear() - 90, `Age minimum ${date.getFullYear()}` - 90)
-      .max(
-        Date(`${date.getFullYear}-${date.getMonth()}-${date.getDate()}`),
-        'la date d aujourd hui est invalide'
-      )
       .required('requis'),
     constitutionAliment: Yup.string().trim().min(2, 'Min 2 caractère').required('requis'),
-    provenancePatient: Yup.string().trim().min(2, 'Min 2 caractère').required('requiq'),
+    provenancePatient: Yup.string().trim().min(2, 'Min 2 caractère').required('requis'),
     modeArriver: Yup.string().trim().min(2, 'Min 2 caractère').required('requis'),
     typeMalnutrition: Yup.string().trim().min(2, 'Minimum 2 caractère').required('requis'),
     poidsNaissance: Yup.number().positive().min(900, 'Minimum 900 gr').required('requis'),
@@ -736,7 +733,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                       component="label"
                       // style={{ color: `${errors.allaitementExclusifSixMois && 'red'}` }}
                     >
-                      Transfer unt:
+                      Transfer UNT:
                     </FormLabel>
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                       <FormControlLabel
@@ -765,7 +762,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                       ? patientFormData.typeMalnutrition
                       : 'Forme de malnutrition'}
                   </option>
-                  <option value="MAM">Malnutrition Aigue Modéré</option>
+                  <option value="MAM">Malnutrition Aigue Modérée</option>
                   <option value="MAS-K">Malnutrition Aigue Sévère Kwashiorkor</option>
                   <option value="MAS-M">Malnutrition Aigue Sévère Marasme</option>
                   <option value="MAC">Malnutrition Aigue Chronique</option>

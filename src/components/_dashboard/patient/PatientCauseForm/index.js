@@ -878,7 +878,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               sx={{ padding: '2px', marginTop: '24px' }}
               fullWidth
               value={patientFormCause.preciserCalendrierVaccinNonjour}
-              label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
+              label="Si calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
               disabled={calendrierVaccinDesabled}
               onChange={handlePreciserCalendrierVaccinNonjour}
               // {...getFieldProps('preciserCalendrierVaccinNonjour')}
@@ -963,7 +963,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
               fullWidth
               sx={{ padding: '2px', marginTop: '24px' }}
               value={patientFormCause.eig}
-              label="Eig moyen (année)"
+              label="EIG moyen (année)"
               // {...getFieldProps('eig')}
               onChange={handleEig}
               error={Boolean(touched.eig && errors.eig)}

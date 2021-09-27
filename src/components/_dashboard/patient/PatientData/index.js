@@ -234,7 +234,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Consommation poisson :
               <span style={{ color: 'black' }}>
                 {' '}
-                {`${FamalyData.consommationPoisson ? 'Oui' : 'Non'}`}
+                {`${FamalyData.consommationPoisson ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -276,7 +276,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
                 {`${
                   CauseMalnutrition.dureeProduitPlante
                     ? CauseMalnutrition.dureeProduitPlante
-                    : 'non'
+                    : 'Oui'
                 }`}
               </span>
             </InputLabel>
@@ -288,13 +288,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
-            </InputLabel>
-            <InputLabel>
               Se jour Neo :
               <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
+                {`${CauseMalnutrition.SejourNeo ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -303,19 +299,19 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Prise d'Atb:
-              <span style={{ color: 'black' }}>{`${FamalyData.atb ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}>{`${FamalyData.atb ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               List Atb:
-              <span style={{ color: 'black' }}> {`${FamalyData.listAtb ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}> {`${FamalyData.listAtb ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Tbc:
-              <span style={{ color: 'black' }}> {`${CauseMalnutrition.tbc ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}> {`${CauseMalnutrition.tbc ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Transfer Unt:
-              <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Non' : 'oui'}`}</span>
             </InputLabel>
             <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
               Causes malnutrition
@@ -325,11 +321,11 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
             </InputLabel>
             <InputLabel>
-              Dpm Anormal par ce que :
+              DPM Anormal:
               <span style={{ color: 'black' }}>
                 {' '}
                 {CauseMalnutrition.dpmAnormalPrecision === ''
-                  ? 'rien'
+                  ? 'DPM normal'
                   : CauseMalnutrition.dpmAnormalPrecision}{' '}
               </span>
             </InputLabel>
@@ -358,7 +354,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               Sejour neo :
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.sejourNeo ? 'Oui' : 'Non'
+                CauseMalnutrition.sejourNeo ? 'Non' : 'Oui'
               }`}</span>
             </InputLabel>
             <InputLabel>
@@ -367,23 +363,30 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Vaccination rougeole :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.vaccinationRougeole ? 'Nom' : 'Oui'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Terrain vih :
-              <span style={{ color: 'black' }}>{`{CauseMalnutrition.terrainVih}`}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.terrainVih ? 'Non' : 'Oui'
+              }`}</span>
             </InputLabel>
             <InputLabel>
-              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
+              Tbc :
+              <span style={{ color: 'black' }}>{`${CauseMalnutrition.tbc ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Atbc du tbc dans fratrie :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.atcdDuTbcDansFratrie ? 'Non' : 'Oui'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Hospitalisation recente :
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.hospitalisationRecente ? 'Oui' : 'Non'
+                CauseMalnutrition.hospitalisationRecente ? 'Non' : 'Oui'
               }`}</span>
             </InputLabel>
             <InputLabel>
@@ -406,7 +409,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               Parent en vie :
               <span style={{ color: 'black' }}>
-                {`${FamalyData.mereEnVie && FamalyData.pereEnvie ? 'Oui' : 'Non'}`}
+                {`${FamalyData.mereEnVie && FamalyData.pereEnvie ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -414,7 +417,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Pere en vie :
-              <span style={{ color: 'black' }}> {`${FamalyData.pereEnvie ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}> {`${FamalyData.pereEnvie ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Date de naissance :
@@ -437,13 +440,13 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               constitutionAliment :
               <span style={{ color: 'black' }}>
-                {`${FamalyData.PossederTeleRadio ? 'Oui' : 'Non'}`}
+                {`${FamalyData.PossederTeleRadio ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
               ATC Rougeole :
               <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.atcdRougeole ? 'Oui' : 'Nom'}`}
+                {`${CauseMalnutrition.atcdRougeole ? 'Non' : 'Nom'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -471,13 +474,13 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               Mas Fratrie:
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
+                CauseMalnutrition.MasFratrie ? 'Non' : 'Oui'
               }`}</span>
             </InputLabel>
             <Typography>Mère</Typography>
             <InputLabel>
               Mère en vie :
-              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnVie ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Date naisance mère :
@@ -485,12 +488,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Mère enceint :
-              <span style={{ color: 'black' }}>{`${FamalyData.mereEnceinte ? 'Oui' : 'Non'}`}</span>
+              <span style={{ color: 'black' }}>{`${FamalyData.mereEnceinte ? 'Non' : 'Oui'}`}</span>
             </InputLabel>
             <InputLabel>
               Contraception mère :
               <span style={{ color: 'black' }}>
-                {`${FamalyData.contraceptionMere ? 'Oui' : 'Non'}`}
+                {`${FamalyData.contraceptionMere ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -536,25 +539,25 @@ export default function PatientData({ DataPatient, PrevStep }) {
             <InputLabel>
               Tbc Chez Parent :
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
+                CauseMalnutrition.TbcChezParent ? 'Non' : 'Oui'
               }`}</span>
             </InputLabel>
             <InputLabel>
               Tbc traiter :
               <span style={{ color: 'black' }}>{`${
-                CauseMalnutrition.TbcTraiter ? 'Oui' : 'Non'
+                CauseMalnutrition.TbcTraiter ? 'Non' : 'Oui'
               }`}</span>
             </InputLabel>
             <InputLabel>
               Tbc Chez TbcGuerie :
               <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.TbcGuerie ? 'Oui' : 'Non'}`}
+                {`${CauseMalnutrition.TbcGuerie ? 'Non' : 'Oui'}`}
               </span>
             </InputLabel>
             <InputLabel>
               Terrain Vih :
               <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
+                {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Oui'}`}
               </span>
             </InputLabel>
           </Card>
@@ -581,7 +584,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
           onClick={handleSubmit}
           onSubmit={handleSubmit}
           size="large"
-          // loading={btnLoading}
+          loading={btnLoading}
           sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
         >
           Enregistrer
