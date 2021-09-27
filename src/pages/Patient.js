@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import moment from 'moment';
@@ -60,6 +60,8 @@ import { PatientListHead } from '../components/_dashboard/patient';
 // import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
+import { fakeAuth } from '../fakeAuth';
+import RefreshButton from '../components/RefreshButton';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignLeft: true },
@@ -70,6 +72,7 @@ const TABLE_HEAD = [
   { id: 'MN', label: 'Malnutrition', alignRight: false },
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
+<<<<<<< HEAD
 
 // function descendingComparator(a, b, orderBy) {
 //   if (b[orderBy] > a[orderBy]) {
@@ -103,6 +106,9 @@ const TABLE_HEAD = [
 //   return stabilizedThis.map((el) => el[0]);
 // }
 const useStyles = makeStyles(() => ({
+=======
+const useStyles = makeStyles((theme) => ({
+>>>>>>> 546b62054d16cc624e6e386e22669e795401bb4f
   root: {
     display: 'flex',
     position: 'relative',
@@ -235,6 +241,10 @@ export default function Patient() {
     }
     setSelected([]);
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 546b62054d16cc624e6e386e22669e795401bb4f
   const handleClickPrev = () => {
     console.log(` prev ${length}`);
     if (length > 5) setDebut((prevState) => prevState - 5);
@@ -301,12 +311,18 @@ export default function Patient() {
   // console.log( isUserNotFound);
   console.log('liste filtrées', filterName);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
+
   function refreshPage() {
-    window.location.reload(false);
+    fakeAuth.login(() => {
+      navigate(from);
+      navigate(`/dashboard/patient`, { replace: true });
+    });
   }
 
-  const location = useLocation();
-  const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
@@ -386,15 +402,7 @@ export default function Patient() {
                         />
                       </Form>
                     </FormikProvider>
-                    {/* <Icon>
-                      <SearchIcon />
-                    </Icon> */}
-                    {/* <RefreshIcon /> */}
-                    <Tooltip title="Refresh" color="primary" onClick={refreshPage}>
-                      <IconButton>
-                        <RefreshIcon />
-                      </IconButton>
-                    </Tooltip>
+                    <RefreshButton />
                   </>
                 )}
               </RootStyle>

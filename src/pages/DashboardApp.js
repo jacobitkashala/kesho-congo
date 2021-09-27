@@ -70,7 +70,7 @@ export default function DashboardApp() {
       });
       const data = await response.data;
       setReports(await data);
-      // console.log('mes données:', rapport_mac_year);
+      console.log('mes données:', data);
       setLoader(false);
 
       // setLoader(false);
@@ -311,8 +311,8 @@ export default function DashboardApp() {
               <Grid item xs={12} sm={6} md={3}>
                 <CardPurple
                   title="En UNT"
-                  nombreM={reports.sereve_marasme_nombre_garcon[0].sereve_marasme_nombre_garcon}
-                  nombreF={reports.sereve_marasme_nombre_fille[0].sereve_marasme_nombre_fille}
+                  nombreM={reports.nombre_garcon_transferer[0].nombre_garcon_transferer}
+                  nombreF={reports.nombre_fille_transferer[0].nombre_fille_transferer}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>

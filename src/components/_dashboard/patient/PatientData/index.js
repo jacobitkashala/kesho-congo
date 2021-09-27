@@ -527,7 +527,10 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
-              Sejour neo :<span style={{ color: 'black' }}>{CauseMalnutrition.sejourNeo}</span>
+              Sejour neo :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.sejourNeo ? 'Oui' : 'Non'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Nombre de chute :
@@ -538,7 +541,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
             </InputLabel>
             <InputLabel>
-              Terrain vih :<span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
+              Terrain vih :
+              <span style={{ color: 'black' }}>{`{CauseMalnutrition.terrainVih}`}</span>
             </InputLabel>
             <InputLabel>
               Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
@@ -549,7 +553,9 @@ export default function PatientData({ DataPatient, PrevStep }) {
             </InputLabel>
             <InputLabel>
               Hospitalisation recente :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.hospitalisationRecente}</span>
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.hospitalisationRecente ? 'Oui' : 'Non'
+              }`}</span>
             </InputLabel>
             <InputLabel>
               Diagnostique hopital :

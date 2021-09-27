@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import React, { useState, useEffect } from 'react';
 
-import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import './Details.css';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
+import { Toggle } from 'rsuite';
 // import ChildCareIcon from '@material-ui/icons/ChildCare';
 // import { styled } from '@material-ui/core/styles';
 import Axios from 'axios';
@@ -23,6 +24,7 @@ import Chart from '../../components/charts/chart/Chart';
 import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
 import MoreDetails from './MoreDetails';
+import { fakeAuth } from '../../fakeAuth';
 
 // import { flexbox } from '@material-ui/system';
 // import { Rowing } from '@material-ui/icons';
@@ -30,6 +32,8 @@ import MoreDetails from './MoreDetails';
 export default function Details() {
   console.log('hobed', moment().toDate('MM/DD/YYYY'));
   const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [loader, setLoader] = useState(true);
   const [transferUNT, setTransferUNT] = useState(false);
   const [onePatient, setOnePatient] = useState([]);
@@ -60,6 +64,7 @@ export default function Details() {
     }
   }, []);
   // ---------------update UNT----------------------
+  // useEffect(() => {}, []);
   const RegisterSchema = Yup.object().shape();
 
   const formik = useFormik({
@@ -78,8 +83,12 @@ export default function Details() {
         }
       )
         .then((response) => {
-          console.log('la reponse', response);
+          // console.log('la reponse', response);
           setTransferUNT(false);
+          fakeAuth.login(() => {
+            navigate(from);
+            navigate(`/dashboard/patient/detail_patient/${myId}`, { replace: true });
+          });
         })
         .catch((err) => {
           console.log('mon erreur 2', err);
