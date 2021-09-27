@@ -37,42 +37,44 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   const [calendrierVaccinDesabled, setCalendrierVaccinDesabled] = useState(true);
   const [cocktailAtbDesabled, setcocktailAtbDesabled] = useState(true);
   const [dpmDesabled, setdpmDesabled] = useState(true);
-  const [position] = useState(100);
+  const [tbcGueriEtDuréTraitementDesabled, setTbcGueriEtDuréTraitementDesabled] = useState(true);
+
+  const [position] = useState(0);
   useEffect(() => {
-    window.scroll(100, 100);
+    window.scroll(position, position);
   }, [position]);
 
   const RegisterSchema = Yup.object().shape({
     lieuAccouchement: Yup.string().required('Lieu accouchement requis'),
-    tailleFratrie: Yup.number().required('Taille fratrie requis'),
+    tailleFratrie: Yup.number().min(1).max(99).required('Taille fratrie requis'),
     sejourNeo: Yup.string().required('sejour requis'),
-    masFratrie: Yup.string().required('masfratien requis'),
+    masFratrie: Yup.string().trim().min(4).max(6).required('masfratien requis'),
     atcdMas: Yup.string().required('Aatcdmas requis'),
-    atcdRougeole: Yup.string().required('atcd Rougeole requis'),
-    tbcChezParent: Yup.string().required('tbc chez le parent requis'),
-    tbcLequel: Yup.string(),
-    tbcTraiter: Yup.string(),
+    atcdRougeole: Yup.string().trim().required('atcd Rougeole requis'),
+    tbcChezParent: Yup.string().trim().required('tbc chez le parent requis'),
+    tbcLequel: Yup.string().trim(),
+    tbcTraiter: Yup.string().trim(),
     tbc: Yup.string().required('Tbc requis'),
     hospitalisationRecente: Yup.string().required('hospitalisation requis'),
-    diagnostiqueHospitalisation: Yup.string(),
-    dureeTraitementTbc: Yup.string(),
-    termeGrossesse: Yup.string().required('Terme grossesse requis'),
+    diagnostiqueHospitalisation: Yup.string().min(5).trim(),
+    dureeTraitementTbc: Yup.string().min(3).trim(),
+    termeGrossesse: Yup.string().trim().required('Terme grossesse requis'),
     calendrierVaccin: Yup.string().required('Calendrier vaccin requis'),
-    atcdDuTbcDansFratrie: Yup.string().required('champ tbc requis'),
+    atcdDuTbcDansFratrie: Yup.string().trim().required('champ tbc requis'),
     preciserCalendrierVaccinNonjour: Yup.string(),
-    asphyxiePrerinatale: Yup.string().required(),
+    asphyxiePrerinatale: Yup.string().trim().required(),
     rangFratrie: Yup.string().required('Rang fratrie requis'),
     produitPlante: Yup.string().required('Produit plante requis'),
-    terrainVih: Yup.string().required('Terrain vih requis'),
-    nombreChute: Yup.number().required('Nombre de chute requis'),
-    vaccinationRougeole: Yup.string().required('vaccination Rougeole requis'),
-    eig: Yup.number().required('Eig requis').positive(),
-    TbcGuerie: Yup.string(),
+    terrainVih: Yup.string().trim().required('Terrain vih requis'),
+    nombreChute: Yup.number().min(0).required('Nombre de chute requis'),
+    vaccinationRougeole: Yup.string().trim().required('vaccination Rougeole requis'),
+    eig: Yup.number().min(1).positive().required('Eig requis'),
+    TbcGuerie: Yup.string().trim(),
     dpm: Yup.string().required('Dpm requis'),
     cocktailAtb: Yup.string().required('cocktailAtb requis'),
-    cocktailAtbDuree: Yup.string(),
-    dureeTraitementProduitPlante: Yup.string(),
-    dpmAnormalPrecision: Yup.string()
+    cocktailAtbDuree: Yup.string().trim().min(3),
+    dureeTraitementProduitPlante: Yup.string().min(3),
+    dpmAnormalPrecision: Yup.string().trim().min(10)
   });
 
   const formik = useFormik({
@@ -89,7 +91,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
       tbcTraiter: patientFormCause.tbcTraiter ? patientFormCause.tbcTraiter : '',
       dureeTraitementTbc: patientFormCause.dureeTraitementTbc
         ? patientFormCause.dureeTraitementTbc
-        : '0',
+        : '',
       TbcGuerie: patientFormCause.TbcGuerie ? patientFormCause.TbcGuerie : '',
       termeGrossesse: patientFormCause.termeGrossesse ? patientFormCause.termeGrossesse : '',
       calendrierVaccin: patientFormCause.calendrierVaccin ? patientFormCause.calendrierVaccin : '',
@@ -128,41 +130,50 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     },
     validationSchema: RegisterSchema,
     onSubmit: (CauseMalnutrition) => {
+      if (CauseMalnutrition.tbcChezParent === 'true' && CauseMalnutrition.tbcLequel === '') {
+        throw alert('Veuillez preciser TBC chez parent');
+      }
+      if (CauseMalnutrition.tbcTraiter === '' && CauseMalnutrition.tbcLequel !== '') {
+        throw alert('Veuillez preciser la  TBC chez parent si traiter ');
+      }
+      if (
+        CauseMalnutrition.tbcTraiter === 'true' &&
+        CauseMalnutrition.dureeTraitementTbc === '' &&
+        CauseMalnutrition.TbcGuerie === ''
+      ) {
+        throw alert('Veuillez preciser la durée du traitement de tbc et si elle a été gueri ');
+      }
+      if (
+        CauseMalnutrition.hospitalisationRecente === 'true' &&
+        CauseMalnutrition.diagnostiqueHospitalisation === ''
+      ) {
+        throw alert("Veuillez preciser le diagnostique de l'hoptal");
+      }
+      if (
+        CauseMalnutrition.produitPlante === 'true' &&
+        CauseMalnutrition.dureeTraitementProduitPlante === ''
+      ) {
+        throw alert('Veuillez preciser la durée de Prise des produits à base des plantes');
+      }
+      if (
+        CauseMalnutrition.calendrierVaccin === 'Calendrier vaccinal non à jour' &&
+        CauseMalnutrition.preciserCalendrierVaccinNonjour === ''
+      ) {
+        throw alert('Veuillez preciser le vaccin non à jour');
+      }
+      if (CauseMalnutrition.dpm === 'Anormal' && CauseMalnutrition.dpmAnormalPrecision === '') {
+        throw alert('Veuillez expliquer pour quoi le DPM est anormal');
+      }
+      if (CauseMalnutrition.cocktailAtb === 'true' && CauseMalnutrition.cocktailAtbDuree === '') {
+        throw alert('Veuillez préciser la durée du cocktail Atb');
+      }
       SetDataPatient((current) => ({ ...current, CauseMalnutrition }));
       NextStep();
     }
   });
 
-  const { errors, touched, setFieldValue, handleSubmit, isSubmitting } = formik;
-  console.log(errors);
-
-  //     sejourNeo,
-  //     cocktailAtbDuree,
-  //     cocktailAtb,
-  //     ,
-  //     ,
-  //     ,
-  //     tbcLequel,
-  //     tbcTraiter,
-  //     dureeTraitementTbc,
-  //     tbcGuerie,
-  //     termeGrossesse,
-  //     calendrierVaccin,
-  //     preciserCalendrierVaccinNonjour,
-  //     asphyxiePrerinatale,
-  //     tailleFratrie,
-  //     masFratrie,
-  //     terrainVih,
-  //     nombreChute,
-  //     vaccinationRougeole,
-  //     eig,
-  //     dpm,
-  //     tbc,
-  //     produitPlante,
-  //     hospitalisationRecente,
-  //     atcdDuTbcDansFratrie,
-  //     dpmAnormalPrecision,
-  //     dureeTraitementProduitPlante,
+  const { errors, touched, setFieldValue, handleSubmit, values } = formik;
+  // console.log(values.tbcTraiter === 'true' && values.TbcGuerie === '');
 
   const handleDesablebComponent = (event) => {
     const { value } = event.target;
@@ -270,6 +281,9 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
     const { value } = event.target;
     setFieldValue('tbcTraiter', value);
     patientFormCause.setTbcTraiter(value);
+    if (value === 'true') {
+      setTbcGueriEtDuréTraitementDesabled(false);
+    } else if (value === 'false') setTbcGueriEtDuréTraitementDesabled(true);
   };
 
   const handleTbcGuerie = (event) => {
@@ -357,621 +371,798 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={11} sm={6} md={6}>
-            <Stack spacing={3}>
-              <Select
-                native
-                fullWidth
-                autoFocus
-                sx={{ padding: '2px' }}
-                value={patientFormCause.lieuAccouchement}
-                error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
-                onChange={handleLieuAccouchement}
-                // {...getFieldProps('lieuAccouchement')}
+        <Grid container spacing={4}>
+          <Grid item xs={10} sm={6} md={6}>
+            {/* <Stack spacing={0}> */}
+            <Select
+              native
+              fullWidth
+              autoFocus
+              sx={{ padding: '2px', marginTop: '24px' }}
+              // value={}
+              error={Boolean(touched.lieuAccouchement && errors.lieuAccouchement)}
+              onChange={handleLieuAccouchement}
+              // {...getFieldProps('lieuAccouchement')}
+            >
+              <option value="" selected disabled hidden>
+                {`${
+                  patientFormCause.lieuAccouchement
+                    ? patientFormCause.lieuAccouchement
+                    : "Lieu d'accouchement"
+                }`}
+              </option>
+              <option value="Voiture">Voiture</option>
+              <option value="domicile">domicile</option>
+              <option value="Structure sanitaire oui">Structure sanitaire</option>
+            </Select>
+            <RadioGroup
+              // fullWidth
+              sx={{ marginTop: '24px' }}
+              error={Boolean(touched.sejourNeo && errors.sejourNeo)}
+              // helperText={touched.sejourNeo && errors.sejourNeo}
+              // {...getFieldProps('sejourNeo')}
+              onChange={handleSejourNeo}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  paddingLeft: '10px',
+                  border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
+                  borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '10px'}`
+                }}
+                spacing={1}
               >
-                <option value="" selected disabled hidden>
-                  Lieu d'accouchement
-                </option>
-                <option value="Voiture">Voiture</option>
-                <option value="domicile">domicile</option>
-                <option value="Structure sanitaire oui">Structure sanitaire</option>
-              </Select>
-              <RadioGroup
-                fullWidth
-                error={Boolean(touched.sejourNeo && errors.sejourNeo)}
-                // helperText={touched.sejourNeo && errors.sejourNeo}
-                // {...getFieldProps('sejourNeo')}
-                onChange={handleSejourNeo}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '10px',
-                    border: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '1px solid red'}`,
-                    borderRadius: `${Boolean(touched.sejourNeo && errors.sejourNeo) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Séjour en néonat:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Séjour en néonat:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.sejourNeo === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.sejourNeo === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                label="Rang dans la fratrie"
-                fullWidth
-                value={patientFormCause.rangFratrie}
-                // {...getFieldProps('rangFratrie')}
-                onChange={handleRangFratrie}
-                error={Boolean(touched.rangFratrie && errors.rangFratrie)}
-                helperText={touched.rangFratrie && errors.rangFratrie}
-              />
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                value={patientFormCause.tailleFratrie}
-                label="Taille de la fratrie"
-                helperText={touched.tailleFratrie && errors.tailleFratrie}
-                // {...getFieldProps('tailleFratrie')}
-                onChange={handleTailleFratrie}
-                error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
-              />
-              <RadioGroup
-                fullWidth
-                onChange={handleMasFratrie}
-                // {...getFieldProps('masFratrie')}
-                error={Boolean(touched.masFratrie && errors.masFratrie)}
-                // helperText={touched.masFratrie && errors.masFratrie}
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              label="Rang dans la fratrie"
+              fullWidth
+              value={patientFormCause.rangFratrie}
+              // {...getFieldProps('rangFratrie')}
+              onChange={handleRangFratrie}
+              error={Boolean(touched.rangFratrie && errors.rangFratrie)}
+              helperText={touched.rangFratrie && errors.rangFratrie}
+            />
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              value={patientFormCause.tailleFratrie}
+              label="Taille de la fratrie"
+              helperText={touched.tailleFratrie && errors.tailleFratrie}
+              // {...getFieldProps('tailleFratrie')}
+              onChange={handleTailleFratrie}
+              error={Boolean(touched.tailleFratrie && errors.tailleFratrie)}
+            />
+            <RadioGroup
+              // fullWidth
+              onChange={handleMasFratrie}
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('masFratrie')}
+              error={Boolean(touched.masFratrie && errors.masFratrie)}
+              // helperText={touched.masFratrie && errors.masFratrie}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row', md: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'}`,
+                  borderRadius: `${Boolean(touched.masFratrie && errors.masFratrie) && '10px'}`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.masFratrie && errors.masFratrie) && '1px solid red'
-                    }`,
-                    borderRadius: `${Boolean(touched.masFratrie && errors.masFratrie) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">MAS dans la fratrie:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">MAS dans la fratrie:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.masFratrie === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.masFratrie === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                fullWidth
-                sx={{ padding: '2px' }}
-                value={patientFormCause.eig}
-                label="Eig moyen (année)"
-                // {...getFieldProps('eig')}
-                onChange={handleEig}
-                error={Boolean(touched.eig && errors.eig)}
-                helperText={touched.eig && errors.eig}
-              />
-              <RadioGroup
-                fullWidth
-                // {...getFieldProps('tbc')}
-                onChange={handleTbc}
-                helperText={touched.tbc && errors.tbc}
-                error={Boolean(touched.tbc && errors.tbc)}
+              </Stack>
+            </RadioGroup>
+            <RadioGroup
+              // fullWidth
+              // {...getFieldProps('tbc')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleTbc}
+              helperText={touched.tbc && errors.tbc}
+              error={Boolean(touched.tbc && errors.tbc)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'column', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${Boolean(touched.tbc && errors.tbc) && '1px solid red'}`,
+                  borderRadius: `${Boolean(touched.tbc && errors.tbc) && '10px'}`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '10px',
-                    border: `${Boolean(touched.tbc && errors.tbc) && '1px solid red'}`,
-                    borderRadius: `${Boolean(touched.tbc && errors.tbc) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">TBC:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">TBC:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.tbc === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.tbc === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <RadioGroup
-                fullWidth
-                onChange={handleDesablebComponent}
-                // {...getFieldProps('tbcChezParent')}
-                error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
-                // helperText={touched.tbcChezParent && errors.tbcChezParent}
+              </Stack>
+            </RadioGroup>
+            <RadioGroup
+              // fullWidth
+              onChange={handleDesablebComponent}
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('tbcChezParent')}
+              error={Boolean(touched.tbcChezParent && errors.tbcChezParent)}
+              // helperText={touched.tbcChezParent && errors.tbcChezParent}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row', md: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
+                  }`
+                }}
+                spacing={1}
               >
+                <FormLabel component="label"> TBC chez les parents:</FormLabel>
                 <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '10px',
-                    border: `${
-                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.tbcChezParent && errors.tbcChezParent) && '10px'
-                    }`
-                  }}
-                  spacing={1}
+                  direction={{ xs: 'row', sm: 'row' }}
+                  helperText={touched.tbcChezParent && errors.tbcChezParent}
                 >
-                  <FormLabel component="label"> TBC chez les parents:</FormLabel>
-                  <Stack
-                    direction={{ xs: 'row', sm: 'row' }}
-                    helperText={touched.tbcChezParent && errors.tbcChezParent}
-                  >
-                    <FormControlLabel
-                      value="true"
-                      // disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Oui"
-                    />
-                    <FormControlLabel
-                      value="false"
-                      // disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Non"
-                    />
-                  </Stack>
+                  <FormControlLabel
+                    value="true"
+                    // disabled={tbcDesabled}
+                    control={<Radio checked={patientFormCause.tbcChezParent === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    // disabled={tbcDesabled}
+                    control={<Radio checked={patientFormCause.tbcChezParent === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <Select
-                native
-                fullWidth
-                // {...getFieldProps('tbcLequel')}
-                onChange={handleTbcLequel}
-                error={Boolean(touched.tbcLequel && errors.tbcLequel)}
-                disabled={tbcDesabled}
+              </Stack>
+            </RadioGroup>
+            <Select
+              native
+              fullWidth
+              // {...getFieldProps('tbcLequel')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleTbcLequel}
+              error={
+                Boolean(touched.tbcLequel && errors.tbcLequel) ||
+                Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '')
+              }
+              disabled={tbcDesabled}
+            >
+              <option value="" selected disabled hidden>
+                {`${patientFormCause.tbcLequel ? patientFormCause.tbcLequel : 'Si TBC oui lequel'}`}
+              </option>
+              <option value="Père">Père</option>
+              <option value="Mère">Mère</option>
+              <option value="Les deux">Les deux</option>
+            </Select>
+            <RadioGroup
+              // fullWidth
+              // {...getFieldProps('tbcTraiter')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleTbcTraiter}
+              error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'column', sm: 'row' }}
+                // sx={{ display: 'flex', alignItems: 'center' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    (Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '') ||
+                      Boolean(touched.tbcTraiter && errors.tbcTraiter)) &&
+                    '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    (Boolean(values.tbcChezParent === 'true' && values.tbcLequel === '') ||
+                      Boolean(touched.tbcTraiter && errors.tbcTraiter)) &&
+                    '10px'
+                  }`
+                }}
+                spacing={1}
               >
-                <option value="" selected disabled hidden>
-                  Si TBC oui lequel
-                </option>
-                <option value="Père">Père</option>
-                <option value="Mère">Mère</option>
-                <option value="Les deux">Les deux</option>
-              </Select>
-              <RadioGroup
-                fullWidth
-                // {...getFieldProps('tbcTraiter')}
-                onChange={handleTbcTraiter}
-                error={Boolean(touched.tbcTraiter && errors.tbcTraiter)}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">TBC traitée :</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel
-                      value="true"
-                      disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Oui"
-                    />
-                    <FormControlLabel
-                      value="false"
-                      disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Non"
-                    />
-                  </Stack>
+                <FormLabel component="label">TBC traitée :</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    disabled={tbcDesabled}
+                    control={<Radio checked={patientFormCause.tbcTraiter === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    disabled={tbcDesabled}
+                    control={<Radio checked={patientFormCause.tbcTraiter === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <RadioGroup
-                fullWidth
-                // {...getFieldProps('TbcGuerie')}
-                onChange={handleTbcGuerie}
-                error={Boolean(touched.TbcGuerie && errors.TbcGuerie)}
+              </Stack>
+            </RadioGroup>
+            <RadioGroup
+              // fullWidth
+              // {...getFieldProps('TbcGuerie')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleTbcGuerie}
+              // error={
+              //   Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+              //   Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '')
+              // }
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'row', md: 'row' }}
+                // sx={{ display: 'flex', alignItems: 'center' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+                    (Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '') &&
+                      '1px solid red')
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.TbcGuerie && errors.TbcGuerie) ||
+                    (Boolean(values.tbcTraiter === 'true' && values.TbcGuerie === '') && '10px')
+                  }`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">TBC déclarée guérie:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel
-                      value="true"
-                      disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Oui"
-                    />
-                    <FormControlLabel
-                      value="false"
-                      disabled={tbcDesabled}
-                      control={<Radio />}
-                      label="Non"
-                    />
-                  </Stack>
+                <FormLabel component="label">TBC déclarée guérie:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
+                    control={<Radio checked={patientFormCause.tbcGuerie === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
+                    control={<Radio checked={patientFormCause.tbcGuerie === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                value={patientFormCause.dureeTraitementTbc}
-                label="Durée de traitement TBC"
-                disabled={tbcDesabled}
-                onChange={handleDureeTraitementTbc}
-                // {...getFieldProps('dureeTraitementTbc')}
-                error={Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc)}
-              />
-              <RadioGroup
-                onChange={handleChangeHospitalisation}
-                // {...getFieldProps('hospitalisationRecente')}
-                helperText={touched.hospitalisationRecente && errors.hospitalisationRecente}
-                error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              value={patientFormCause.dureeTraitementTbc}
+              label="Durée de traitement TBC ex:6 mois"
+              disabled={tbcDesabled || tbcGueriEtDuréTraitementDesabled}
+              onChange={handleDureeTraitementTbc}
+              // {...getFieldProps('dureeTraitementTbc')}
+              error={
+                Boolean(touched.dureeTraitementTbc && errors.dureeTraitementTbc) ||
+                Boolean(values.tbcTraiter === 'true' && values.dureeTraitementTbc === '')
+              }
+            />
+            <RadioGroup
+              onChange={handleChangeHospitalisation}
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('hospitalisationRecente')}
+              // helperText={touched.hospitalisationRecente && errors.hospitalisationRecente}
+              // error={Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'row', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                    '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
+                    '10px'
+                  }`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
-                      '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.hospitalisationRecente && errors.hospitalisationRecente) &&
-                      '10px'
-                    }`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Hospitalisation récente:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Hospitalisation récente:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.hospitalisationRecente === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={
+                      <Radio checked={patientFormCause.hospitalisationRecente === 'false'} />
+                    }
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                label="Diagnostic hopital"
-                value={patientFormCause.diagnostiqueHospitalisation}
-                disabled={hospitalisationDesabled}
-                onChange={handleDiagnostiqueHospitalisation}
-                // {...getFieldProps('diagnostiqueHospitalisation')}
-                error={Boolean(
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              label="Diagnostic hopital"
+              value={patientFormCause.diagnostiqueHospitalisation}
+              disabled={hospitalisationDesabled}
+              onChange={handleDiagnostiqueHospitalisation}
+              // {...getFieldProps('diagnostiqueHospitalisation')}
+              error={
+                Boolean(
                   touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
-                )}
-                helperText={
-                  touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation
-                }
-              />
-              <RadioGroup
-                onChange={handleChangePriseProduitBasePlante}
-                error={Boolean(touched.produitPlante && errors.produitPlante)}
-                helperText={touched.produitPlante && errors.produitPlante}
+                ) ||
+                Boolean(
+                  values.hospitalisationRecente === 'true' &&
+                    values.diagnostiqueHospitalisation === ''
+                )
+              }
+              helperText={touched.diagnostiqueHospitalisation && errors.diagnostiqueHospitalisation}
+            />
+            <RadioGroup
+              sx={{ marginTop: '24px' }}
+              onChange={handleChangePriseProduitBasePlante}
+              error={Boolean(touched.produitPlante && errors.produitPlante)}
+              helperText={touched.produitPlante && errors.produitPlante}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'column', sm: 'column' }}
+                sx={{
+                  display: 'flex',
+                  // alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.produitPlante && errors.produitPlante) && '10px'
+                  }`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.produitPlante && errors.produitPlante) && '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.produitPlante && errors.produitPlante) && '10px'
-                    }`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Prise des produits à base des plantes:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.produitPlante === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.produitPlante === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                label="Si Oui veuillez précisez la durée"
-                value={patientFormCause.dureeTraitementProduitPlante}
-                disabled={priseProduitBasePlanteDesabled}
-                onChange={handleDureeTraitementProduitPlante}
-                // {...getFieldProps('dureeTraitementProduitPlante')}
-                error={Boolean(
-                  touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante
-                )}
-                helperText={
-                  touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante
-                }
-              />
-            </Stack>
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              label="Si Oui veuillez précisez la durée ex: 3mois"
+              value={patientFormCause.dureeTraitementProduitPlante}
+              disabled={priseProduitBasePlanteDesabled}
+              onChange={handleDureeTraitementProduitPlante}
+              // {...getFieldProps('dureeTraitementProduitPlante')}
+              error={Boolean(
+                (touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante) ||
+                  Boolean(
+                    values.produitPlante === 'true' && values.dureeTraitementProduitPlante === ''
+                  )
+              )}
+              helperText={
+                touched.dureeTraitementProduitPlante && errors.dureeTraitementProduitPlante
+              }
+            />
+            {/* </Stack> */}
           </Grid>
-          <Grid item xs={11} sm={6} md={6}>
-            <Stack spacing={3}>
-              <Select
-                native
-                // {...getFieldProps('termeGrossesse')}
-                onChange={handleDureeTermeGrossesse}
-                error={Boolean(touched.termeGrossesse && errors.termeGrossesse)}
-                helperText={touched.termeGrossesse && errors.termeGrossesse}
+          <Grid item xs={10} sm={6} md={6}>
+            {/* <Stack> */}
+            <Select
+              native
+              fullWidth
+              // {...getFieldProps('termeGrossesse')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleDureeTermeGrossesse}
+              error={Boolean(touched.termeGrossesse && errors.termeGrossesse)}
+              helperText={touched.termeGrossesse && errors.termeGrossesse}
+            >
+              <option value="" selected disabled hidden>
+                {`${
+                  patientFormCause.termeGrossesse
+                    ? patientFormCause.termeGrossesse
+                    : 'Terme de la grossesse'
+                }`}
+              </option>
+              <option value="Prématuré ">Prématuré</option>
+              <option value="A terme">A terme</option>
+            </Select>
+            <RadioGroup
+              required
+              // {...getFieldProps('atcdMas')}
+              sx={{ marginTop: '24px' }}
+              onChange={handleAtcdMas}
+              error={Boolean(touched.atcdMas && errors.atcdMas)}
+              // helperText={touched.atcdMas && errors.atcdMas}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'column', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${Boolean(touched.atcdMas && errors.atcdMas) && '1px solid red'}`,
+                  borderRadius: `${Boolean(touched.atcdMas && errors.atcdMas) && '10px'}`
+                }}
+                spacing={1}
               >
-                <option value="" selected disabled hidden>
-                  Terme de la grossesse
-                </option>
-                <option value="Prématuré ">Prématuré</option>
-                <option value="A terme">A terme</option>
-              </Select>
-              <Select
-                native
-                // {...getFieldProps('calendrierVaccin')}
-                // required
-                onChange={handleCalendrierVaccin}
-                error={Boolean(touched.calendrierVaccin && errors.calendrierVaccin)}
-                helperText={touched.calendrierVaccin && errors.calendrierVaccin}
-              >
-                <option value="" selected disabled hidden>
-                  Calendrier vaccinal
-                </option>
-                <option value="Calendrier vaccinal à jour">Calendrier vaccinal à jour</option>
-                <option value="Calendrier vaccinal non à jour">
-                  Calendrier vaccinal non à jour
-                </option>
-              </Select>
-              <TextField
-                sx={{ padding: '2px' }}
-                value={patientFormCause.preciserCalendrierVaccinNonjour}
-                label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
-                disabled={calendrierVaccinDesabled}
-                onChange={handlePreciserCalendrierVaccinNonjour}
-                // {...getFieldProps('preciserCalendrierVaccinNonjour')}
-                error={Boolean(
+                <FormLabel component="label">ATCD de MAS:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.atcdMas === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.atcdMas === 'false'} />}
+                    label="Non"
+                  />
+                </Stack>
+              </Stack>
+            </RadioGroup>
+            <Select
+              native
+              fullWidth
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('calendrierVaccin')}
+              // required
+              onChange={handleCalendrierVaccin}
+              error={Boolean(touched.calendrierVaccin && errors.calendrierVaccin)}
+              helperText={touched.calendrierVaccin && errors.calendrierVaccin}
+            >
+              <option value="" selected disabled hidden>
+                {`${
+                  patientFormCause.calendrierVaccin
+                    ? patientFormCause.calendrierVaccin
+                    : 'Calendrier vaccinal'
+                }`}
+              </option>
+              <option value="Calendrier vaccinal à jour">Calendrier vaccinal à jour</option>
+              <option value="Calendrier vaccinal non à jour">Calendrier vaccinal non à jour</option>
+            </Select>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              value={patientFormCause.preciserCalendrierVaccinNonjour}
+              label="Si Calendrier vaccinal non à jour veuillez préciser le vaccin non recu ..."
+              disabled={calendrierVaccinDesabled}
+              onChange={handlePreciserCalendrierVaccinNonjour}
+              // {...getFieldProps('preciserCalendrierVaccinNonjour')}
+              error={
+                Boolean(
                   touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
-                )}
-                helperText={
-                  touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
-                }
-              />
-              <RadioGroup
-                required
-                // {...getFieldProps('atcdMas')}
-                onChange={handleAtcdMas}
-                error={Boolean(touched.atcdMas && errors.atcdMas)}
-                // helperText={touched.atcdMas && errors.atcdMas}
+                ) ||
+                Boolean(
+                  values.calendrierVaccin === 'Calendrier vaccinal non à jour' &&
+                    values.preciserCalendrierVaccinNonjour === ''
+                )
+              }
+              helperText={
+                touched.preciserCalendrierVaccinNonjour && errors.preciserCalendrierVaccinNonjour
+              }
+            />
+            <Select
+              native
+              fullWidth
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('dpm')}
+              onChange={handleDpm}
+              helperText={touched.dpm && errors.dpm}
+              error={Boolean(touched.dpm && errors.dpm)}
+            >
+              <option value="" selected disabled hidden>
+                {`${patientFormCause.dpm ? patientFormCause.dpm : 'DPM'}`}
+              </option>
+              <option value="Normal">Normal</option>
+              <option value="Anormal">Anormal</option>
+            </Select>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              disabled={dpmDesabled}
+              value={patientFormCause.dpmAnormalPrecision}
+              label="Si DPM est anormal veuillez préciser"
+              onChange={handleDpmAnormalPrecision}
+              // {...getFieldProps('dpmAnormalPrecision')}
+              helperText={touched.dpmAnormalPrecision && errors.dpmAnormalPrecision}
+              error={
+                Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision) ||
+                Boolean(values.dpm === 'Anormal' && values.dpmAnormalPrecision === '')
+              }
+            />
+            <RadioGroup
+              sx={{ padding: '2px', marginTop: '24px' }}
+              // {...getFieldProps('atcdRougeole')}
+              onChange={handleAtcdRougeole}
+              helperText={touched.atcdRougeole && errors.atcdRougeole}
+              error={Boolean(touched.atcdRougeole && errors.atcdRougeole)}
+            >
+              <Stack
+                direction={{ xs: 'column', sm: 'column' }}
+                sx={{
+                  display: 'flex',
+                  // alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
+                  }`,
+                  borderRadius: `${Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'}`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${Boolean(touched.atcdMas && errors.atcdMas) && '1px solid red'}`,
-                    borderRadius: `${Boolean(touched.atcdMas && errors.atcdMas) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">ATCD de MAS:</FormLabel>
-                  <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                  <FormControlLabel value="false" control={<Radio />} label="Non" />
+                <FormLabel component="label">ATCD de Rougeole dans la fratrie:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.atcdRougeole === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.atcdRougeole === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <Select
-                native
-                // {...getFieldProps('dpm')}
-                onChange={handleDpm}
-                helperText={touched.dpm && errors.dpm}
-                error={Boolean(touched.dpm && errors.dpm)}
+              </Stack>
+            </RadioGroup>
+            <TextField
+              fullWidth
+              sx={{ padding: '2px', marginTop: '24px' }}
+              value={patientFormCause.eig}
+              label="Eig moyen (année)"
+              // {...getFieldProps('eig')}
+              onChange={handleEig}
+              error={Boolean(touched.eig && errors.eig)}
+              helperText={touched.eig && errors.eig}
+            />
+            <RadioGroup
+              sx={{ padding: '2px', marginTop: '24px' }}
+              onChange={handleTerrainVih}
+              // {...getFieldProps('terrainVih')}
+              helperText={touched.terrainVih && errors.terrainVih}
+              error={Boolean(touched.terrainVih && errors.terrainVih)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'row', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'}`,
+                  borderRadius: `${Boolean(touched.terrainVih && errors.terrainVih) && '10px'}`
+                }}
+                spacing={1}
               >
-                <option value="" selected disabled hidden>
-                  DPM
-                </option>
-                <option value="Normal">Normal</option>
-                <option value="Anormal">Anormal</option>
-              </Select>
-              <TextField
-                sx={{ padding: '2px' }}
-                disabled={dpmDesabled}
-                value={patientFormCause.dpmAnormalPrecision}
-                label="Si DPM est anormal veuillez préciser"
-                onChange={handleDpmAnormalPrecision}
-                // {...getFieldProps('dpmAnormalPrecision')}
-                helperText={touched.dpmAnormalPrecision && errors.dpmAnormalPrecision}
-                error={Boolean(touched.dpmAnormalPrecision && errors.dpmAnormalPrecision)}
-              />
-              <RadioGroup
-                sx={{ padding: '2px' }}
-                // {...getFieldProps('atcdRougeole')}
-                onChange={handleAtcdRougeole}
-                helperText={touched.atcdRougeole && errors.atcdRougeole}
-                error={Boolean(touched.atcdRougeole && errors.atcdRougeole)}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.atcdRougeole && errors.atcdRougeole) && '10px'
-                    }`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">ATCD de Rougeole dans la fratrie:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Terrain VIH connu:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.terrainVih === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.terrainVih === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <RadioGroup
-                sx={{ padding: '2px' }}
-                fullWidth
-                onChange={handleTerrainVih}
-                // {...getFieldProps('terrainVih')}
-                helperText={touched.terrainVih && errors.terrainVih}
-                error={Boolean(touched.terrainVih && errors.terrainVih)}
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              autoComplete="nbr"
+              fullWidth
+              type="text"
+              value={patientFormCause.nombreChute}
+              label="Nombre de chute"
+              onChange={handleNombreChute}
+              // {...getFieldProps('nombreChute')}
+              helperText={touched.nombreChute && errors.nombreChute}
+              error={Boolean(touched.nombreChute && errors.nombreChute)}
+            />
+            <RadioGroup
+              sx={{ padding: '2px', marginTop: '24px' }}
+              // fullWidth
+              onChange={handleVaccinationRougeole}
+              helperText={touched.vaccinationRougeole && errors.vaccinationRougeole}
+              // {...getFieldProps('vaccinationRougeole')}
+              error={Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'row', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
+                    '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
+                  }`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.terrainVih && errors.terrainVih) && '1px solid red'
-                    }`,
-                    borderRadius: `${Boolean(touched.terrainVih && errors.terrainVih) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Terrain VIH connu:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Vaccination rougeole:</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.vaccinationRougeole === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.vaccinationRougeole === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                autoComplete="nbr"
-                type="text"
-                value={patientFormCause.nombreChute}
-                label="Nombre de chute"
-                onChange={handleNombreChute}
-                // {...getFieldProps('nombreChute')}
-                helperText={touched.nombreChute && errors.nombreChute}
-                error={Boolean(touched.nombreChute && errors.nombreChute)}
-              />
-              <RadioGroup
-                sx={{ padding: '2px' }}
-                // fullWidth
-                onChange={handleVaccinationRougeole}
-                helperText={touched.vaccinationRougeole && errors.vaccinationRougeole}
-                // {...getFieldProps('vaccinationRougeole')}
-                error={Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole)}
+              </Stack>
+            </RadioGroup>
+            <Select
+              native
+              fullWidth
+              sx={{ marginTop: '24px' }}
+              onChange={handleAsphyxiePrerinatale}
+              helperText={touched.asphyxiePrerinatale && errors.asphyxiePrerinatale}
+              // {...getFieldProps('asphyxiePrerinatale')}
+              error={Boolean(touched.asphyxiePrerinatale && errors.asphyxiePrerinatale)}
+            >
+              <option value="" selected disabled hidden>
+                {`${
+                  patientFormCause.asphyxiePrerinatale
+                    ? patientFormCause.asphyxiePrerinatale
+                    : 'Asphyxie périnatale'
+                }`}
+              </option>
+              <option value="pas de cri">pas de cri</option>
+              <option value="a crié spontanément oui">a crié spontanément</option>
+              <option value="cri après réanimation">cri après réanimation</option>
+            </Select>
+            <RadioGroup
+              sx={{ padding: '2px', marginTop: '24px' }}
+              // fullWidth
+              // {...getFieldProps('cocktailAtb')}
+              onChange={handlecocktailAtb}
+              error={Boolean(touched.cocktailAtb && errors.cocktailAtb)}
+              helperText={touched.cocktailAtb && errors.cocktailAtb}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'row', sm: 'row' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
+                  }`,
+                  borderRadius: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '10px'}`
+                }}
+                spacing={1}
               >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) &&
-                      '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.vaccinationRougeole && errors.vaccinationRougeole) && '10px'
-                    }`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Vaccination rougeole:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">Prise de cocktail d’ATB : </FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.cocktailAtb === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.cocktailAtb === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <Select
-                native
-                fullWidth
-                onChange={handleAsphyxiePrerinatale}
-                helperText={touched.asphyxiePrerinatale && errors.asphyxiePrerinatale}
-                // {...getFieldProps('asphyxiePrerinatale')}
-                error={Boolean(touched.asphyxiePrerinatale && errors.asphyxiePrerinatale)}
+              </Stack>
+            </RadioGroup>
+            <TextField
+              sx={{ padding: '2px', marginTop: '24px' }}
+              fullWidth
+              type="text"
+              value={patientFormCause.cocktailAtbDuree}
+              disabled={cocktailAtbDesabled}
+              label="Si notion de prise de cocktail est Oui, veuillez préciser la durée"
+              onChange={handleCocktailAtbDuree}
+              // {...getFieldProps('cocktailAtbDuree')}
+              helperText={touched.cocktailAtbDuree && errors.cocktailAtbDuree}
+              error={
+                Boolean(touched.cocktailAtbDuree && errors.cocktailAtbDuree) ||
+                Boolean(values.cocktailAtb === 'true' && values.cocktailAtbDuree === '')
+              }
+            />
+            <RadioGroup
+              onChange={handleAtcdDuTbcDansFratrie}
+              sx={{ marginTop: '24px' }}
+              // {...getFieldProps('atcdDuTbcDansFratrie')}
+              // helperText={touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie}
+              // error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
+            >
+              <Stack
+                direction={{ xs: 'column', md: 'column', sm: 'column' }}
+                sx={{
+                  display: 'flex',
+                  // alignItems: 'center',
+                  paddingLeft: '10px',
+                  border: `${
+                    Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
+                    '1px solid red'
+                  }`,
+                  borderRadius: `${
+                    Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
+                  }`
+                }}
+                spacing={1}
               >
-                <option value="" selected disabled hidden>
-                  Asphyxie périnatale
-                </option>
-                <option value="pas de cri">pas de cri</option>
-                <option value="a crié spontanément oui">a crié spontanément</option>
-                <option value="cri après réanimation">cri après réanimation</option>
-              </Select>
-              <RadioGroup
-                sx={{ padding: '2px' }}
-                fullWidth
-                // {...getFieldProps('cocktailAtb')}
-                onChange={handlecocktailAtb}
-                error={Boolean(touched.cocktailAtb && errors.cocktailAtb)}
-                helperText={touched.cocktailAtb && errors.cocktailAtb}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.cocktailAtb && errors.cocktailAtb) && '1px solid red'
-                    }`,
-                    borderRadius: `${Boolean(touched.cocktailAtb && errors.cocktailAtb) && '10px'}`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">Notion de prise de cocktail d’ATB</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
+                <FormLabel component="label">ATCD de TBC dans la fratrie :</FormLabel>
+                <Stack direction={{ xs: 'row', sm: 'row' }}>
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio checked={patientFormCause.atcdDuTbcDansFratrie === 'true'} />}
+                    label="Oui"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio checked={patientFormCause.atcdDuTbcDansFratrie === 'false'} />}
+                    label="Non"
+                  />
                 </Stack>
-              </RadioGroup>
-              <TextField
-                sx={{ padding: '2px' }}
-                fullWidth
-                type="text"
-                value={patientFormCause.cocktailAtbDuree}
-                disabled={cocktailAtbDesabled}
-                label="Si notion de prise de cocktail est Oui, veuillez préciser la durée"
-                onChange={handleCocktailAtbDuree}
-                // {...getFieldProps('cocktailAtbDuree')}
-                helperText={touched.cocktailAtbDuree && errors.cocktailAtbDuree}
-                error={Boolean(touched.cocktailAtbDuree && errors.cocktailAtbDuree)}
-              />
-              <RadioGroup
-                onChange={handleAtcdDuTbcDansFratrie}
-                // {...getFieldProps('atcdDuTbcDansFratrie')}
-                // helperText={touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie}
-                // error={Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie)}
-              >
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '10px',
-                    border: `${
-                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) &&
-                      '1px solid red'
-                    }`,
-                    borderRadius: `${
-                      Boolean(touched.atcdDuTbcDansFratrie && errors.atcdDuTbcDansFratrie) && '10px'
-                    }`
-                  }}
-                  spacing={1}
-                >
-                  <FormLabel component="label">ATCD de TBC dans la fratrie:</FormLabel>
-                  <Stack direction={{ xs: 'row', sm: 'row' }}>
-                    <FormControlLabel value="true" control={<Radio />} label="Oui" />
-                    <FormControlLabel value="false" control={<Radio />} label="Non" />
-                  </Stack>
-                </Stack>
-              </RadioGroup>
-            </Stack>
+              </Stack>
+            </RadioGroup>
+            {/* </Stack> */}
           </Grid>
         </Grid>
         <Stack
@@ -993,7 +1184,7 @@ export default function CauseForm({ NextStep, SetDataPatient, PrevStep, patientF
             type="submit"
             size="large"
             variant="contained"
-            loading={isSubmitting}
+            // loading={isSubmitting}
             sx={{ width: 200, marginLeft: '20px', marginTop: '20px' }}
           >
             Suivant

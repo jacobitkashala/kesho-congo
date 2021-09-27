@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import propTypes from 'prop-types';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import { InputLabel, Stack, Avatar, Grid, Card, Container, Typography } from '@material-ui/core';
@@ -17,10 +17,6 @@ PatientData.propTypes = {
 export default function PatientData({ DataPatient, PrevStep }) {
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
-  // const classes = useStyles();
-  useEffect(() => {
-    window.scroll(100, 100);
-  });
   const { indentity, CauseMalnutrition, FamalyData } = DataPatient;
   console.log(DataPatient);
 
@@ -92,12 +88,12 @@ export default function PatientData({ DataPatient, PrevStep }) {
     CauseMalnutrition.tbcTraiter === '' ? 'pas de tbc' : CauseMalnutrition.tbcTraiter;
 
   newPatient.atb = FamalyData.atb; // bool prise d'at
-  newPatient.liste_atb = FamalyData.listAtb; //  lesquels
+  newPatient.liste_atb = FamalyData.atb ? 'pas de atb' : FamalyData.listAtb; //  lesquels
   newPatient.type_statut_marital =
     FamalyData.pereMariage === '' ? 'non marié' : FamalyData.pereMariage;
   newPatient.taille_menage = FamalyData.tailleMenage;
-  newPatient.vivre_deux_parents = FamalyData.vivreAvecParent;
-  newPatient.mere_enceinte = FamalyData.mereEnceinte;
+  newPatient.vivre_deux_parents = FamalyData.mereEnVie && FamalyData.pereEnvie; // FamalyData.vivreAvecParent;//
+  newPatient.mere_enceinte = FamalyData.mereEnceinte ? FamalyData.mereEnceinte : false;
   newPatient.mere_en_vie = FamalyData.mereEnVie;
   newPatient.pere_en_vie = FamalyData.pereEnvie;
   newPatient.profession_mere = FamalyData.professionMere;
@@ -117,7 +113,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : FamalyData.typeContraceptionModerne;
   newPatient.niveau_socioeconomique = FamalyData.NiveauSocioEconomique;
   newPatient.statut_marital = FamalyData.statutMarital === '' ? 'rien' : FamalyData.statutMarital;
-  newPatient.nbre_femme_pere = FamalyData.nbrFemme;
+  newPatient.nbre_femme_pere = FamalyData.nbrFemme ? FamalyData.nbrFemme : 1;
   newPatient.tribu = FamalyData.Tribut;
   newPatient.religion = FamalyData.Religion;
   newPatient.posseder_radio_tele = FamalyData.PossederTeleRadio;
@@ -166,8 +162,8 @@ export default function PatientData({ DataPatient, PrevStep }) {
         <Grid item xs={11} sm={5} md={5}>
           <Card
             sx={{
-              margin: 2,
-              padding: 5
+              margin: 1,
+              padding: 2
             }}
           >
             <Stack
@@ -235,6 +231,13 @@ export default function PatientData({ DataPatient, PrevStep }) {
               Adresse :<span style={{ color: 'black' }}> {indentity.adressePatient}</span>
             </InputLabel>
             <InputLabel>
+              Consommation poisson :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${FamalyData.consommationPoisson ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Date de naissance :
               <span style={{ color: 'black' }}> {indentity.dataNaissancePatient}</span>
             </InputLabel>
@@ -278,6 +281,23 @@ export default function PatientData({ DataPatient, PrevStep }) {
               </span>
             </InputLabel>
             <InputLabel>
+              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Taille Fratrie :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
+            </InputLabel>
+            <InputLabel>
+              Se jour Neo :
+              <span style={{ color: 'black' }}>
+                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
+              </span>
+            </InputLabel>
+            <InputLabel>
               Constitution aliment:
               <span style={{ color: 'black' }}> {indentity.constitutionAliment}</span>
             </InputLabel>
@@ -290,41 +310,95 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {`${FamalyData.listAtb ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
             <InputLabel>
+              Tbc:
+              <span style={{ color: 'black' }}> {`${CauseMalnutrition.tbc ? 'Oui' : 'Non'}`}</span>
+            </InputLabel>
+            <InputLabel>
               Transfer Unt:
               <span style={{ color: 'black' }}>{`${indentity.transfererUnt ? 'Oui' : 'Non'}`}</span>
             </InputLabel>
+            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
+              Causes malnutrition
+            </Typography>
+            <InputLabel>
+              Terme grossesse :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
+            </InputLabel>
+            <InputLabel>
+              Dpm Anormal par ce que :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {CauseMalnutrition.dpmAnormalPrecision === ''
+                  ? 'rien'
+                  : CauseMalnutrition.dpmAnormalPrecision}{' '}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Lieu d'accouchement :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
+            </InputLabel>
+            <InputLabel>
+              ATC Rougeole :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
+            </InputLabel>
+            <InputLabel>
+              Asphyxie prerinatale :
+              <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
+            </InputLabel>
+            <InputLabel>
+              Hospitalisation :
+              <span style={{ color: 'black' }}>
+                {CauseMalnutrition.diagnostiqueHospitalisation}
+              </span>
+            </InputLabel>
+            <InputLabel>
+              Sejour neo :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.sejourNeo ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Nombre de chute :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
+            </InputLabel>
+            <InputLabel>
+              Vaccination rougeole :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
+            </InputLabel>
+            <InputLabel>
+              Terrain vih :
+              <span style={{ color: 'black' }}>{`{CauseMalnutrition.terrainVih}`}</span>
+            </InputLabel>
+            <InputLabel>
+              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
+            </InputLabel>
+            <InputLabel>
+              Atbc du tbc dans fratrie :
+              <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
+            </InputLabel>
+            <InputLabel>
+              Hospitalisation recente :
+              <span style={{ color: 'black' }}>{`${
+                CauseMalnutrition.hospitalisationRecente ? 'Oui' : 'Non'
+              }`}</span>
+            </InputLabel>
+            <InputLabel>
+              Diagnostique hopital :
+              <span style={{ color: 'black' }}>
+                {CauseMalnutrition.diagnostiqueHospitalisation}
+              </span>
+            </InputLabel>
           </Card>
         </Grid>
-        {/* NbrRepasJour: "1"
-NiveauSocioEconomique: "Moyen"
-PossederTeleRadio: "false"
-ProffessionChefMenage: "Travail à temps partiel (maçon, menuisier)"
-Religion: "Musulman"
-: "Shi"
-consommationPoisson: "true"
-contraceptionMere: "false"
-contraceptionType: ""
-: "2021-09-17"
-dateNaissanceMere: "2021-09-23"
-mereEnVie: "true"
-mereEnceinte: "false"
-: "1"
-nomTuteur: "12"
-pereEnvie: "false"
-pereMariage: ""
-professionMere: "Salariée formelle,infirmier,Ong,enseignante"
-scolariteMere: "Primaire"
-statutMarital: "Prématuré "
-tailleMenage: "12"
-typeContraceptionModerne: ""
-typeContraceptionNaturel: ""
-: "true" */}
-
         <Grid item xs={11} sm={7} md={7}>
           <Card
             sx={{
-              margin: 2,
-              padding: 5
+              margin: 1,
+              padding: 2
             }}
           >
             <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>Famille</Typography>
@@ -332,7 +406,7 @@ typeContraceptionNaturel: ""
             <InputLabel>
               Parent en vie :
               <span style={{ color: 'black' }}>
-                {`${FamalyData.vivreAvecParent ? 'Oui' : 'Non'}`}
+                {`${FamalyData.mereEnVie && FamalyData.pereEnvie ? 'Oui' : 'Non'}`}
               </span>
             </InputLabel>
             <InputLabel>
@@ -347,7 +421,11 @@ typeContraceptionNaturel: ""
               <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de femme :<span style={{ color: 'black' }}> {FamalyData.nbrFemme}</span>
+              Nombre de femme :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${FamalyData.nbrFemme ? FamalyData.nbrFemme : 1}`}
+              </span>
             </InputLabel>
             <InputLabel>
               Tribu :<span style={{ color: 'black' }}> {FamalyData.Tribut}</span>
@@ -372,16 +450,16 @@ typeContraceptionNaturel: ""
               Profession :
               <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
             </InputLabel>
-            {/* <InputLabel>
-              Nombre de femme:
-              <span style={{ color: 'black' }}> {FamalyData.ProffessionChefMenage}</span>
-            </InputLabel> */}
             <InputLabel>
-              Dpm :<span style={{ color: 'black' }}> {CauseMalnutrition.dpm}</span>
-            </InputLabel>
-            <InputLabel>
-              Dpm AnormalPrecision :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.DpmAnormalPrecision}</span>
+              Dpm :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${
+                  CauseMalnutrition.dpm === 'Normal'
+                    ? 'Nomrmal'
+                    : CauseMalnutrition.DpmAnormalPrecision
+                }`}
+              </span>
             </InputLabel>
             <InputLabel>
               Taille ménage :<span style={{ color: 'black' }}> {FamalyData.tailleMenage}</span>
@@ -395,9 +473,6 @@ typeContraceptionNaturel: ""
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.MasFratrie ? 'Oui' : 'Non'
               }`}</span>
-            </InputLabel>
-            <InputLabel>
-              Rang fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.rangFratrie}</span>
             </InputLabel>
             <Typography>Mère</Typography>
             <InputLabel>
@@ -459,23 +534,6 @@ typeContraceptionNaturel: ""
               MatcdMasn :<span style={{ color: 'black' }}> {CauseMalnutrition.MatcdMas}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.NombreChute}</span>
-            </InputLabel>
-            <InputLabel>
-              Rang Fratrie :<span style={{ color: 'black' }}> {CauseMalnutrition.RangFratrie}</span>
-            </InputLabel>
-            <InputLabel>
-              Se jour Neo :
-              <span style={{ color: 'black' }}>
-                {`${CauseMalnutrition.SejourNeo ? 'Oui' : 'Non'}`}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Taille Fratrie :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.tailleFratrie}</span>
-            </InputLabel>
-            <InputLabel>
               Tbc Chez Parent :
               <span style={{ color: 'black' }}>{`${
                 CauseMalnutrition.TbcChezParent ? 'Oui' : 'Non'
@@ -497,85 +555,6 @@ typeContraceptionNaturel: ""
               Terrain Vih :
               <span style={{ color: 'black' }}>
                 {`${CauseMalnutrition.TerrainVih ? 'Oui' : 'Non'}`}
-              </span>
-            </InputLabel>
-          </Card>
-        </Grid>
-        <Grid item xs={11} sm={6} md={5}>
-          <Card
-            sx={{
-              margin: 2,
-              marginTop: '-100%',
-              padding: 5
-            }}
-          >
-            <Typography sx={{ fontWeight: '900', fontSize: 'larger' }}>
-              Causes malnutrition
-            </Typography>
-            <InputLabel>
-              Terme grossesse :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.termeGrossesse} </span>
-            </InputLabel>
-            <InputLabel>
-              Dpm Anormal par ce que :
-              <span style={{ color: 'black' }}>
-                {' '}
-                {CauseMalnutrition.dpmAnormalPrecision === ''
-                  ? 'rien'
-                  : CauseMalnutrition.dpmAnormalPrecision}{' '}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Lieu d'accouchement :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.lieuAccouchement}</span>
-            </InputLabel>
-            <InputLabel>
-              ATC Rougeole :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.AtcdRougeole} </span>
-            </InputLabel>
-            <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.nombreChute} </span>
-            </InputLabel>
-            <InputLabel>
-              Asphyxie prerinatale :
-              <span style={{ color: 'black' }}> {CauseMalnutrition.asphyxiePrerinatale} </span>
-            </InputLabel>
-            <InputLabel>
-              Hospitalisation :
-              <span style={{ color: 'black' }}>
-                {CauseMalnutrition.diagnostiqueHospitalisation}
-              </span>
-            </InputLabel>
-            <InputLabel>
-              Sejour neo :<span style={{ color: 'black' }}>{CauseMalnutrition.sejourNeo}</span>
-            </InputLabel>
-            <InputLabel>
-              Nombre de chute :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.nombreChute}</span>
-            </InputLabel>
-            <InputLabel>
-              Vaccination rougeole :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.vaccinationRougeole}</span>
-            </InputLabel>
-            <InputLabel>
-              Terrain vih :<span style={{ color: 'black' }}>{CauseMalnutrition.terrainVih}</span>
-            </InputLabel>
-            <InputLabel>
-              Tbc :<span style={{ color: 'black' }}>{CauseMalnutrition.tbc}</span>
-            </InputLabel>
-            <InputLabel>
-              Atbc du tbc dans fratrie :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.atcdDuTbcDansFratrie}</span>
-            </InputLabel>
-            <InputLabel>
-              Hospitalisation recente :
-              <span style={{ color: 'black' }}>{CauseMalnutrition.hospitalisationRecente}</span>
-            </InputLabel>
-            <InputLabel>
-              Diagnostique hopital :
-              <span style={{ color: 'black' }}>
-                {CauseMalnutrition.diagnostiqueHospitalisation}
               </span>
             </InputLabel>
           </Card>

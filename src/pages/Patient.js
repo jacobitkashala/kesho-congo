@@ -44,8 +44,8 @@ import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 // import DeleteIcon from '@material-ui/icons-material/Delete';
 // import IconButton from '@material-ui/material/IconButton';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+// import IconButton from '@material-ui/core/IconButton';
+// import Tooltip from '@material-ui/core/Tooltip';
 // import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
@@ -72,7 +72,7 @@ const TABLE_HEAD = [
   { id: 'MN', label: 'Malnutrition', alignRight: false },
   { id: 'CS', label: 'Consulté(e) par', alignCenter: true }
 ];
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     position: 'relative',
@@ -120,14 +120,12 @@ export default function Patient() {
   const [debut, setDebut] = useState(0);
   // const [le, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
-  const [loader2, setLoader2] = useState(false);
+  // const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [sendRequest, setSendRequest] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
-    // send the request
-    // setSendRequest(false);
     fetch(
       `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${30}`,
       {
@@ -149,7 +147,7 @@ export default function Patient() {
         setLoader(false);
         setSendRequest(false);
         // setLoader2();
-        console.log('myDatahobed', data);
+        // console.log('myDatahobed', data);
         // setUsersList(data);
       })
       .catch((error) => {
@@ -207,7 +205,6 @@ export default function Patient() {
     }
     setSelected([]);
   };
-
   const handleClickPrev = () => {
     console.log(` prev ${length}`);
     if (length > 5) setDebut((prevState) => prevState - 5);
@@ -270,7 +267,7 @@ export default function Patient() {
   // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
   const filteredPatient = patientsList;
 
-  const isUserNotFound = filteredPatient.length === 0;
+  // const isUserNotFound = filteredPatient.length === 0;
   // console.log( isUserNotFound);
   console.log('liste filtrées', filterName);
 
@@ -315,7 +312,7 @@ export default function Patient() {
                 &nbsp; &nbsp;
                 <Button
                   variant="outlined"
-                  onClick={(e) => exportToCSV(allData, exportedFileName)}
+                  onClick={() => exportToCSV(allData, exportedFileName)}
                   startIcon={<Icon icon="bx:bx-export" />}
                 >
                   Exporter
