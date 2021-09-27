@@ -55,11 +55,11 @@ export default function AddAnthro({ id }) {
       height: '',
       brachial: '',
       cranian: '',
-      malnutrition: '',
-      checked: false
+      malnutrition: ''
+      // checked: false
     },
     validationSchema: RegisterSchema,
-    onSubmit: ({ weight, height, brachial, cranian, malnutrition, checked }) => {
+    onSubmit: ({ weight, height, brachial, cranian, malnutrition }) => {
       Axios.post(
         `https://kesho-congo-api.herokuapp.com/anthropometrique?id_patient=${id}`,
         {
@@ -67,8 +67,8 @@ export default function AddAnthro({ id }) {
           peri_brachial: brachial,
           poids: weight,
           taille: height,
-          type_malnutrition: malnutrition,
-          declarer_gueri: checked
+          type_malnutrition: malnutrition
+          // declarer_gueri: checked
         },
         {
           headers: {
@@ -149,8 +149,9 @@ export default function AddAnthro({ id }) {
                 <option value="MAS-M">Malnutrition aigue sévère marasme</option>
                 <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
                 <option value="MAC">Malnutrition aigue chronique</option>
+                <option value="Guéri">Declaré guéri</option>
               </Select>
-              <span>
+              {/* <span>
                 Declaré guéris?{' '}
                 <Switch
                   {...getFieldProps('checked')}
@@ -158,7 +159,7 @@ export default function AddAnthro({ id }) {
                   checked={values.checked}
                 />
                 Oui
-              </span>
+              </span> */}
               <LoadingButton
                 type="submit"
                 variant="contained"

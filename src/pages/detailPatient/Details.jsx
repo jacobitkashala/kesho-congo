@@ -53,7 +53,7 @@ export default function Details() {
         }
       );
       const data = await response.data;
-      console.log('un user', data);
+      console.log('check recovered', data);
       const Patient = await data;
       const PatientBrachial = Patient.Anthropometrique;
       setAnthro(PatientBrachial);

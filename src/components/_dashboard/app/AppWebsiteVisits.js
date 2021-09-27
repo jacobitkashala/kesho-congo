@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 import Axios from 'axios';
 import moment from 'moment';
+import { useTheme, styled } from '@material-ui/core/styles';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -25,6 +26,7 @@ export default function AppWebsiteVisits() {
   const [macData, setMacData] = useState([]);
   const [mamData, setMamData] = useState([]);
   const [masData, setMasData] = useState([]);
+  const [gueris, setGueris] = useState([]);
   const [repData, setRepData] = useState([]);
   const [loader, setLoader] = useState(true);
   const currentYear = moment().format('YYYY');
@@ -38,11 +40,12 @@ export default function AppWebsiteVisits() {
         }
       });
       const data = await response.data;
-      console.log('mes données:', data);
+      console.log('mes données annuelles:', data);
       setRepData(await data.rapport_patient_year);
       setMasData(await data.rapport_mas_year);
       setMamData(await data.rapport_mam_year);
       setMacData(await data.rapport_mac_year);
+      setGueris(await data.rapport_gueri_year);
       setLoader(false);
 
       // setLoader(false);
@@ -58,8 +61,13 @@ export default function AppWebsiteVisits() {
       data: repData.map((i) => i[0].nombre_patient)
     },
     {
+      name: 'MAC',
+      type: 'line',
+      data: macData.map((i) => i[0].chronique_nombre)
+    },
+    {
       name: 'MAS',
-      type: 'area',
+      type: 'line',
       data: masData.map((i) => i[0].sereve_nombre)
     },
     {
@@ -68,15 +76,23 @@ export default function AppWebsiteVisits() {
       data: mamData.map((i) => i[0].moderee_nombre)
     },
     {
-      name: 'MAC',
+      name: 'Guéris',
       type: 'line',
-      data: macData.map((i) => i[0].chronique_nombre)
+      data: gueris.map((i) => i[0].nombre_patient)
     }
   ];
+  const theme = useTheme();
   const chartOptions = merge(BaseOptionChart(), {
-    stroke: { width: [0, 3, 3, 3] },
-    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-    fill: { type: ['solid', 'gradient', 'solid', 'solid'] },
+    colors: [
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.error.light,
+      theme.palette.warning.main,
+      theme.palette.primary.main
+    ],
+    stroke: { width: [0, 3, 3, 3, 3] },
+    plotOptions: { bar: { columnWidth: '10%', borderRadius: 4 } },
+    fill: { type: ['solid', 'gradient', 'solid', 'solid', 'solid'] },
     labels: [
       'Janvier',
       'Février',

@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Badge from '@material-ui/core/Badge';
 // import { makeStyles } from '@material-ui/styles';
 import SearchNotFound from '../../components/SearchNotFound';
 // import Scrollbar from '/../../components/Scrollbar';
@@ -106,7 +107,7 @@ export default function MoreDetails({ id }) {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log('myDataConsultant', data.consultants);
+        console.log('myDataConsultant', data.Anthropometrique);
         setAnthro(data.Anthropometrique);
         setUsersList(data.consultants);
         setLoader(false);
@@ -213,7 +214,7 @@ export default function MoreDetails({ id }) {
                     {filteredUsers
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((consultant, i) => {
-                        const { id_user, nom_user, prenom_user } = consultant.user;
+                        const { id_user, nom_user, prenom_user, transferer_unt } = consultant.user;
 
                         const isItemSelected = selected.indexOf(nom_user) !== -1;
 
@@ -250,6 +251,14 @@ export default function MoreDetails({ id }) {
                             <TableCell>{anthro[i].poids}</TableCell>
                             <TableCell>{anthro[i].taille}</TableCell>
                             <TableCell align="center">
+                              {transferer_unt ? (
+                                <>
+                                  <Badge color="error" variant="dot" />
+                                  &nbsp;&nbsp;
+                                </>
+                              ) : (
+                                ''
+                              )}
                               <Label
                                 variant="outlined"
                                 sx={{
@@ -257,11 +266,11 @@ export default function MoreDetails({ id }) {
                                     anthro[i].type_malnutrition === 'MAC'
                                       ? '#D32F2F'
                                       : anthro[i].type_malnutrition === 'MAM'
-                                      ? '#1565C0'
+                                      ? '#ffb74d'
                                       : anthro[i].type_malnutrition === 'MAS-K'
-                                      ? '#EF5350'
+                                      ? '#e57373'
                                       : anthro[i].type_malnutrition === 'MAS-M'
-                                      ? '#ED6C02'
+                                      ? '#f57c00'
                                       : '#4CAF50'
                                   }`
                                 }}
