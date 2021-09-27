@@ -13,7 +13,7 @@ import moment from 'moment';
 // ----------Excele Export-----------------------------
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import RefreshIcon from '@material-ui/icons/Refresh';
+// import RefreshIcon from '@material-ui/icons/Refresh';
 // material
 import {
   Card,
@@ -116,8 +116,8 @@ export default function Patient() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('nom_patient');
   const [filterName, setFilterName] = useState('');
-  const [length, setLength] = useState(0);
-  const [debut, setDebut] = useState(0);
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [start, setStart] = useState(0);
   // const [le, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
   // const [loader2, setLoader2] = useState(false);
@@ -126,22 +126,20 @@ export default function Patient() {
   const classes = useStyles();
 
   useEffect(() => {
-    fetch(
-      `https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${debut}&limit_end=${30}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `bearer ${localStorage.getItem('token')}`
-        }
+    fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${start}&limit_end=${3}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${localStorage.getItem('token')}`
       }
-    )
+    })
       .then((response) => response.json())
       .then((data) => {
         const { Patients, nombre_patient } = data;
         // console.log(localStorage.getItem('token'));
-        // console.log(`la taille de patient : ${Patients.length}`);
-        setLength((current) => current + Patients.length);
+        // console.log(`la taille de patient : ${Patients.numberOfElement}`);
+        // let initialLegth= numberOfElement==0?'0'
+        setNumberOfElement(numberOfElement === 0 ? Patients.length : numberOfElement);
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
@@ -153,7 +151,7 @@ export default function Patient() {
       .catch((error) => {
         console.error('MyError:', error);
       });
-  }, [debut]);
+  }, [start]);
 
   useEffect(() => {
     fetch(`https://kesho-congo-api.herokuapp.com/patient/export`, {
@@ -166,7 +164,7 @@ export default function Patient() {
       .then((response) => response.json())
       .then((data) => {
         setAllData(data);
-        console.log('AllmyData', data);
+        // console.log('AllmyData', data);
       })
       .catch((err) => {
         console.error(err);
@@ -206,13 +204,21 @@ export default function Patient() {
     setSelected([]);
   };
   const handleClickPrev = () => {
-    console.log(` prev ${length}`);
-    if (length > 5) setDebut((prevState) => prevState - 5);
+    if (numberOfElement > 3) {
+      const step = numberOfElement % 3 === 0 ? 3 : patientsList.length;
+      setStart((prevState) => prevState - step);
+      const number = numberOfElement % 3 === 0 ? 3 : patientsList.length;
+      setNumberOfElement((prevState) => prevState - number);
+    }
   };
   const handleClickNext = () => {
-    if (length <= lenghtData) {
-      setDebut((prevState) => prevState + 5);
-      console.log(`length= ${length}`);
+    if (numberOfElement < lenghtData) {
+      const step =
+        numberOfElement + 3 > lenghtData ? lenghtData - numberOfElement + 1 : patientsList.length;
+      setStart((prevState) => prevState + step);
+      const number =
+        numberOfElement + 3 > lenghtData ? lenghtData - numberOfElement : patientsList.length;
+      setNumberOfElement((prevState) => prevState + number);
     }
   };
 
@@ -269,7 +275,7 @@ export default function Patient() {
 
   // const isUserNotFound = filteredPatient.length === 0;
   // console.log( isUserNotFound);
-  console.log('liste filtrées', filterName);
+  // console.log('liste filtrées', filterName);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -296,7 +302,7 @@ export default function Patient() {
       ) : (
         <Page>
           <Container>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
               <Typography variant="h4" gutterBottom>
                 Patients
               </Typography>
@@ -406,9 +412,6 @@ export default function Patient() {
                               // role="checkbox"
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
-                              // onClick={() => {
-                              //   console.log('id de mon patient', id_patient);
-                              // }}
                             >
                               <TableCell padding="left">
                                 <TableCell padding="checkbox" variant="subtitle2" noWrap>
@@ -489,10 +492,11 @@ export default function Patient() {
                   <GrFormNext
                     style={{ width: '30px', height: '30px', color: '#1f2b35', cursor: 'pointer' }}
                     onClick={handleClickNext}
+                    // disabled={}
                   />
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px' }}>
-                  {length}/{lenghtData}
+                  {numberOfElement}/{lenghtData}
                 </TableCell>
                 <TableCell style={{ fontWeight: '900px', position: 'absolute', left: '87%' }}>
                   <Badge color="error" variant="dot" />
