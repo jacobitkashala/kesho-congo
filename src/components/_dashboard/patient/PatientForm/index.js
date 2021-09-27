@@ -38,70 +38,82 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
 
   useEffect(() => {
     window.scroll(position, position);
-    // console.log(dateNow.);
+    // console.log(dateNow.getFullYear() - 90);
+    // console.log(dateNow.toDateString());
   }, [position]);
 
-  const dateNow = new Date();
-
-  // console.log(dateNow.getFullYear() - 13);
+  const date = new Date();
 
   // console.log(dateNow.getFullYear());
   const RegisterSchema = Yup.object().shape({
-    taille: Yup.number('un chiffre requis').positive().min(100).max(400).required('Taille requis'),
-    ExplicationAutre: Yup.string().trim().min(2),
-    allaitementExclusifSixMois: Yup.string().trim().min(2).required('Radio requis'),
+    taille: Yup.number('Un chiffre requis')
+      .positive('La valeur doit être positive')
+      .min(10, 'Taille minimum 10 Cm')
+      .max(400, 'Taille maximum 400 Cm')
+      .required('Taille requis'),
+    ExplicationAutre: Yup.string().trim().min(2, 'Minimum 2 caractère'),
+    allaitementExclusifSixMois: Yup.string()
+      .trim()
+      .min(2, 'Min 2 caractère')
+      .required('Champs requis'),
     NomPatient: Yup.string()
-      .min(2)
-      .max(25)
-      .matches(/[A-Za-z]/)
+      .min(2, 'Min 2 caractère')
+      .max(100, 'Max 100 caractère')
+      .matches(/[A-Za-z]/, 'Il ne doit contenir que de lettre')
       .trim()
       .required('requis'),
-    poidsActuel: Yup.number('un chiffre requis').required('Poinds requis').positive(),
+    poidsActuel: Yup.number('Il ne doit contenir que de chiffre')
+      .min(2, 'Minimun 2 Kg')
+      .positive('Le nombre doit être positive')
+      .required('Poinds requis'),
     perimetreCranien: Yup.number('un chiffre requis')
       .positive()
-      .min(10)
-      .max(100)
+      .min(10, 'Minimum 10 Cm')
+      .max(10000, 'Maximum 10000 Cm')
       .required('Perimetre cranien requis'),
-    transfererUnt: Yup.string().trim().min(2).required(),
+    transfererUnt: Yup.string().trim().min(2, 'Min 2 caractère').required(),
     fistNamePatient: Yup.string()
-      .min(2)
+      .min(2, 'Min 2 caractère')
       .max(25)
-      .matches(/[A-Za-z]/)
+      .matches(/[A-Za-z]/, 'Il ne doit contenir que de lettre')
       .trim()
       .required('requis'),
     perimetreBrachail: Yup.number('un chiffre requis')
       .positive()
-      .min(5)
+      .min(5, 'Minimum 5')
       .max(100)
       .required('Perimetre brachial requis'),
     postNomPatient: Yup.string()
-      .min(2)
-      .max(25)
-      .matches(/[A-Za-z]/)
+      .min(2, 'Minimum 2 caractère')
+      .max(25, 'Maximum 25 caractère')
+      .matches(/[A-Za-z]/, 'Il ne doit contenir que de lettre')
       .trim()
       .required('requis'),
     telephone: Yup.string()
-      .matches(/^(\+243|0)[0-9]{9}$/g)
+      .matches(/^(\+243|0)[0-9]{9}$/g, '+243813030011 ou 0813030011')
       .required('requis'),
     diversificationAliment: Yup.number('un nombre')
       .positive('nombre positif')
-      .min(2)
+      .min(2, 'Minimum 2 caractère')
       .required('requis'),
     sexePatient: Yup.string().trim().required('requis'),
     dataNaissancePatient: Yup.date('intervalle entre')
-      .min(dateNow.getFullYear() - 90, 'data non valide')
-      .max(dateNow.getFullYear(), 'date non valide')
+      .min(date.getFullYear() - 90, `Age minimum ${date.getFullYear()}` - 90)
+      .max(
+        Date(`${date.getFullYear}-${date.getMonth()}-${date.getDate()}`),
+        'la date d aujourd hui est invalide'
+      )
       .required('requis'),
-    constitutionAliment: Yup.string().trim().min(2).required('requis'),
-    provenancePatient: Yup.string().trim().min(2).required('requiq'),
-    modeArriver: Yup.string().trim().min(2).required('requis'),
-    typeMalnutrition: Yup.string().trim().min(2).required('requis'),
-    poidsNaissance: Yup.number().positive().min(1500).required('requis'),
-    traitementNutritionnel: Yup.string().trim().min(2).required('requis'),
+    constitutionAliment: Yup.string().trim().min(2, 'Min 2 caractère').required('requis'),
+    provenancePatient: Yup.string().trim().min(2, 'Min 2 caractère').required('requiq'),
+    modeArriver: Yup.string().trim().min(2, 'Min 2 caractère').required('requis'),
+    typeMalnutrition: Yup.string().trim().min(2, 'Minimum 2 caractère').required('requis'),
+    poidsNaissance: Yup.number().positive().min(900, 'Minimum 900 gr').required('requis'),
+    traitementNutritionnel: Yup.string().trim().min(2, 'Minimum 2 caractère').required('requis'),
     traitementNutritionnelAutre: Yup.string().min(5).trim(),
-    adressePatient: Yup.string().trim().min(2).required('adresse requis'),
-    ExplicationProvenance: Yup.string().min(2).trim(),
-    ageFinAllaitement: Yup.number().min(2).positive()
+    adressePatient: Yup.string().trim().min(2, 'Min 2 caractère').required('adresse requis'),
+    ExplicationProvenance: Yup.string().min(2, 'Min 2 caractère').trim(),
+    ageFinAllaitement: Yup.number().min(1, 'Minimum 1 mois').positive('champs doit être positive')
   });
   const formik = useFormik({
     initialValues: {
@@ -294,6 +306,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
     const { value } = event.target;
     setFieldValue('dataNaissancePatient', value);
     patientFormData.setDataNaissancePatient(value);
+    console.log(value);
   };
   const handleChangeTypeMalnutrition = (event) => {
     const { value } = event.target;
@@ -387,7 +400,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                 <TextField
                   sx={{ padding: '2px' }}
                   // fullWidth
-                  label="Poid naissance (gr) ex:1500"
+                  label="Poids naissance (gr) ex:1500"
                   value={patientFormData.poidsNaissance}
                   onChange={handleChangePoidsnaissance}
                   // {...getFieldProps('poidsNaissance')}
@@ -752,10 +765,10 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                       ? patientFormData.typeMalnutrition
                       : 'Forme de malnutrition'}
                   </option>
-                  <option value="MAM">Malnutrition aigue modéré</option>
-                  <option value="MAS-K">Malnutrition aigue sévère kwashiorkor</option>
-                  <option value="MAS-M">Malnutrition aigue sévère marasme</option>
-                  <option value="MAC">Malnutrition aigue chronique</option>
+                  <option value="MAM">Malnutrition Aigue Modéré</option>
+                  <option value="MAS-K">Malnutrition Aigue Sévère Kwashiorkor</option>
+                  <option value="MAS-M">Malnutrition Aigue Sévère Marasme</option>
+                  <option value="MAC">Malnutrition Aigue Chronique</option>
                 </Select>
               </Stack>
             </Grid>

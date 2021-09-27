@@ -113,7 +113,7 @@ export default function PatientData({ DataPatient, PrevStep }) {
       : FamalyData.typeContraceptionModerne;
   newPatient.niveau_socioeconomique = FamalyData.NiveauSocioEconomique;
   newPatient.statut_marital = FamalyData.statutMarital === '' ? 'rien' : FamalyData.statutMarital;
-  newPatient.nbre_femme_pere = FamalyData.nbrFemme;
+  newPatient.nbre_femme_pere = FamalyData.nbrFemme ? FamalyData.nbrFemme : 1;
   newPatient.tribu = FamalyData.Tribut;
   newPatient.religion = FamalyData.Religion;
   newPatient.posseder_radio_tele = FamalyData.PossederTeleRadio;
@@ -421,7 +421,11 @@ export default function PatientData({ DataPatient, PrevStep }) {
               <span style={{ color: 'black' }}> {FamalyData.dateNaissanceChefMenage}</span>
             </InputLabel>
             <InputLabel>
-              Nombre de femme :<span style={{ color: 'black' }}> {FamalyData.nbrFemme}</span>
+              Nombre de femme :
+              <span style={{ color: 'black' }}>
+                {' '}
+                {`${FamalyData.nbrFemme ? FamalyData.nbrFemme : 1}`}
+              </span>
             </InputLabel>
             <InputLabel>
               Tribu :<span style={{ color: 'black' }}> {FamalyData.Tribut}</span>

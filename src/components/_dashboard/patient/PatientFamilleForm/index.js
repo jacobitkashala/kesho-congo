@@ -104,8 +104,8 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
         ? patientFormFamille.dateNaissanceMere
         : '',
       mereEnceinte: patientFormFamille.mereEnceinte ? patientFormFamille.mereEnceinte : '',
-      PossederTeleRadio: patientFormFamille.PossederTeleRadio
-        ? patientFormFamille.PossederTeleRadio
+      PossederTeleRadio: patientFormFamille.possederTeleRadio
+        ? patientFormFamille.possederTeleRadio
         : '',
       ProffessionChefMenage: patientFormFamille.proffessionChefMenage
         ? patientFormFamille.proffessionChefMenage
@@ -119,16 +119,16 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
       typeContraceptionNaturel: patientFormFamille.typeContraceptionNaturel
         ? patientFormFamille.typeContraceptionNaturel
         : '',
-      NiveauSocioEconomique: patientFormFamille.NiveauSocioEconomique
-        ? patientFormFamille.NiveauSocioEconomique
+      NiveauSocioEconomique: patientFormFamille.niveauSocioEconomique
+        ? patientFormFamille.niveauSocioEconomique
         : '',
       statutMarital: patientFormFamille.statutMarital ? patientFormFamille.statutMarital : '',
       Tribut: patientFormFamille.tribut ? patientFormFamille.tribut : '',
       dateNaissanceChefMenage: patientFormFamille.dateNaissanceChefMenage
         ? patientFormFamille.dateNaissanceChefMenage
         : '',
-      Religion: patientFormFamille.Religion ? patientFormFamille.Religion : '',
-      NbrRepasJour: patientFormFamille.NbrRepasJour ? patientFormFamille.NbrRepasJour : '',
+      Religion: patientFormFamille.religion ? patientFormFamille.religion : '',
+      NbrRepasJour: patientFormFamille.nbrRepasJour ? patientFormFamille.nbrRepasJour : '',
       pereEnvie: patientFormFamille.pereEnvie ? patientFormFamille.pereEnvie : '',
       nbrFemme: patientFormFamille.nbrFemme ? patientFormFamille.nbrFemme : '',
       tailleMenage: patientFormFamille.tailleMenage ? patientFormFamille.tailleMenage : '',
@@ -930,7 +930,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
                 native
                 // required
                 sx={{ padding: '2px' }}
-                selected={values.Religion}
+                // selected={values.Religion}
                 onChange={handleReligion}
                 // {...getFieldProps('Religion')}
                 helperText={touched.Religion && errors.Religion}
