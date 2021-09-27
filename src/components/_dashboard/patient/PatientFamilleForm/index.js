@@ -66,7 +66,7 @@ export default function FamilleForm({ NextStep, SetDataPatient, PrevStep, patien
     scolariteMere: Yup.string().required('Scolarité requis'),
     pereMariage: Yup.string(),
     consommationPoisson: Yup.string().required('requis'),
-    nbrFemme: Yup.number().min(0).max(99),
+    nbrFemme: Yup.number().min(2).max(99),
     NiveauSocioEconomique: Yup.string().required('niveau socio-économique requis'),
     statutMarital: Yup.string().required('statut marital requis'),
     typeContraceptionNaturel: Yup.string(),
