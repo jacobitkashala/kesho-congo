@@ -78,11 +78,11 @@ const PatientCard = ({
                 malnutrition === 'MAC'
                   ? '#D32F2F'
                   : malnutrition === 'MAM'
-                  ? '#1565C0'
+                  ? '#ffb74d'
                   : malnutrition === 'MAS-K'
-                  ? '#EF5350'
+                  ? '#e57373'
                   : malnutrition === 'MAS-M'
-                  ? '#ED6C02'
+                  ? '#f57c00'
                   : '#4CAF50'
               }`
             }}

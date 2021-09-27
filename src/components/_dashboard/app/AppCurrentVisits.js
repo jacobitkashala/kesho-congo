@@ -51,6 +51,7 @@ export default function AppCurrentVisits() {
   const [macData, setMacData] = useState(0);
   const [mamData, setMamData] = useState(0);
   const [masData, setMasData] = useState(0);
+  const [gueris, setGueris] = useState(0);
   const [loader, setLoader] = useState(true);
   const currentYear = moment().format('YYYY');
   useEffect(async () => {
@@ -72,6 +73,9 @@ export default function AppCurrentVisits() {
       setMacData(
         await output.rapport_mac_year.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b)
       );
+      setGueris(
+        await output.rapport_gueri_year.map((i) => i[0].nombre_patient).reduce((a, b) => a + b)
+      );
       setLoader(false);
 
       // setLoader(false);
@@ -83,7 +87,7 @@ export default function AppCurrentVisits() {
 
   console.log('mes données 2:', macData);
 
-  const CHART_DATA = [macData, mamData, masData];
+  const CHART_DATA = [macData, mamData, masData, gueris];
   const theme = useTheme();
   // const CHART_DATA = [
   //   macData.map((i) => i[0].chronique_nombre).reduce((a, b) => a + b),
@@ -94,11 +98,11 @@ export default function AppCurrentVisits() {
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
       theme.palette.error.main,
-      theme.palette.success.main,
+      theme.palette.error.light,
       theme.palette.warning.main,
-      theme.palette.error.main
+      theme.palette.primary.main
     ],
-    labels: ['MAC', 'MAM', 'MAS'],
+    labels: ['MAC', 'MAS', 'MAM', 'Guéris'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },

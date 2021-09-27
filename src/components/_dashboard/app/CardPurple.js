@@ -10,9 +10,10 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: 'none',
   textAlign: 'center',
+  border: '0.1px solid lightgray',
   padding: theme.spacing(5, 0),
   color: theme.palette.warning.darker,
-  backgroundColor: theme.palette.secondary.lighter
+  backgroundColor: theme.palette
 }));
 // ----------------------------------------------------------------------
 

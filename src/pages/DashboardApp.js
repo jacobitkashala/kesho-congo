@@ -70,7 +70,7 @@ export default function DashboardApp() {
       });
       const data = await response.data;
       setReports(await data);
-      console.log('mes données:', data);
+      console.log('mes données reporting:', data);
       setLoader(false);
 
       // setLoader(false);
@@ -242,38 +242,10 @@ export default function DashboardApp() {
             <br />
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={3}>
-                <CardVert
+                <CardBleu
                   title="Total"
                   nombreM={reports.nombre_garcon[0].nombre_garcon}
                   nombreF={reports.nombre_fille[0].nombre_fille}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardBleu
-                  title="6 à 24 mois"
-                  nombreM={reports.nombre_garcon_moins_3ans[0].nombre_garcon_moins_3ans}
-                  nombreF={reports.nombre_fille_moins_3ans[0].nombre_fille_moins_3ans}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardJaune
-                  title="24 à 59 mois"
-                  nombreM={reports.nombre_garcon_3_5ans[0].nombre_garcon_3_5ans}
-                  nombreF={reports.nombre_fille_3_5ans[0].nombre_fille_3_5ans}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardRouge
-                  title="Adultes"
-                  nombreM={reports.nombre_garcon_adulte[0].nombre_garcon_adulte}
-                  nombreF={reports.nombre_fille_adulte[0].nombre_fille_adulte}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardBleu
-                  title="Hier"
-                  nombreM={reports.nbre_garcon_yesterday}
-                  nombreF={reports.nbre_fille_yesterday}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
@@ -302,27 +274,54 @@ export default function DashboardApp() {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <CardVert
-                  title="Guéris"
-                  nombreM={reports.sereve_marasme_nombre_garcon[0].sereve_marasme_nombre_garcon}
-                  nombreF={reports.sereve_marasme_nombre_fille[0].sereve_marasme_nombre_fille}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <CardPurple
-                  title="En UNT"
-                  nombreM={reports.nombre_garcon_transferer[0].nombre_garcon_transferer}
-                  nombreF={reports.nombre_fille_transferer[0].nombre_fille_transferer}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
                 <CardBlue2
                   title="MAM"
                   nombreM={reports.moderee_nombre_garcon[0].moderee_nombre_garcon}
                   nombreF={reports.moderee_nombre_fille[0].moderee_nombre_fille}
                 />
               </Grid>
-
+              <Grid item xs={12} sm={6} md={3}>
+                <CardVert
+                  title="Guéris"
+                  nombreM={reports.nombre_garcon_gueri[0].nombre_garcon_gueri}
+                  nombreF={reports.nombre_fille_gueri[0].nombre_fille_gueri}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardRouge
+                  title="En UNT"
+                  nombreM={reports.nombre_garcon_transferer[0].nombre_garcon_transferer}
+                  nombreF={reports.nombre_fille_transferer[0].nombre_fille_transferer}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardPurple
+                  title="6 à 24 mois"
+                  nombreM={reports.nombre_garcon_moins_3ans[0].nombre_garcon_moins_3ans}
+                  nombreF={reports.nombre_fille_moins_3ans[0].nombre_fille_moins_3ans}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardPurple
+                  title="24 à 59 mois"
+                  nombreM={reports.nombre_garcon_3_5ans[0].nombre_garcon_3_5ans}
+                  nombreF={reports.nombre_fille_3_5ans[0].nombre_fille_3_5ans}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardPurple
+                  title="Adultes"
+                  nombreM={reports.nombre_garcon_adulte[0].nombre_garcon_adulte}
+                  nombreF={reports.nombre_fille_adulte[0].nombre_fille_adulte}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <CardPurple
+                  title="Hier"
+                  nombreM={reports.nbre_garcon_yesterday}
+                  nombreF={reports.nbre_fille_yesterday}
+                />
+              </Grid>
               <Grid item xs={12} md={6} lg={8}>
                 <AppWebsiteVisits />
               </Grid>

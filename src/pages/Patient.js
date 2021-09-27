@@ -430,9 +430,13 @@ export default function Patient() {
                                 </Stack>
                               </TableCell>
                               <TableCell align="center">{prenom_patient}</TableCell>
-                              <TableCell align="center">{date_naissance}</TableCell>
+                              <TableCell align="center">
+                                {moment(date_naissance).format('DD/MM/YYYY')}
+                              </TableCell>
                               <TableCell align="center">{sexe_patient}</TableCell>
-                              <TableCell align="center">{date_Consultation}</TableCell>
+                              <TableCell align="center">
+                                {moment(date_Consultation).format('DD/MM/YYYY')}
+                              </TableCell>
                               <TableCell align="center">
                                 {transferer_unt ? (
                                   <>
@@ -450,11 +454,11 @@ export default function Patient() {
                                       type_malnutrition === 'MAC'
                                         ? '#D32F2F'
                                         : type_malnutrition === 'MAM'
-                                        ? '#1565C0'
+                                        ? '#ffb74d'
                                         : type_malnutrition === 'MAS-K'
-                                        ? '#EF5350'
+                                        ? '#e57373'
                                         : type_malnutrition === 'MAS-M'
-                                        ? '#ED6C02'
+                                        ? '#f57c00'
                                         : '#4CAF50'
                                     }`
                                   }}
