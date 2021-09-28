@@ -388,129 +388,123 @@ export default function Patient() {
               </RootStyle>
               <Scrollbar>
                 <TableContainer sx={{ minWidth: 800 }}>
-                  {patientsList.length === 0 ? (
-                    <div className={classes.loadingData}>
-                      <CircularProgress />
-                    </div>
-                  ) : (
-                    <>
-                      {loadingData ? (
-                        <div className={classes.loading}>
-                          <CircularProgress />
-                        </div>
-                      ) : (
-                        <Table>
-                          <PatientListHead
-                            order={order}
-                            orderBy={orderBy}
-                            headLabel={TABLE_HEAD}
-                            rowCount={patientsList.length}
-                            numSelected={selected.length}
-                            onRequestSort={handleRequestSort}
-                            onSelectAllClick={handleSelectAllClick}
-                          />
-                          {filteredPatient.length > 0 ? (
-                            <TableBody>
-                              {filteredPatient.map((row, i) => {
-                                const {
-                                  id_patient,
-                                  nom_patient,
-                                  type_malnutrition,
-                                  date_naissance,
-                                  sexe_patient,
-                                  date_Consultation,
-                                  nom_consultant,
-                                  postnom_consultant,
-                                  prenom_patient,
-                                  transferer_unt
-                                } = row;
-                                const isItemSelected = selected.indexOf(nom_patient) !== -1;
+                  <>
+                    {loadingData ? (
+                      <div className={classes.loading}>
+                        <CircularProgress />
+                      </div>
+                    ) : (
+                      <Table>
+                        <PatientListHead
+                          order={order}
+                          orderBy={orderBy}
+                          headLabel={TABLE_HEAD}
+                          rowCount={patientsList.length}
+                          numSelected={selected.length}
+                          onRequestSort={handleRequestSort}
+                          onSelectAllClick={handleSelectAllClick}
+                        />
+                        {filteredPatient.length > 0 ? (
+                          <TableBody>
+                            {filteredPatient.map((row, i) => {
+                              const {
+                                id_patient,
+                                nom_patient,
+                                type_malnutrition,
+                                date_naissance,
+                                sexe_patient,
+                                date_Consultation,
+                                nom_consultant,
+                                postnom_consultant,
+                                prenom_patient,
+                                transferer_unt
+                              } = row;
+                              const isItemSelected = selected.indexOf(nom_patient) !== -1;
 
-                                return (
-                                  <TableRow
-                                    component={RouterLink}
-                                    to={`detail_patient/${id_patient}`}
-                                    className={classes.patientRow}
-                                    hover
-                                    key={id_patient}
-                                    tabIndex={-1}
-                                    // role="checkbox"
-                                    selected={isItemSelected}
-                                    aria-checked={isItemSelected}
-                                  >
-                                    <TableCell padding="left">
-                                      <TableCell padding="checkbox" variant="subtitle2" noWrap>
-                                        {i + 1}
-                                      </TableCell>
+                              return (
+                                <TableRow
+                                  component={RouterLink}
+                                  to={`detail_patient/${id_patient}`}
+                                  className={classes.patientRow}
+                                  hover
+                                  key={id_patient}
+                                  tabIndex={-1}
+                                  // role="checkbox"
+                                  selected={isItemSelected}
+                                  aria-checked={isItemSelected}
+                                >
+                                  <TableCell padding="left">
+                                    <TableCell padding="checkbox" variant="subtitle2" noWrap>
+                                      {i + 1}
                                     </TableCell>
-                                    <TableCell component="th" scope="row" padding="none">
-                                      <Stack direction="row" alignItems="center" spacing={2}>
-                                        <Avatar
-                                          alt={nom_patient}
-                                          src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
-                                        />
-                                        <Typography variant="subtitle2" noWrap>
-                                          {nom_patient}
-                                        </Typography>
-                                      </Stack>
-                                    </TableCell>
-                                    <TableCell align="center">{prenom_patient}</TableCell>
-                                    <TableCell align="center">
-                                      {moment(date_naissance).format('DD/MM/YYYY')}
-                                    </TableCell>
-                                    <TableCell align="center">{sexe_patient}</TableCell>
-                                    <TableCell align="center">
-                                      {moment(date_Consultation).format('DD/MM/YYYY')}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {transferer_unt ? (
-                                        <>
-                                          <Badge color="error" variant="dot" />
-                                          &nbsp;&nbsp;
-                                        </>
-                                      ) : (
-                                        ''
-                                      )}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row" padding="none">
+                                    <Stack direction="row" alignItems="center" spacing={2}>
+                                      <Avatar
+                                        alt={nom_patient}
+                                        src={`/static/mock-images/avatars/avatar_${id_patient}.jpg`}
+                                      />
+                                      <Typography variant="subtitle2" noWrap>
+                                        {nom_patient}
+                                      </Typography>
+                                    </Stack>
+                                  </TableCell>
+                                  <TableCell align="center">{prenom_patient}</TableCell>
+                                  <TableCell align="center">
+                                    {moment(date_naissance).format('DD/MM/YYYY')}
+                                  </TableCell>
+                                  <TableCell align="center">{sexe_patient}</TableCell>
+                                  <TableCell align="center">
+                                    {moment(date_Consultation).format('DD/MM/YYYY')}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {transferer_unt ? (
+                                      <>
+                                        <Badge color="error" variant="dot" />
+                                        &nbsp;&nbsp;
+                                      </>
+                                    ) : (
+                                      ''
+                                    )}
 
-                                      <Label
-                                        variant="outlined"
-                                        sx={{
-                                          color: `${
-                                            type_malnutrition === 'MAC'
-                                              ? '#D32F2F'
-                                              : type_malnutrition === 'MAM'
-                                              ? '#ffb74d'
-                                              : type_malnutrition === 'MAS-K'
-                                              ? '#e57373'
-                                              : type_malnutrition === 'MAS-M'
-                                              ? '#f57c00'
-                                              : '#4CAF50'
-                                          }`
-                                        }}
-                                      >
-                                        {type_malnutrition}
-                                      </Label>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                      {nom_consultant} {postnom_consultant}
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              })}
-                            </TableBody>
-                          ) : (
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                  <SearchNotFound searchQuery={filterName} />
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          )}
-                        </Table>
-                      )}
-                    </>
-                  )}
+                                    <Label
+                                      variant="outlined"
+                                      sx={{
+                                        color: `${
+                                          type_malnutrition === 'MAC'
+                                            ? '#D32F2F'
+                                            : type_malnutrition === 'MAM'
+                                            ? '#ffb74d'
+                                            : type_malnutrition === 'MAS-K'
+                                            ? '#e57373'
+                                            : type_malnutrition === 'MAS-M'
+                                            ? '#f57c00'
+                                            : '#4CAF50'
+                                        }`
+                                      }}
+                                    >
+                                      {type_malnutrition}
+                                    </Label>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {nom_consultant} {postnom_consultant}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        ) : (
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                <SearchNotFound searchQuery={filterName} />
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        )}
+                      </Table>
+                    )}
+                  </>
                 </TableContainer>
               </Scrollbar>
               <TableRow>
