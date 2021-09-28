@@ -236,11 +236,6 @@ export default function Patient() {
       setNumberOfElement((prevState) => prevState + number);
     }
   };
-  const handleClickRefresh = () => {
-    setLoadingData(true);
-    setStart(3);
-    refButtonRefresh.current.value = '';
-  };
 
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
@@ -255,7 +250,7 @@ export default function Patient() {
     onSubmit: async ({ searchValue }) => {
       // setButtonLoader(true);
       setLoadingButton(true);
-      console.log('la valeur recherchée', searchValue);
+      // console.log('la valeur recherchée', searchValue);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/patient/search',
@@ -273,8 +268,8 @@ export default function Patient() {
         setSearchedValue('');
         setLoadingButton(false);
         setPatientsList(output);
-        console.log('output data :', output);
-        console.log('valeur recherché', filterName);
+        // console.log('output data :', output);
+        // console.log('valeur recherché', filterName);
         // setReports(await data);
         // setButtonLoader(false);
       } catch (err) {
@@ -284,13 +279,21 @@ export default function Patient() {
       }
     }
   });
-  const { handleSubmit, values, setFieldValue } = formik;
+  const { handleSubmit, setFieldValue } = formik;
 
   const handleFilterByName = (event) => {
     setFieldValue('searchValue', event.target.value);
     setFilterName(event.target.value);
   };
-
+  const handleClickRefresh = () => {
+    // values.searchedValue = '';
+    setFilterName('');
+    console.dir(refButtonRefresh.current.value);
+    refButtonRefresh.current.value = '';
+    refButtonRefresh.current.value = '';
+    setLoadingData(true);
+    setStart(3);
+  };
   // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
   const filteredPatient = patientsList;
 
@@ -383,8 +386,8 @@ export default function Patient() {
                           Rechercher
                         </LoadingButton>
                         <SearchStyle
-                          value={values.searchValue}
-                          ref={refButtonRefresh}
+                          value={filterName}
+                          inputRef={refButtonRefresh}
                           onChange={handleFilterByName}
                           placeholder="Tapez un nom"
                         />
