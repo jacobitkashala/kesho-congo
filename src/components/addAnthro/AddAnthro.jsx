@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 // material
 import { Stack, TextField, Select, styled } from '@material-ui/core';
-import Switch from '@material-ui/core/Switch';
 import { LoadingButton } from '@material-ui/lab';
 import Axios from 'axios';
 import { fakeAuth } from '../../fakeAuth';
@@ -35,7 +34,6 @@ const SubDivContenaire = styled('div')(() => ({
   flexDirection: 'column',
   justifyContent: 'center'
 }));
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function AddAnthro({ id }) {
   const location = useLocation();
@@ -77,9 +75,7 @@ export default function AddAnthro({ id }) {
           }
         }
       )
-        .then((response) => {
-          const message = response.data;
-          console.log('Yves', message);
+        .then(() => {
           fakeAuth.login(() => {
             navigate(from);
             navigate(`/dashboard/patient/detail_patient/${id}`, { replace: true });
@@ -91,8 +87,7 @@ export default function AddAnthro({ id }) {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, handleChange } =
-    formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } = formik;
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -151,15 +146,6 @@ export default function AddAnthro({ id }) {
                 <option value="MAC">Malnutrition aigue chronique</option>
                 <option value="Guéri">Declaré guéri</option>
               </Select>
-              {/* <span>
-                Declaré guéris?{' '}
-                <Switch
-                  {...getFieldProps('checked')}
-                  onChange={handleChange}
-                  checked={values.checked}
-                />
-                Oui
-              </span> */}
               <LoadingButton
                 type="submit"
                 variant="contained"

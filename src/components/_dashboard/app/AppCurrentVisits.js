@@ -63,7 +63,6 @@ export default function AppCurrentVisits() {
         }
       });
       const output = await response.data;
-      console.log('mes données Annuelles:', output);
       setMasData(
         await output.rapport_mas_year.map((i) => i[0].sereve_nombre).reduce((a, b) => a + b)
       );
@@ -77,15 +76,11 @@ export default function AppCurrentVisits() {
         await output.rapport_gueri_year.map((i) => i[0].nombre_patient).reduce((a, b) => a + b)
       );
       setLoader(false);
-
-      // setLoader(false);
     } catch (err) {
       console.log(err);
       setLoader(false);
     }
   }, []);
-
-  console.log('mes données 2:', macData);
 
   const CHART_DATA = [macData, mamData, masData, gueris];
   const theme = useTheme();

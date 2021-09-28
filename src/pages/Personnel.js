@@ -18,23 +18,10 @@ import {
   Container,
   Typography,
   TableContainer,
-  // Radio,
-  // FormLabel,
-  // FormControlLabel,
   TablePagination
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// import Box from '@material-ui/core/Box';
-// import LinearProgress from '@material-ui/core/LinearProgress';
-// material
-// components
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import { LoadingButton } from '@material-ui/lab';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -43,7 +30,6 @@ import {
   PersonnelListToolbar,
   PersonnelMoreMenu
 } from '../components/_dashboard/personnel';
-// import { PatientListToolbar } from '../components/_dashboard/patient';
 import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
@@ -91,8 +77,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     position: 'relative',
-    // left: '50%',
-    // flexDirection: 'column',
     justifyContent: 'center',
     top: '50%'
   },
@@ -133,11 +117,9 @@ export default function Personnel() {
       .then((response) => response.json())
       .then((data) => {
         setLoader(false);
-        console.log('myData', data);
         setUsersList(data);
       })
-      .catch((error) => {
-        console.error('Error:', error);
+      .catch(() => {
         fakeAuth.login(() => {
           navigate(from);
           navigate('/dashboard/app', { replace: true });

@@ -26,31 +26,7 @@ import CardPurple from '../components/_dashboard/app/CardPurple';
 import CardBlue2 from '../components/_dashboard/app/CardBlue2';
 
 // ----------------------------------------------------------------------
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    position: 'relative',
-    // left: '50%',
-    // flexDirection: 'column',
-    justifyContent: 'center',
-    top: '50%'
-  },
-  labelRoot: {
-    '&&': {
-      color: 'red'
-    },
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between'
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200
-    }
-  }
-}));
+
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
   const [startingDate, setStartingDate] = useState('');
@@ -59,7 +35,6 @@ export default function DashboardApp() {
   const [buttonLoader, setButtonLoader] = useState(false);
   const [displayDate, setDisplayDate] = useState(false);
   const currentMonth = moment().format('MMMM');
-  console.log('la date', currentMonth);
   useEffect(async () => {
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
@@ -70,16 +45,11 @@ export default function DashboardApp() {
       });
       const data = await response.data;
       setReports(await data);
-      console.log('mes données reporting:', data);
       setLoader(false);
-
-      // setLoader(false);
     } catch (err) {
       console.log(err);
     }
   }, []);
-
-  // console.log('macData', macData);
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   useEffect(() => {
@@ -155,7 +125,6 @@ export default function DashboardApp() {
         setStartingDate(startDate);
         setEndingDate(endDate);
         setDisplayDate(true);
-        // console.log('date de debut', startDate);
       } catch (err) {
         console.log(err);
         setButtonLoader(false);

@@ -42,7 +42,6 @@ PersonnelListToolbar.propTypes = {
 export default function PersonnelListToolbar({ value }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
-  const [modalDeletePersonnel, setModalDeletePersonnel] = useState(true);
   const [statutPersonnel, setStatutPersonnel] = useState('');
   const [openModalChangeStatus, setopenModalChangeStatus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -65,20 +64,11 @@ export default function PersonnelListToolbar({ value }) {
         fakeAuth.login(() => {
           navigate(from);
           navigate('/dashboard/personnel', { replace: true });
-          setModalDeletePersonnel(false);
         });
       })
       .catch((err) => {
         console.log(err);
       });
-  };
-  const handleClickOpenModalDelete = () => {
-    console.log(`Open ${modalDeletePersonnel}`);
-    setModalDeletePersonnel(true);
-  };
-  const handleCloseModalDelete = () => {
-    setModalDeletePersonnel(false);
-    console.log(`closes ${modalDeletePersonnel}`);
   };
 
   const handleClickOpenStatus = () => {

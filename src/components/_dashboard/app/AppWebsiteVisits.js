@@ -3,7 +3,7 @@ import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 import Axios from 'axios';
 import moment from 'moment';
-import { useTheme, styled } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -40,7 +40,6 @@ export default function AppWebsiteVisits() {
         }
       });
       const data = await response.data;
-      console.log('mes données annuelles:', data);
       setRepData(await data.rapport_patient_year);
       setMasData(await data.rapport_mas_year);
       setMamData(await data.rapport_mam_year);

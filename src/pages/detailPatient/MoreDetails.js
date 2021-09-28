@@ -107,7 +107,6 @@ export default function MoreDetails({ id }) {
     fetch(getUsers, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log('myDataConsultant', data.Anthropometrique);
         setAnthro(data.Anthropometrique);
         setUsersList(data.consultants);
         setLoader(false);
@@ -170,7 +169,6 @@ export default function MoreDetails({ id }) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
-    // console.log(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
