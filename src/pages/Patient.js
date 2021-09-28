@@ -293,6 +293,7 @@ export default function Patient() {
     refButtonRefresh.current.value = '';
     setLoadingData(true);
     setStart(3);
+    setNumberOfElement(0);
   };
   // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
   const filteredPatient = patientsList;
