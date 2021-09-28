@@ -4,7 +4,7 @@
 import * as Yup from 'yup';
 // import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
@@ -44,8 +44,9 @@ import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 // import DeleteIcon from '@material-ui/icons-material/Delete';
 // import IconButton from '@material-ui/material/IconButton';
-// import IconButton from '@material-ui/core/IconButton';
-// import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import RefreshIcon from '@material-ui/icons/Refresh';
 // import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 // import LinearProgress from '@material-ui/core/LinearProgress';
@@ -61,7 +62,6 @@ import { PatientListHead } from '../components/_dashboard/patient';
 // import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
 import { fakeAuth } from '../fakeAuth';
-import RefreshButton from '../components/RefreshButton';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignLeft: true },
@@ -133,8 +133,9 @@ export default function Patient() {
   // const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [sendRequest, setSendRequest] = useState(true);
+  const [searchedValue, setSearchedValue] = useState('');
   const classes = useStyles();
-
+  const refButtonRefresh = useRef(null);
   useEffect(() => {
     fetch(`https://kesho-congo-api.herokuapp.com/patient/all?limit_start=${start}&limit_end=${3}`, {
       method: 'GET',
@@ -235,6 +236,11 @@ export default function Patient() {
       setNumberOfElement((prevState) => prevState + number);
     }
   };
+  const handleClickRefresh = () => {
+    setLoadingData(true);
+    setStart(3);
+    refButtonRefresh.current.value = '';
+  };
 
   // -------------------FOrmik----------------------------
   const SearchSchema = Yup.object().shape({
@@ -243,13 +249,13 @@ export default function Patient() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      searchValue: ''
+      searchValue: searchedValue
     },
     validationSchema: SearchSchema,
     onSubmit: async ({ searchValue }) => {
       // setButtonLoader(true);
       setLoadingButton(true);
-      // console.log('la valeur recherchée', searchValue);
+      console.log('la valeur recherchée', searchValue);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/patient/search',
@@ -264,6 +270,7 @@ export default function Patient() {
           }
         );
         const output = await response.data;
+        setSearchedValue('');
         setLoadingButton(false);
         setPatientsList(output);
         console.log('output data :', output);
@@ -377,12 +384,17 @@ export default function Patient() {
                         </LoadingButton>
                         <SearchStyle
                           value={values.searchValue}
+                          ref={refButtonRefresh}
                           onChange={handleFilterByName}
                           placeholder="Tapez un nom"
                         />
                       </Form>
                     </FormikProvider>
-                    <RefreshButton />
+                    <Tooltip title="Rafraîchir" color="primary" onClick={handleClickRefresh}>
+                      <IconButton>
+                        <RefreshIcon />
+                      </IconButton>
+                    </Tooltip>
                   </>
                 )}
               </RootStyle>
