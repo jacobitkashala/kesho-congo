@@ -636,7 +636,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   // fullWidth
                   disabled={allaitement}
                   // disabled={patientFormData.AllaitementExclisifSixMois}
-                  label="Si non à quel âge fin allaitement (mois) ex:14"
+                  label="Si non, à quel âge fin allaitement (mois) ex:14"
                   onChange={handleChangeAgeFinAllaitement}
                   value={patientFormData.ageFinAllaitement}
                   // {...getFieldProps('ageFinAllaitement')}
@@ -665,7 +665,7 @@ export default function PatientForm({ NextStep, SetDataPatient, patientFormData 
                   sx={{ padding: '2px' }}
                   // required
                   // fullWidth
-                  label="Périmètre branchial (Cm) ex:40"
+                  label="Périmètre brachial (Cm) ex:40"
                   value={patientFormData.perimetreBrachail}
                   onChange={handleChangePerimetreBrachail}
                   // defaultValue={DataPatient.perimetreBrachail}
