@@ -2,66 +2,46 @@
 /* eslint-disable camelcase */
 /* no-nested-ternary */
 import * as Yup from 'yup';
-// import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useState, useEffect, useRef } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import moment from 'moment';
 // ----------Excele Export-----------------------------
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-// import RefreshIcon from '@material-ui/icons/Refresh';
-// material
 import {
   Card,
   Table,
   Stack,
   Avatar,
   Button,
-  // Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
   TableContainer,
-  // TablePagination,
   OutlinedInput,
   Toolbar
-  // Tooltip,
-  // IconButton
 } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
-// import { SkipPreviousIcon, SkipNextIcon } from '@material-ui/icons';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-// import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoadingButton } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
-// import DeleteIcon from '@material-ui/icons-material/Delete';
-// import IconButton from '@material-ui/material/IconButton';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import RefreshIcon from '@material-ui/icons/Refresh';
-// import Box from '@material-ui/core/Box';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
-// import LinearProgress from '@material-ui/core/LinearProgress';
-// import { getUsersAsync } from '../redux/reducers/userSlice';
-// material
-// components
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-// import { PersonnelListHead } from '../components/_dashboard/personnel';
 import { PatientListHead } from '../components/_dashboard/patient';
-// import PatientListHead from '../components/_dashboard/patient/PatientMoreMenu';
-// import { PatientListToolbar } from '../components/_dashboard/patient';
 import Label from '../components/Label';
-import { fakeAuth } from '../fakeAuth';
 
 const TABLE_HEAD = [
   { id: 'NE', label: 'Nom', alignLeft: true },
@@ -76,8 +56,6 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     position: 'relative',
-    // left: '50%',
-    // flexDirection: 'column',
     justifyContent: 'center',
     top: '50%'
   },
@@ -96,7 +74,6 @@ const useStyles = makeStyles(() => ({
     }
   },
   button: {
-    // margin: theme.spacing(1),
     textAlign: 'center',
     position: 'absolute',
     left: '30%'
@@ -128,11 +105,8 @@ export default function Patient() {
   const [numberOfElement, setNumberOfElement] = useState(0);
   const [start, setStart] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
-  // const [le, settaille] = useState(5);
   const [loader, setLoader] = useState(true);
-  // const [loader2, setLoader2] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
-  const [sendRequest, setSendRequest] = useState(true);
   const [searchedValue, setSearchedValue] = useState('');
   const classes = useStyles();
   const refButtonRefresh = useRef(null);
@@ -147,18 +121,11 @@ export default function Patient() {
       .then((response) => response.json())
       .then((data) => {
         const { Patients, nombre_patient } = data;
-        // console.log(localStorage.getItem('token'));
-        console.log(`la taille de patient :`, data);
-        // let initialLegth= numberOfElement==0?'0'
         setNumberOfElement(numberOfElement === 0 ? Patients.length : numberOfElement);
         setLenghtData(nombre_patient);
         setPatientsList(Patients);
         setLoader(false);
-        setSendRequest(false);
         setLoadingData(false);
-        // setLoader2();
-        // console.log('myDatahobed', data);
-        // setUsersList(data);
       })
       .catch((error) => {
         console.error('MyError:', error);
@@ -176,7 +143,6 @@ export default function Patient() {
       .then((response) => response.json())
       .then((data) => {
         setAllData(data);
-        // console.log('AllmyData', data);
       })
       .catch((err) => {
         console.error(err);
@@ -197,10 +163,6 @@ export default function Patient() {
   };
 
   const exportedFileName = `keshoCongoPatients${moment().format('DDMMMMYYYY')}`;
-  // console.log(exportedFileName);
-  // ----------------------------------Patients--------------------
-
-  // ----------------------------------------------------------------------
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -248,9 +210,7 @@ export default function Patient() {
     },
     validationSchema: SearchSchema,
     onSubmit: async ({ searchValue }) => {
-      // setButtonLoader(true);
       setLoadingButton(true);
-      // console.log('la valeur recherchée', searchValue);
       try {
         const response = await Axios.post(
           'https://kesho-congo-api.herokuapp.com/patient/search',
@@ -268,14 +228,9 @@ export default function Patient() {
         setSearchedValue('');
         setLoadingButton(false);
         setPatientsList(output);
-        // console.log('output data :', output);
-        // console.log('valeur recherché', filterName);
-        // setReports(await data);
-        // setButtonLoader(false);
       } catch (err) {
         console.log('message error :', err.message);
         setLoadingButton(false);
-        // setButtonLoader(false);
       }
     }
   });
@@ -286,32 +241,18 @@ export default function Patient() {
     setFilterName(event.target.value);
   };
   const handleClickRefresh = () => {
-    // values.searchedValue = '';
     setFilterName('');
     console.dir(refButtonRefresh.current.value);
     refButtonRefresh.current.value = '';
     refButtonRefresh.current.value = '';
     setLoadingData(true);
     setStart(3);
+    setNumberOfElement(0);
   };
-  // const filteredPatient = applySortFilter(patientsList, getComparator(order, orderBy), filterName);
   const filteredPatient = patientsList;
 
-  // const isUserNotFound = filteredPatient.length === 0;
-  // console.log( isUserNotFound);
-  // console.log('liste filtrées', filterName);
-
   const location = useLocation();
-  const navigate = useNavigate();
-  const { from } = location.state || { from: { pathname: '/dashboard/app' } };
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
-
-  function refreshPage() {
-    fakeAuth.login(() => {
-      navigate(from);
-      navigate(`/dashboard/patient`, { replace: true });
-    });
-  }
 
   useEffect(() => {
     setIsAuth(isAuth);

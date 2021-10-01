@@ -6,12 +6,9 @@ import { CalendarToday, PhoneAndroid } from '@material-ui/icons';
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { Avatar, TableCell } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
-import Box from '@material-ui/core/Box';
 import Badge from '@material-ui/core/Badge';
-import MailIcon from '@material-ui/icons/Mail';
-// import { TableRow, TableBody, TableCell } from '@material-ui/core';
 import moment from 'moment';
 import Label from '../Label';
 

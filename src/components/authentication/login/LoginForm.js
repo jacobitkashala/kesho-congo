@@ -58,13 +58,12 @@ export default function LoginForm() {
         password
       })
         .then((response) => {
-          const { message, token, name, isAdmin, id_user, status } = response.data;
+          const { token, name, isAdmin, id_user, status } = response.data;
           localStorage.setItem('token', token);
           localStorage.setItem('name', name);
           localStorage.setItem('isAdmin', isAdmin);
           localStorage.setItem('id_user', id_user);
           localStorage.setItem('status', status);
-          console.log({ message, token, name, isAdmin });
           setLoadingButton(false);
           fakeAuth.login(() => {
             navigate(from);

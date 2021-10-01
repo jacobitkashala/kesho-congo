@@ -43,7 +43,6 @@ export default function FortgoPasswordForm() {
     onSubmit: ({ myEmail }) => {
       setLoading(true);
       setErrorWord(false);
-      console.log('clicked');
       Axios.post(`https://kesho-congo-api.herokuapp.com/user/reset`, {
         // nom_user: lastName,
         // prenom_user: firstName,
@@ -51,11 +50,10 @@ export default function FortgoPasswordForm() {
       })
         .then((response) => {
           setLoading(false);
-          console.log('Ma reponse:', response.data.email);
           setOpen(true);
           setUserEmail(response.data.email);
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
           setErrorWord(true);
         });
@@ -87,24 +85,6 @@ export default function FortgoPasswordForm() {
       <FormikProvider value={formik}>
         <Form onSubmit={handleSubmit}>
           <Stack spacing={3}>
-            {/* <TextField
-              fullWidth
-              label="Prénom"
-              value={values.firstName}
-              onChange={handleChange}
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
-            />
-            <TextField
-              fullWidth
-              label="Nom"
-              value={values.lastName}
-              onChange={handleChange}
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
-            /> */}
             <TextField
               fullWidth
               autoComplete="username"

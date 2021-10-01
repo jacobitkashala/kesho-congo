@@ -14,9 +14,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
-// import { Toggle } from 'rsuite';
-// import ChildCareIcon from '@material-ui/icons/ChildCare';
-// import { styled } from '@material-ui/core/styles';
 import Axios from 'axios';
 import moment from 'moment';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -25,9 +22,6 @@ import PatientCard from '../../components/patientCard/PatientCard';
 import AddAnthro from '../../components/addAnthro/AddAnthro';
 import MoreDetails from './MoreDetails';
 import { fakeAuth } from '../../fakeAuth';
-
-// import { flexbox } from '@material-ui/system';
-// import { Rowing } from '@material-ui/icons';
 
 export default function Details() {
   console.log('hobed', moment().toDate('MM/DD/YYYY'));
@@ -40,7 +34,6 @@ export default function Details() {
   const [anthro, setAnthro] = useState([]);
   const [isAuth, setIsAuth] = useState(localStorage.getItem('token'));
   const myId = location.pathname.split('/')[4];
-  // console.log('bayekula', myId);
   useEffect(async () => {
     try {
       const response = await Axios.get(
@@ -53,7 +46,6 @@ export default function Details() {
         }
       );
       const data = await response.data;
-      console.log('check recovered', data);
       const Patient = await data;
       const PatientBrachial = Patient.Anthropometrique;
       setAnthro(PatientBrachial);
@@ -63,8 +55,7 @@ export default function Details() {
       console.log(err);
     }
   }, []);
-  // ---------------update UNT----------------------
-  // useEffect(() => {}, []);
+
   const RegisterSchema = Yup.object().shape();
 
   const formik = useFormik({
@@ -82,8 +73,7 @@ export default function Details() {
           }
         }
       )
-        .then((response) => {
-          // console.log('la reponse', response);
+        .then(() => {
           setTransferUNT(false);
           fakeAuth.login(() => {
             navigate(from);
@@ -149,11 +139,7 @@ export default function Details() {
   }));
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
