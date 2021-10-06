@@ -10,7 +10,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 import Axios from 'axios';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { LoadingButton } from '@material-ui/lab';
+import { getReports } from '../redux/reducers/dashboardReducer';
 // import { spacing } from '@material-ui/system';
 import Page from '../components/Page';
 import {
@@ -26,6 +28,38 @@ import CardPurple from '../components/_dashboard/app/CardPurple';
 import CardBlue2 from '../components/_dashboard/app/CardBlue2';
 
 // ----------------------------------------------------------------------
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    position: 'relative',
+    // left: '50%',
+    // flexDirection: 'column',
+    justifyContent: 'center',
+    top: '50%'
+  },
+  labelRoot: {
+    '&&': {
+      color: 'green',
+      fontWeight: 'bold'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200
+    },
+    label: {
+      '&&': {
+        color: 'green',
+        fontWeight: 'bold'
+      }
+    }
+  }
+}));
 
 export default function DashboardApp() {
   const [reports, setReports] = useState([]);
@@ -35,7 +69,27 @@ export default function DashboardApp() {
   const [buttonLoader, setButtonLoader] = useState(false);
   const [displayDate, setDisplayDate] = useState(false);
   const currentMonth = moment().format('MMMM');
+  const reportsData = useSelector((state) => state.dashboard);
+  const location = useLocation();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const Data = {};
+
+  if (reportsData === []) {
+    console.log(reportsData.nombre_garcon[0].nombre_garcon);
+    Data.nbrTotalG = reportsData.nombre_garcon[0].nombre_garcon;
+    Data.nbrTotalF = reportsData.nombre_fille[0].nombre_fille;
+    setLoader(false);
+  }
+  // console.log(Data);
+  // let b = true;
+  // b = reportsData.length !== 0;
+  // console.log(b);
+  // setLoader(b);
+  // setReports(reportsData);
+
   useEffect(async () => {
+    dispatch(getReports());
     try {
       const response = await Axios.get(`https://kesho-congo-api.herokuapp.com/reporting`, {
         headers: {
@@ -55,40 +109,7 @@ export default function DashboardApp() {
   useEffect(() => {
     setIsAuth(isAuth);
   }, [isAuth]);
-  const location = useLocation();
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      position: 'relative',
-      // left: '50%',
-      // flexDirection: 'column',
-      justifyContent: 'center',
-      top: '50%'
-    },
-    labelRoot: {
-      '&&': {
-        color: 'green',
-        fontWeight: 'bold'
-      },
-      container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between'
-      },
-      textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200
-      },
-      label: {
-        '&&': {
-          color: 'green',
-          fontWeight: 'bold'
-        }
-      }
-    }
-  }));
-  const classes = useStyles();
+
   const DateSchema = Yup.object().shape({
     startDate: Yup.date().required('selectionnez une date'),
     endDate: Yup.date()
@@ -175,14 +196,11 @@ export default function DashboardApp() {
                   {...getFieldProps('startDate')}
                   error={Boolean(touched.startDate && errors.startDate)}
                   helperText={touched.startDate && errors.startDate}
-                  // onChange={handleChange}
-                  // value={values.startDate}
                 />
                 &nbsp;&nbsp;
                 <TextField
                   label="Fin"
                   type="date"
-                  // defaultValue="2017-05-24"
                   className={classes.textField}
                   InputLabelProps={{
                     shrink: true
@@ -190,8 +208,6 @@ export default function DashboardApp() {
                   {...getFieldProps('endDate')}
                   error={Boolean(touched.endDate && errors.endDate)}
                   helperText={touched.endDate && errors.endDate}
-                  // onChange={formik.handleChange}
-                  // value={values.endDate}
                 />
                 &nbsp;&nbsp;
                 <LoadingButton
@@ -213,6 +229,8 @@ export default function DashboardApp() {
               <Grid item xs={12} sm={6} md={3}>
                 <CardBleu
                   title="Total"
+                  // nombreM={Data.nbrTotalG}
+                  // nombreF={Data.nbrTotalF}
                   nombreM={reports.nombre_garcon[0].nombre_garcon}
                   nombreF={reports.nombre_fille[0].nombre_fille}
                 />
